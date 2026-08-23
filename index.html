@@ -5,35 +5,150 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Koleksi Apps DIY Idris</title>
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#111827">
+    <meta name="theme-color" content="#0f172a">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="DIY Apps">
+    
+    <!-- Import Google Font untuk nampak kemas -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; text-align: center; padding: 25px 15px; background: #f3f4f6; color: #1f2937; margin: 0; }
-        h1 { font-size: 22px; margin-bottom: 5px; color: #111827; }
-        p { color: #6b7280; font-size: 14px; margin-bottom: 25px; }
-        .app-card { display: block; background: white; padding: 18px 20px; margin: 12px auto; width: 100%; max-width: 380px; text-decoration: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.04); font-weight: bold; color: #111827; text-align: left; border-left: 5px solid #3b82f6; box-sizing: border-box; }
-        .app-card span { display: block; font-size: 12px; font-weight: normal; color: #6b7280; margin-top: 4px; }
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #f8fafc;
+            margin: 0;
+            padding: 30px 16px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 35px;
+            max-width: 400px;
+        }
+        .logo-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+            display: inline-block;
+            background: rgba(59, 130, 246, 0.15);
+            padding: 15px;
+            border-radius: 20px;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+        h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+            letter-spacing: -0.5px;
+        }
+        p {
+            color: #94a3b8;
+            font-size: 14px;
+            margin: 0;
+        }
+        .container-apps {
+            width: 100%;
+            max-width: 420px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .app-card {
+            display: flex;
+            align-items: center;
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 18px;
+            border-radius: 16px;
+            text-decoration: none;
+            color: #f8fafc;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            transition: all 0.2s ease;
+        }
+        .app-card:hover {
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+            background: rgba(30, 41, 59, 0.9);
+        }
+        .app-card:active {
+            transform: scale(0.97);
+        }
+        .card-icon {
+            font-size: 28px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px;
+            border-radius: 12px;
+            margin-right: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card-content h3 {
+            margin: 0 0 4px 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+        .card-content span {
+            font-size: 13px;
+            color: #94a3b8;
+            line-height: 1.4;
+            display: block;
+        }
+        .footer {
+            margin-top: 40px;
+            font-size: 12px;
+            color: #64748b;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
-    <h1>Koleksi Apps DIY Idris</h1>
-    <p>Pilih kalkulator yang anda ingin gunakan:</p>
 
-    <a href="wallpanelling/index.html" class="app-card">
-        🪵 Kalkulator Wall Panelling
-        <span>Pengiraan reka bentuk wall panelling dinding</span>
-    </a>
+    <div class="header">
+        <div class="logo-icon">🛠️</div>
+        <h1>Koleksi Apps DIY Idris</h1>
+        <p>Pilih alat pengiraan yang anda perlukan untuk projek anda hari ini.</p>
+    </div>
 
-    <a href="ceilingseries/index.html" class="app-card">
-        🏠 Kalkulator Siri Siling
-        <span>Kira bahan dan ukuran siling rumah dengan mudah</span>
-    </a>
-    
-    <a href="wainscoting/index.html" class="app-card">
-        📐 Kalkulator Pro Wainscoting
-        <span>Sebut harga terperinci & nisbah visual wainscoting</span>
-    </a>
+    <div class="container-apps">
+        <!-- Pautan dikemas kini mengikut folder baru: wallpanelling -->
+        <a href="wallpanelling/index.html" class="app-card">
+            <div class="card-icon">🪵</div>
+            <div class="card-content">
+                <h3>Wall Panelling</h3>
+                <span>Kira kos & susun atur fluted panel serta wallboard dinding.</span>
+            </div>
+        </a>
+
+        <!-- Pautan dikemas kini mengikut folder baru: ceilingseries -->
+        <a href="ceilingseries/index.html" class="app-card">
+            <div class="card-icon">🏠</div>
+            <div class="card-content">
+                <h3>Siri Siling</h3>
+                <span>Kira bahan dan ukuran siri siling rumah dengan tepat.</span>
+            </div>
+        </a>
+        
+        <!-- Wainscoting dikekalkan -->
+        <a href="wainscoting/index.html" class="app-card">
+            <div class="card-icon">📐</div>
+            <div class="card-content">
+                <h3>Pro Wainscoting</h3>
+                <span>Sebut harga terperinci & nisbah visual kotak wainscoting.</span>
+            </div>
+        </a>
+    </div>
+
+    <div class="footer">
+        Dicipta khas untuk kegunaan sendiri &bull; Idris DIY Apps
+    </div>
+
 </body>
 </html>
