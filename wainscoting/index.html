@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ms">
 <head>
@@ -8,7 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
-<body class="bg-slate-100 text-slate-800 font-sans p-4 min-h-screen flex items-center justify-center">
+<body class="bg-slate-100 text-slate-800 font-sans p-4 min-h-screen flex items-center justify-center pb-20">
 
     <div class="max-w-lg w-full bg-white rounded-2xl shadow-xl p-5 md:p-6 space-y-6">
         <div>
@@ -66,7 +65,7 @@
                 </div>
             </div>
 
-            <button onclick="calculateWainscoting()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 rounded-lg transition shadow-md">
+            <button onclick="calculateWainscoting()" class="w-full bg-[#00B14F] hover:bg-[#009441] text-white font-medium py-3 rounded-lg transition shadow-md">
                 Kira Sebut Harga & Visual
             </button>
         </div>
@@ -146,14 +145,12 @@
                 return;
             }
 
-            // Tinggi Kotak
             let bottomBoxHeight = 600;
             let chairRailHeight = 70;
             let totalGaps = 400;
             let topBoxHeight = hMm - bottomBoxHeight - chairRailHeight - totalGaps;
             if (topBoxHeight < 100) topBoxHeight = 300;
 
-            // Lebar Kotak
             let effectiveWidth = wMm;
             let unitWidth = 0;
             let boxWidths = [];
@@ -190,14 +187,12 @@
             boxWidths.forEach((bw) => {
                 let roundedW = Math.round(bw);
 
-                // Kotak Atas
                 let stdW_Top = getCeilStandardSize(roundedW);
                 let stdH_Top = getCeilStandardSize(topBoxHeight);
                 let keyTop = `${stdW_Top}x${stdH_Top}`;
                 if (!sizeCounts[keyTop]) sizeCounts[keyTop] = { count: 0, w: roundedW, h: Math.round(topBoxHeight), stdW: stdW_Top, stdH: stdH_Top, type: 'Atas' };
                 sizeCounts[keyTop].count += 1;
 
-                // Kotak Bawah
                 if (style === 'with_chairrail') {
                     let stdW_Bot = stdW_Top;
                     let stdH_Bot = getCeilStandardSize(bottomBoxHeight);
@@ -221,7 +216,6 @@
                 breakdownHtml += `<div class="flex justify-between"><span>Kotak ${item.type} (${item.w}x${item.h}mm) [${item.count} unit x RM ${unitPrice}]:</span> <span class="font-medium">RM ${subTotal}</span></div>`;
             }
 
-            // Kira Harga Chair Rail
             let chairRailSticks = 0;
             if (style === 'with_chairrail') {
                 let requiredLengthMm = wMm * 1.10;
@@ -232,18 +226,28 @@
                 breakdownHtml += `<div class="flex justify-between text-indigo-700 font-medium border-t pt-1"><span>Chair Rail [${chairRailSticks}btg x RM70]:</span> <span>RM ${chairRailTotalCost}</span></div>`;
             }
 
+            // --- RAKAM SEJARAH PENGIRAAN KE LOCALSTORAGE ---
+            let recordBaru = {
+                tajuk: "Pro Wainscoting",
+                info: `Dinding: ${wMm}x${hMm}mm (${pattern})`,
+                harga: "RM " + totalPrice.toFixed(2)
+            };
+
+            let historyList = JSON.parse(localStorage.getItem('diy_calc_history')) || [];
+            historyList.push(recordBaru);
+            localStorage.setItem('diy_calc_history', JSON.stringify(historyList));
+            // ----------------------------------------------
+
             document.getElementById('priceBreakdown').innerHTML = breakdownHtml;
             document.getElementById('totalPrice').innerText = 'RM ' + totalPrice.toFixed(2);
             document.getElementById('resultContainer').classList.remove('hidden');
 
-            // --- JANA VISUAL IKUT NISBAH SEBENAR ---
             let previewBox = document.getElementById('captureArea');
             previewBox.innerHTML = '';
             document.getElementById('visualContainer').classList.remove('hidden');
 
             let frameColorClass = (frameColor === 'gold') ? 'border-yellow-600 text-yellow-700' : 'border-slate-900 text-slate-900';
 
-            // Kotak Atas
             let topRow = document.createElement('div');
             topRow.className = 'w-full flex justify-around items-center gap-1.5 px-1';
             let topScaleHeight = Math.max(90, Math.round((topBoxHeight / hMm) * 240));
@@ -252,7 +256,6 @@
             boxWidths.forEach((bw) => {
                 let boxEl = document.createElement('div');
                 boxEl.className = `border-[3px] ${frameColorClass} bg-white rounded flex flex-col items-center justify-center text-[9px] font-bold relative shadow-xs`;
-                // Guna nisbah sebenar lebar kotak melalui flex-grow
                 boxEl.style.flexGrow = bw;
                 boxEl.style.flexBasis = '0';
                 boxEl.style.height = '100%';
@@ -267,14 +270,12 @@
             });
             previewBox.appendChild(topRow);
 
-            // Chair Rail
             if (style === 'with_chairrail') {
                 let railLine = document.createElement('div');
                 railLine.className = 'w-full h-[10px] bg-slate-200 border-y border-slate-400 my-0.5 flex items-center justify-center';
                 railLine.innerHTML = '<span class="text-[7px] font-semibold text-slate-700">Chair Rail</span>';
                 previewBox.appendChild(railLine);
 
-                // Kotak Bawah
                 let bottomRow = document.createElement('div');
                 bottomRow.className = 'w-full flex justify-around items-center gap-1.5 px-1';
                 let botScaleHeight = Math.max(50, Math.round((bottomBoxHeight / hMm) * 240));
@@ -283,7 +284,6 @@
                 boxWidths.forEach((bw) => {
                     let boxEl = document.createElement('div');
                     boxEl.className = `border-[3px] ${frameColorClass} bg-white rounded flex flex-col items-center justify-center text-[9px] font-bold relative shadow-xs`;
-                    // Guna nisbah sebenar lebar kotak melalui flex-grow
                     boxEl.style.flexGrow = bw;
                     boxEl.style.flexBasis = '0';
                     boxEl.style.height = '100%';
@@ -300,7 +300,6 @@
             }
         }
 
-        // Fungsi Muat Turun Terus ke Telefon (.png)
         function saveVisualToPhone() {
             let captureElement = document.getElementById('captureArea');
             html2canvas(captureElement, { scale: 2 }).then(canvas => {
@@ -315,10 +314,11 @@
             calculateWainscoting();
         };
     </script>
-<!-- Butang Kembali Terapung (Floating Back Button) -->
-<a href="../index.html" style="position: fixed; bottom: 20px; right: 20px; background: #2563eb; color: #fff; padding: 12px 18px; border-radius: 30px; text-decoration: none; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 14px; box-shadow: 0 4px 15px rgba(37,99,235,0.4); display: flex; align-items: center; gap: 6px; z-index: 9999;">
-    <span>←</span> Menu Utama
-</a>
+
+    <!-- Butang Kembali Terapung (Floating Back Button) -->
+    <a href="../index.html" style="position: fixed; bottom: 20px; right: 20px; background: #00B14F; color: #fff; padding: 12px 18px; border-radius: 30px; text-decoration: none; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 14px; box-shadow: 0 4px 15px rgba(0, 177, 79, 0.4); display: flex; align-items: center; gap: 6px; z-index: 9999;">
+        <span>←</span> Menu Utama
+    </a>
 
 </body>
 </html>
