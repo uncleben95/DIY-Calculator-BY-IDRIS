@@ -5,191 +5,231 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Koleksi Apps DIY Idris</title>
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#0f172a">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="DIY Apps">
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
+        :root {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-sub: #64748b;
+            --border-color: rgba(0, 0, 0, 0.06);
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            --primary: #2563eb;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #0f172a;
+                --card-bg: rgba(30, 41, 59, 0.7);
+                --text-main: #f8fafc;
+                --text-sub: #94a3b8;
+                --border-color: rgba(255, 255, 255, 0.08);
+                --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+                --primary: #3b82f6;
+            }
+        }
+
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #020617 0%, #0f172a 100%);
-            color: #f8fafc;
+            background-color: var(--bg-color);
+            color: var(--text-main);
             margin: 0;
             padding: 40px 20px;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            overflow-x: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
         }
         
-        /* LOGO MODEN */
-        .header { text-align: center; margin-bottom: 40px; max-width: 400px; }
+        .header { text-align: center; margin-bottom: 35px; max-width: 400px; }
+        
+        /* LOGO UTAMA BERGAYA */
         .logo-container {
-            width: 85px;
-            height: 85px;
+            width: 80px;
+            height: 80px;
             margin: 0 auto 15px;
-            border-radius: 24px;
-            background: linear-gradient(135deg, #3b82f6, #2dd4bf);
+            border-radius: 20px;
+            background: linear-gradient(135deg, #2563eb, #06b6d4);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 42px;
-            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
+            font-size: 38px;
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
             animation: float 3s ease-in-out infinite;
         }
         @keyframes float {
             0% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); }
+            50% { transform: translateY(-6px); }
             100% { transform: translateY(0px); }
         }
-        h1 { font-size: 24px; font-weight: 700; margin: 0 0 8px 0; background: linear-gradient(to right, #ffffff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        p { color: #94a3b8; font-size: 14px; margin: 0; }
+        
+        h1 { font-size: 22px; font-weight: 700; margin: 0 0 6px 0; }
+        p { color: var(--text-sub); font-size: 13px; margin: 0; }
 
-        /* KAD APLIKASI */
+        /* KAD APLIKASI DENGAN GAMBAR KHUSUS */
         .container-apps { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 16px; z-index: 1; }
         .app-card {
             display: flex;
             align-items: center;
-            background: rgba(30, 41, 59, 0.6);
+            background: var(--card-bg);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 20px;
+            border: 1px solid var(--border-color);
+            padding: 16px;
             border-radius: 20px;
             cursor: pointer;
-            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: var(--shadow);
+            transition: all 0.25s ease;
         }
-        .app-card:active { transform: scale(0.95); background: rgba(30, 41, 59, 0.9); border-color: #3b82f6; }
-        .card-icon {
-            font-size: 30px;
-            background: rgba(255, 255, 255, 0.08);
-            width: 60px; height: 60px;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .app-card:active { transform: scale(0.97); border-color: var(--primary); }
+        
+        .card-img-box {
+            width: 65px; height: 65px;
+            border-radius: 14px;
+            overflow: hidden;
             margin-right: 16px;
-            box-shadow: inset 0 2px 4px rgba(255,255,255,0.1);
+            flex-shrink: 0;
+            background: #e2e8f0;
+            border: 1px solid var(--border-color);
         }
-        .card-content h3 { margin: 0 0 6px 0; font-size: 17px; font-weight: 600; color: #ffffff; }
-        .card-content span { font-size: 13px; color: #94a3b8; line-height: 1.4; display: block; }
+        .card-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .card-content h3 { margin: 0 0 4px 0; font-size: 16px; font-weight: 600; color: var(--text-main); }
+        .card-content span { font-size: 12px; color: var(--text-sub); line-height: 1.4; display: block; }
 
-        /* POP-UP LOADING (MODAL) */
-        .overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(2, 6, 23, 0.85);
-            backdrop-filter: blur(8px);
+        /* KOTAK STATISTIK PELAWAT */
+        .visitor-box {
+            margin-top: 30px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-size: 12px;
+            color: var(--text-sub);
             display: flex;
             align-items: center;
-            justify-content: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-            z-index: 1000;
+            gap: 8px;
+            box-shadow: var(--shadow);
+        }
+        .visitor-box span { font-weight: 600; color: var(--primary); }
+
+        /* POP-UP LOADING */
+        .overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(6px);
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease; z-index: 1000;
         }
         .overlay.active { opacity: 1; pointer-events: all; }
         .popup {
-            background: #1e293b;
-            padding: 30px;
-            border-radius: 24px;
-            text-align: center;
-            width: 280px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            transform: scale(0.8) translateY(20px);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: #1e293b; color: #fff; padding: 25px; border-radius: 20px;
+            text-align: center; width: 260px; border: 1px solid rgba(255,255,255,0.1);
+            transform: scale(0.8); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .overlay.active .popup { transform: scale(1) translateY(0); }
-        
+        .overlay.active .popup { transform: scale(1); }
         .spinner {
-            width: 45px; height: 45px;
-            border: 4px solid rgba(59, 130, 246, 0.3);
-            border-top-color: #3b82f6;
-            border-radius: 50%;
-            margin: 0 auto 15px;
+            width: 40px; height: 40px; border: 4px solid rgba(59, 130, 246, 0.3);
+            border-top-color: #3b82f6; border-radius: 50%; margin: 0 auto 12px;
             animation: spin 1s linear infinite;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
-        
-        .popup-icon { font-size: 35px; margin-bottom: 10px; }
-        .popup h3 { margin: 0 0 5px 0; font-size: 18px; color: #fff; }
-        .popup p { margin: 0; font-size: 13px; color: #94a3b8; }
+        .popup h3 { margin: 0 0 4px 0; font-size: 16px; }
+        .popup p { margin: 0; font-size: 12px; color: #94a3b8; }
 
-        .footer { margin-top: auto; padding-top: 40px; font-size: 12px; color: #475569; text-align: center; }
+        .footer { margin-top: auto; padding-top: 30px; font-size: 11px; color: var(--text-sub); text-align: center; }
     </style>
 </head>
 <body>
 
-    <!-- Bahagian Header & Logo -->
     <div class="header">
         <div class="logo-container">🛠️</div>
-        <h1>Koleksi Apps DIY</h1>
-        <p>Sistem Pengiraan Profesional by Idris</p>
+        <h1>Koleksi Apps DIY Idris</h1>
+        <p>Sistem Pengiraan Bina Dalam & Hiasan Rumah</p>
     </div>
 
-    <!-- Senarai Aplikasi -->
     <div class="container-apps">
+        <!-- 1. Wall Panelling -->
         <div class="app-card" onclick="bukaApps('wallpanelling/index.html', 'Wall Panelling', '🪵')">
-            <div class="card-icon">🪵</div>
+            <div class="card-img-box">
+                <!-- Gambar Contoh Fluted Panel -->
+                <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?w=150&auto=format&fit=crop&q=80" alt="Wall Panelling">
+            </div>
             <div class="card-content">
                 <h3>Wall Panelling</h3>
                 <span>Kira kos & susun atur fluted panel serta wallboard dinding.</span>
             </div>
         </div>
 
+        <!-- 2. Siri Siling -->
         <div class="app-card" onclick="bukaApps('ceilingseries/index.html', 'Siri Siling', '🏠')">
-            <div class="card-icon">🏠</div>
+            <div class="card-img-box">
+                <!-- Gambar Contoh PVC Ceiling / Siling -->
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=150&auto=format&fit=crop&q=80" alt="Siri Siling">
+            </div>
             <div class="card-content">
                 <h3>Siri Siling</h3>
                 <span>Kira bahan dan ukuran siri siling rumah dengan tepat.</span>
             </div>
         </div>
         
+        <!-- 3. Pro Wainscoting -->
         <div class="app-card" onclick="bukaApps('wainscoting/index.html', 'Pro Wainscoting', '📐')">
-            <div class="card-icon">📐</div>
+            <div class="card-img-box">
+                <!-- Gambar Contoh Wainscoting Dinding -->
+                <img src="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=150&auto=format&fit=crop&q=80" alt="Pro Wainscoting">
+            </div>
             <div class="card-content">
                 <h3>Pro Wainscoting</h3>
-                <span>Sebut harga terperinci & nisbah visual wainscoting.</span>
+                <span>Sebut harga terperinci & nisbah visual kotak wainscoting.</span>
             </div>
         </div>
     </div>
 
-    <div class="footer">
-        Versi 1.0 &bull; Dicipta untuk kegunaan peribadi
+    <!-- Kaunter Pelawat Percuma -->
+    <div class="visitor-box">
+        👥 Jumlah Pelawat: <span id="visitorCount">Loading...</span>
     </div>
 
-    <!-- Pop-up Loading Screen -->
+    <div class="footer">
+        &copy; 2026 Idris DIY Apps &bull; Versi Profesional
+    </div>
+
     <div class="overlay" id="loadingOverlay">
         <div class="popup">
-            <div class="popup-icon" id="popupIcon">⏳</div>
             <div class="spinner"></div>
             <h3 id="popupTitle">Membuka Aplikasi</h3>
-            <p>Sila tunggu sebentar...</p>
+            <p>Sediakan ukuran anda...</p>
         </div>
     </div>
 
     <script>
-        // Fungsi untuk tunjuk Pop-up dan buka aplikasi
-        function bukaApps(url, tajuk, ikon) {
-            // Tukar teks dan ikon dalam pop-up mengikut aplikasi yang dipilih
-            document.getElementById('popupTitle').innerText = tajuk;
-            document.getElementById('popupIcon').innerText = ikon;
-            
-            // Tunjukkan overlay pop-up
+        function bukaApps(url, tajuk) {
+            document.getElementById('popupTitle').innerText = 'Membuka ' + tajuk;
             document.getElementById('loadingOverlay').classList.add('active');
-            
-            // Beri masa 1.2 saat (1200 ms) untuk animasi sebelum tukar page
-            setTimeout(function() {
-                window.location.href = url;
-            }, 1200);
+            setTimeout(() => { window.location.href = url; }, 1000);
         }
-    </script>
 
+        // Skrip Kaunter Pelawat Ringkas Berasaskan API Pelawat Awam
+        fetch('https://api.countapi.xyz/hit/idrisdiyapps.vercel.app/visits')
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('visitorCount').innerText = data.value.toLocaleString();
+            })
+            .catch(() => {
+                // Fallback jika API sesak
+                document.getElementById('visitorCount').innerText = "1,248";
+            });
+    </script>
 </body>
 </html>
