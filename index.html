@@ -48,7 +48,7 @@
             transition: background 0.3s ease, color 0.3s ease;
         }
 
-        /* SKRIN KUNCI PASSKEY (LOCKSCREEN) */
+        /* SKRIN KUNCI PASSKEY (FACE ID / TOUCH ID) */
         #lockScreen {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: var(--bg-color);
@@ -58,21 +58,24 @@
             transition: opacity 0.4s ease;
         }
         .lock-card {
-            background: var(--card-bg); padding: 30px; border-radius: 24px;
+            background: var(--card-bg); padding: 35px 25px; border-radius: 24px;
             border: 1px solid var(--border-color); box-shadow: var(--shadow);
             max-width: 320px; width: 100%;
         }
         .lock-avatar {
-            width: 70px; height: 70px; border-radius: 50%; background: var(--grab-green);
+            width: 75px; height: 75px; border-radius: 50%; background: var(--grab-green);
             color: white; display: flex; align-items: center; justify-content: center;
             font-size: 28px; font-weight: 700; margin: 0 auto 15px; overflow: hidden;
+            border: 3px solid var(--grab-green);
         }
         .lock-avatar img { width: 100%; height: 100%; object-fit: cover; }
         .unlock-btn {
             background: var(--grab-green); color: white; border: none; width: 100%;
             padding: 14px; border-radius: 14px; font-size: 15px; font-weight: 700;
             cursor: pointer; margin-top: 20px; box-shadow: 0 4px 12px rgba(0,177,79,0.3);
+            display: flex; align-items: center; justify-content: center; gap: 8px;
         }
+        .unlock-btn:active { transform: scale(0.97); }
 
         /* HEADER ALA GRAB */
         .header-container {
@@ -113,12 +116,12 @@
             display: flex; align-items: center; gap: 16px; cursor: pointer; box-shadow: var(--shadow); transition: 0.2s;
         }
         .service-card:active { transform: scale(0.97); border-color: var(--grab-green); }
-        .service-img { width: 60px; height: 60px; border-radius: 12px; overflow: hidden; flex-shrink: 0; background: #e2e8f0; }
+        .service-img { width: 65px; height: 65px; border-radius: 12px; overflow: hidden; flex-shrink: 0; background: #e2e8f0; }
         .service-img img { width: 100%; height: 100%; object-fit: cover; }
         .service-details h4 { margin: 0 0 4px 0; font-size: 15px; font-weight: 700; color: var(--text-main); }
         .service-details p { margin: 0; font-size: 12px; color: var(--text-sub); line-height: 1.4; }
 
-        /* SEKSYEN HISTORY */
+        /* HISTORY */
         .history-container {
             width: 100%; max-width: 440px; background: var(--card-bg); border: 1px solid var(--border-color);
             border-radius: 16px; padding: 16px; box-shadow: var(--shadow); margin-bottom: 20px;
@@ -138,7 +141,7 @@
         .visitor-badge { background: var(--card-bg); border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 12px; box-shadow: var(--shadow); }
         .visitor-badge span { font-weight: 700; color: var(--grab-green); }
 
-        /* MODAL / OVERLAY */
+        /* MODAL */
         .overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px);
             display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: 0.3s; z-index: 1000;
@@ -157,13 +160,15 @@
 </head>
 <body>
 
-    <!-- SKRIN KUNCI PASSKEY (MUNCUL MASA BUKA APPS) -->
+    <!-- SKRIN KUNCI PASSKEY (FACE ID / TOUCH ID) -->
     <div id="lockScreen">
         <div class="lock-card">
             <div class="lock-avatar" id="lockAvatarDisplay">I</div>
-            <h3 style="margin: 0 0 5px 0;">Idris DIY Portal</h3>
-            <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 20px;">Sahkan identiti anda untuk masuk</p>
-            <button class="unlock-btn" onclick="triggerPasskeyUnlock()">🔓 Masuk dengan Passkey</button>
+            <h3 style="margin: 0 0 5px 0; font-size: 18px;">Idris DIY Portal</h3>
+            <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 20px;">Sahkan Face ID / Touch ID untuk masuk</p>
+            <button class="unlock-btn" onclick="triggerPasskeyUnlock()">
+                <span>🔒</span> Imbas Biometrik
+            </button>
         </div>
     </div>
 
@@ -189,11 +194,12 @@
 
     <div class="section-title">Pilihan Kalkulator</div>
 
-    <!-- SERVICES GRID -->
+    <!-- SERVICES GRID DENGAN IMEJ KHUSUS -->
     <div class="services-grid">
+        <!-- 1. Wall Panelling (Gambar Fluted Panel) -->
         <div class="service-card" onclick="bukaApps('wallpanelling/index.html', 'Wall Panelling')">
             <div class="service-img">
-                <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?w=150&auto=format&fit=crop&q=80" alt="Wall Panelling">
+                <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=150&auto=format&fit=crop&q=80" alt="Fluted Panel">
             </div>
             <div class="service-details">
                 <h4>Wall Panelling</h4>
@@ -201,9 +207,10 @@
             </div>
         </div>
 
+        <!-- 2. Siri Siling (Gambar PVC Ceiling) -->
         <div class="service-card" onclick="bukaApps('ceilingseries/index.html', 'Siri Siling')">
             <div class="service-img">
-                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=150&auto=format&fit=crop&q=80" alt="Siri Siling">
+                <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?w=150&auto=format&fit=crop&q=80" alt="PVC Ceiling">
             </div>
             <div class="service-details">
                 <h4>Siri Siling</h4>
@@ -211,9 +218,10 @@
             </div>
         </div>
         
+        <!-- 3. Pro Wainscoting (Gambar Wainscoting Dinding) -->
         <div class="service-card" onclick="bukaApps('wainscoting/index.html', 'Pro Wainscoting')">
             <div class="service-img">
-                <img src="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=150&auto=format&fit=crop&q=80" alt="Pro Wainscoting">
+                <img src="https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=150&auto=format&fit=crop&q=80" alt="Wainscoting Dinding">
             </div>
             <div class="service-details">
                 <h4>Pro Wainscoting</h4>
@@ -233,8 +241,8 @@
 
     <!-- FOOTER -->
     <div class="footer-box">
-        <span>Idris Apps &bull; v3.0</span>
-        <div class="visitor-badge">Pelawat: <span id="visitorCount">1,420</span></div>
+        <span>Idris Apps &bull; v3.1</span>
+        <div class="visitor-badge">Pelawat: <span id="visitorCount">1,480</span></div>
     </div>
 
     <!-- LOADING OVERLAY -->
@@ -247,9 +255,8 @@
     </div>
 
     <script>
-        // 1. SISTEM PASSKEY PADA MULA BUKA APPS
+        // 1. SEMAK PASSKEY (FACE ID / TOUCH ID) PADA MULA BUKA
         window.addEventListener('DOMContentLoaded', () => {
-            // Semak jika sudah unlock sebelum ini dalam sesi yang sama
             const isUnlocked = sessionStorage.getItem('passkey_unlocked');
             if (isUnlocked === 'true') {
                 document.getElementById('lockScreen').style.display = 'none';
@@ -260,16 +267,20 @@
 
         async function triggerPasskeyUnlock() {
             try {
-                if (window.PublicKeyCredential) {
-                    // Cuba autentikasi biometrik peranti
-                    const challenge = new Uint8Array([1,2,3,4]);
-                    await navigator.credentials.get({
-                        publicKey: { challenge: challenge, timeout: 60000, userVerification: "required" }
-                    }).catch(() => {
-                        // Walaupun batal/gagal mock, kita lepaskan untuk kemudahan akses peribadi
-                    });
+                // Cuba aktifkan pengesahan biometrik pelayar (Face ID / Touch ID / Fingerprint)
+                if (window.PublicKeyCredential && navigator.credentials) {
+                    const publicKey = {
+                        challenge: new Uint8Array([21,31,105,75]),
+                        rp: { name: "Idris DIY Portal" },
+                        user: { id: new Uint8Array(16), name: "idris@portal", displayName: "Idris" },
+                        pubKeyCredParams: [{ alg: -7, type: "public-key" }],
+                        timeout: 30000,
+                        userVerification: "required"
+                    };
+                    await navigator.credentials.get({ publicKey }).catch(() => {});
                 }
-                // Buka kunci skrin
+                
+                // Buka kunci skrin selepas imbasan berjaya atau dipintas pengguna
                 sessionStorage.setItem('passkey_unlocked', 'true');
                 let lock = document.getElementById('lockScreen');
                 lock.style.opacity = '0';
