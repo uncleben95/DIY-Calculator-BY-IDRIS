@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Ceiling Series & Kos</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --border-color: #cbd5e1;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 25px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        select, input {
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        select:focus, input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.2s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .result-section {
+            margin-top: 30px;
+            border-top: 2px solid #e2e8f0;
+            padding-top: 20px;
+        }
+
+        .result-card {
+            background: #f1f5f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .result-card h3 {
+            margin-top: 0;
+            color: var(--primary);
+        }
+
+        .price-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background: #ffffff;
+        }
+
+        .price-table th, .price-table td {
+            border: 1px solid var(--border-color);
+            padding: 8px 12px;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        .price-table th {
+            background-color: #e2e8f0;
+        }
+
+        .visual-container {
+            margin-top: 25px;
+            text-align: center;
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        svg {
+            max-width: 100%;
+            height: auto;
+            background: #fafafa;
+            border: 1px dashed var(--border-color);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Kalkulator Ceiling Series & Sebut Harga</h1>
+    
+    <div class="form-grid">
+        <div class="form-group">
+            <label for="seriesType">Pilih Jenis Ceiling:</label>
+            <select id="seriesType" onchange="toggleSoffitSubtype()">
+                <option value="pvc_300">PVC Ceiling (300mm)</option>
+                <option value="soffit_a">Soffit A (340mm)</option>
+                <option value="soffit_f">Soffit F (190mm)</option>
+            </select>
+        </div>
+
+        <div class="form-group" id="subtypeGroup" style="display: none;">
+            <label for="soffitSubtype">Kategori Soffit A:</label>
+            <select id="soffitSubtype">
+                <option value="internal">Internal</option>
+                <option value="external">External</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="roomWidth">Lebar Ruang (mm):</label>
+            <input type="number" id="roomWidth" placeholder="Cth: 3000" value="3000">
+        </div>
+
+        <div class="form-group">
+            <label for="roomLength">Panjang Ruang (mm):</label>
+            <input type="number" id="roomLength" placeholder="Cth: 5000" value="5000">
+        </div>
+    </div>
+
+    <button onclick="calculateCeiling()">Kira Pengiraan & Harga</button>
+
+    <div class="result-section" id="resultSection" style="display: none;">
+        <div class="result-card">
+            <h3>Hasil Pengiraan & Anggaran Kos</h3>
+            <div id="resultText"></div>
+        </div>
+
+        <div class="visual-container">
+            <h3>Visualisasi Reka Bentuk & Ukuran Ruang</h3>
+            <div id="svgContainer"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Konfigurasi Harga Panel Berdasarkan Spesifikasi
+    const pricingData = {
+        pvc_300: {
+            width: 300,
+            lengths: {
+                5500: 57.60,
+                6400: 67.20
+            },
+            accessoryName: "U Clip (5500mm)",
+            accessoryPrice: 32.00
+        },
+        soffit_a_internal: {
+            width: 340,
+            lengths: {
+                5500: 90.00,
+                6400: 110.00
+            },
+            accessoryName: "End Cap (5500mm)",
+            accessoryPrice: 50.00
+        },
+        soffit_a_external: {
+            width: 340,
+            lengths: {
+                5500: 115.00,
+                6400: 125.00
+            },
+            accessoryName: "End Cap (5500mm)",
+            accessoryPrice: 60.00
+        },
+        soffit_f: {
+            width: 190,
+            lengths: {
+                5950: 85.00, // Mempunyai saiz 5950mm standard/khas
+                5500: 85.00, // Menampung rujukan tambahan jika ada
+                6400: 105.00
+            },
+            accessoryName: "End Cap (5500mm)",
+            accessoryPrice: 50.00
+        }
+    };
+
+    function toggleSoffitSubtype() {
+        const type = document.getElementById('seriesType').value;
+        const subtypeGroup = document.getElementById('subtypeGroup');
+        if (type === 'soffit_a') {
+            subtypeGroup.style.display = 'flex';
+        } else {
+            subtypeGroup.style.display = 'none';
+        }
+    }
+
+    function calculateCeiling() {
+        const type = document.getElementById('seriesType').value;
+        const subtype = document.getElementById('soffitSubtype').value;
+        const roomW = parseFloat(document.getElementById('roomWidth').value);
+        const roomL = parseFloat(document.getElementById('roomLength').value);
+
+        if (!roomW || !roomL || roomW <= 0 || roomL <= 0) {
+            alert('Sila masukkan nilai lebar dan panjang ruang yang sah.');
+            return;
+        }
+
+        // Tentukan key configuration data
+        let configKey = type;
+        if (type === 'soffit_a') {
+            configKey = `soffit_a_${subtype}`;
+        }
+
+        const currentProfile = pricingData[configKey];
+        const panelW = currentProfile.width;
+        const availableLengths = Object.keys(currentProfile.lengths).map(Number);
+
+        let calculations = [];
+
+        // Gelung untuk menguji setiap panjang panel yang ada bagi pilihan ini
+        availableLengths.forEach(panelL => {
+            // 1. Susunan Melintang (Panel merentasi Lebar Ruang: roomW)
+            if (panelL >= roomW) {
+                const rows = Math.ceil(roomL / panelW);
+                const wastePerPiece = panelL - roomW;
+                const totalWasteArea = (wastePerPiece * panelW * rows);
+                
+                calculations.push({
+                    orientation: 'Melintang',
+                    panelLength: panelL,
+                    totalPieces: rows,
+                    wasteArea: totalWasteArea,
+                    details: `Panjang panel ${panelL}mm dipotong kepada ${roomW}mm untuk setiap baris. Jumlah baris: ${rows} keping.`
+                });
+            }
+
+            // 2. Susunan Menegak (Panel merentasi Panjang Ruang: roomL)
+            if (panelL >= roomL) {
+                const columns = Math.ceil(roomW / panelW);
+                const wastePerPiece = panelL - roomL;
+                const totalWasteArea = (wastePerPiece * panelW * columns);
+
+                calculations.push({
+                    orientation: 'Menegak',
+                    panelLength: panelL,
+                    totalPieces: columns,
+                    wasteArea: totalWasteArea,
+                    details: `Panjang panel ${panelL}mm dipotong kepada ${roomL}mm untuk menegak. Jumlah Lajur: ${columns} keping.`
+                });
+            }
+        });
+
+        if (calculations.length === 0) {
+            alert('Saiz ruang melebihi panjang maksimum panel yang tersedia untuk pilihan ini!');
+            return;
+        }
+
+        // Cari pilihan dengan pembaziran (wastage) paling minimum
+        calculations.sort((a, b) => a.wasteArea - b.wasteArea);
+        const bestOption = calculations[0];
+
+        // Pengiraan Kos Panel
+        const unitPanelPrice = currentProfile.lengths[bestOption.panelLength] || currentProfile.lengths[Object.keys(currentProfile.lengths)[0]];
+        const panelTotalCost = bestOption.totalPieces * unitPanelPrice;
+
+        // Pengiraan Aksesori Perimeter (Keliling Ruang)
+        // Perimeter = 2 * (Lebar + Panjang) dalam mm, ditukar ke meter / unit 5500mm
+        const perimeterMm = 2 * (roomW + roomL);
+        const accessoryLengthStandard = 5500; // 5500mm sebatang
+        const accessoriesNeeded = Math.ceil(perimeterMm / accessoryLengthStandard);
+        const accessoriesTotalCost = accessoriesNeeded * currentProfile.accessoryPrice;
+
+        const grandTotal = panelTotalCost + accessoriesTotalCost;
+
+        // Paparkan Keputusan dalam HTML
+        document.getElementById('resultSection').style.display = 'block';
+        document.getElementById('resultText').innerHTML = `
+            <strong>Pilihan Susunan Optimum: ${bestOption.orientation}</strong><br>
+            - Panjang Panel Terpilih: <b>${bestOption.panelLength} mm</b><br>
+            - Kuantiti Panel: <b>${bestOption.totalPieces} keping</b><br>
+            - Kaedah: ${bestOption.details}<br>
+            - Anggaran Pembaziran (Wastage): <b>${(bestOption.wasteArea / 1000000).toFixed(2)} m²</b><br><br>
+
+            <table class="price-table">
+                <tr>
+                    <th>Komponen / Material</th>
+                    <th>Kuantiti</th>
+                    <th>Harga Seunit (RM)</th>
+                    <th>Jumlah (RM)</th>
+                </tr>
+                <tr>
+                    <td>Panel Ceiling (${bestOption.panelLength}mm)</td>
+                    <td>${bestOption.totalPieces} keping</td>
+                    <td>RM ${unitPanelPrice.toFixed(2)}</td>
+                    <td>RM ${panelTotalCost.toFixed(2)}</td>
+                </tr>
+                <tr>
+                    <td>Aksesori Perimeter: ${currentProfile.accessoryName}</td>
+                    <td>${accessoriesNeeded} batang (Perimeter: ${(perimeterMm/1000).toFixed(2)}m)</td>
+                    <td>RM ${currentProfile.accessoryPrice.toFixed(2)}</td>
+                    <td>RM ${accessoriesTotalCost.toFixed(2)}</td>
+                </tr>
+                <tr>
+                    <td colspan="3" style="text-align: right; font-weight: bold;">KESELURUHAN KOS:</td>
+                    <td style="font-weight: bold; color: var(--primary);">RM ${grandTotal.toFixed(2)}</td>
+                </tr>
+            </table>
+        `;
+
+        // Lukis Rajah Visual SVG
+        drawVisual(roomW, roomL, bestOption.orientation, panelW);
+    }
+
+    function drawVisual(w, l, orientation, panelW) {
+        const container = document.getElementById('svgContainer');
+        const maxSVGWidth = 400;
+        const maxSVGHeight = 250;
+
+        const scale = Math.min(maxSVGWidth / w, maxSVGHeight / l);
+        const svgW = w * scale;
+        const svgL = l * scale;
+
+        let svgContent = `<svg width="${svgW + 80}" height="${svgL + 60}" viewBox="0 0 ${svgW + 80} ${svgL + 60}">`;
+        
+        // Kotak Ruang Utama
+        svgContent += `<rect x="40" y="20" width="${svgW}" height="${svgL}" fill="#e2e8f0" stroke="#475569" stroke-width="2"/>`;
+
+        // Garisan Panel di dalam ruang
+        if (orientation === 'Melintang') {
+            let currentY = 20;
+            while (currentY < 20 + svgL) {
+                svgContent += `<line x1="40" y1="${currentY}" x2="${40 + svgW}" y2="${currentY}" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3"/>`;
+                currentY += (panelW * scale);
+            }
+        } else {
+            let currentX = 40;
+            while (currentX < 40 + svgW) {
+                svgContent += `<line x1="${currentX}" y1="20" x2="${currentX}" y2="${20 + svgL}" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3"/>`;
+                currentX += (panelW * scale);
+            }
+        }
+
+        // Tanda Ukuran Lebar (Atas)
+        svgContent += `<text x="${40 + svgW / 2}" y="12" font-size="11" text-anchor="middle" font-weight="bold" fill="#1e293b">Lebar: ${w} mm</text>`;
+        
+        // Tanda Ukuran Panjang (Kiri)
+        svgContent += `<text x="15" y="${20 + svgL / 2}" font-size="11" text-anchor="middle" font-weight="bold" fill="#1e293b" transform="rotate(-90 15 ${20 + svgL / 2})">Panjang: ${l} mm</text>`;
+
+        svgContent += `</svg>`;
+        container.innerHTML = svgContent;
+    }
+</script>
+
+</body>
+</html>
