@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ms">
 <head>
@@ -11,6 +10,7 @@
             background-color: #f4f6f9;
             margin: 0;
             padding: 20px;
+            padding-bottom: 80px; /* Ruang untuk butang terapung bawah */
             color: #333;
         }
         .container {
@@ -23,7 +23,7 @@
         }
         h2 {
             text-align: center;
-            color: #2c3e50;
+            color: #00B14F;
             margin-bottom: 25px;
         }
         .form-group {
@@ -42,7 +42,7 @@
             box-sizing: border-box;
         }
         button {
-            background-color: #27ae60;
+            background-color: #00B14F;
             color: white;
             border: none;
             padding: 12px;
@@ -53,18 +53,18 @@
             margin-top: 10px;
         }
         button:hover {
-            background-color: #219653;
+            background-color: #009441;
         }
         .result-box {
             margin-top: 25px;
             padding: 20px;
             background: #eaf2f8;
             border-radius: 5px;
-            border-left: 5px solid #3498db;
+            border-left: 5px solid #00B14F;
         }
         .result-box h3 {
             margin-top: 0;
-            color: #2980b9;
+            color: #009441;
         }
         /* Kotak Visual Hitam Putih */
         .visual-container {
@@ -191,7 +191,6 @@ function kirimKira() {
 
     let lapisanMenegak = Math.ceil(tinggiDinding / 2900);
     
-    // Jumlah keping board keseluruhan mengikut lapisan menegak
     let totalKepingBoard = 0;
     let totalLebarBoardSemua = 0;
     let jumlahBatangFlutedSatuLayer = 0;
@@ -200,7 +199,6 @@ function kirimKira() {
     if (jenisPilihan === "WPC" || jenisPilihan === "PVC" || jenisPilihan === "PS") {
         jumlahBatangFlutedSatuLayer = Math.ceil(lebarDinding / lebarFluted);
     } else {
-        // Kira jumlah lebar board berdasarkan bilangan keping yang dipilih
         totalKepingBoard = inputKepingBoard * lapisanMenegak;
         totalLebarBoardSemua = lebarBoardSatu * inputKepingBoard;
 
@@ -211,7 +209,7 @@ function kirimKira() {
             kepingFlutedSebelah = Math.ceil(bakiLebar / lebarFluted);
             jumlahBatangFlutedSatuLayer = kepingFlutedSebelah;
         } else if (jenisPilihan === "Fluted-Wallboard-Fluted" || jenisPilihan === "Fluted-UV-Fluted") {
-            let bakiSebelah = bakiLebar / 2; // Bahagi dua untuk kiri dan kanan
+            let bakiSebelah = bakiLebar / 2;
             kepingFlutedSebelah = Math.ceil(bakiSebelah / lebarFluted);
             jumlahBatangFlutedSatuLayer = kepingFlutedSebelah * 2;
         }
@@ -224,7 +222,18 @@ function kirimKira() {
     let kosBoard = totalKepingBoard * hargaBoardSatu;
     let jumlahKeseluruhan = kosFluted + kosBoard;
 
-    // Papar Teks Keputusan
+    // --- RAKAM SEJARAH PENGIRAAN KE LOCALSTORAGE ---
+    let recordBaru = {
+        tajuk: "Wall Panelling",
+        info: `Dinding: ${lebarDinding}x${tinggiDinding}mm (${jenisPilihan})`,
+        harga: "RM " + jumlahKeseluruhan.toFixed(2)
+    };
+
+    let historyList = JSON.parse(localStorage.getItem('diy_calc_history')) || [];
+    historyList.push(recordBaru);
+    localStorage.setItem('diy_calc_history', JSON.stringify(historyList));
+    // ----------------------------------------------
+
     document.getElementById("resultBox").style.display = "block";
     if (jenisPilihan.includes("Wallboard") || jenisPilihan.includes("UV")) {
         document.getElementById("detailPanel").innerText = `Jumlah Batang Fluted: ${jumlahBatangFlutedSatuLayer} batang seLayer`;
@@ -242,7 +251,6 @@ function kirimKira() {
 
     document.getElementById("jumlahHarga").innerText = `Jumlah Anggaran Harga: RM ${jumlahKeseluruhan.toFixed(2)}`;
 
-    // Panggil fungsi lukis visual
     lukisVisual(lebarDinding, tinggiDinding, jenisPilihan, lebarBoardSatu, inputKepingBoard);
 }
 
@@ -269,7 +277,6 @@ function lukisVisual(lebarDinding, tinggiDinding, jenisPilihan, lebarBoardSatu, 
     let startX = (canvas.width - drawW) / 2;
     let startY = 40;
 
-    // Bingkai Dinding Utama
     ctx.strokeStyle = "#000000";
     ctx.lineWidth = 2;
     ctx.strokeRect(startX, startY, drawW, drawH);
@@ -318,7 +325,6 @@ function lukisVisual(lebarDinding, tinggiDinding, jenisPilihan, lebarBoardSatu, 
     } 
     else if (jenisPilihan === "Fluted-Wallboard" || jenisPilihan === "Fluted-UV") {
         let wFlutedPx = drawW - totalWBoardPx;
-        // Susunan: Fluted di kiri, Board di kanan (atau gabungan kepingan board)
         drawFluted(startX, wFlutedPx, drawH, "Fluted");
         drawBoard(startX + wFlutedPx, totalWBoardPx, drawH, `${jumlahKepingBoard}x ${boardLabel}`);
     } 
@@ -326,7 +332,6 @@ function lukisVisual(lebarDinding, tinggiDinding, jenisPilihan, lebarBoardSatu, 
         let sakiBakiW = drawW - totalWBoardPx;
         let wFlutedSatu = sakiBakiW / 2;
 
-        // Susunan: Fluted kiri | Board di tengah | Fluted kanan
         drawFluted(startX, wFlutedSatu, drawH, "Fluted");
         drawBoard(startX + wFlutedSatu, totalWBoardPx, drawH, `${jumlahKepingBoard}x ${boardLabel}`);
         drawFluted(startX + wFlutedSatu + totalWBoardPx, wFlutedSatu, drawH, "Fluted");
@@ -349,8 +354,9 @@ window.onload = function() {
     kirimKira();
 };
 </script>
+
 <!-- Butang Kembali Terapung (Floating Back Button) -->
-<a href="../index.html" style="position: fixed; bottom: 20px; right: 20px; background: #2563eb; color: #fff; padding: 12px 18px; border-radius: 30px; text-decoration: none; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 14px; box-shadow: 0 4px 15px rgba(37,99,235,0.4); display: flex; align-items: center; gap: 6px; z-index: 9999;">
+<a href="../index.html" style="position: fixed; bottom: 20px; right: 20px; background: #00B14F; color: #fff; padding: 12px 18px; border-radius: 30px; text-decoration: none; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 14px; box-shadow: 0 4px 15px rgba(0, 177, 79, 0.4); display: flex; align-items: center; gap: 6px; z-index: 9999;">
     <span>←</span> Menu Utama
 </a>
 
