@@ -1,0 +1,319 @@
+
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Pro Wainscoting & Sebut Harga</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans p-4 min-h-screen flex items-center justify-center">
+
+    <div class="max-w-lg w-full bg-white rounded-2xl shadow-xl p-5 md:p-6 space-y-6">
+        <div>
+            <h2 class="text-xl md:text-2xl font-bold text-slate-900">Kalkulator Pro Wainscoting</h2>
+            <p class="text-xs md:text-sm text-slate-500">Sebut harga terperinci, nisbah visual tepat, & muat turun imej.</p>
+        </div>
+
+        <!-- Borang Input -->
+        <div class="space-y-4 text-sm">
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block font-medium text-slate-700 mb-1">Lebar Dinding (mm)</label>
+                    <input type="number" id="wallWidth" value="3000" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <div>
+                    <label class="block font-medium text-slate-700 mb-1">Tinggi Dinding (mm)</label>
+                    <input type="number" id="wallHeight" value="2900" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                </div>
+            </div>
+
+            <div>
+                <label class="block font-medium text-slate-700 mb-1">Gaya Susun Atur</label>
+                <select id="layoutStyle" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white">
+                    <option value="with_chairrail">Dengan Chair Rail (Atas & Bawah)</option>
+                    <option value="without_chairrail">Tanpa Chair Rail (Kotak Penuh Sahaja)</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block font-medium text-slate-700 mb-1">Pilihan Corak Kotak (Nisbah)</label>
+                <select id="boxPattern" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white font-medium text-indigo-600">
+                    <option value="1:1">1:1 (Lebar tolak 300mm)</option>
+                    <option value="1:2:1">1:2:1 (Lebar tolak 400mm, bahagi 4)</option>
+                    <option value="1:1:2:1:1">1:1:2:1:1 (Lebar tolak 600mm, bahagi 6)</option>
+                    <option value="2:1:2:1:2">2:1:2:1:2 (Lebar tolak 600mm, bahagi 6)</option>
+                    <option value="1:2:1:2:1">1:2:1:2:1 (Lebar tolak 600mm, bahagi 7)</option>
+                    <option value="1">1 (Lebar tolak 200mm)</option>
+                </select>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block font-medium text-slate-700 mb-1">Jenis Bingkai</label>
+                    <select id="frameType" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white text-xs">
+                        <option value="single">Single (40mm)</option>
+                        <option value="double">Double (40mm+16mm)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-medium text-slate-700 mb-1">Warna Bingkai / Kemasan</label>
+                    <select id="frameColor" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white text-xs">
+                        <option value="standard">Hitam Standard</option>
+                        <option value="gold">Gold Frame (+RM5)</option>
+                    </select>
+                </div>
+            </div>
+
+            <button onclick="calculateWainscoting()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 rounded-lg transition shadow-md">
+                Kira Sebut Harga & Visual
+            </button>
+        </div>
+
+        <!-- Keputusan Anggaran / Sebut Harga -->
+        <div id="resultContainer" class="bg-slate-50 p-4 rounded-xl space-y-3 text-sm hidden border border-slate-200">
+            <h3 class="font-bold text-slate-900 border-b pb-1">Pecahan Sebut Harga</h3>
+            <div id="priceBreakdown" class="space-y-1 text-xs text-slate-600"></div>
+            
+            <div class="flex justify-between border-t border-slate-200 pt-2 text-base">
+                <span class="font-semibold text-slate-800">Jumlah Anggaran Keseluruhan:</span>
+                <span id="totalPrice" class="font-bold text-indigo-600">RM 0.00</span>
+            </div>
+            <div id="detailLayout" class="text-xs text-slate-500 space-y-1 pt-1 border-t"></div>
+        </div>
+
+        <!-- Ruang Visual Kotak Dinding dengan Butang Save to Phone -->
+        <div id="visualContainer" class="hidden space-y-3">
+            <div class="flex justify-between items-center">
+                <label class="block font-medium text-slate-700 text-sm">Visual Dinding:</label>
+                <button onclick="saveVisualToPhone()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-3 py-1.5 rounded-lg transition shadow-sm flex items-center gap-1 font-medium">
+                    📥 Save to Phone (.png)
+                </button>
+            </div>
+            <div id="captureArea" class="w-full bg-white rounded-xl p-3 flex flex-col justify-between items-center border-2 border-slate-300 shadow-inner relative overflow-x-auto min-h-[280px]"></div>
+        </div>
+    </div>
+
+    <!-- Logik Pengiraan Pro -->
+    <script>
+        const singlePrices = {
+            "300x300": 30, "300x600": 40, "300x900": 50, "300x1200": 60, "300x1500": 70, "300x1800": 90, "300x2400": 110,
+            "600x600": 50, "600x900": 60, "600x1200": 70, "600x1500": 90, "600x1800": 100, "600x2400": 130,
+            "900x900": 70, "900x1200": 90, "900x1500": 100, "900x1800": 110, "900x2400": 140,
+            "1200x1200": 100, "1200x1500": 110, "1200x1800": 130, "1200x2400": 150,
+            "1500x1500": 130, "1500x1800": 140, "1500x2400": 160,
+            "1800x1800": 150, "1800x2400": 190,
+            "2400x2400": 210
+        };
+
+        const doublePrices = {
+            "300x300": 15, "300x600": 25, "300x900": 35, "300x1200": 45, "300x1500": 55, "300x1800": 65, "300x2400": 75,
+            "600x600": 35, "600x900": 45, "600x1200": 55, "600x1500": 65, "600x1800": 75, "600x2400": 115,
+            "900x900": 55, "900x1200": 65, "900x1500": 75, "900x1800": 85, "900x2400": 120,
+            "1200x1200": 75, "1200x1500": 85, "1200x1800": 115, "1200x2400": 125,
+            "1500x1500": 115, "1500x1800": 120, "1500x2400": 145,
+            "1800x1800": 125, "1800x2400": 155,
+            "2400x2400": 175
+        };
+
+        function getFlexiblePrice(w, h, priceTable, defaultVal) {
+            let key1 = `${w}x${h}`;
+            let key2 = `${h}x${w}`;
+            if (priceTable[key1] !== undefined) return priceTable[key1];
+            if (priceTable[key2] !== undefined) return priceTable[key2];
+            return defaultVal;
+        }
+
+        function getCeilStandardSize(val) {
+            let standards = [300, 600, 900, 1200, 1500, 1800, 2400];
+            for (let i = 0; i < standards.length; i++) {
+                if (val <= standards[i]) return standards[i];
+            }
+            return 2400;
+        }
+
+        function calculateWainscoting() {
+            let wMm = parseFloat(document.getElementById('wallWidth').value) || 0;
+            let hMm = parseFloat(document.getElementById('wallHeight').value) || 0;
+            let style = document.getElementById('layoutStyle').value;
+            let pattern = document.getElementById('boxPattern').value;
+            let frameType = document.getElementById('frameType').value;
+            let frameColor = document.getElementById('frameColor').value;
+
+            if (wMm <= 0 || hMm <= 0) {
+                alert('Sila masukkan ukuran dinding yang sah.');
+                return;
+            }
+
+            // Tinggi Kotak
+            let bottomBoxHeight = 600;
+            let chairRailHeight = 70;
+            let totalGaps = 400;
+            let topBoxHeight = hMm - bottomBoxHeight - chairRailHeight - totalGaps;
+            if (topBoxHeight < 100) topBoxHeight = 300;
+
+            // Lebar Kotak
+            let effectiveWidth = wMm;
+            let unitWidth = 0;
+            let boxWidths = [];
+
+            if (pattern === '1:1') {
+                effectiveWidth = wMm - 300;
+                unitWidth = effectiveWidth / 2;
+                boxWidths = [unitWidth, unitWidth];
+            } else if (pattern === '1:2:1') {
+                effectiveWidth = wMm - 400;
+                unitWidth = effectiveWidth / 4;
+                boxWidths = [unitWidth, unitWidth * 2, unitWidth];
+            } else if (pattern === '1:1:2:1:1') {
+                effectiveWidth = wMm - 600;
+                unitWidth = effectiveWidth / 6;
+                boxWidths = [unitWidth, unitWidth, unitWidth * 2, unitWidth, unitWidth];
+            } else if (pattern === '2:1:2:1:2') {
+                effectiveWidth = wMm - 600;
+                unitWidth = effectiveWidth / 6;
+                boxWidths = [unitWidth * 2, unitWidth, unitWidth * 2, unitWidth, unitWidth * 2];
+            } else if (pattern === '1:2:1:2:1') {
+                effectiveWidth = wMm - 600;
+                unitWidth = effectiveWidth / 7;
+                boxWidths = [unitWidth, unitWidth * 2, unitWidth, unitWidth * 2, unitWidth];
+            } else if (pattern === '1') {
+                effectiveWidth = wMm - 200;
+                boxWidths = [effectiveWidth];
+            }
+
+            let totalPrice = 0;
+            let breakdownHtml = "";
+            let sizeCounts = {};
+
+            boxWidths.forEach((bw) => {
+                let roundedW = Math.round(bw);
+
+                // Kotak Atas
+                let stdW_Top = getCeilStandardSize(roundedW);
+                let stdH_Top = getCeilStandardSize(topBoxHeight);
+                let keyTop = `${stdW_Top}x${stdH_Top}`;
+                if (!sizeCounts[keyTop]) sizeCounts[keyTop] = { count: 0, w: roundedW, h: Math.round(topBoxHeight), stdW: stdW_Top, stdH: stdH_Top, type: 'Atas' };
+                sizeCounts[keyTop].count += 1;
+
+                // Kotak Bawah
+                if (style === 'with_chairrail') {
+                    let stdW_Bot = stdW_Top;
+                    let stdH_Bot = getCeilStandardSize(bottomBoxHeight);
+                    let keyBot = `${stdW_Bot}x${stdH_Bot}`;
+                    if (!sizeCounts[keyBot]) sizeCounts[keyBot] = { count: 0, w: roundedW, h: 600, stdW: stdW_Bot, stdH: stdH_Bot, type: 'Bawah' };
+                    sizeCounts[keyBot].count += 1;
+                }
+            });
+
+            for (let key in sizeCounts) {
+                let item = sizeCounts[key];
+                let unitPrice = getFlexiblePrice(item.stdW, item.stdH, singlePrices, 60);
+                if (frameType === 'double') {
+                    unitPrice += getFlexiblePrice(item.stdW, item.stdH, doublePrices, 45);
+                }
+                if (frameColor === 'gold') unitPrice += 5;
+
+                let subTotal = unitPrice * item.count;
+                totalPrice += subTotal;
+
+                breakdownHtml += `<div class="flex justify-between"><span>Kotak ${item.type} (${item.w}x${item.h}mm) [${item.count} unit x RM ${unitPrice}]:</span> <span class="font-medium">RM ${subTotal}</span></div>`;
+            }
+
+            // Kira Harga Chair Rail
+            let chairRailSticks = 0;
+            if (style === 'with_chairrail') {
+                let requiredLengthMm = wMm * 1.10;
+                chairRailSticks = Math.ceil(requiredLengthMm / 2400);
+                let chairRailTotalCost = chairRailSticks * 70;
+                totalPrice += chairRailTotalCost;
+
+                breakdownHtml += `<div class="flex justify-between text-indigo-700 font-medium border-t pt-1"><span>Chair Rail [${chairRailSticks}btg x RM70]:</span> <span>RM ${chairRailTotalCost}</span></div>`;
+            }
+
+            document.getElementById('priceBreakdown').innerHTML = breakdownHtml;
+            document.getElementById('totalPrice').innerText = 'RM ' + totalPrice.toFixed(2);
+            document.getElementById('resultContainer').classList.remove('hidden');
+
+            // --- JANA VISUAL IKUT NISBAH SEBENAR ---
+            let previewBox = document.getElementById('captureArea');
+            previewBox.innerHTML = '';
+            document.getElementById('visualContainer').classList.remove('hidden');
+
+            let frameColorClass = (frameColor === 'gold') ? 'border-yellow-600 text-yellow-700' : 'border-slate-900 text-slate-900';
+
+            // Kotak Atas
+            let topRow = document.createElement('div');
+            topRow.className = 'w-full flex justify-around items-center gap-1.5 px-1';
+            let topScaleHeight = Math.max(90, Math.round((topBoxHeight / hMm) * 240));
+            topRow.style.height = topScaleHeight + 'px';
+
+            boxWidths.forEach((bw) => {
+                let boxEl = document.createElement('div');
+                boxEl.className = `border-[3px] ${frameColorClass} bg-white rounded flex flex-col items-center justify-center text-[9px] font-bold relative shadow-xs`;
+                // Guna nisbah sebenar lebar kotak melalui flex-grow
+                boxEl.style.flexGrow = bw;
+                boxEl.style.flexBasis = '0';
+                boxEl.style.height = '100%';
+                boxEl.innerHTML = `<span class="bg-white/90 px-1 py-0.5 rounded text-slate-800">${Math.round(bw)} x ${Math.round(topBoxHeight)}mm</span>`;
+
+                if (frameType === 'double') {
+                    let innerBox = document.createElement('div');
+                    innerBox.className = `absolute inset-1.5 border ${frameColorClass} rounded flex items-center justify-center`;
+                    boxEl.appendChild(innerBox);
+                }
+                topRow.appendChild(boxEl);
+            });
+            previewBox.appendChild(topRow);
+
+            // Chair Rail
+            if (style === 'with_chairrail') {
+                let railLine = document.createElement('div');
+                railLine.className = 'w-full h-[10px] bg-slate-200 border-y border-slate-400 my-0.5 flex items-center justify-center';
+                railLine.innerHTML = '<span class="text-[7px] font-semibold text-slate-700">Chair Rail</span>';
+                previewBox.appendChild(railLine);
+
+                // Kotak Bawah
+                let bottomRow = document.createElement('div');
+                bottomRow.className = 'w-full flex justify-around items-center gap-1.5 px-1';
+                let botScaleHeight = Math.max(50, Math.round((bottomBoxHeight / hMm) * 240));
+                bottomRow.style.height = botScaleHeight + 'px';
+
+                boxWidths.forEach((bw) => {
+                    let boxEl = document.createElement('div');
+                    boxEl.className = `border-[3px] ${frameColorClass} bg-white rounded flex flex-col items-center justify-center text-[9px] font-bold relative shadow-xs`;
+                    // Guna nisbah sebenar lebar kotak melalui flex-grow
+                    boxEl.style.flexGrow = bw;
+                    boxEl.style.flexBasis = '0';
+                    boxEl.style.height = '100%';
+                    boxEl.innerHTML = `<span class="bg-white/90 px-1 py-0.5 rounded text-slate-800">${Math.round(bw)} x 600mm</span>`;
+
+                    if (frameType === 'double') {
+                        let innerBox = document.createElement('div');
+                        innerBox.className = `absolute inset-1.5 border ${frameColorClass} rounded flex items-center justify-center`;
+                        boxEl.appendChild(innerBox);
+                    }
+                    bottomRow.appendChild(boxEl);
+                });
+                previewBox.appendChild(bottomRow);
+            }
+        }
+
+        // Fungsi Muat Turun Terus ke Telefon (.png)
+        function saveVisualToPhone() {
+            let captureElement = document.getElementById('captureArea');
+            html2canvas(captureElement, { scale: 2 }).then(canvas => {
+                let link = document.createElement('a');
+                link.download = 'susun-atur-wainscoting.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        }
+
+        window.onload = function() {
+            calculateWainscoting();
+        };
+    </script>
+</body>
+</html>
