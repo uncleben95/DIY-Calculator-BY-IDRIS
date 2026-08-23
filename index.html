@@ -10,145 +10,186 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="DIY Apps">
     
-    <!-- Import Google Font untuk nampak kemas -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            background: linear-gradient(135deg, #020617 0%, #0f172a 100%);
             color: #f8fafc;
             margin: 0;
-            padding: 30px 16px;
+            padding: 40px 20px;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
+            overflow-x: hidden;
         }
-        .header {
-            text-align: center;
-            margin-bottom: 35px;
-            max-width: 400px;
-        }
-        .logo-icon {
-            font-size: 40px;
-            margin-bottom: 10px;
-            display: inline-block;
-            background: rgba(59, 130, 246, 0.15);
-            padding: 15px;
-            border-radius: 20px;
-            border: 1px solid rgba(59, 130, 246, 0.3);
-        }
-        h1 {
-            font-size: 24px;
-            font-weight: 700;
-            margin: 0 0 8px 0;
-            letter-spacing: -0.5px;
-        }
-        p {
-            color: #94a3b8;
-            font-size: 14px;
-            margin: 0;
-        }
-        .container-apps {
-            width: 100%;
-            max-width: 420px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-        .app-card {
-            display: flex;
-            align-items: center;
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 18px;
-            border-radius: 16px;
-            text-decoration: none;
-            color: #f8fafc;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
-            transition: all 0.2s ease;
-        }
-        .app-card:hover {
-            border-color: #3b82f6;
-            transform: translateY(-2px);
-            background: rgba(30, 41, 59, 0.9);
-        }
-        .app-card:active {
-            transform: scale(0.97);
-        }
-        .card-icon {
-            font-size: 28px;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 12px;
-            border-radius: 12px;
-            margin-right: 16px;
+        
+        /* LOGO MODEN */
+        .header { text-align: center; margin-bottom: 40px; max-width: 400px; }
+        .logo-container {
+            width: 85px;
+            height: 85px;
+            margin: 0 auto 15px;
+            border-radius: 24px;
+            background: linear-gradient(135deg, #3b82f6, #2dd4bf);
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 42px;
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
+            animation: float 3s ease-in-out infinite;
         }
-        .card-content h3 {
-            margin: 0 0 4px 0;
-            font-size: 16px;
-            font-weight: 600;
-            color: #ffffff;
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(0px); }
         }
-        .card-content span {
-            font-size: 13px;
-            color: #94a3b8;
-            line-height: 1.4;
-            display: block;
+        h1 { font-size: 24px; font-weight: 700; margin: 0 0 8px 0; background: linear-gradient(to right, #ffffff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        p { color: #94a3b8; font-size: 14px; margin: 0; }
+
+        /* KAD APLIKASI */
+        .container-apps { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 16px; z-index: 1; }
+        .app-card {
+            display: flex;
+            align-items: center;
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
-        .footer {
-            margin-top: 40px;
-            font-size: 12px;
-            color: #64748b;
+        .app-card:active { transform: scale(0.95); background: rgba(30, 41, 59, 0.9); border-color: #3b82f6; }
+        .card-icon {
+            font-size: 30px;
+            background: rgba(255, 255, 255, 0.08);
+            width: 60px; height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            box-shadow: inset 0 2px 4px rgba(255,255,255,0.1);
+        }
+        .card-content h3 { margin: 0 0 6px 0; font-size: 17px; font-weight: 600; color: #ffffff; }
+        .card-content span { font-size: 13px; color: #94a3b8; line-height: 1.4; display: block; }
+
+        /* POP-UP LOADING (MODAL) */
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(2, 6, 23, 0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+        .overlay.active { opacity: 1; pointer-events: all; }
+        .popup {
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 24px;
             text-align: center;
+            width: 280px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transform: scale(0.8) translateY(20px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
+        .overlay.active .popup { transform: scale(1) translateY(0); }
+        
+        .spinner {
+            width: 45px; height: 45px;
+            border: 4px solid rgba(59, 130, 246, 0.3);
+            border-top-color: #3b82f6;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        .popup-icon { font-size: 35px; margin-bottom: 10px; }
+        .popup h3 { margin: 0 0 5px 0; font-size: 18px; color: #fff; }
+        .popup p { margin: 0; font-size: 13px; color: #94a3b8; }
+
+        .footer { margin-top: auto; padding-top: 40px; font-size: 12px; color: #475569; text-align: center; }
     </style>
 </head>
 <body>
 
+    <!-- Bahagian Header & Logo -->
     <div class="header">
-        <div class="logo-icon">🛠️</div>
-        <h1>Koleksi Apps DIY Idris</h1>
-        <p>Pilih alat pengiraan yang anda perlukan untuk projek anda hari ini.</p>
+        <div class="logo-container">🛠️</div>
+        <h1>Koleksi Apps DIY</h1>
+        <p>Sistem Pengiraan Profesional by Idris</p>
     </div>
 
+    <!-- Senarai Aplikasi -->
     <div class="container-apps">
-        <!-- Pautan dikemas kini mengikut folder baru: wallpanelling -->
-        <a href="wallpanelling/index.html" class="app-card">
+        <div class="app-card" onclick="bukaApps('wallpanelling/index.html', 'Wall Panelling', '🪵')">
             <div class="card-icon">🪵</div>
             <div class="card-content">
                 <h3>Wall Panelling</h3>
                 <span>Kira kos & susun atur fluted panel serta wallboard dinding.</span>
             </div>
-        </a>
+        </div>
 
-        <!-- Pautan dikemas kini mengikut folder baru: ceilingseries -->
-        <a href="ceilingseries/index.html" class="app-card">
+        <div class="app-card" onclick="bukaApps('ceilingseries/index.html', 'Siri Siling', '🏠')">
             <div class="card-icon">🏠</div>
             <div class="card-content">
                 <h3>Siri Siling</h3>
                 <span>Kira bahan dan ukuran siri siling rumah dengan tepat.</span>
             </div>
-        </a>
+        </div>
         
-        <!-- Wainscoting dikekalkan -->
-        <a href="wainscoting/index.html" class="app-card">
+        <div class="app-card" onclick="bukaApps('wainscoting/index.html', 'Pro Wainscoting', '📐')">
             <div class="card-icon">📐</div>
             <div class="card-content">
                 <h3>Pro Wainscoting</h3>
-                <span>Sebut harga terperinci & nisbah visual kotak wainscoting.</span>
+                <span>Sebut harga terperinci & nisbah visual wainscoting.</span>
             </div>
-        </a>
+        </div>
     </div>
 
     <div class="footer">
-        Dicipta khas untuk kegunaan sendiri &bull; Idris DIY Apps
+        Versi 1.0 &bull; Dicipta untuk kegunaan peribadi
     </div>
+
+    <!-- Pop-up Loading Screen -->
+    <div class="overlay" id="loadingOverlay">
+        <div class="popup">
+            <div class="popup-icon" id="popupIcon">⏳</div>
+            <div class="spinner"></div>
+            <h3 id="popupTitle">Membuka Aplikasi</h3>
+            <p>Sila tunggu sebentar...</p>
+        </div>
+    </div>
+
+    <script>
+        // Fungsi untuk tunjuk Pop-up dan buka aplikasi
+        function bukaApps(url, tajuk, ikon) {
+            // Tukar teks dan ikon dalam pop-up mengikut aplikasi yang dipilih
+            document.getElementById('popupTitle').innerText = tajuk;
+            document.getElementById('popupIcon').innerText = ikon;
+            
+            // Tunjukkan overlay pop-up
+            document.getElementById('loadingOverlay').classList.add('active');
+            
+            // Beri masa 1.2 saat (1200 ms) untuk animasi sebelum tukar page
+            setTimeout(function() {
+                window.location.href = url;
+            }, 1200);
+        }
+    </script>
 
 </body>
 </html>
