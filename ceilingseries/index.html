@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ms">
 <head>
@@ -7,8 +6,8 @@
     <title>Kalkulator Ceiling Series & Kos</title>
     <style>
         :root {
-            --primary: #2563eb;
-            --primary-hover: #1d4ed8;
+            --primary: #00B14F; /* Disesuaikan dengan tema hijau Grab */
+            --primary-hover: #009441;
             --bg-color: #f8fafc;
             --card-bg: #ffffff;
             --text-color: #1e293b;
@@ -21,6 +20,7 @@
             color: var(--text-color);
             margin: 0;
             padding: 20px;
+            padding-bottom: 80px; /* Ruang untuk butang terapung bawah */
         }
 
         .container {
@@ -67,7 +67,7 @@
 
         select:focus, input:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            box-shadow: 0 0 0 3px rgba(0, 177, 79, 0.1);
         }
 
         button {
@@ -225,8 +225,8 @@
         soffit_f: {
             width: 190,
             lengths: {
-                5950: 85.00, // Mempunyai saiz 5950mm standard/khas
-                5500: 85.00, // Menampung rujukan tambahan jika ada
+                5950: 85.00,
+                5500: 85.00,
                 6400: 105.00
             },
             accessoryName: "End Cap (5500mm)",
@@ -255,7 +255,6 @@
             return;
         }
 
-        // Tentukan key configuration data
         let configKey = type;
         if (type === 'soffit_a') {
             configKey = `soffit_a_${subtype}`;
@@ -267,9 +266,7 @@
 
         let calculations = [];
 
-        // Gelung untuk menguji setiap panjang panel yang ada bagi pilihan ini
         availableLengths.forEach(panelL => {
-            // 1. Susunan Melintang (Panel merentasi Lebar Ruang: roomW)
             if (panelL >= roomW) {
                 const rows = Math.ceil(roomL / panelW);
                 const wastePerPiece = panelL - roomW;
@@ -284,7 +281,6 @@
                 });
             }
 
-            // 2. Susunan Menegak (Panel merentasi Panjang Ruang: roomL)
             if (panelL >= roomL) {
                 const columns = Math.ceil(roomW / panelW);
                 const wastePerPiece = panelL - roomL;
@@ -305,24 +301,31 @@
             return;
         }
 
-        // Cari pilihan dengan pembaziran (wastage) paling minimum
         calculations.sort((a, b) => a.wasteArea - b.wasteArea);
         const bestOption = calculations[0];
 
-        // Pengiraan Kos Panel
         const unitPanelPrice = currentProfile.lengths[bestOption.panelLength] || currentProfile.lengths[Object.keys(currentProfile.lengths)[0]];
         const panelTotalCost = bestOption.totalPieces * unitPanelPrice;
 
-        // Pengiraan Aksesori Perimeter (Keliling Ruang)
-        // Perimeter = 2 * (Lebar + Panjang) dalam mm, ditukar ke meter / unit 5500mm
         const perimeterMm = 2 * (roomW + roomL);
-        const accessoryLengthStandard = 5500; // 5500mm sebatang
+        const accessoryLengthStandard = 5500;
         const accessoriesNeeded = Math.ceil(perimeterMm / accessoryLengthStandard);
         const accessoriesTotalCost = accessoriesNeeded * currentProfile.accessoryPrice;
 
         const grandTotal = panelTotalCost + accessoriesTotalCost;
 
-        // Paparkan Keputusan dalam HTML
+        // --- RAKAM SEJARAH PENGIRAAN KE LOCALSTORAGE ---
+        let recordBaru = {
+            tajuk: "Siri Siling",
+            info: `Ruang: ${roomW}x${roomL}mm (${bestOption.orientation})`,
+            harga: "RM " + grandTotal.toFixed(2)
+        };
+
+        let historyList = JSON.parse(localStorage.getItem('diy_calc_history')) || [];
+        historyList.push(recordBaru);
+        localStorage.setItem('diy_calc_history', JSON.stringify(historyList));
+        // ----------------------------------------------
+
         document.getElementById('resultSection').style.display = 'block';
         document.getElementById('resultText').innerHTML = `
             <strong>Pilihan Susunan Optimum: ${bestOption.orientation}</strong><br>
@@ -357,7 +360,6 @@
             </table>
         `;
 
-        // Lukis Rajah Visual SVG
         drawVisual(roomW, roomL, bestOption.orientation, panelW);
     }
 
@@ -372,10 +374,8 @@
 
         let svgContent = `<svg width="${svgW + 80}" height="${svgL + 60}" viewBox="0 0 ${svgW + 80} ${svgL + 60}">`;
         
-        // Kotak Ruang Utama
         svgContent += `<rect x="40" y="20" width="${svgW}" height="${svgL}" fill="#e2e8f0" stroke="#475569" stroke-width="2"/>`;
 
-        // Garisan Panel di dalam ruang
         if (orientation === 'Melintang') {
             let currentY = 20;
             while (currentY < 20 + svgL) {
@@ -390,18 +390,16 @@
             }
         }
 
-        // Tanda Ukuran Lebar (Atas)
         svgContent += `<text x="${40 + svgW / 2}" y="12" font-size="11" text-anchor="middle" font-weight="bold" fill="#1e293b">Lebar: ${w} mm</text>`;
-        
-        // Tanda Ukuran Panjang (Kiri)
         svgContent += `<text x="15" y="${20 + svgL / 2}" font-size="11" text-anchor="middle" font-weight="bold" fill="#1e293b" transform="rotate(-90 15 ${20 + svgL / 2})">Panjang: ${l} mm</text>`;
 
         svgContent += `</svg>`;
         container.innerHTML = svgContent;
     }
 </script>
+
 <!-- Butang Kembali Terapung (Floating Back Button) -->
-<a href="../index.html" style="position: fixed; bottom: 20px; right: 20px; background: #2563eb; color: #fff; padding: 12px 18px; border-radius: 30px; text-decoration: none; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 14px; box-shadow: 0 4px 15px rgba(37,99,235,0.4); display: flex; align-items: center; gap: 6px; z-index: 9999;">
+<a href="../index.html" style="position: fixed; bottom: 20px; right: 20px; background: #00B14F; color: #fff; padding: 12px 18px; border-radius: 30px; text-decoration: none; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 14px; box-shadow: 0 4px 15px rgba(0, 177, 79, 0.4); display: flex; align-items: center; gap: 6px; z-index: 9999;">
     <span>←</span> Menu Utama
 </a>
 
