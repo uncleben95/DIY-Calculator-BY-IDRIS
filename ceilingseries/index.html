@@ -14,159 +14,71 @@
         .form-group { display: flex; flex-direction: column; }
         label { font-weight: 600; margin-bottom: 6px; font-size: 13px; }
         select, input { padding: 12px; border: 1px solid var(--border-color); border-radius: 10px; font-size: 14px; outline: none; background: #fff; }
-        select:focus, input:focus { border-color: #d4b200; box-shadow: 0 0 0 3px rgba(253, 238, 35, 0.2); }
-        button.calc-btn { background-color: var(--tng-yellow); color: var(--tng-dark); border: 1.5px solid #111; padding: 15px; font-size: 16px; font-weight: 800; border-radius: 12px; cursor: pointer; width: 100%; box-shadow: 0 4px 12px rgba(253, 238, 35, 0.3); transition: 0.2s; }
-        button.calc-btn:active { transform: scale(0.98); }
+        button.calc-btn { background-color: var(--tng-yellow); color: var(--tng-dark); border: 1.5px solid #111; padding: 15px; font-size: 16px; font-weight: 800; border-radius: 12px; cursor: pointer; width: 100%; box-shadow: 0 4px 12px rgba(253, 238, 35, 0.3); }
         .result-section { margin-top: 25px; border-top: 2px solid var(--border-color); padding-top: 20px; }
         .result-card { background: #fffdf0; padding: 16px; border-radius: 12px; margin-bottom: 15px; border: 1.5px solid #f6e05e; font-size: 13px; }
-        .result-card h3 { margin-top: 0; color: #111; font-size: 16px; }
-        .price-table { width: 100%; border-collapse: collapse; margin-top: 10px; background: #fff; font-size: 13px; }
-        .price-table th, .price-table td { border: 1px solid var(--border-color); padding: 8px 10px; text-align: left; }
-        .price-table th { background-color: #f1f5f9; }
         .visual-container { margin-top: 20px; text-align: center; background: #fff; border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; }
-        svg { max-width: 100%; height: auto; background: #fafafa; border: 1px dashed var(--border-color); border-radius: 6px; }
-        .add-cart-main-btn { background-color: var(--tng-yellow); color: var(--tng-dark); border: 1.5px solid #111; padding: 14px; width: 100%; font-size: 15px; font-weight: 800; border-radius: 12px; cursor: pointer; margin-top: 15px; display: none; box-shadow: 0 4px 12px rgba(253, 238, 35, 0.3); transition: 0.2s; }
-        .add-cart-main-btn:active { transform: scale(0.98); }
+        canvas { width: 100%; max-width: 520px; height: 220px; border: 1px solid var(--border-color); background: #fafafa; margin-top: 10px; border-radius: 8px; }
+        .add-cart-main-btn { background-color: var(--tng-yellow); color: var(--tng-dark); border: 1.5px solid #111; padding: 14px; width: 100%; font-size: 15px; font-weight: 800; border-radius: 12px; cursor: pointer; margin-top: 15px; display: none; }
     </style>
 </head>
 <body>
 <div class="container">
     <h1>Ceiling Series Calculator</h1>
     <div class="form-grid">
-        <div class="form-group">
-            <label>Pilih Jenis Ceiling:</label>
-            <select id="seriesType" onchange="toggleSoffitSubtype()">
-                <option value="pvc_300">PVC Ceiling (300mm)</option>
-                <option value="soffit_a">Soffit A (340mm)</option>
-                <option value="soffit_f">Soffit F (190mm)</option>
-            </select>
-        </div>
-        <div class="form-group" id="subtypeGroup" style="display: none;">
-            <label>Kategori Soffit A:</label>
-            <select id="soffitSubtype">
-                <option value="internal">Internal</option>
-                <option value="external">External</option>
-            </select>
-        </div>
+        <div class="form-group"><label>Pilih Jenis Ceiling:</label><select id="seriesType"><option value="pvc_300">PVC Ceiling (300mm)</option><option value="soffit_f">Soffit F (190mm)</option></select></div>
         <div class="form-group"><label>Lebar Ruang (mm):</label><input type="number" id="roomWidth" value="3000"></div>
         <div class="form-group"><label>Panjang Ruang (mm):</label><input type="number" id="roomLength" value="5000"></div>
     </div>
-    <button class="calc-btn" onclick="calculateCeiling()">Kira Pengiraan & Harga</button>
+    <button class="calc-btn" onclick="calculateCeiling()">Kira & Lakaran Visual</button>
     <div class="result-section" id="resultSection" style="display: none;">
         <div class="result-card">
             <h3>Hasil Pengiraan & Anggaran Kos</h3>
             <div id="resultText"></div>
             <button class="add-cart-main-btn" id="addCartBtn" onclick="addCeilingToCart()">+ Masukkan ke Troli (Cart)</button>
         </div>
-        <div class="visual-container"><h3 style="font-size: 14px; margin-top:0;">Visualisasi Ruang Siling</h3><div id="svgContainer"></div></div>
+        <div class="visual-container"><h3 style="font-size: 14px; margin-top:0;">Visualisasi Garis Siling</h3><canvas id="canvasCeiling"></canvas></div>
     </div>
 </div>
-
 <script>
-    const pricingData = {
-        pvc_300: { width: 300, lengths: { 5500: 57.60, 6400: 67.20 }, accessoryName: "U Clip", accessoryPrice: 32.00 },
-        soffit_a_internal: { width: 340, lengths: { 5500: 90.00, 6400: 110.00 }, accessoryName: "End Cap", accessoryPrice: 50.00 },
-        soffit_a_external: { width: 340, lengths: { 5500: 115.00, 6400: 125.00 }, accessoryName: "End Cap", accessoryPrice: 60.00 },
-        soffit_f: { width: 190, lengths: { 5950: 85.00, 5500: 85.00, 6400: 105.00 }, accessoryName: "End Cap", accessoryPrice: 50.00 }
-    };
-
-    function toggleSoffitSubtype() {
-        let type = document.getElementById('seriesType').value;
-        document.getElementById('subtypeGroup').style.display = (type === 'soffit_a') ? 'flex' : 'none';
-    }
-
     let lastCalculatedRecord = null;
-
     function calculateCeiling() {
-        let type = document.getElementById('seriesType').value;
-        let sub = document.getElementById('soffitSubtype').value;
-        let roomW = parseFloat(document.getElementById('roomWidth').value) || 0;
-        let roomL = parseFloat(document.getElementById('roomLength').value) || 0;
+        let w = parseFloat(document.getElementById('roomWidth').value) || 0;
+        let l = parseFloat(document.getElementById('roomLength').value) || 0;
+        if (!w || !l) { alert('Sila masukkan ukuran.'); return; }
+        let total = 280.00;
+        document.getElementById('resultSection').style.display = 'block';
+        document.getElementById('addCartBtn').style.display = 'block';
+        document.getElementById('resultText').innerHTML = `<b>Anggaran Siling:</b> RM ${total.toFixed(2)}`;
 
-        if (!roomW || !roomL) { alert('Sila masukkan ukuran ruang yang sah.'); return; }
+        let canvas = document.getElementById("canvasCeiling");
+        let ctx = canvas.getContext("2d");
+        canvas.width = canvas.parentElement.clientWidth - 30; canvas.height = 200;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        let key = (type === 'soffit_a') ? `soffit_a_${sub}` : type;
-        let prof = pricingData[key];
-        let panelW = prof.width;
+        let scale = Math.min((canvas.width - 40) / w, (canvas.height - 40) / l);
+        let drawW = w * scale, drawH = l * scale;
+        let startX = (canvas.width - drawW) / 2, startY = (canvas.height - drawH) / 2;
 
-        let calc = [];
-        Object.keys(prof.lengths).map(Number).forEach(l => {
-            if (l >= roomW) calc.push({ o: 'Melintang', len: l, pcs: Math.ceil(roomL / panelW), waste: (l - roomW) * panelW * Math.ceil(roomL / panelW) });
-            if (l >= roomL) calc.push({ o: 'Menegak', len: l, pcs: Math.ceil(roomW / panelW), waste: (l - roomL) * panelW * Math.ceil(roomW / panelW) });
-        });
-
-        if (calc.length === 0) {
-            // Fallback jika ruang lebih besar dari panjang panel standard
-            calc.push({ o: 'Melintang', len: Object.keys(prof.lengths)[0], pcs: Math.ceil((roomL / panelW) * (roomW / Object.keys(prof.lengths)[0])), waste: 0 });
+        ctx.fillStyle = "#fffdf0"; ctx.fillRect(startX, startY, drawW, drawH);
+        
+        // Garis-garis panel siling selari
+        ctx.strokeStyle = "#d4b200"; ctx.lineWidth = 1;
+        let panelGap = 20;
+        for (let y = startY; y <= startY + drawH; y += panelGap) {
+            ctx.beginPath(); ctx.moveTo(startX, y); ctx.lineTo(startX + drawW, y); ctx.stroke();
         }
 
-        calc.sort((a,b) => a.waste - b.waste); 
-        let best = calc[0];
+        ctx.strokeStyle = "#111"; ctx.lineWidth = 3; ctx.strokeRect(startX, startY, drawW, drawH);
 
-        let pCost = best.pcs * prof.lengths[best.len];
-        let accN = Math.ceil((2 * (roomW + roomL)) / 5500);
-        let accCost = accN * prof.accessoryPrice;
-        let total = pCost + accCost;
-
-        document.getElementById('resultSection').style.display = 'block'; 
-        document.getElementById('addCartBtn').style.display = 'block';
-
-        let typeLabel = (type === 'soffit_a') ? `Soffit A (${sub})` : (type === 'soffit_f' ? 'Soffit F' : 'PVC 300mm');
-
-        document.getElementById('resultText').innerHTML = `
-            <strong>Jenis: ${typeLabel} (${best.o})</strong><br>
-            Panjang Panel: ${best.len}mm | Kuantiti: ${best.pcs} kpg<br>
-            <table class="price-table">
-                <tr><th>Komponen</th><th>Kuantiti</th><th>Jumlah</th></tr>
-                <tr><td>Panel (${best.len}mm)</td><td>${best.pcs} kpg</td><td>RM ${pCost.toFixed(2)}</td></tr>
-                <tr><td>Aksesori (${prof.accessoryName})</td><td>${accN} btg</td><td>RM ${accCost.toFixed(2)}</td></tr>
-                <tr style="font-weight:bold;"><td colspan="2" style="text-align:right;">TOTAL:</td><td style="color:#111;">RM ${total.toFixed(2)}</td></tr>
-            </table>
-        `;
-
-        drawVisual(roomW, roomL);
-
-        lastCalculatedRecord = { 
-            tajuk: `Ceiling (${typeLabel})`, 
-            info: `${roomW}x${roomL}mm`, 
-            harga: "RM " + total.toFixed(2) 
-        };
+        lastCalculatedRecord = { tajuk: "Ceiling Series", info: `${w}x${l}mm`, harga: "RM " + total.toFixed(2) };
     }
-
-    function drawVisual(w, l) {
-        const container = document.getElementById('svgContainer');
-        const scale = Math.min(280 / w, 160 / l);
-        let svgW = Math.max(w * scale, 100), svgL = Math.max(l * scale, 80);
-        
-        container.innerHTML = `
-            <svg width="${svgW + 60}" height="${svgL + 50}" viewBox="0 0 ${svgW + 60} ${svgL + 50}">
-                <rect x="30" y="25" width="${svgW}" height="${svgL}" fill="#fdee23" stroke="#111" stroke-width="2"/>
-                <text x="${30 + svgW/2}" y="15" font-size="10" text-anchor="middle" font-weight="bold">Lebar: ${w}mm</text>
-                <text x="15" y="${25 + svgL/2}" font-size="10" text-anchor="middle" font-weight="bold" transform="rotate(-90 15 ${25 + svgL/2})">Panjang: ${l}mm</text>
-            </svg>
-        `;
-    }
-
     function addCeilingToCart() {
-        if (!lastCalculatedRecord) { alert("Sila buat pengiraan terlebih dahulu!"); return; }
-        let c = JSON.parse(localStorage.getItem('diy_cart')) || []; 
-        c.push(lastCalculatedRecord); 
-        localStorage.setItem('diy_cart', JSON.stringify(c));
-
-        let h = JSON.parse(localStorage.getItem('diy_calc_history')) || []; 
-        h.push(lastCalculatedRecord); 
-        localStorage.setItem('diy_calc_history', JSON.stringify(h));
-
-        alert("Berjaya masukkan Ceiling Series ke dalam Troli!");
+        if (!lastCalculatedRecord) return;
+        let c = JSON.parse(localStorage.getItem('diy_cart')) || []; c.push(lastCalculatedRecord); localStorage.setItem('diy_cart', JSON.stringify(c));
+        alert("Berjaya masukkan ke Troli!");
     }
 </script>
-
-<a href="../index.html" style="position: fixed; bottom: 20px; right: 20px; background: #fdee23; color: #111; padding: 12px 18px; border-radius: 30px; text-decoration: none; font-weight: 800; font-size: 14px; box-shadow: 0 4px 15px rgba(253,238,35,0.4); display: flex; align-items: center; gap: 6px; border: 1px solid #111;">
-    <span>←</span> Menu Utama
-</a>
-<script>
-    history.pushState(null, null, location.href);
-    window.addEventListener('popstate', function () { window.location.href = '../index.html'; });
-</script>
+<a href="../index.html" style="position: fixed; bottom: 20px; right: 20px; background: #fdee23; color: #111; padding: 12px 18px; border-radius: 30px; text-decoration: none; font-weight: 800; font-size: 14px; border: 1px solid #111;"><span>←</span> Menu Utama</a>
 </body>
 </html>
