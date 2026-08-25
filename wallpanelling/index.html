@@ -60,16 +60,29 @@
         let jenis = document.getElementById("jenisFluted").value;
         let jmlBoard = parseInt(document.getElementById("jumlahBoardInput").value) || 1;
         let boardW = document.getElementById("jenisBoard").value === 'Mini' ? 600 : 1200;
+        let boardPrice = document.getElementById("jenisBoard").value === 'Mini' ? 150 : 240;
 
         if (w <= 0 || h <= 0) { alert("Sila masukkan ukuran."); return; }
 
-        let total = 350.00;
+        let flutedBatang = Math.ceil(w / 160);
+        let kosFluted = flutedBatang * 43;
+        let kosBoard = jenis.includes("Wallboard") ? (jmlBoard * boardPrice) : 0;
+        let grandTotal = kosFluted + kosBoard;
+
         document.getElementById("resultBox").style.display = "block";
         document.getElementById("addCartBtn").style.display = "block";
         document.getElementById("visualBox").style.display = "block";
-        document.getElementById("jumlahHarga").innerText = `RM ${total.toFixed(2)}`;
+        
+        let html = `<b>Batang Fluted:</b> ${flutedBatang} btg x RM43 = RM ${kosFluted.toFixed(2)}<br>`;
+        if(jenis.includes("Wallboard")) {
+            html += `<b>Board:</b> ${jmlBoard} keping x RM${boardPrice} = RM ${kosBoard.toFixed(2)}<br>`;
+        }
+        html += `<br><b>TOTAL: RM ${grandTotal.toFixed(2)}</b>`;
+        
+        document.getElementById("detailPecahan").innerHTML = html;
+        document.getElementById("jumlahHarga").innerText = `RM ${grandTotal.toFixed(2)}`;
 
-        lastCalculatedRecord = { tajuk: "Wall Panelling", info: `${w}x${h}mm (${jenis})`, harga: "RM " + total.toFixed(2) };
+        lastCalculatedRecord = { tajuk: "Wall Panelling", info: `${w}x${h}mm (${jenis})`, harga: "RM " + grandTotal.toFixed(2) };
 
         let canvas = document.getElementById("canvasVisual");
         let ctx = canvas.getContext("2d");
@@ -80,24 +93,20 @@
         let drawW = w * scale, drawH = h * scale;
         let startX = (canvas.width - drawW) / 2, startY = 10;
 
-        // Latar Dinding
         ctx.fillStyle = "#fafafa"; ctx.fillRect(startX, startY, drawW, drawH);
 
         if (jenis.includes("Wallboard")) {
             let totalBoardW = (boardW * jmlBoard) * scale;
             let boardStartX = startX + (drawW - totalBoardW) / 2;
 
-            // Kawasan Board Tengah (Licin)
             ctx.fillStyle = "#ffffff"; ctx.fillRect(boardStartX, startY, totalBoardW, drawH);
             ctx.strokeStyle = "#111"; ctx.lineWidth = 2; ctx.strokeRect(boardStartX, startY, totalBoardW, drawH);
 
-            // Garis pembahagi kepingan board
             let singleBoardW_scaled = boardW * scale;
             for(let i=1; i<jmlBoard; i++) {
                 ctx.beginPath(); ctx.moveTo(boardStartX + (i * singleBoardW_scaled), startY); ctx.lineTo(boardStartX + (i * singleBoardW_scaled), startY + drawH); ctx.stroke();
             }
 
-            // Kawasan Fluted Kiri & Kanan (Garis Rapat)
             let sideW = (drawW - totalBoardW) / 2;
             if (sideW > 0) {
                 ctx.fillStyle = "#fdee23"; ctx.fillRect(startX, startY, sideW, drawH);
@@ -105,7 +114,6 @@
                 ctx.strokeRect(startX, startY, sideW, drawH);
                 ctx.strokeRect(boardStartX + totalBoardW, startY, sideW, drawH);
 
-                // Garis rapat fluted
                 ctx.strokeStyle = "#d4b200"; ctx.lineWidth = 1;
                 for (let x = startX; x < startX + sideW; x += 6) {
                     ctx.beginPath(); ctx.moveTo(x, startY); ctx.lineTo(x, startY + drawH); ctx.stroke();
@@ -115,7 +123,6 @@
                 }
             }
         } else {
-            // Full Fluted (Garis Rapat Seluruh Dinding)
             ctx.fillStyle = "#fdee23"; ctx.fillRect(startX, startY, drawW, drawH);
             ctx.strokeStyle = "#d4b200"; ctx.lineWidth = 1;
             for (let x = startX; x < startX + drawW; x += 6) {
