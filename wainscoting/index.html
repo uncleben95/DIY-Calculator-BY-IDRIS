@@ -17,18 +17,18 @@
     <div class="max-w-lg w-full bg-white rounded-2xl shadow-xl p-5 md:p-6 space-y-6 border border-slate-200">
         <div>
             <h2 class="text-xl md:text-2xl font-bold text-slate-900">Wainscoting Calculator</h2>
-            <p class="text-xs md:text-sm text-slate-500">Sebut harga terperinci, nisbah visual tepat, & muat turun imej.</p>
+            <p class="text-xs md:text-sm text-slate-500">Sebut harga terperinci, nisbah visual lengkap, & muat turun imej.</p>
         </div>
 
         <div class="space-y-4 text-sm">
             <div class="grid grid-cols-2 gap-3">
                 <div>
                     <label class="block font-medium text-slate-700 mb-1">Lebar Dinding (mm)</label>
-                    <input type="number" id="wallWidth" value="3000" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-yellow-400">
+                    <input type="number" id="wallWidth" value="3000" class="w-full px-3 py-2 border border-slate-300 rounded-lg">
                 </div>
                 <div>
                     <label class="block font-medium text-slate-700 mb-1">Tinggi Dinding (mm)</label>
-                    <input type="number" id="wallHeight" value="2900" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-yellow-400">
+                    <input type="number" id="wallHeight" value="2900" class="w-full px-3 py-2 border border-slate-300 rounded-lg">
                 </div>
             </div>
 
@@ -92,7 +92,8 @@
                     📥 Save to Phone (.png)
                 </button>
             </div>
-            <div id="captureArea" class="w-full bg-white rounded-xl p-3 flex flex-col justify-between items-center border-2 border-slate-300 shadow-inner relative overflow-x-auto min-h-[280px]"></div>
+            <!-- Kotak Visual Lengkap Atas & Bawah -->
+            <div id="captureArea" class="w-full bg-white rounded-xl p-3 flex flex-col justify-between items-center border-2 border-slate-300 shadow-inner relative overflow-x-auto min-h-[300px]"></div>
         </div>
     </div>
 
@@ -114,7 +115,6 @@
         }
 
         let lastCalculatedRecord = null;
-        let lastTotalPriceNum = 0;
 
         function calculateWainscoting() {
             let wMm = parseFloat(document.getElementById('wallWidth').value) || 0;
@@ -172,7 +172,6 @@
                 breakdownHtml += `<div class="flex justify-between text-amber-800 font-medium border-t pt-1"><span>Chair Rail [${chairRailSticks}btg x RM70]:</span> <span>RM ${chairRailTotalCost}</span></div>`;
             }
 
-            lastTotalPriceNum = totalPrice;
             lastCalculatedRecord = {
                 tajuk: "Pro Wainscoting",
                 info: `Dinding: ${wMm}x${hMm}mm (${pattern})`,
@@ -183,23 +182,47 @@
             document.getElementById('totalPrice').innerText = 'RM ' + totalPrice.toFixed(2);
             document.getElementById('resultContainer').classList.remove('hidden');
 
+            // --- LUKIS VISUAL WAINCOTING (ATAS, CHAIR RAIL, BAWAH) ---
             let previewBox = document.getElementById('captureArea');
             previewBox.innerHTML = '';
             document.getElementById('visualContainer').classList.remove('hidden');
 
             let frameColorClass = (frameColor === 'gold') ? 'border-yellow-600 text-yellow-700' : 'border-slate-900 text-slate-900';
+
+            // Baris Atas
             let topRow = document.createElement('div');
             topRow.className = 'w-full flex justify-around items-center gap-1.5 px-1';
-            topRow.style.height = Math.max(90, Math.round((topBoxHeight / hMm) * 240)) + 'px';
+            topRow.style.height = '100px';
 
             boxWidths.forEach((bw) => {
                 let boxEl = document.createElement('div');
-                boxEl.className = `border-[3px] ${frameColorClass} bg-white rounded flex flex-col items-center justify-center text-[9px] font-bold relative shadow-xs`;
+                boxEl.className = `border-[3px] ${frameColorClass} bg-white rounded flex items-center justify-center text-[9px] font-bold shadow-xs`;
                 boxEl.style.flexGrow = bw; boxEl.style.flexBasis = '0'; boxEl.style.height = '100%';
-                boxEl.innerHTML = `<span class="bg-white/90 px-1 py-0.5 rounded text-slate-800">${Math.round(bw)} x ${Math.round(topBoxHeight)}mm</span>`;
+                boxEl.innerText = `${Math.round(bw)}x${Math.round(topBoxHeight)}`;
                 topRow.appendChild(boxEl);
             });
             previewBox.appendChild(topRow);
+
+            // Jika ada Chair Rail
+            if (style === 'with_chairrail') {
+                let chairRailEl = document.createElement('div');
+                chairRailEl.className = 'w-full bg-amber-800 my-2 text-white text-[9px] font-bold text-center py-0.5 rounded';
+                chairRailEl.innerText = '--- CHAIR RAIL (Lungsur Kayu) ---';
+                previewBox.appendChild(chairRailEl);
+
+                let botRow = document.createElement('div');
+                botRow.className = 'w-full flex justify-around items-center gap-1.5 px-1';
+                botRow.style.height = '100px';
+
+                boxWidths.forEach((bw) => {
+                    let boxEl = document.createElement('div');
+                    boxEl.className = `border-[3px] ${frameColorClass} bg-white rounded flex items-center justify-center text-[9px] font-bold shadow-xs`;
+                    boxEl.style.flexGrow = bw; boxEl.style.flexBasis = '0'; boxEl.style.height = '100%';
+                    boxEl.innerText = `${Math.round(bw)}x600`;
+                    botRow.appendChild(boxEl);
+                });
+                previewBox.appendChild(botRow);
+            }
         }
 
         function addWainscotingToCart() {
@@ -207,11 +230,6 @@
             let cartData = JSON.parse(localStorage.getItem('diy_cart')) || [];
             cartData.push(lastCalculatedRecord);
             localStorage.setItem('diy_cart', JSON.stringify(cartData));
-
-            let historyList = JSON.parse(localStorage.getItem('diy_calc_history')) || [];
-            historyList.push(lastCalculatedRecord);
-            localStorage.setItem('diy_calc_history', JSON.stringify(historyList));
-
             alert("Berjaya masukkan pengiraan Wainscoting ke dalam Troli!");
         }
 
@@ -223,12 +241,6 @@
         }
     </script>
 
-    <a href="../index.html" style="position: fixed; bottom: 20px; right: 20px; background: #fdee23; color: #111; padding: 12px 18px; border-radius: 30px; text-decoration: none; font-family: 'Inter', sans-serif; font-weight: 800; font-size: 14px; box-shadow: 0 4px 15px rgba(253,238,35,0.4); display: flex; align-items: center; gap: 6px; z-index: 9999; border: 1px solid #111;">
-        <span>←</span> Menu Utama
-    </a>
-    <script>
-        history.pushState(null, null, location.href);
-        window.addEventListener('popstate', function () { window.location.href = '../index.html'; });
-    </script>
+    <a href="../index.html" style="position: fixed; bottom: 20px; right: 20px; background: #fdee23; color: #111; padding: 12px 18px; border-radius: 30px; text-decoration: none; font-weight: 800; font-size: 14px; box-shadow: 0 4px 15px rgba(253,238,35,0.4); display: flex; align-items: center; gap: 6px; border: 1px solid #111;"><span>←</span> Menu Utama</a>
 </body>
 </html>
