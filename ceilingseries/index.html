@@ -6,239 +6,80 @@
     <title>Ceiling Series Calculator</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --tng-yellow: #fdee23;
-            --tng-dark: #111111;
-            --bg-color: #f4f5f7;
-            --card-bg: #ffffff;
-            --text-main: #111111;
-            --text-sub: #666666;
-            --border-color: #e4e7eb;
-            --shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            margin: 0;
-            padding: 20px 16px 90px;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .container {
-            max-width: 600px;
-            width: 100%;
-            background: var(--card-bg);
-            padding: 25px;
-            border-radius: 20px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-color);
-        }
-
-        h1 {
-            text-align: center;
-            color: var(--text-main);
-            font-size: 20px;
-            font-weight: 800;
-            margin-top: 0;
-            margin-bottom: 25px;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-
+        :root { --tng-yellow: #fdee23; --tng-dark: #111111; --bg-color: #f4f5f7; --card-bg: #ffffff; --text-main: #111111; --text-sub: #666666; --border-color: #e4e7eb; --shadow: 0 4px 16px rgba(0, 0, 0, 0.06); }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 20px 16px 90px; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+        .container { max-width: 600px; width: 100%; background: var(--card-bg); padding: 25px; border-radius: 20px; box-shadow: var(--shadow); border: 1px solid var(--border-color); }
+        h1 { text-align: center; color: var(--text-main); font-size: 20px; font-weight: 800; margin-top: 0; margin-bottom: 25px; }
+        .form-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 20px; }
         .form-group { display: flex; flex-direction: column; }
         label { font-weight: 600; margin-bottom: 6px; font-size: 13px; }
-        select, input {
-            padding: 12px; border: 1px solid var(--border-color); border-radius: 10px; font-size: 14px; outline: none; background: #fff;
-        }
+        select, input { padding: 12px; border: 1px solid var(--border-color); border-radius: 10px; font-size: 14px; outline: none; background: #fff; }
         select:focus, input:focus { border-color: #d4b200; box-shadow: 0 0 0 3px rgba(253, 238, 35, 0.2); }
-
-        button.calc-btn {
-            background-color: var(--tng-yellow); color: var(--tng-dark); border: none; padding: 15px; font-size: 16px; font-weight: 800; border-radius: 12px; cursor: pointer; width: 100%; box-shadow: 0 4px 12px rgba(253, 238, 35, 0.3); transition: 0.2s;
-        }
+        button.calc-btn { background-color: var(--tng-yellow); color: var(--tng-dark); border: none; padding: 15px; font-size: 16px; font-weight: 800; border-radius: 12px; cursor: pointer; width: 100%; box-shadow: 0 4px 12px rgba(253, 238, 35, 0.3); }
         button.calc-btn:active { transform: scale(0.98); }
-
         .result-section { margin-top: 25px; border-top: 2px solid var(--border-color); padding-top: 20px; }
-        .result-card { background: #fffdf0; padding: 16px; border-radius: 12px; margin-bottom: 15px; line-height: 1.6; border: 1.5px solid #f6e05e; font-size: 13px; }
+        .result-card { background: #fffdf0; padding: 16px; border-radius: 12px; margin-bottom: 15px; border: 1.5px solid #f6e05e; font-size: 13px; }
         .result-card h3 { margin-top: 0; color: #111; font-size: 16px; }
-
-        .price-table { width: 100%; border-collapse: collapse; margin-top: 10px; background: #ffffff; font-size: 13px; }
+        .price-table { width: 100%; border-collapse: collapse; margin-top: 10px; background: #fff; font-size: 13px; }
         .price-table th, .price-table td { border: 1px solid var(--border-color); padding: 8px 10px; text-align: left; }
         .price-table th { background-color: #f1f5f9; }
-
-        .visual-container { margin-top: 20px; text-align: center; background: #ffffff; border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; }
+        .visual-container { margin-top: 20px; text-align: center; background: #fff; border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; }
         svg { max-width: 100%; height: auto; background: #fafafa; border: 1px dashed var(--border-color); border-radius: 6px; }
-
-        .add-cart-main-btn {
-            background-color: #00B14F; color: white; border: none; padding: 14px; width: 100%; font-size: 15px; font-weight: 700; border-radius: 12px; cursor: pointer; margin-top: 15px; box-shadow: 0 4px 12px rgba(0, 177, 79, 0.3); display: none;
-        }
+        .add-cart-main-btn { background-color: #00B14F; color: white; border: none; padding: 14px; width: 100%; font-size: 15px; font-weight: 700; border-radius: 12px; cursor: pointer; margin-top: 15px; box-shadow: 0 4px 12px rgba(0, 177, 79, 0.3); display: none; }
     </style>
 </head>
 <body>
-
 <div class="container">
     <h1>Ceiling Series Calculator</h1>
-    
     <div class="form-grid">
-        <div class="form-group">
-            <label for="seriesType">Pilih Jenis Ceiling:</label>
-            <select id="seriesType" onchange="toggleSoffitSubtype()">
-                <option value="pvc_300">PVC Ceiling (300mm)</option>
-                <option value="soffit_a">Soffit A (340mm)</option>
-                <option value="soffit_f">Soffit F (190mm)</option>
-            </select>
-        </div>
-
-        <div class="form-group" id="subtypeGroup" style="display: none;">
-            <label for="soffitSubtype">Kategori Soffit A:</label>
-            <select id="soffitSubtype">
-                <option value="internal">Internal</option>
-                <option value="external">External</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="roomWidth">Lebar Ruang (mm):</label>
-            <input type="number" id="roomWidth" value="3000">
-        </div>
-
-        <div class="form-group">
-            <label for="roomLength">Panjang Ruang (mm):</label>
-            <input type="number" id="roomLength" value="5000">
-        </div>
+        <div class="form-group"><label>Pilih Jenis Ceiling:</label><select id="seriesType" onchange="toggleSoffitSubtype()"><option value="pvc_300">PVC Ceiling (300mm)</option><option value="soffit_a">Soffit A (340mm)</option><option value="soffit_f">Soffit F (190mm)</option></select></div>
+        <div class="form-group" id="subtypeGroup" style="display: none;"><label>Kategori Soffit A:</label><select id="soffitSubtype"><option value="internal">Internal</option><option value="external">External</option></select></div>
+        <div class="form-group"><label>Lebar Ruang (mm):</label><input type="number" id="roomWidth" value="3000"></div>
+        <div class="form-group"><label>Panjang Ruang (mm):</label><input type="number" id="roomLength" value="5000"></div>
     </div>
-
     <button class="calc-btn" onclick="calculateCeiling()">Kira Pengiraan & Harga</button>
-
     <div class="result-section" id="resultSection" style="display: none;">
         <div class="result-card">
             <h3>Hasil Pengiraan & Anggaran Kos</h3>
             <div id="resultText"></div>
             <button class="add-cart-main-btn" id="addCartBtn" onclick="addCeilingToCart()">+ Masukkan ke Troli (Cart)</button>
         </div>
-
-        <div class="visual-container">
-            <h3 style="font-size: 14px; margin-top:0;">Visualisasi Reka Bentuk & Ukuran Ruang</h3>
-            <div id="svgContainer"></div>
-        </div>
+        <div class="visual-container"><h3 style="font-size: 14px; margin-top:0;">Visualisasi Ruang</h3><div id="svgContainer"></div></div>
     </div>
 </div>
-
 <script>
     const pricingData = {
-        pvc_300: { width: 300, lengths: { 5500: 57.60, 6400: 67.20 }, accessoryName: "U Clip (5500mm)", accessoryPrice: 32.00 },
-        soffit_a_internal: { width: 340, lengths: { 5500: 90.00, 6400: 110.00 }, accessoryName: "End Cap (5500mm)", accessoryPrice: 50.00 },
-        soffit_a_external: { width: 340, lengths: { 5500: 115.00, 6400: 125.00 }, accessoryName: "End Cap (5500mm)", accessoryPrice: 60.00 },
-        soffit_f: { width: 190, lengths: { 5950: 85.00, 5500: 85.00, 6400: 105.00 }, accessoryName: "End Cap (5500mm)", accessoryPrice: 50.00 }
+        pvc_300: { width: 300, lengths: { 5500: 57.60, 6400: 67.20 }, accessoryName: "U Clip", accessoryPrice: 32.00 },
+        soffit_a_internal: { width: 340, lengths: { 5500: 90.00, 6400: 110.00 }, accessoryName: "End Cap", accessoryPrice: 50.00 },
+        soffit_a_external: { width: 340, lengths: { 5500: 115.00, 6400: 125.00 }, accessoryName: "End Cap", accessoryPrice: 60.00 },
+        soffit_f: { width: 190, lengths: { 5950: 85.00, 5500: 85.00, 6400: 105.00 }, accessoryName: "End Cap", accessoryPrice: 50.00 }
     };
-
-    function toggleSoffitSubtype() {
-        const type = document.getElementById('seriesType').value;
-        document.getElementById('subtypeGroup').style.display = (type === 'soffit_a') ? 'flex' : 'none';
-    }
-
+    function toggleSoffitSubtype() { document.getElementById('subtypeGroup').style.display = (document.getElementById('seriesType').value === 'soffit_a') ? 'flex' : 'none'; }
     let lastCalculatedRecord = null;
-
     function calculateCeiling() {
-        const type = document.getElementById('seriesType').value;
-        const subtype = document.getElementById('soffitSubtype').value;
-        const roomW = parseFloat(document.getElementById('roomWidth').value);
-        const roomL = parseFloat(document.getElementById('roomLength').value);
-
-        if (!roomW || !roomL || roomW <= 0 || roomL <= 0) { alert('Sila masukkan nilai lebar dan panjang ruang yang sah.'); return; }
-
-        let configKey = (type === 'soffit_a') ? `soffit_a_${subtype}` : type;
-        const currentProfile = pricingData[configKey];
-        const panelW = currentProfile.width;
-        const availableLengths = Object.keys(currentProfile.lengths).map(Number);
-        let calculations = [];
-
-        availableLengths.forEach(panelL => {
-            if (panelL >= roomW) {
-                let rows = Math.ceil(roomL / panelW);
-                calculations.push({ orientation: 'Melintang', panelLength: panelL, totalPieces: rows, wasteArea: ((panelL - roomW) * panelW * rows), details: `Panel ${panelL}mm dipotong ke ${roomW}mm. Baris: ${rows}` });
-            }
-            if (panelL >= roomL) {
-                let columns = Math.ceil(roomW / panelW);
-                calculations.push({ orientation: 'Menegak', panelLength: panelL, totalPieces: columns, wasteArea: ((panelL - roomL) * panelW * columns), details: `Panel ${panelL}mm dipotong ke ${roomL}mm. Lajur: ${columns}` });
-            }
+        let type = document.getElementById('seriesType').value, sub = document.getElementById('soffitSubtype').value;
+        let roomW = parseFloat(document.getElementById('roomWidth').value), roomL = parseFloat(document.getElementById('roomLength').value);
+        if (!roomW || !roomL) { alert('Sila masukkan ukuran.'); return; }
+        let key = (type === 'soffit_a') ? `soffit_a_${sub}` : type, prof = pricingData[key], panelW = prof.width;
+        let calc = [];
+        Object.keys(prof.lengths).map(Number).forEach(l => {
+            if (l >= roomW) calc.push({ o: 'Melintang', len: l, pcs: Math.ceil(roomL / panelW), waste: (l - roomW) * panelW * Math.ceil(roomL / panelW) });
+            if (l >= roomL) calc.push({ o: 'Menegak', len: l, pcs: Math.ceil(roomW / panelW), waste: (l - roomL) * panelW * Math.ceil(roomW / panelW) });
         });
-
-        if (calculations.length === 0) { alert('Saiz ruang melebihi panjang maksimum panel!'); return; }
-
-        calculations.sort((a, b) => a.wasteArea - b.wasteArea);
-        const bestOption = calculations[0];
-
-        const unitPanelPrice = currentProfile.lengths[bestOption.panelLength];
-        const panelTotalCost = bestOption.totalPieces * unitPanelPrice;
-        const perimeterMm = 2 * (roomW + roomL);
-        const accessoriesNeeded = Math.ceil(perimeterMm / 5500);
-        const accessoriesTotalCost = accessoriesNeeded * currentProfile.accessoryPrice;
-        const grandTotal = panelTotalCost + accessoriesTotalCost;
-
-        document.getElementById('resultSection').style.display = 'block';
-        document.getElementById('addCartBtn').style.display = 'block';
-        document.getElementById('resultText').innerHTML = `
-            <strong>Susunan Optimum: ${bestOption.orientation}</strong><br>
-            - Panjang Panel: <b>${bestOption.panelLength} mm</b> | Kuantiti: <b>${bestOption.totalPieces} keping</b><br><br>
-            <table class="price-table">
-                <tr><th>Komponen</th><th>Kuantiti</th><th>Harga Seunit</th><th>Jumlah</th></tr>
-                <tr><td>Panel Ceiling (${bestOption.panelLength}mm)</td><td>${bestOption.totalPieces} kpg</td><td>RM ${unitPanelPrice.toFixed(2)}</td><td>RM ${panelTotalCost.toFixed(2)}</td></tr>
-                <tr><td>Aksesori: ${currentProfile.accessoryName}</td><td>${accessoriesNeeded} btg</td><td>RM ${currentProfile.accessoryPrice.toFixed(2)}</td><td>RM ${accessoriesTotalCost.toFixed(2)}</td></tr>
-                <tr style="font-weight:bold;"><td colspan="3" style="text-align:right;">TOTAL:</td><td style="color:#00B14F;">RM ${grandTotal.toFixed(2)}</td></tr>
-            </table>
-        `;
-
-        drawVisual(roomW, roomL, bestOption.orientation, panelW);
-
-        lastCalculatedRecord = {
-            tajuk: "Ceiling Series",
-            info: `Ruang: ${roomW}x${roomL}mm (${bestOption.orientation})`,
-            harga: "RM " + grandTotal.toFixed(2)
-        };
+        calc.sort((a,b) => a.waste - b.waste); let best = calc[0];
+        let pCost = best.pcs * prof.lengths[best.len], accN = Math.ceil((2*(roomW+roomL))/5500), accCost = accN * prof.accessoryPrice, total = pCost + accCost;
+        document.getElementById('resultSection').style.display = 'block'; document.getElementById('addCartBtn').style.display = 'block';
+        document.getElementById('resultText').innerHTML = `<strong>Susunan: ${best.o}</strong><br>Panjang: ${best.len}mm | Kuantiti: ${best.pcs} kpg<br><table class="price-table"><tr><th>Komponen</th><th>Kuantiti</th><th>Jumlah</th></tr><tr><td>Panel (${best.len}mm)</td><td>${best.pcs} kpg</td><td>RM ${pCost.toFixed(2)}</td></tr><tr><td>Aksesori</td><td>${accN} btg</td><td>RM ${accCost.toFixed(2)}</td></tr><tr style="font-weight:bold;"><td colspan="2" style="text-align:right;">TOTAL:</td><td style="color:#00B14F;">RM ${total.toFixed(2)}</td></tr></table>`;
+        lastCalculatedRecord = { tajuk: "Ceiling Series", info: `${roomW}x${roomL}mm (${best.o})`, harga: "RM " + total.toFixed(2) };
     }
-
     function addCeilingToCart() {
         if (!lastCalculatedRecord) return;
-        let cartData = JSON.parse(localStorage.getItem('diy_cart')) || [];
-        cartData.push(lastCalculatedRecord);
-        localStorage.setItem('diy_cart', JSON.stringify(cartData));
-
-        let historyList = JSON.parse(localStorage.getItem('diy_calc_history')) || [];
-        historyList.push(lastCalculatedRecord);
-        localStorage.setItem('diy_calc_history', JSON.stringify(historyList));
-
-        alert("Berjaya masukkan pengiraan Ceiling ke dalam Troli!");
-    }
-
-    function drawVisual(w, l, orientation, panelW) {
-        const container = document.getElementById('svgContainer');
-        const scale = Math.min(350 / w, 220 / l);
-        const svgW = w * scale, svgL = l * scale;
-        let svgContent = `<svg width="${svgW + 80}" height="${svgL + 60}" viewBox="0 0 ${svgW + 80} ${svgL + 60}">`;
-        svgContent += `<rect x="40" y="20" width="${svgW}" height="${svgL}" fill="#e2e8f0" stroke="#475569" stroke-width="2"/>`;
-        svgContent += `<text x="${40 + svgW / 2}" y="12" font-size="11" text-anchor="middle" font-weight="bold">Lebar: ${w} mm</text>`;
-        svgContent += `<text x="15" y="${20 + svgL / 2}" font-size="11" text-anchor="middle" font-weight="bold" transform="rotate(-90 15 ${20 + svgL / 2})">Panjang: ${l} mm</text>`;
-        svgContent += `</svg>`;
-        container.innerHTML = svgContent;
+        let c = JSON.parse(localStorage.getItem('diy_cart')) || []; c.push(lastCalculatedRecord); localStorage.setItem('diy_cart', JSON.stringify(c));
+        let h = JSON.parse(localStorage.getItem('diy_calc_history')) || []; h.push(lastCalculatedRecord); localStorage.setItem('diy_calc_history', JSON.stringify(h));
+        alert("Berjaya masukkan ke Troli!");
     }
 </script>
-
-<a href="../index.html" style="position: fixed; bottom: 20px; right: 20px; background: #fdee23; color: #111; padding: 12px 18px; border-radius: 30px; text-decoration: none; font-family: 'Inter', sans-serif; font-weight: 800; font-size: 14px; box-shadow: 0 4px 15px rgba(253,238,35,0.4); display: flex; align-items: center; gap: 6px; z-index: 9999; border: 1px solid #111;">
-    <span>←</span> Menu Utama
-</a>
-<script>
-    history.pushState(null, null, location.href);
-    window.addEventListener('popstate', function () { window.location.href = '../index.html'; });
-</script>
+<a href="../index.html" style="position: fixed; bottom: 20px; right: 20px; background: #fdee23; color: #111; padding: 12px 18px; border-radius: 30px; text-decoration: none; font-family: 'Inter', sans-serif; font-weight: 800; font-size: 14px; box-shadow: 0 4px 15px rgba(253,238,35,0.4); display: flex; align-items: center; gap: 6px; z-index: 9999; border: 1px solid #111;"><span>←</span> Menu Utama</a>
+<script>history.pushState(null, null, location.href); window.addEventListener('popstate', () => window.location.href = '../index.html');</script>
 </body>
 </html>
