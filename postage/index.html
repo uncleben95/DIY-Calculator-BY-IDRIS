@@ -21,9 +21,8 @@
         h2 { text-align: center; color: var(--text-main); margin-top: 0; margin-bottom: 20px; font-size: 20px; font-weight: 800; }
         .form-group { margin-bottom: 16px; }
         label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 13px; }
-        select, input[type="number"] { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 10px; font-size: 14px; box-sizing: border-box; outline: none; background: #fff; }
-        select:focus, input[type="number"]:focus { border-color: #d4b200; box-shadow: 0 0 0 3px rgba(253, 238, 35, 0.2); }
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        select, input[type="number"], input[type="text"] { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 10px; font-size: 14px; box-sizing: border-box; outline: none; background: #fff; }
+        select:focus, input:focus { border-color: #d4b200; box-shadow: 0 0 0 3px rgba(253, 238, 35, 0.2); }
         .calc-btn { background-color: var(--tng-yellow); color: var(--tng-dark); border: 1.5px solid #111; padding: 15px; width: 100%; font-size: 16px; font-weight: 800; border-radius: 12px; cursor: pointer; margin-top: 20px; box-shadow: 0 4px 12px rgba(253, 238, 35, 0.3); transition: 0.2s; }
         .calc-btn:active { transform: scale(0.98); }
         .result-box { margin-top: 25px; padding: 20px; background: #fffdf0; border-radius: 14px; border: 1.5px solid #f6e05e; display: none; }
@@ -42,10 +41,15 @@
     
     <div class="form-group">
         <label for="destRegion">Destinasi Penghantaran:</label>
-        <select id="destRegion">
+        <select id="destRegion" onchange="togglePostcodeField()">
             <option value="semenanjung">Semenanjung Malaysia</option>
             <option value="sabah_sarawak">Sabah & Sarawak</option>
         </select>
+    </div>
+
+    <div class="form-group" id="postcodeGroup" style="display: none;">
+        <label for="postcodeVal">Masukkan Poskod Penerima:</label>
+        <input type="text" id="postcodeVal" placeholder="Cth: 93000 (Kuching) atau 88000 (KK)">
     </div>
 
     <div class="form-group">
@@ -63,40 +67,110 @@
 </div>
 
 <script>
+    function togglePostcodeField() {
+        let region = document.getElementById('destRegion').value;
+        document.getElementById('postcodeGroup').style.display = (region === 'sabah_sarawak') ? 'block' : 'none';
+    }
+
     let lastCalculatedRecord = null;
+
+    // Senarai poskod khusus Sabah & Sarawak
+    const sabahPostcodes = [
+        { name: "Labuan", ranges: [[87008, 87033]] },
+        { name: "Kota Kinabalu", ranges: [[88700, 88875]] },
+        { name: "Sabah", ranges: [[89100, 89100], [89260, 89260], [89320, 89320], [89407, 89407], [89707, 89709]] },
+        { name: "Sandakan", ranges: [[90307, 90400], [90700, 90741]] },
+        { name: "Tawau", ranges: [[91007, 91035]] },
+        { name: "Lahad Datu", ranges: [[91105, 91109]] } // 91109-91105
+    ];
+
+    const sarawakPostcodes = [
+        { name: "Kuching", ranges: [[93700, 93916]] },
+        { name: "Sarawak", ranges: [[92527, 92527], [94007, 94100], [94507, 94507], [94650, 94650], [94807, 94950], [95300, 95300], [95407, 95600], [95707, 95707], [96007, 96009], [96107, 96350], [96500, 96707], [96807, 96807], [96900, 96950], [97007, 97200], [98007, 98058], [98107, 98300], [98707, 98857]] }
+    ];
+
+    function checkPostcodeArea(pc, list) {
+        let code = parseInt(pc);
+        if (isNaN(code)) return "Others";
+        
+        for (let area of list) {
+            for (let r of area.ranges) {
+                if (code >= r[0] && code <= r[1]) {
+                    return area.name;
+                }
+            }
+        }
+        return "Others";
+    }
 
     function calculatePostage() {
         let region = document.getElementById('destRegion').value;
         let weight = parseFloat(document.getElementById('itemWeight').value) || 0;
+        let postcode = document.getElementById('postcodeVal').value.trim();
 
         if (weight <= 0) {
             alert('Sila masukkan berat barang yang sah.');
             return;
         }
 
-        let baseRate = 0;
-        let perKgRate = 0;
-        let regionName = "";
+        let baseTotal = 0;
+        let descInfo = "";
 
         if (region === 'semenanjung') {
-            regionName = "Semenanjung Malaysia";
-            // Contoh kadar: 1kg pertama RM8.00, setiap kg seterusnya RM2.50
-            baseRate = 8.00;
-            perKgRate = 2.50;
-        } else {
-            regionName = "Sabah & Sarawak";
-            // Contoh kadar: 1kg pertama RM15.00, setiap kg seterusnya RM8.00
-            baseRate = 15.00;
-            perKgRate = 8.00;
-        }
+            // Kadar Semenanjung (1kg pertama RM8, seterusnya RM2.5)
+            baseTotal = (weight <= 1) ? 8.00 : (8.00 + ((Math.ceil(weight) - 1) * 2.50));
+            // Tambah SST 10% + RM10
+            let finalCost = (baseTotal * 1.10) + 10.00;
+            if (finalCost < 35.00) finalCost = 35.00;
 
-        let totalPostage = 0;
-        if (weight <= 1) {
-            totalPostage = baseRate;
+            descInfo = `Semenanjung (${weight}kg)`;
+            renderResult(descInfo, finalCost);
         } else {
-            totalPostage = baseRate + ((Math.ceil(weight) - 1) * perKgRate);
-        }
+            if (!postcode) {
+                alert('Sila masukkan poskod untuk kawasan Sabah / Sarawak.');
+                return;
+            }
 
+            let pcNum = parseInt(postcode);
+            let ratePerKg = 8.9; // Default Others
+            let locationName = "Others";
+
+            // Tentukan sama ada Sabah atau Sarawak berdasarkan poskod (Poskod Sabah bermula 87-91, Sarawak 93-98)
+            if (pcNum >= 87000 && pcNum <= 91299) {
+                // Sabah / Labuan
+                let matchedArea = checkPostcodeArea(postcode, sabahPostcodes);
+                if (matchedArea === "Kota Kinabalu") ratePerKg = 7.15;
+                else if (matchedArea === "Sandakan" || matchedArea === "Labuan" || matchedArea === "Tawau" || matchedArea === "Lahad Datu") ratePerKg = 8.00;
+                else ratePerKg = 8.90;
+                locationName = `Sabah (${matchedArea})`;
+            } else if (pcNum >= 92000 && pcNum <= 98899) {
+                // Sarawak
+                let matchedArea = checkPostcodeArea(postcode, sarawakPostcodes);
+                if (matchedArea === "Kuching") ratePerKg = 6.90;
+                else if (matchedArea === "Sibu") ratePerKg = 7.20;
+                else if (matchedArea === "Bintulu") ratePerKg = 7.30;
+                else if (matchedArea === "Miri") ratePerKg = 7.80;
+                else ratePerKg = 8.90;
+                locationName = `Sarawak (${matchedArea})`;
+            } else {
+                ratePerKg = 8.90;
+                locationName = `Sabah/Sarawak (Others)`;
+            }
+
+            // Kos Asas = Berat * Kadar RM/kg
+            let rawCost = weight * ratePerKg;
+            // Formula: Kos Asas + 10% SST + RM10
+            let calculatedCost = (rawCost * 1.10) + 10.00;
+
+            // Caj minimum RM35
+            let finalCost = calculatedCost < 35.00 ? 35.00 : calculatedCost;
+
+            descInfo = `${locationName} - ${weight}kg (Kadar: RM${ratePerKg}/kg)`;
+            renderResult(descInfo, finalCost);
+        }
+    }
+
+    function renderResult(infoText, totalCost) {
         let tableHtml = `
             <table class="price-table">
                 <tr>
@@ -105,13 +179,13 @@
                     <th>Jumlah (RM)</th>
                 </tr>
                 <tr>
-                    <td>Kos Penghantaran (${regionName})</td>
-                    <td>Berat: ${weight} kg</td>
-                    <td>RM ${totalPostage.toFixed(2)}</td>
+                    <td>Kos Postage (SST 10% + RM10 Termasuk)</td>
+                    <td>${infoText}</td>
+                    <td>RM ${totalCost.toFixed(2)}</td>
                 </tr>
                 <tr style="font-weight: bold; background: #fff;">
                     <td colspan="2" style="text-align: right;">TOTAL POSTAGE:</td>
-                    <td style="color: #111;">RM ${totalPostage.toFixed(2)}</td>
+                    <td style="color: #111;">RM ${totalCost.toFixed(2)}</td>
                 </tr>
             </table>
         `;
@@ -121,9 +195,9 @@
         document.getElementById('addCartBtn').style.display = 'block';
 
         lastCalculatedRecord = {
-            tajuk: `Postage (${regionName})`,
-            info: `Berat: ${weight}kg`,
-            harga: "RM " + totalPostage.toFixed(2)
+            tajuk: `Postage`,
+            info: infoText,
+            harga: "RM " + totalCost.toFixed(2)
         };
     }
 
@@ -145,7 +219,6 @@
     }
 </script>
 
-<!-- BUTANG KEMBALI KE MENU UTAMA -->
 <a href="../index.html" style="position: fixed; bottom: 20px; right: 20px; background: #fdee23; color: #111; padding: 12px 18px; border-radius: 30px; text-decoration: none; font-family: 'Inter', sans-serif; font-weight: 800; font-size: 14px; box-shadow: 0 4px 15px rgba(253,238,35,0.4); display: flex; align-items: center; gap: 6px; z-index: 9999; border: 1px solid #111;">
     <span>←</span> Menu Utama
 </a>
