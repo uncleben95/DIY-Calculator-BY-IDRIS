@@ -209,8 +209,8 @@
 
     <!-- FOOTER -->
     <div class="footer-box">
-        <span>Idris Portal &bull; v5.0</span>
-        <div class="visitor-badge">Pelawat: <span id="visitorCount">1,740</span></div>
+        <span>Idris Portal &bull; v5.1</span>
+        <div class="visitor-badge">Pelawat: <span id="visitorCount">1,780</span></div>
     </div>
 
     <!-- LOADING OVERLAY -->
@@ -230,14 +230,19 @@
 
         function bukaLalamoveApp() {
             const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-            window.location.href = "lalamove://";
-            setTimeout(function() {
-                if (/android/i.test(userAgent)) {
-                    window.location.href = "https://play.google.com/store/apps/details?id=com.lalamove.hue.android";
-                } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+            
+            if (/android/i.test(userAgent)) {
+                // Android Intent untuk Lalamove
+                window.location.href = "intent://#Intent;package=com.lalamove.hue.android;scheme=lalamove;end;";
+            } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                // iOS Deep Link & Fallback ke App Store
+                window.location.href = "lalamove://";
+                setTimeout(function() {
                     window.location.href = "https://apps.apple.com/my/app/lalamove-delivery-service/id946343438";
-                }
-            }, 1500);
+                }, 1500);
+            } else {
+                window.open("https://www.lalamove.com/", "_blank");
+            }
         }
 
         function triggerUploadModal() { document.getElementById('galleryInput').click(); }
