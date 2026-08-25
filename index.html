@@ -202,13 +202,14 @@
     <!-- SERVICES GRID (TERMASUK KIRAAN LOGISTIK ALA LALAMOVE) -->
     <div class="services-grid">
         <!-- 1. Kalkulator Logistik / Penghantaran Bahan (Ala Lalamove) -->
-        <div class="service-card" onclick="bukaApps('logistics/index.html', 'Kira Logistik')">
+                <!-- 1. Buka Apps Lalamove Terus (iOS / Android) -->
+        <div class="service-card" onclick="bukaLalamoveApp()">
             <div class="service-img">
-                <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=150&auto=format&fit=crop&q=80" alt="Logistik Lalamove">
+                <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=150&auto=format&fit=crop&q=80" alt="Lalamove">
             </div>
             <div class="service-details">
-                <h4>Kira Kos Logistik (Van/Lori)</h4>
-                <p>Kira anggaran kos penghantaran barang binaan ikut jarak KM.</p>
+                <h4>Buka Apps Lalamove</h4>
+                <p>Tempah lori atau van penghantaran barang binaan dengan pantas.</p>
             </div>
         </div>
 
@@ -362,5 +363,29 @@
             renderHistory();
         }
     </script>
+    <script>
+    function bukaLalamoveApp() {
+        // Kesan jenis peranti pengguna (iOS atau Android)
+        const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+        
+        // Pautan Universal / Deep Link Lalamove rasmi
+        let lalamoveAppSchema = "lalamove://"; // Skema universal
+        
+        // Cuba buka apps Lalamove
+        window.location.href = lalamoveAppSchema;
+
+        // Fallback: Jika dalam masa 1.5 saat apps tidak terbuka, arahkan ke kedai aplikasi mengikut peranti
+        setTimeout(function() {
+            if (/android/i.test(userAgent)) {
+                // Link Play Store Lalamove
+                window.location.href = "https://play.google.com/store/apps/details?id=com.lalamove.hue.android";
+            } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                // Link App Store Lalamove
+                window.location.href = "https://apps.apple.com/my/app/lalamove-delivery-service/id946343438";
+            }
+        }, 1500);
+    }
+</script>
+
 </body>
 </html>
