@@ -8,10 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --tng-yellow: #fdee23;
-            --tng-dark: #111111;
-        }
+        :root { --tng-yellow: #fdee23; --tng-dark: #111111; }
         body { font-family: 'Inter', sans-serif; background-color: #f4f5f7; color: #111; }
     </style>
 </head>
@@ -83,9 +80,9 @@
             
             <div class="flex justify-between border-t border-slate-200 pt-2 text-base">
                 <span class="font-semibold text-slate-800">Jumlah Anggaran Keseluruhan:</span>
-                <span id="totalPrice" class="font-bold text-amber-700">RM 0.00</span>
+                <span id="totalPrice" class="font-bold text-amber-900">RM 0.00</span>
             </div>
-            <button class="w-add-cart bg-[#00B14F] text-white font-bold py-2.5 rounded-lg text-xs mt-2 w-full" onclick="addWainscotingToCart()">+ Masukkan ke Troli (Cart)</button>
+            <button class="w-add-cart bg-[#fdee23] hover:bg-[#e6d61a] text-[#111] border border-slate-300 font-extrabold py-3 rounded-lg text-sm mt-2 w-full shadow-sm" onclick="addWainscotingToCart()">+ Masukkan ke Troli (Cart)</button>
         </div>
 
         <div id="visualContainer" class="hidden space-y-3">
@@ -172,7 +169,7 @@
                 let chairRailSticks = Math.ceil((wMm * 1.10) / 2400);
                 let chairRailTotalCost = chairRailSticks * 70;
                 totalPrice += chairRailTotalCost;
-                breakdownHtml += `<div class="flex justify-between text-amber-700 font-medium border-t pt-1"><span>Chair Rail [${chairRailSticks}btg x RM70]:</span> <span>RM ${chairRailTotalCost}</span></div>`;
+                breakdownHtml += `<div class="flex justify-between text-amber-800 font-medium border-t pt-1"><span>Chair Rail [${chairRailSticks}btg x RM70]:</span> <span>RM ${chairRailTotalCost}</span></div>`;
             }
 
             lastTotalPriceNum = totalPrice;
@@ -206,7 +203,7 @@
         }
 
         function addWainscotingToCart() {
-            if (!lastCalculatedRecord) return;
+            if (!lastCalculatedRecord) { alert("Sila buat pengiraan terlebih dahulu!"); return; }
             let cartData = JSON.parse(localStorage.getItem('diy_cart')) || [];
             cartData.push(lastCalculatedRecord);
             localStorage.setItem('diy_cart', JSON.stringify(cartData));
