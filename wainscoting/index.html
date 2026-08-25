@@ -36,7 +36,7 @@
                 <label class="block font-medium text-slate-700 mb-1">Gaya Susun Atur</label>
                 <select id="layoutStyle" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white">
                     <option value="with_chairrail">Dengan Chair Rail (Atas & Bawah)</option>
-                    <option value="without_chairrail">Tanpa Chair Rail (Kotak Penuh Sahaja)</option>
+                    <option value="without_chairrail">Tanpa Chair Rail (Kotak Penuh Menegak)</option>
                 </select>
             </div>
 
@@ -92,7 +92,6 @@
                     📥 Save to Phone (.png)
                 </button>
             </div>
-            <!-- Kotak Visual Lengkap Atas & Bawah -->
             <div id="captureArea" class="w-full bg-white rounded-xl p-3 flex flex-col justify-between items-center border-2 border-slate-300 shadow-inner relative overflow-x-auto min-h-[300px]"></div>
         </div>
     </div>
@@ -126,10 +125,6 @@
 
             if (wMm <= 0 || hMm <= 0) { alert('Sila masukkan ukuran dinding yang sah.'); return; }
 
-            let bottomBoxHeight = 600, chairRailHeight = 70, totalGaps = 400;
-            let topBoxHeight = hMm - bottomBoxHeight - chairRailHeight - totalGaps;
-            if (topBoxHeight < 100) topBoxHeight = 300;
-
             let effectiveWidth = wMm, unitWidth = 0, boxWidths = [];
             if (pattern === '1:1') { effectiveWidth = wMm - 300; unitWidth = effectiveWidth / 2; boxWidths = [unitWidth, unitWidth]; }
             else if (pattern === '1:2:1') { effectiveWidth = wMm - 400; unitWidth = effectiveWidth / 4; boxWidths = [unitWidth, unitWidth * 2, unitWidth]; }
@@ -139,18 +134,23 @@
             else if (pattern === '1') { effectiveWidth = wMm - 200; boxWidths = [effectiveWidth]; }
 
             let totalPrice = 0, breakdownHtml = "", sizeCounts = {};
+            let targetBoxHeight = (style === 'without_chairrail') ? (hMm - 300) : (hMm - 1000); // Kotak penuh tinggi jika tiada chair rail
+            if (targetBoxHeight < 300) targetBoxHeight = 300;
 
             boxWidths.forEach((bw) => {
                 let roundedW = Math.round(bw);
-                let stdW_Top = getCeilStandardSize(roundedW), stdH_Top = getCeilStandardSize(topBoxHeight);
-                let keyTop = `${stdW_Top}x${stdH_Top}`;
-                if (!sizeCounts[keyTop]) sizeCounts[keyTop] = { count: 0, w: roundedW, h: Math.round(topBoxHeight), stdW: stdW_Top, stdH: stdH_Top, type: 'Atas' };
-                sizeCounts[keyTop].count += 1;
+                let stdW = getCeilStandardSize(roundedW), stdH = getCeilStandardSize(targetBoxHeight);
+                let key = `${stdW}x${stdH}`;
+                let labelType = (style === 'without_chairrail') ? 'Penuh Menegak' : 'Atas';
+
+                if (!sizeCounts[key]) sizeCounts[key] = { count: 0, w: roundedW, h: Math.round(targetBoxHeight), stdW: stdW, stdH: stdH, type: labelType };
+                sizeCounts[key].count += 1;
 
                 if (style === 'with_chairrail') {
-                    let stdH_Bot = getCeilStandardSize(bottomBoxHeight);
-                    let keyBot = `${stdW_Top}x${stdH_Bot}`;
-                    if (!sizeCounts[keyBot]) sizeCounts[keyBot] = { count: 0, w: roundedW, h: 600, stdW: stdW_Top, stdH: stdH_Bot, type: 'Bawah' };
+                    let botBoxH = 600;
+                    let stdH_Bot = getCeilStandardSize(botBoxH);
+                    let keyBot = `${stdW}x${stdH_Bot}`;
+                    if (!sizeCounts[keyBot]) sizeCounts[keyBot] = { count: 0, w: roundedW, h: botBoxH, stdW: stdW, stdH: stdH_Bot, type: 'Bawah' };
                     sizeCounts[keyBot].count += 1;
                 }
             });
@@ -182,32 +182,45 @@
             document.getElementById('totalPrice').innerText = 'RM ' + totalPrice.toFixed(2);
             document.getElementById('resultContainer').classList.remove('hidden');
 
-            // --- LUKIS VISUAL WAINCOTING (ATAS, CHAIR RAIL, BAWAH) ---
+            // --- LUKIS VISUAL WAINCOTING ---
             let previewBox = document.getElementById('captureArea');
             previewBox.innerHTML = '';
             document.getElementById('visualContainer').classList.remove('hidden');
 
             let frameColorClass = (frameColor === 'gold') ? 'border-yellow-600 text-yellow-700' : 'border-slate-900 text-slate-900';
 
-            // Baris Atas
-            let topRow = document.createElement('div');
-            topRow.className = 'w-full flex justify-around items-center gap-1.5 px-1';
-            topRow.style.height = '100px';
+            if (style === 'without_chairrail') {
+                // Kotak Penuh Menegak Sahaja
+                let fullRow = document.createElement('div');
+                fullRow.className = 'w-full flex justify-around items-center gap-1.5 px-1';
+                fullRow.style.height = '240px';
 
-            boxWidths.forEach((bw) => {
-                let boxEl = document.createElement('div');
-                boxEl.className = `border-[3px] ${frameColorClass} bg-white rounded flex items-center justify-center text-[9px] font-bold shadow-xs`;
-                boxEl.style.flexGrow = bw; boxEl.style.flexBasis = '0'; boxEl.style.height = '100%';
-                boxEl.innerText = `${Math.round(bw)}x${Math.round(topBoxHeight)}`;
-                topRow.appendChild(boxEl);
-            });
-            previewBox.appendChild(topRow);
+                boxWidths.forEach((bw) => {
+                    let boxEl = document.createElement('div');
+                    boxEl.className = `border-[3px] ${frameColorClass} bg-white rounded flex items-center justify-center text-[10px] font-bold shadow-xs`;
+                    boxEl.style.flexGrow = bw; boxEl.style.flexBasis = '0'; boxEl.style.height = '100%';
+                    boxEl.innerText = `${Math.round(bw)}x${Math.round(targetBoxHeight)}`;
+                    fullRow.appendChild(boxEl);
+                });
+                previewBox.appendChild(fullRow);
+            } else {
+                // Dengan Chair Rail (Atas & Bawah)
+                let topRow = document.createElement('div');
+                topRow.className = 'w-full flex justify-around items-center gap-1.5 px-1';
+                topRow.style.height = '110px';
 
-            // Jika ada Chair Rail
-            if (style === 'with_chairrail') {
+                boxWidths.forEach((bw) => {
+                    let boxEl = document.createElement('div');
+                    boxEl.className = `border-[3px] ${frameColorClass} bg-white rounded flex items-center justify-center text-[9px] font-bold shadow-xs`;
+                    boxEl.style.flexGrow = bw; boxEl.style.flexBasis = '0'; boxEl.style.height = '100%';
+                    boxEl.innerText = `${Math.round(bw)}x${Math.round(targetBoxHeight)}`;
+                    topRow.appendChild(boxEl);
+                });
+                previewBox.appendChild(topRow);
+
                 let chairRailEl = document.createElement('div');
                 chairRailEl.className = 'w-full bg-amber-800 my-2 text-white text-[9px] font-bold text-center py-0.5 rounded';
-                chairRailEl.innerText = '--- CHAIR RAIL (Lungsur Kayu) ---';
+                chairRailEl.innerText = '--- CHAIR RAIL ---';
                 previewBox.appendChild(chairRailEl);
 
                 let botRow = document.createElement('div');
