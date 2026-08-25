@@ -25,7 +25,8 @@
         .price-table th { background-color: #f1f5f9; }
         .visual-container { margin-top: 20px; text-align: center; background: #fff; border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; }
         svg { max-width: 100%; height: auto; background: #fafafa; border: 1px dashed var(--border-color); border-radius: 6px; }
-        .add-cart-main-btn { background-color: #00B14F; color: white; border: none; padding: 14px; width: 100%; font-size: 15px; font-weight: 700; border-radius: 12px; cursor: pointer; margin-top: 15px; box-shadow: 0 4px 12px rgba(0, 177, 79, 0.3); display: none; }
+        .add-cart-main-btn { background-color: var(--tng-yellow); color: var(--tng-dark); border: 1.5px solid #111; padding: 14px; width: 100%; font-size: 15px; font-weight: 800; border-radius: 12px; cursor: pointer; margin-top: 15px; box-shadow: 0 4px 12px rgba(253, 238, 35, 0.3); display: none; transition: 0.2s; }
+        .add-cart-main-btn:active { transform: scale(0.98); }
     </style>
 </head>
 <body>
@@ -69,7 +70,7 @@
         calc.sort((a,b) => a.waste - b.waste); let best = calc[0];
         let pCost = best.pcs * prof.lengths[best.len], accN = Math.ceil((2*(roomW+roomL))/5500), accCost = accN * prof.accessoryPrice, total = pCost + accCost;
         document.getElementById('resultSection').style.display = 'block'; document.getElementById('addCartBtn').style.display = 'block';
-        document.getElementById('resultText').innerHTML = `<strong>Susunan: ${best.o}</strong><br>Panjang: ${best.len}mm | Kuantiti: ${best.pcs} kpg<br><table class="price-table"><tr><th>Komponen</th><th>Kuantiti</th><th>Jumlah</th></tr><tr><td>Panel (${best.len}mm)</td><td>${best.pcs} kpg</td><td>RM ${pCost.toFixed(2)}</td></tr><tr><td>Aksesori</td><td>${accN} btg</td><td>RM ${accCost.toFixed(2)}</td></tr><tr style="font-weight:bold;"><td colspan="2" style="text-align:right;">TOTAL:</td><td style="color:#00B14F;">RM ${total.toFixed(2)}</td></tr></table>`;
+        document.getElementById('resultText').innerHTML = `<strong>Susunan: ${best.o}</strong><br>Panjang: ${best.len}mm | Kuantiti: ${best.pcs} kpg<br><table class="price-table"><tr><th>Komponen</th><th>Kuantiti</th><th>Jumlah</th></tr><tr><td>Panel (${best.len}mm)</td><td>${best.pcs} kpg</td><td>RM ${pCost.toFixed(2)}</td></tr><tr><td>Aksesori</td><td>${accN} btg</td><td>RM ${accCost.toFixed(2)}</td></tr><tr style="font-weight:bold;"><td colspan="2" style="text-align:right;">TOTAL:</td><td style="color:#111;">RM ${total.toFixed(2)}</td></tr></table>`;
         lastCalculatedRecord = { tajuk: "Ceiling Series", info: `${roomW}x${roomL}mm (${best.o})`, harga: "RM " + total.toFixed(2) };
     }
     function addCeilingToCart() {
