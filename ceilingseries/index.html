@@ -15,7 +15,7 @@
         label { font-weight: 600; margin-bottom: 6px; font-size: 13px; }
         select, input { padding: 12px; border: 1px solid var(--border-color); border-radius: 10px; font-size: 14px; outline: none; background: #fff; }
         select:focus, input:focus { border-color: #d4b200; box-shadow: 0 0 0 3px rgba(253, 238, 35, 0.2); }
-        button.calc-btn { background-color: var(--tng-yellow); color: var(--tng-dark); border: none; padding: 15px; font-size: 16px; font-weight: 800; border-radius: 12px; cursor: pointer; width: 100%; box-shadow: 0 4px 12px rgba(253, 238, 35, 0.3); }
+        button.calc-btn { background-color: var(--tng-yellow); color: var(--tng-dark); border: 1.5px solid #111; padding: 15px; font-size: 16px; font-weight: 800; border-radius: 12px; cursor: pointer; width: 100%; box-shadow: 0 4px 12px rgba(253, 238, 35, 0.3); }
         button.calc-btn:active { transform: scale(0.98); }
         .result-section { margin-top: 25px; border-top: 2px solid var(--border-color); padding-top: 20px; }
         .result-card { background: #fffdf0; padding: 16px; border-radius: 12px; margin-bottom: 15px; border: 1.5px solid #f6e05e; font-size: 13px; }
@@ -74,7 +74,7 @@
         lastCalculatedRecord = { tajuk: "Ceiling Series", info: `${roomW}x${roomL}mm (${best.o})`, harga: "RM " + total.toFixed(2) };
     }
     function addCeilingToCart() {
-        if (!lastCalculatedRecord) return;
+        if (!lastCalculatedRecord) { alert("Sila buat pengiraan terlebih dahulu!"); return; }
         let c = JSON.parse(localStorage.getItem('diy_cart')) || []; c.push(lastCalculatedRecord); localStorage.setItem('diy_cart', JSON.stringify(c));
         let h = JSON.parse(localStorage.getItem('diy_calc_history')) || []; h.push(lastCalculatedRecord); localStorage.setItem('diy_calc_history', JSON.stringify(h));
         alert("Berjaya masukkan ke Troli!");
