@@ -81,13 +81,12 @@
 
     <!-- Kotak Visual Canvas -->
     <div class="visual-container" id="visualBox">
-        <h3 style="font-size: 14px; margin-top: 0;">Anggaran Susun Atur Lantai</h3>
+        <h3 id="visualTitle" style="font-size: 14px; margin-top: 0;">Anggaran Susun Atur Lantai</h3>
         <canvas id="canvasVisual"></canvas>
     </div>
 </div>
 
 <script>
-    // Data Harga Standard
     const spcData = {
         ecoflex: { name: "SPC Ecoflex", sqft: 24, price: 90 },
         microcement: { name: "SPC Microcement", sqft: 20, price: 110 },
@@ -105,7 +104,6 @@
 
         if (w <= 0 || l <= 0) { alert("Sila masukkan ukuran yang sah!"); return; }
 
-        // Tukar ukuran kepada sqft
         let areaSqft = 0;
         let perimeterFt = 0;
         if (unit === 'mm') {
@@ -117,15 +115,12 @@
         }
 
         let totalSqft = areaSqft * (1 + (wastage / 100));
-        
         let selectedSPC = spcData[jenis];
         let kotakDiperlukan = Math.ceil(totalSqft / selectedSPC.sqft);
         let hargaLantai = kotakDiperlukan * selectedSPC.price;
 
-        // Skirting estimate (8ft per batang)
         let skirtingBtg = Math.ceil(perimeterFt / 8);
-        let hargaSkirting = skirtingBtg * 25; // Andaikan RM25 sebatang
-        
+        let hargaSkirting = skirtingBtg * 25;
         let grandTotal = hargaLantai + hargaSkirting;
 
         document.getElementById('resultBox').style.display = "block";
@@ -148,56 +143,93 @@
             harga: "RM " + grandTotal.toFixed(2)
         };
 
-        // Paparkan dan lukis visual
         document.getElementById('visualBox').style.display = "block";
-        lukisVisualSPC(w, l, unit);
+        document.getElementById('visualTitle').innerText = `Anggaran Susun Atur (${selectedSPC.name})`;
+        
+        if (jenis === 'herringbone') {
+            lukisVisualHerringbone(w, l);
+        } else {
+            lukisVisualBrick(w, l);
+        }
     }
 
-    function lukisVisualSPC(w, l, unit) {
+    // 1. Lakaran Corak Brick / Staggered (Separuh-separuh berselang-seli untuk Ecoflex & Microcement)
+    function lukisVisualBrick(w, l) {
         let canvas = document.getElementById("canvasVisual");
         let ctx = canvas.getContext("2d");
-        
         canvas.width = canvas.parentElement.clientWidth - 30; 
         canvas.height = 240;
-        
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         
-        // Setup skala lukisan (Aspect Ratio)
         let scale = Math.min((canvas.width - 40) / w, (canvas.height - 40) / l);
-        let drawW = w * scale;
-        let drawH = l * scale;
-        let startX = (canvas.width - drawW) / 2;
-        let startY = (canvas.height - drawH) / 2;
+        let drawW = w * scale, drawH = l * scale;
+        let startX = (canvas.width - drawW) / 2, startY = (canvas.height - drawH) / 2;
 
-        // Warna Latar Lantai
-        ctx.fillStyle = "#fff8b0"; // Kuning kayu cair
+        ctx.fillStyle = "#fff8b0";
         ctx.fillRect(startX, startY, drawW, drawH);
         
-        // Lukis Garisan Corak Lantai (Planks)
         ctx.strokeStyle = "#d4b200";
         ctx.lineWidth = 1;
         
-        let plankW_px = drawW / 10;
-        let plankH_px = drawH / 20;
+        let plankW = drawW / 8;
+        let plankH = drawH / 16;
 
-        for (let i = 0; i <= drawW; i += plankW_px) {
+        // Lukis corak berselang-seli separuh (Staggered offset)
+        for (let y = 0; y <= drawH; y += plankH) {
             ctx.beginPath();
-            ctx.moveTo(startX + i, startY);
-            ctx.lineTo(startX + i, startY + drawH);
+            ctx.moveTo(startX, startY + y);
+            ctx.lineTo(startX + drawW, startY + y);
             ctx.stroke();
         }
-        
-        for (let i = 0; i < drawW; i += plankW_px) {
-            let offset = (Math.random() > 0.5) ? (plankH_px / 2) : 0;
-            for (let j = offset; j < drawH; j += plankH_px) {
+
+        let rowIndex = 0;
+        for (let y = 0; y < drawH; y += plankH) {
+            let offset = (rowIndex % 2 === 0) ? 0 : (plankW / 2);
+            for (let x = offset; x <= drawW; x += plankW) {
                 ctx.beginPath();
-                ctx.moveTo(startX + i, startY + j);
-                ctx.lineTo(startX + i + plankW_px, startY + j);
+                ctx.moveTo(startX + x, startY + y);
+                ctx.lineTo(startX + x, startY + y + plankH);
                 ctx.stroke();
             }
+            rowIndex++;
         }
 
-        // Bingkai Luar Bilik (Skirting)
+        ctx.strokeStyle = "#111"; 
+        ctx.lineWidth = 4; 
+        ctx.strokeRect(startX, startY, drawW, drawH);
+    }
+
+    // 2. Lakaran Corak Tulang Ikan (Herringbone Zig-Zag)
+    function lukisVisualHerringbone(w, l) {
+        let canvas = document.getElementById("canvasVisual");
+        let ctx = canvas.getContext("2d");
+        canvas.width = canvas.parentElement.clientWidth - 30; 
+        canvas.height = 240;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        let scale = Math.min((canvas.width - 40) / w, (canvas.height - 40) / l);
+        let drawW = w * scale, drawH = l * scale;
+        let startX = (canvas.width - drawW) / 2, startY = (canvas.height - drawH) / 2;
+
+        ctx.fillStyle = "#fff4cc";
+        ctx.fillRect(startX, startY, drawW, drawH);
+        
+        ctx.strokeStyle = "#b89b00";
+        ctx.lineWidth = 1;
+
+        let step = 18; // Saiz corak herringbone
+        for (let x = -drawH; x < drawW + drawH; x += step) {
+            ctx.beginPath();
+            ctx.moveTo(startX + x, startY);
+            ctx.lineTo(startX + x + drawH, startY + drawH);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(startX + x + drawH, startY);
+            ctx.lineTo(startX + x, startY + drawH);
+            ctx.stroke();
+        }
+
         ctx.strokeStyle = "#111"; 
         ctx.lineWidth = 4; 
         ctx.strokeRect(startX, startY, drawW, drawH);
@@ -205,7 +237,6 @@
 
     function addSPCToCart() {
         if (!lastCalculatedRecord) { alert("Sila buat pengiraan terlebih dahulu!"); return; }
-        
         let c = JSON.parse(localStorage.getItem('diy_cart')) || []; 
         c.push(lastCalculatedRecord); 
         localStorage.setItem('diy_cart', JSON.stringify(c));
