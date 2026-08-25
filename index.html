@@ -23,17 +23,6 @@
             --shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
         }
 
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg-color: #121212;
-                --card-bg: #1e1e1e;
-                --text-main: #f3f4f6;
-                --text-sub: #9ca3af;
-                --border-color: #2a2a2a;
-                --shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-            }
-        }
-
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
             font-family: 'Inter', sans-serif;
@@ -62,12 +51,12 @@
         .user-info p { font-size: 12px; color: var(--text-sub); margin: 2px 0 0; }
 
         .cart-btn {
-            background: var(--card-bg); border: 1px solid var(--border-color); padding: 10px 14px;
+            background: var(--tng-yellow); border: 1.5px solid var(--tng-dark); padding: 10px 14px;
             border-radius: 14px; cursor: pointer; display: flex; align-items: center; gap: 8px;
-            box-shadow: var(--shadow); font-weight: 700; font-size: 14px; color: var(--text-main); position: relative;
+            box-shadow: var(--shadow); font-weight: 800; font-size: 14px; color: var(--tng-dark); position: relative;
         }
         .cart-badge {
-            background: #ef4444; color: white; font-size: 10px; padding: 2px 6px; border-radius: 10px;
+            background: #111; color: var(--tng-yellow); font-size: 10px; padding: 2px 6px; border-radius: 10px;
             position: absolute; top: -5px; right: -5px; font-weight: 800;
         }
 
@@ -77,7 +66,7 @@
             background: linear-gradient(135deg, #fdee23, #ffcc00);
             color: #111111; padding: 22px; border-radius: 20px; margin-bottom: 24px;
             box-shadow: 0 8px 24px rgba(253, 238, 35, 0.25);
-            border: 1px solid rgba(0,0,0,0.05);
+            border: 1.5px solid var(--tng-dark);
         }
         .promo-banner h3 { margin: 0 0 6px 0; font-size: 18px; font-weight: 800; }
         .promo-banner p { margin: 0; font-size: 13px; opacity: 0.85; line-height: 1.4; }
@@ -112,12 +101,12 @@
         .history-item:last-child { border-bottom: none; }
         .history-item b { color: var(--text-main); font-size: 13px; }
         .add-cart-btn {
-            background: #111; color: #fdee23; border: none; padding: 6px 10px; border-radius: 8px;
-            font-size: 11px; font-weight: 700; cursor: pointer; margin-top: 4px;
+            background: var(--tng-yellow); color: var(--tng-dark); border: 1px solid #111; padding: 6px 10px; border-radius: 8px;
+            font-size: 11px; font-weight: 800; cursor: pointer; margin-top: 4px;
         }
         .clear-btn { background: none; border: none; color: #ef4444; font-size: 11px; font-weight: 600; cursor: pointer; }
 
-        /* CART MODAL (SKRIN TROLI) */
+        /* CART MODAL (SKRIN TROLI) - TEMA KUNING TNG */
         .cart-modal {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6);
             backdrop-filter: blur(5px); z-index: 2000; display: flex; align-items: flex-end;
@@ -144,9 +133,11 @@
         .summary-row { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 8px; }
         .summary-total { display: flex; justify-content: space-between; font-size: 18px; font-weight: 800; color: #111; margin-top: 10px; }
         
+        /* Butang WhatsApp / Checkout bertukar jadi Kuning TNG */
         .checkout-btn {
-            background: #00B14F; color: white; border: none; width: 100%; padding: 14px;
-            border-radius: 14px; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 20px; text-align: center;
+            background: var(--tng-yellow); color: var(--tng-dark); border: 1.5px solid #111; width: 100%; padding: 14px;
+            border-radius: 14px; font-size: 16px; font-weight: 800; cursor: pointer; margin-top: 20px; text-align: center;
+            box-shadow: 0 4px 12px rgba(253, 238, 35, 0.3);
         }
 
         /* FOOTER */
@@ -181,7 +172,7 @@
             </div>
         </div>
         
-        <!-- Butang Troli -->
+        <!-- Butang Troli Kuning TNG -->
         <button class="cart-btn" onclick="toggleCartModal()">
             🛒 Troli <span class="cart-badge" id="cartBadgeCount">0</span>
         </button>
@@ -197,7 +188,6 @@
 
     <!-- SERVICES GRID -->
     <div class="services-grid">
-        <!-- Lalamove -->
         <div class="service-card" onclick="bukaLalamoveApp()">
             <div class="service-img">
                 <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=150&auto=format&fit=crop&q=80" alt="Lalamove">
@@ -208,7 +198,6 @@
             </div>
         </div>
 
-        <!-- SPC Flooring Calculator -->
         <div class="service-card" onclick="bukaApps('spcflooring/index.html', 'SPC Flooring Calculator')">
             <div class="service-img">
                 <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=150&auto=format&fit=crop&q=80" alt="SPC Flooring">
@@ -219,7 +208,6 @@
             </div>
         </div>
 
-        <!-- Board with Fluted Panelling Calculator -->
         <div class="service-card" onclick="bukaApps('wallpanelling/index.html', 'Board with Fluted Panelling Calculator')">
             <div class="service-img">
                 <img src="https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=150&auto=format&fit=crop&q=80" alt="Fluted Panel">
@@ -230,7 +218,6 @@
             </div>
         </div>
 
-        <!-- Ceiling Series Calculator -->
         <div class="service-card" onclick="bukaApps('ceilingseries/index.html', 'Ceiling Series Calculator')">
             <div class="service-img">
                 <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=150&auto=format&fit=crop&q=80" alt="Ceiling Series">
@@ -241,7 +228,6 @@
             </div>
         </div>
         
-        <!-- Wainscoting Calculator -->
         <div class="service-card" onclick="bukaApps('wainscoting/index.html', 'Wainscoting Calculator')">
             <div class="service-img">
                 <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?w=150&auto=format&fit=crop&q=80" alt="Wainscoting">
@@ -253,7 +239,7 @@
         </div>
     </div>
 
-    <!-- SEJARAH DENGAN BUTANG ADD TO CART -->
+    <!-- SEJARAH -->
     <div class="section-title">
         <span>Sejarah Pengiraan</span>
         <button class="clear-btn" onclick="clearHistory()">Kosongkan</button>
@@ -264,8 +250,8 @@
 
     <!-- FOOTER -->
     <div class="footer-box">
-        <span>Idris Portal &bull; v6.1</span>
-        <div class="visitor-badge">Pelawat: <span id="visitorCount">1,850</span></div>
+        <span>Idris Portal &bull; v6.2</span>
+        <div class="visitor-badge">Pelawat: <span id="visitorCount">1,890</span></div>
     </div>
 
     <!-- SKRIN TROLI (CART MODAL) -->
@@ -276,9 +262,7 @@
                 <button class="close-cart" onclick="toggleCartModal()">✕</button>
             </div>
             
-            <div id="cartItemsContainer" style="max-height: 220px; overflow-y: auto;">
-                <!-- Senarai item masuk sini -->
-            </div>
+            <div id="cartItemsContainer" style="max-height: 220px; overflow-y: auto;"></div>
 
             <!-- Kotak Kos Lalamove -->
             <div class="lalamove-box">
@@ -298,10 +282,11 @@
                 </div>
                 <div class="summary-total">
                     <span>TOTAL KESELURUHAN:</span>
-                    <span id="cartGrandTotalText" style="color: #00B14F;">RM 0.00</span>
+                    <span id="cartGrandTotalText" style="color: #111;">RM 0.00</span>
                 </div>
             </div>
 
+            <!-- Butang Hantar Pesanan Kuning TNG -->
             <button class="checkout-btn" onclick="proceedCheckout()">Hantar Pesanan / WhatsApp</button>
         </div>
     </div>
@@ -336,7 +321,6 @@
             }
         }
 
-        // --- SISTEM SEJARAH & CART ---
         function renderHistory() {
             const historyBox = document.getElementById('historyListBox');
             let historyData = JSON.parse(localStorage.getItem('diy_calc_history')) || [];
@@ -367,7 +351,6 @@
             renderHistory();
         }
 
-        // --- FUNGSI TROLI (CART) ---
         function addToCart(index) {
             let historyData = JSON.parse(localStorage.getItem('diy_calc_history')) || [];
             let itemToCart = historyData[index];
@@ -411,7 +394,7 @@
                     <div class="cart-list-item">
                         <div>
                             <b>${item.tajuk}</b> (${item.info})<br>
-                            <span style="color: #00B14F; font-weight: 700;">${item.harga}</span>
+                            <span style="color: #111; font-weight: 700;">${item.harga}</span>
                         </div>
                         <button class="remove-item" onclick="removeFromCart(${index})">Buang</button>
                     </div>
@@ -466,7 +449,6 @@
             window.open(url, '_blank');
         }
 
-        // --- PROFIL & NAVIGASI ---
         function triggerUploadModal() { document.getElementById('galleryInput').click(); }
 
         function previewProfileImage(event) {
