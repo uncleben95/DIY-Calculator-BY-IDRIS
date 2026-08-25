@@ -308,9 +308,7 @@
             return;
         }
 
-        // Tukar mm ke kaki persegi (sqft): (mm / 304.8) * (mm / 304.8)
         let sqftArea = (wMm / 304.8) * (lMm / 304.8);
-        // Tambah 5% untuk wastage pemotongan
         let adjustedSqft = sqftArea * 1.05;
 
         let boxCount = 0;
@@ -320,20 +318,19 @@
         if (type === 'ecoflex') {
             boxCount = Math.ceil(adjustedSqft / 21.6);
             spcCost = boxCount * 98;
-            spcDesc = `Ecoflex (${boxCount} kotak x RM98)`;
+            spcDesc = `Ecoflex (${boxCount} kotak)`;
         } else if (type === 'microcement') {
             boxCount = Math.ceil(adjustedSqft / 24);
             spcCost = boxCount * 138;
-            spcDesc = `Microcement (${boxCount} kotak x RM138)`;
+            spcDesc = `Microcement (${boxCount} kotak)`;
         } else if (type === 'herringbone') {
             boxCount = Math.ceil(adjustedSqft / 20.25);
-            spcCost = boxCount * 128; // RM128 sebotol (Set = 2 kotak = RM256)
-            
+            spcCost = boxCount * 128; 
             let sets = Math.floor(boxCount / 2);
             let remainder = boxCount % 2;
             let designA = sets + remainder;
             let designB = sets;
-            spcDesc = `Herringbone (${boxCount} kotak: Design A ${designA} + Design B ${designB})`;
+            spcDesc = `Herringbone (${boxCount} kotak: A:${designA}, B:${designB})`;
         }
 
         let tableHtml = `
@@ -351,26 +348,22 @@
         `;
 
         let totalAccessoriesCost = 0;
-
-        // Kira Skirting (Guna perimeter dalam mm -> meter -> batang 2400mm)
         let perimeterMm = 2 * (wMm + lMm);
-        let skirtingSticks = 0;
-        let skirtingCost = 0;
+        
         if (document.getElementById('checkSkirting').checked) {
-            skirtingSticks = Math.ceil((perimeterMm / 1000) / 2.4);
-            skirtingCost = skirtingSticks * 23;
+            let skirtingSticks = Math.ceil((perimeterMm / 1000) / 2.4);
+            let skirtingCost = skirtingSticks * 23;
             totalAccessoriesCost += skirtingCost;
 
             tableHtml += `
                 <tr>
-                    <td>Skirting (2400mm)<br><span style="font-size:11px; color:#666">Perimeter: ${(perimeterMm/1000).toFixed(1)}m</span></td>
+                    <td>Skirting (2400mm)</td>
                     <td>${skirtingSticks} btg</td>
                     <td>RM ${skirtingCost.toFixed(2)}</td>
                 </tr>
             `;
         }
 
-        // Kira Aksesori Pintu (1 pintu standard = 900mm = 1 batang aksesori 2750mm boleh tampung ~3 pintu, atau 1 batang setiap pintu mengikut tetapan praktikal, tapi kita kira 1 btg aksesori setiap pintu atau mengikut input batang)
         let accTypes = [
             { id: 'accSmallL', inputId: 'doorsSmallL', name: 'Small L (2750mm)' },
             { id: 'accBigL', inputId: 'doorsBigL', name: 'Big L (2750mm)' },
@@ -382,7 +375,6 @@
         accTypes.forEach(acc => {
             if (document.getElementById(acc.id).checked) {
                 let doors = parseInt(document.getElementById(acc.inputId).value) || 1;
-                // Andaikan 1 batang 2750mm cukup untuk 3 pintu biasa (900mm) atau kiraan batang = Math.ceil(doors / 3)
                 let sticks = Math.ceil(doors / 3); 
                 let cost = sticks * 18;
                 totalAccessoriesCost += cost;
@@ -410,7 +402,6 @@
         document.getElementById('resultBox').style.display = 'block';
         document.getElementById('addCartBtn').style.display = 'block';
 
-        // Simpan data untuk dimasukkan ke cart
         lastCalculatedRecord = {
             tajuk: `SPC Flooring (${type.toUpperCase()})`,
             info: `${wMm}x${lMm}mm (${sqftArea.toFixed(0)} sqft)`,
@@ -419,12 +410,15 @@
     }
 
     function addSPCToCart() {
-        if (!lastCalculatedRecord) return;
+        if (!lastCalculatedRecord) {
+            alert("Sila buat pengiraan terlebih dahulu!");
+            return;
+        }
+
         let cartData = JSON.parse(localStorage.getItem('diy_cart')) || [];
         cartData.push(lastCalculatedRecord);
         localStorage.setItem('diy_cart', JSON.stringify(cartData));
 
-        // Rakam juga ke History utama
         let historyList = JSON.parse(localStorage.getItem('diy_calc_history')) || [];
         historyList.push(lastCalculatedRecord);
         localStorage.setItem('diy_calc_history', JSON.stringify(historyList));
