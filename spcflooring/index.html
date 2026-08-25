@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPC Flooring Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --tng-yellow: #fdee23;
+            --tng-dark: #111111;
+            --bg-color: #f4f5f7;
+            --card-bg: #ffffff;
+            --text-main: #111111;
+            --text-sub: #666666;
+            --border-color: #e4e7eb;
+            --shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px 16px 90px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--text-main);
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            font-size: 13px;
+        }
+
+        select, input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 14px;
+            box-sizing: border-box;
+            outline: none;
+            background: #fff;
+            transition: 0.2s;
+        }
+
+        select:focus, input[type="number"]:focus {
+            border-color: #d4b200;
+            box-shadow: 0 0 0 3px rgba(253, 238, 35, 0.2);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .checkbox-section {
+            background: #f9fafb;
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            margin-top: 20px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .checkbox-group input {
+            width: 18px;
+            height: 18px;
+            accent-color: #111;
+            cursor: pointer;
+        }
+
+        .sub-input-box {
+            margin-left: 28px;
+            margin-bottom: 12px;
+            display: none;
+        }
+        .sub-input-box.active {
+            display: block;
+        }
+        .sub-input-box input {
+            width: 120px;
+            padding: 8px;
+            font-size: 13px;
+        }
+
+        .calc-btn {
+            background-color: var(--tng-yellow);
+            color: var(--tng-dark);
+            border: none;
+            padding: 15px;
+            width: 100%;
+            font-size: 16px;
+            font-weight: 800;
+            border-radius: 12px;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 4px 12px rgba(253, 238, 35, 0.3);
+            transition: 0.2s;
+        }
+        .calc-btn:active {
+            transform: scale(0.98);
+        }
+
+        .result-box {
+            margin-top: 25px;
+            padding: 20px;
+            background: #fffdf0;
+            border-radius: 14px;
+            border: 1.5px solid #f6e05e;
+            display: none;
+        }
+
+        .result-box h3 {
+            margin-top: 0;
+            color: #111;
+            font-size: 16px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 8px;
+        }
+
+        .price-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 13px;
+        }
+
+        .price-table th, .price-table td {
+            border: 1px solid var(--border-color);
+            padding: 8px 10px;
+            text-align: left;
+        }
+
+        .price-table th {
+            background-color: #f1f5f9;
+        }
+
+        .add-cart-main-btn {
+            background-color: #00B14F;
+            color: white;
+            border: none;
+            padding: 14px;
+            width: 100%;
+            font-size: 15px;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            margin-top: 15px;
+            box-shadow: 0 4px 12px rgba(0, 177, 79, 0.3);
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>SPC Flooring Calculator</h2>
+    
+    <div class="form-group">
+        <label for="spcType">Pilih Jenis SPC:</label>
+        <select id="spcType">
+            <option value="ecoflex">Ecoflex (RM98/box | Cover: 21.6 sqft)</option>
+            <option value="microcement">Microcement (RM138/box | Cover: 24 sqft)</option>
+            <option value="herringbone">Herringbone (RM256/set atau RM128/box | Cover: 20.25 sqft)</option>
+        </select>
+    </div>
+
+    <div class="grid-2">
+        <div class="form-group">
+            <label for="roomWidth">Lebar Ruang (mm):</label>
+            <input type="number" id="roomWidth" placeholder="Cth: 3000" value="3000">
+        </div>
+        <div class="form-group">
+            <label for="roomLength">Panjang Ruang (mm):</label>
+            <input type="number" id="roomLength" placeholder="Cth: 5000" value="5000">
+        </div>
+    </div>
+
+    <!-- SEKSYEN SKIRTING & AKSESORI -->
+    <div class="checkbox-section">
+        <label style="font-weight: 700; margin-bottom: 12px; display: block; font-size: 14px;">Pilihan Kemasan & Aksesori:</label>
+        
+        <!-- Skirting -->
+        <div class="checkbox-group" onclick="toggleCheckbox('checkSkirting')">
+            <input type="checkbox" id="checkSkirting" checked>
+            <span>Skirting (2400mm / btg @ RM23)</span>
+        </div>
+
+        <!-- Aksesori Pintu -->
+        <label style="font-weight: 600; margin-top: 14px; margin-bottom: 8px; display: block; font-size: 13px;">Aksesori (2750mm @ RM18/btg - Kira ikut jumlah pintu):</label>
+        
+        <div class="checkbox-group">
+            <input type="checkbox" id="accSmallL" onchange="toggleSubInput('subSmallL', this)">
+            <span>1. Small L</span>
+        </div>
+        <div class="sub-input-box" id="subSmallL">
+            <label style="font-size: 11px; color: var(--text-sub); margin-bottom: 4px;">Bilangan Pintu:</label>
+            <input type="number" id="doorsSmallL" value="1" min="1">
+        </div>
+
+        <div class="checkbox-group">
+            <input type="checkbox" id="accBigL" onchange="toggleSubInput('subBigL', this)">
+            <span>2. Big L</span>
+        </div>
+        <div class="sub-input-box" id="subBigL">
+            <label style="font-size: 11px; color: var(--text-sub); margin-bottom: 4px;">Bilangan Pintu:</label>
+            <input type="number" id="doorsBigL" value="1" min="1">
+        </div>
+
+        <div class="checkbox-group">
+            <input type="checkbox" id="accSpecA" onchange="toggleSubInput('subSpecA', this)">
+            <span>3. Spec A</span>
+        </div>
+        <div class="sub-input-box" id="subSpecA">
+            <label style="font-size: 11px; color: var(--text-sub); margin-bottom: 4px;">Bilangan Pintu:</label>
+            <input type="number" id="doorsSpecA" value="1" min="1">
+        </div>
+
+        <div class="checkbox-group">
+            <input type="checkbox" id="accTPro" onchange="toggleSubInput('subTPro', this)">
+            <span>4. T pro</span>
+        </div>
+        <div class="sub-input-box" id="subTPro">
+            <label style="font-size: 11px; color: var(--text-sub); margin-bottom: 4px;">Bilangan Pintu:</label>
+            <input type="number" id="doorsTPro" value="1" min="1">
+        </div>
+
+        <div class="checkbox-group">
+            <input type="checkbox" id="accAPro" onchange="toggleSubInput('subAPro', this)">
+            <span>5. A pro</span>
+        </div>
+        <div class="sub-input-box" id="subAPro">
+            <label style="font-size: 11px; color: var(--text-sub); margin-bottom: 4px;">Bilangan Pintu:</label>
+            <input type="number" id="doorsAPro" value="1" min="1">
+        </div>
+    </div>
+
+    <button class="calc-btn" onclick="calculateSPC()">Kira Pengiraan SPC & Kos</button>
+
+    <div class="result-box" id="resultBox">
+        <h3>Pecahan Sebut Harga SPC</h3>
+        <div id="resultContent"></div>
+        <button class="add-cart-main-btn" id="addCartBtn" onclick="addSPCToCart()">+ Masukkan ke Troli (Cart)</button>
+    </div>
+</div>
+
+<script>
+    function toggleCheckbox(id) {
+        let cb = document.getElementById(id);
+        cb.checked = !cb.checked;
+    }
+
+    function toggleSubInput(boxId, checkbox) {
+        let box = document.getElementById(boxId);
+        if (checkbox.checked) {
+            box.classList.add('active');
+        } else {
+            box.classList.remove('active');
+        }
+    }
+
+    let lastCalculatedRecord = null;
+
+    function calculateSPC() {
+        let type = document.getElementById('spcType').value;
+        let wMm = parseFloat(document.getElementById('roomWidth').value) || 0;
+        let lMm = parseFloat(document.getElementById('roomLength').value) || 0;
+
+        if (wMm <= 0 || lMm <= 0) {
+            alert('Sila masukkan ukuran lebar dan panjang ruang yang sah.');
+            return;
+        }
+
+        // Tukar mm ke kaki persegi (sqft): (mm / 304.8) * (mm / 304.8)
+        let sqftArea = (wMm / 304.8) * (lMm / 304.8);
+        // Tambah 5% untuk wastage pemotongan
+        let adjustedSqft = sqftArea * 1.05;
+
+        let boxCount = 0;
+        let spcCost = 0;
+        let spcDesc = "";
+
+        if (type === 'ecoflex') {
+            boxCount = Math.ceil(adjustedSqft / 21.6);
+            spcCost = boxCount * 98;
+            spcDesc = `Ecoflex (${boxCount} kotak x RM98)`;
+        } else if (type === 'microcement') {
+            boxCount = Math.ceil(adjustedSqft / 24);
+            spcCost = boxCount * 138;
+            spcDesc = `Microcement (${boxCount} kotak x RM138)`;
+        } else if (type === 'herringbone') {
+            boxCount = Math.ceil(adjustedSqft / 20.25);
+            spcCost = boxCount * 128; // RM128 sebotol (Set = 2 kotak = RM256)
+            
+            let sets = Math.floor(boxCount / 2);
+            let remainder = boxCount % 2;
+            let designA = sets + remainder;
+            let designB = sets;
+            spcDesc = `Herringbone (${boxCount} kotak: Design A ${designA} + Design B ${designB})`;
+        }
+
+        let tableHtml = `
+            <table class="price-table">
+                <tr>
+                    <th>Komponen</th>
+                    <th>Kuantiti</th>
+                    <th>Jumlah (RM)</th>
+                </tr>
+                <tr>
+                    <td>SPC Flooring (${type.toUpperCase()})<br><span style="font-size:11px; color:#666">Keluasan: ${sqftArea.toFixed(1)} sqft (+5% wastage)</span></td>
+                    <td>${boxCount} kotak</td>
+                    <td>RM ${spcCost.toFixed(2)}</td>
+                </tr>
+        `;
+
+        let totalAccessoriesCost = 0;
+
+        // Kira Skirting (Guna perimeter dalam mm -> meter -> batang 2400mm)
+        let perimeterMm = 2 * (wMm + lMm);
+        let skirtingSticks = 0;
+        let skirtingCost = 0;
+        if (document.getElementById('checkSkirting').checked) {
+            skirtingSticks = Math.ceil((perimeterMm / 1000) / 2.4);
+            skirtingCost = skirtingSticks * 23;
+            totalAccessoriesCost += skirtingCost;
+
+            tableHtml += `
+                <tr>
+                    <td>Skirting (2400mm)<br><span style="font-size:11px; color:#666">Perimeter: ${(perimeterMm/1000).toFixed(1)}m</span></td>
+                    <td>${skirtingSticks} btg</td>
+                    <td>RM ${skirtingCost.toFixed(2)}</td>
+                </tr>
+            `;
+        }
+
+        // Kira Aksesori Pintu (1 pintu standard = 900mm = 1 batang aksesori 2750mm boleh tampung ~3 pintu, atau 1 batang setiap pintu mengikut tetapan praktikal, tapi kita kira 1 btg aksesori setiap pintu atau mengikut input batang)
+        let accTypes = [
+            { id: 'accSmallL', inputId: 'doorsSmallL', name: 'Small L (2750mm)' },
+            { id: 'accBigL', inputId: 'doorsBigL', name: 'Big L (2750mm)' },
+            { id: 'accSpecA', inputId: 'doorsSpecA', name: 'Spec A (2750mm)' },
+            { id: 'accTPro', inputId: 'doorsTPro', name: 'T pro (2750mm)' },
+            { id: 'accAPro', inputId: 'doorsAPro', name: 'A pro (2750mm)' }
+        ];
+
+        accTypes.forEach(acc => {
+            if (document.getElementById(acc.id).checked) {
+                let doors = parseInt(document.getElementById(acc.inputId).value) || 1;
+                // Andaikan 1 batang 2750mm cukup untuk 3 pintu biasa (900mm) atau kiraan batang = Math.ceil(doors / 3)
+                let sticks = Math.ceil(doors / 3); 
+                let cost = sticks * 18;
+                totalAccessoriesCost += cost;
+
+                tableHtml += `
+                    <tr>
+                        <td>${acc.name}<br><span style="font-size:11px; color:#666">Pintu: ${doors} unit</span></td>
+                        <td>${sticks} btg</td>
+                        <td>RM ${cost.toFixed(2)}</td>
+                    </tr>
+                `;
+            }
+        });
+
+        let grandTotal = spcCost + totalAccessoriesCost;
+        tableHtml += `
+                <tr style="font-weight: bold; background: #fff;">
+                    <td colspan="2" style="text-align: right;">TOTAL KESELURUHAN:</td>
+                    <td style="color: #00B14F;">RM ${grandTotal.toFixed(2)}</td>
+                </tr>
+            </table>
+        `;
+
+        document.getElementById('resultContent').innerHTML = tableHtml;
+        document.getElementById('resultBox').style.display = 'block';
+        document.getElementById('addCartBtn').style.display = 'block';
+
+        // Simpan data untuk dimasukkan ke cart
+        lastCalculatedRecord = {
+            tajuk: `SPC Flooring (${type.toUpperCase()})`,
+            info: `${wMm}x${lMm}mm (${sqftArea.toFixed(0)} sqft)`,
+            harga: "RM " + grandTotal.toFixed(2)
+        };
+    }
+
+    function addSPCToCart() {
+        if (!lastCalculatedRecord) return;
+        let cartData = JSON.parse(localStorage.getItem('diy_cart')) || [];
+        cartData.push(lastCalculatedRecord);
+        localStorage.setItem('diy_cart', JSON.stringify(cartData));
+
+        // Rakam juga ke History utama
+        let historyList = JSON.parse(localStorage.getItem('diy_calc_history')) || [];
+        historyList.push(lastCalculatedRecord);
+        localStorage.setItem('diy_calc_history', JSON.stringify(historyList));
+
+        alert("Berjaya masukkan pengiraan SPC ke dalam Troli (Cart)!");
+    }
+</script>
+
+<!-- BUTANG KEMBALI KE MENU UTAMA -->
+<a href="../index.html" style="position: fixed; bottom: 20px; right: 20px; background: #fdee23; color: #111; padding: 12px 18px; border-radius: 30px; text-decoration: none; font-family: 'Inter', sans-serif; font-weight: 800; font-size: 14px; box-shadow: 0 4px 15px rgba(253,238,35,0.4); display: flex; align-items: center; gap: 6px; z-index: 9999; border: 1px solid #111;">
+    <span>←</span> Menu Utama
+</a>
+
+<script>
+    history.pushState(null, null, location.href);
+    window.addEventListener('popstate', function () {
+        window.location.href = '../index.html';
+    });
+</script>
+
+</body>
+</html>
