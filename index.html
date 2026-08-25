@@ -84,7 +84,7 @@
             display: flex; align-items: center; gap: 16px; cursor: pointer; box-shadow: var(--shadow); transition: 0.2s;
         }
         .service-card:active { transform: scale(0.97); border-color: var(--tng-yellow); }
-        .service-img { width: 60px; height: 60px; border-radius: 14px; overflow: hidden; flex-shrink: 0; background: #e2e8f0; }
+        .service-img { width: 60px; height: 60px; border-radius: 14px; overflow: hidden; flex-shrink: 0; background: #e2e8f0; display: flex; align-items: center; justify-content: center; }
         .service-img img { width: 100%; height: 100%; object-fit: cover; }
         .service-details h4 { margin: 0 0 4px 0; font-size: 14px; font-weight: 700; color: var(--text-main); }
         .service-details p { margin: 0; font-size: 11px; color: var(--text-sub); line-height: 1.4; }
@@ -106,7 +106,7 @@
         }
         .clear-btn { background: none; border: none; color: #ef4444; font-size: 11px; font-weight: 600; cursor: pointer; }
 
-        /* CART MODAL (SKRIN TROLI) - TEMA KUNING TNG */
+        /* CART MODAL (SKRIN TROLI) */
         .cart-modal {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6);
             backdrop-filter: blur(5px); z-index: 2000; display: flex; align-items: flex-end;
@@ -133,7 +133,6 @@
         .summary-row { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 8px; }
         .summary-total { display: flex; justify-content: space-between; font-size: 18px; font-weight: 800; color: #111; margin-top: 10px; }
         
-        /* Butang WhatsApp / Checkout bertukar jadi Kuning TNG */
         .checkout-btn {
             background: var(--tng-yellow); color: var(--tng-dark); border: 1.5px solid #111; width: 100%; padding: 14px;
             border-radius: 14px; font-size: 16px; font-weight: 800; cursor: pointer; margin-top: 20px; text-align: center;
@@ -186,11 +185,12 @@
 
     <div class="section-title">Pilihan Perkhidmatan</div>
 
-    <!-- SERVICES GRID -->
+    <!-- SERVICES GRID DENGAN IMEJ BARU -->
     <div class="services-grid">
+        <!-- Lalamove -->
         <div class="service-card" onclick="bukaLalamoveApp()">
             <div class="service-img">
-                <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=150&auto=format&fit=crop&q=80" alt="Lalamove">
+                <img src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=150&auto=format&fit=crop&q=80" alt="Lalamove Logo">
             </div>
             <div class="service-details">
                 <h4>Lalamove</h4>
@@ -198,9 +198,10 @@
             </div>
         </div>
 
+        <!-- SPC Flooring -->
         <div class="service-card" onclick="bukaApps('spcflooring/index.html', 'SPC Flooring Calculator')">
             <div class="service-img">
-                <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=150&auto=format&fit=crop&q=80" alt="SPC Flooring">
+                <img src="https://images.unsplash.com/photo-1516455590571-18256e5bb9ff?w=150&auto=format&fit=crop&q=80" alt="SPC Flooring">
             </div>
             <div class="service-details">
                 <h4>SPC Flooring Calculator</h4>
@@ -208,9 +209,10 @@
             </div>
         </div>
 
+        <!-- Fluted Panel -->
         <div class="service-card" onclick="bukaApps('wallpanelling/index.html', 'Board with Fluted Panelling Calculator')">
             <div class="service-img">
-                <img src="https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=150&auto=format&fit=crop&q=80" alt="Fluted Panel">
+                <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=150&auto=format&fit=crop&q=80" alt="Fluted Panel">
             </div>
             <div class="service-details">
                 <h4>Board with Fluted Panelling Calculator</h4>
@@ -218,9 +220,10 @@
             </div>
         </div>
 
+        <!-- Ceiling Series -->
         <div class="service-card" onclick="bukaApps('ceilingseries/index.html', 'Ceiling Series Calculator')">
             <div class="service-img">
-                <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=150&auto=format&fit=crop&q=80" alt="Ceiling Series">
+                <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?w=150&auto=format&fit=crop&q=80" alt="Ceiling Series">
             </div>
             <div class="service-details">
                 <h4>Ceiling Series Calculator</h4>
@@ -228,9 +231,10 @@
             </div>
         </div>
         
+        <!-- Wainscoting Eropah -->
         <div class="service-card" onclick="bukaApps('wainscoting/index.html', 'Wainscoting Calculator')">
             <div class="service-img">
-                <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?w=150&auto=format&fit=crop&q=80" alt="Wainscoting">
+                <img src="https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=150&auto=format&fit=crop&q=80" alt="European Wainscoting">
             </div>
             <div class="service-details">
                 <h4>Wainscoting Calculator</h4>
@@ -250,8 +254,8 @@
 
     <!-- FOOTER -->
     <div class="footer-box">
-        <span>Idris Portal &bull; v6.2</span>
-        <div class="visitor-badge">Pelawat: <span id="visitorCount">1,890</span></div>
+        <span>Idris Portal &bull; v6.3</span>
+        <div class="visitor-badge">Pelawat: <span id="visitorCount">1,920</span></div>
     </div>
 
     <!-- SKRIN TROLI (CART MODAL) -->
@@ -286,7 +290,6 @@
                 </div>
             </div>
 
-            <!-- Butang Hantar Pesanan Kuning TNG -->
             <button class="checkout-btn" onclick="proceedCheckout()">Hantar Pesanan / WhatsApp</button>
         </div>
     </div>
