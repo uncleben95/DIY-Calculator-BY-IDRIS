@@ -134,7 +134,7 @@
             else if (pattern === '1') { effectiveWidth = wMm - 200; boxWidths = [effectiveWidth]; }
 
             let totalPrice = 0, breakdownHtml = "", sizeCounts = {};
-            let targetBoxHeight = (style === 'without_chairrail') ? (hMm - 300) : (hMm - 1000); // Kotak penuh tinggi jika tiada chair rail
+            let targetBoxHeight = (style === 'without_chairrail') ? (hMm - 300) : (hMm - 1000);
             if (targetBoxHeight < 300) targetBoxHeight = 300;
 
             boxWidths.forEach((bw) => {
@@ -182,39 +182,46 @@
             document.getElementById('totalPrice').innerText = 'RM ' + totalPrice.toFixed(2);
             document.getElementById('resultContainer').classList.remove('hidden');
 
-            // --- LUKIS VISUAL WAINCOTING ---
+            // --- LUKIS VISUAL WAINCOTING DENGAN SOKONGAN DOUBLE FRAME ---
             let previewBox = document.getElementById('captureArea');
             previewBox.innerHTML = '';
             document.getElementById('visualContainer').classList.remove('hidden');
 
             let frameColorClass = (frameColor === 'gold') ? 'border-yellow-600 text-yellow-700' : 'border-slate-900 text-slate-900';
 
+            function createBoxElement(bw, bh) {
+                let boxEl = document.createElement('div');
+                boxEl.className = `border-[3px] ${frameColorClass} bg-white rounded flex items-center justify-center text-[9px] font-bold shadow-xs relative p-2`;
+                boxEl.style.flexGrow = bw; boxEl.style.flexBasis = '0'; boxEl.style.height = '100%';
+                
+                if (frameType === 'double') {
+                    // Cipta inner frame (bingkai kedua di dalam untuk double frame)
+                    let innerBox = document.createElement('div');
+                    innerBox.className = `border-[1.5px] ${frameColorClass} w-full h-full flex items-center justify-center rounded`;
+                    innerBox.innerText = `${Math.round(bw)}x${Math.round(bh)}`;
+                    boxEl.appendChild(innerBox);
+                } else {
+                    boxEl.innerText = `${Math.round(bw)}x${Math.round(bh)}`;
+                }
+                return boxEl;
+            }
+
             if (style === 'without_chairrail') {
-                // Kotak Penuh Menegak Sahaja
                 let fullRow = document.createElement('div');
                 fullRow.className = 'w-full flex justify-around items-center gap-1.5 px-1';
                 fullRow.style.height = '240px';
 
                 boxWidths.forEach((bw) => {
-                    let boxEl = document.createElement('div');
-                    boxEl.className = `border-[3px] ${frameColorClass} bg-white rounded flex items-center justify-center text-[10px] font-bold shadow-xs`;
-                    boxEl.style.flexGrow = bw; boxEl.style.flexBasis = '0'; boxEl.style.height = '100%';
-                    boxEl.innerText = `${Math.round(bw)}x${Math.round(targetBoxHeight)}`;
-                    fullRow.appendChild(boxEl);
+                    fullRow.appendChild(createBoxElement(bw, targetBoxHeight));
                 });
                 previewBox.appendChild(fullRow);
             } else {
-                // Dengan Chair Rail (Atas & Bawah)
                 let topRow = document.createElement('div');
                 topRow.className = 'w-full flex justify-around items-center gap-1.5 px-1';
                 topRow.style.height = '110px';
 
                 boxWidths.forEach((bw) => {
-                    let boxEl = document.createElement('div');
-                    boxEl.className = `border-[3px] ${frameColorClass} bg-white rounded flex items-center justify-center text-[9px] font-bold shadow-xs`;
-                    boxEl.style.flexGrow = bw; boxEl.style.flexBasis = '0'; boxEl.style.height = '100%';
-                    boxEl.innerText = `${Math.round(bw)}x${Math.round(targetBoxHeight)}`;
-                    topRow.appendChild(boxEl);
+                    topRow.appendChild(createBoxElement(bw, targetBoxHeight));
                 });
                 previewBox.appendChild(topRow);
 
@@ -228,11 +235,7 @@
                 botRow.style.height = '100px';
 
                 boxWidths.forEach((bw) => {
-                    let boxEl = document.createElement('div');
-                    boxEl.className = `border-[3px] ${frameColorClass} bg-white rounded flex items-center justify-center text-[9px] font-bold shadow-xs`;
-                    boxEl.style.flexGrow = bw; boxEl.style.flexBasis = '0'; boxEl.style.height = '100%';
-                    boxEl.innerText = `${Math.round(bw)}x600`;
-                    botRow.appendChild(boxEl);
+                    botRow.appendChild(createBoxElement(bw, 600));
                 });
                 previewBox.appendChild(botRow);
             }
