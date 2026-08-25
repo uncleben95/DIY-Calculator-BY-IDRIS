@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Postage Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --tng-yellow: #fdee23;
+            --tng-dark: #111111;
+            --bg-color: #f4f5f7;
+            --card-bg: #ffffff;
+            --text-main: #111111;
+            --text-sub: #666666;
+            --border-color: #e4e7eb;
+            --shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+        }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 20px 16px 90px; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+        .container { max-width: 600px; width: 100%; background: var(--card-bg); padding: 25px; border-radius: 20px; box-shadow: var(--shadow); border: 1px solid var(--border-color); }
+        h2 { text-align: center; color: var(--text-main); margin-top: 0; margin-bottom: 20px; font-size: 20px; font-weight: 800; }
+        .form-group { margin-bottom: 16px; }
+        label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 13px; }
+        select, input[type="number"] { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 10px; font-size: 14px; box-sizing: border-box; outline: none; background: #fff; }
+        select:focus, input[type="number"]:focus { border-color: #d4b200; box-shadow: 0 0 0 3px rgba(253, 238, 35, 0.2); }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .calc-btn { background-color: var(--tng-yellow); color: var(--tng-dark); border: 1.5px solid #111; padding: 15px; width: 100%; font-size: 16px; font-weight: 800; border-radius: 12px; cursor: pointer; margin-top: 20px; box-shadow: 0 4px 12px rgba(253, 238, 35, 0.3); transition: 0.2s; }
+        .calc-btn:active { transform: scale(0.98); }
+        .result-box { margin-top: 25px; padding: 20px; background: #fffdf0; border-radius: 14px; border: 1.5px solid #f6e05e; display: none; }
+        .result-box h3 { margin-top: 0; color: #111; font-size: 16px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; }
+        .price-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+        .price-table th, .price-table td { border: 1px solid var(--border-color); padding: 8px 10px; text-align: left; }
+        .price-table th { background-color: #f1f5f9; }
+        .add-cart-main-btn { background-color: var(--tng-yellow); color: var(--tng-dark); border: 1.5px solid #111; padding: 14px; width: 100%; font-size: 15px; font-weight: 800; border-radius: 12px; cursor: pointer; margin-top: 15px; box-shadow: 0 4px 12px rgba(253, 238, 35, 0.3); display: none; transition: 0.2s; }
+        .add-cart-main-btn:active { transform: scale(0.98); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Postage Calculator</h2>
+    
+    <div class="form-group">
+        <label for="destRegion">Destinasi Penghantaran:</label>
+        <select id="destRegion">
+            <option value="semenanjung">Semenanjung Malaysia</option>
+            <option value="sabah_sarawak">Sabah & Sarawak</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="itemWeight">Berat Barang (kg):</label>
+        <input type="number" id="itemWeight" placeholder="Cth: 1.5" step="0.1" min="0.1" value="1.0">
+    </div>
+
+    <button class="calc-btn" onclick="calculatePostage()">Kira Kos Postage</button>
+
+    <div class="result-box" id="resultBox">
+        <h3>Pecahan Kos Postage</h3>
+        <div id="resultContent"></div>
+        <button class="add-cart-main-btn" id="addCartBtn" onclick="addPostageToCart()">+ Masukkan ke Troli (Cart)</button>
+    </div>
+</div>
+
+<script>
+    let lastCalculatedRecord = null;
+
+    function calculatePostage() {
+        let region = document.getElementById('destRegion').value;
+        let weight = parseFloat(document.getElementById('itemWeight').value) || 0;
+
+        if (weight <= 0) {
+            alert('Sila masukkan berat barang yang sah.');
+            return;
+        }
+
+        let baseRate = 0;
+        let perKgRate = 0;
+        let regionName = "";
+
+        if (region === 'semenanjung') {
+            regionName = "Semenanjung Malaysia";
+            // Contoh kadar: 1kg pertama RM8.00, setiap kg seterusnya RM2.50
+            baseRate = 8.00;
+            perKgRate = 2.50;
+        } else {
+            regionName = "Sabah & Sarawak";
+            // Contoh kadar: 1kg pertama RM15.00, setiap kg seterusnya RM8.00
+            baseRate = 15.00;
+            perKgRate = 8.00;
+        }
+
+        let totalPostage = 0;
+        if (weight <= 1) {
+            totalPostage = baseRate;
+        } else {
+            totalPostage = baseRate + ((Math.ceil(weight) - 1) * perKgRate);
+        }
+
+        let tableHtml = `
+            <table class="price-table">
+                <tr>
+                    <th>Perkara</th>
+                    <th>Butiran</th>
+                    <th>Jumlah (RM)</th>
+                </tr>
+                <tr>
+                    <td>Kos Penghantaran (${regionName})</td>
+                    <td>Berat: ${weight} kg</td>
+                    <td>RM ${totalPostage.toFixed(2)}</td>
+                </tr>
+                <tr style="font-weight: bold; background: #fff;">
+                    <td colspan="2" style="text-align: right;">TOTAL POSTAGE:</td>
+                    <td style="color: #111;">RM ${totalPostage.toFixed(2)}</td>
+                </tr>
+            </table>
+        `;
+
+        document.getElementById('resultContent').innerHTML = tableHtml;
+        document.getElementById('resultBox').style.display = 'block';
+        document.getElementById('addCartBtn').style.display = 'block';
+
+        lastCalculatedRecord = {
+            tajuk: `Postage (${regionName})`,
+            info: `Berat: ${weight}kg`,
+            harga: "RM " + totalPostage.toFixed(2)
+        };
+    }
+
+    function addPostageToCart() {
+        if (!lastCalculatedRecord) {
+            alert("Sila buat pengiraan terlebih dahulu!");
+            return;
+        }
+
+        let cartData = JSON.parse(localStorage.getItem('diy_cart')) || [];
+        cartData.push(lastCalculatedRecord);
+        localStorage.setItem('diy_cart', JSON.stringify(cartData));
+
+        let historyList = JSON.parse(localStorage.getItem('diy_calc_history')) || [];
+        historyList.push(lastCalculatedRecord);
+        localStorage.setItem('diy_calc_history', JSON.stringify(historyList));
+
+        alert("Berjaya masukkan kos postage ke dalam Troli!");
+    }
+</script>
+
+<!-- BUTANG KEMBALI KE MENU UTAMA -->
+<a href="../index.html" style="position: fixed; bottom: 20px; right: 20px; background: #fdee23; color: #111; padding: 12px 18px; border-radius: 30px; text-decoration: none; font-family: 'Inter', sans-serif; font-weight: 800; font-size: 14px; box-shadow: 0 4px 15px rgba(253,238,35,0.4); display: flex; align-items: center; gap: 6px; z-index: 9999; border: 1px solid #111;">
+    <span>←</span> Menu Utama
+</a>
+<script>
+    history.pushState(null, null, location.href);
+    window.addEventListener('popstate', function () { window.location.href = '../index.html'; });
+</script>
+</body>
+</html>
