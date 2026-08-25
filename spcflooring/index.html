@@ -13,249 +13,107 @@
         .form-group { margin-bottom: 16px; }
         label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 13px; }
         input, select { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 10px; font-size: 14px; box-sizing: border-box; background: #fff; outline: none; }
-        input:focus, select:focus { border-color: #d4b200; box-shadow: 0 0 0 3px rgba(253, 238, 35, 0.2); }
-        button.calc-btn { background-color: var(--tng-yellow); color: var(--tng-dark); border: 1.5px solid #111; padding: 15px; width: 100%; font-size: 16px; font-weight: 800; border-radius: 12px; cursor: pointer; margin-top: 10px; box-shadow: 0 4px 12px rgba(253, 238, 35, 0.3); transition: 0.2s; }
-        button.calc-btn:active { transform: scale(0.98); }
+        button.calc-btn { background-color: var(--tng-yellow); color: var(--tng-dark); border: 1.5px solid #111; padding: 15px; width: 100%; font-size: 16px; font-weight: 800; border-radius: 12px; cursor: pointer; margin-top: 10px; box-shadow: 0 4px 12px rgba(253, 238, 35, 0.3); }
         .result-box { margin-top: 25px; padding: 20px; background: #fffdf0; border-radius: 14px; border: 1.5px solid #f6e05e; display: none; font-size: 13px; }
-        .result-box h3 { margin-top: 0; color: #111; font-size: 16px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; }
         .visual-container { margin-top: 25px; padding: 15px; background: #ffffff; border: 1px solid var(--border-color); border-radius: 12px; text-align: center; display: none; }
         canvas { width: 100%; max-width: 520px; height: 240px; border: 1px solid var(--border-color); background: #fafafa; margin-top: 10px; border-radius: 8px; }
-        .add-cart-main-btn { background-color: var(--tng-yellow); color: var(--tng-dark); border: 1.5px solid #111; padding: 14px; width: 100%; font-size: 15px; font-weight: 800; border-radius: 12px; cursor: pointer; margin-top: 15px; display: none; box-shadow: 0 4px 12px rgba(253, 238, 35, 0.3); transition: 0.2s;}
-        .add-cart-main-btn:active { transform: scale(0.98); }
+        .add-cart-main-btn { background-color: var(--tng-yellow); color: var(--tng-dark); border: 1.5px solid #111; padding: 14px; width: 100%; font-size: 15px; font-weight: 800; border-radius: 12px; cursor: pointer; margin-top: 15px; display: none; }
     </style>
 </head>
 <body>
-
 <div class="container">
     <h2>SPC Flooring Calculator</h2>
-    
-    <div class="form-group">
-        <label>Unit Ukuran:</label>
-        <select id="unitUkuran">
-            <option value="mm">Milimeter (mm)</option>
-            <option value="ft">Kaki (ft)</option>
-        </select>
-    </div>
-
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-        <div class="form-group">
-            <label>Lebar Ruang:</label>
-            <input type="number" id="lebarLantai" value="3000">
-        </div>
-        <div class="form-group">
-            <label>Panjang Ruang:</label>
-            <input type="number" id="panjangLantai" value="4000">
-        </div>
+        <div class="form-group"><label>Lebar Ruang (mm):</label><input type="number" id="roomWidth" value="3000"></div>
+        <div class="form-group"><label>Panjang Ruang (mm):</label><input type="number" id="roomLength" value="5000"></div>
     </div>
-
     <div class="form-group">
-        <label>Pilihan Jenis Lantai SPC:</label>
-        <select id="jenisSPC">
-            <option value="ecoflex">SPC Ecoflex 4mm (24 sqft/kotak | RM90)</option>
-            <option value="microcement">SPC Microcement (20 sqft/kotak | RM110)</option>
-            <option value="herringbone">SPC Herringbone (16 sqft/kotak | RM130)</option>
+        <label>Pilih Jenis SPC:</label>
+        <select id="spcType">
+            <option value="ecoflex">Ecoflex (RM98/box | Cover: 21.6 sqft)</option>
+            <option value="microcement">Microcement (RM138/box | Cover: 24 sqft)</option>
+            <option value="herringbone">Herringbone (RM128/box | Cover: 20.25 sqft)</option>
         </select>
     </div>
-
-    <div class="form-group">
-        <label>Wastage / Lebihan (%):</label>
-        <select id="wastagePerc">
-            <option value="5">5% (Standard)</option>
-            <option value="10" selected>10% (Disyorkan)</option>
-            <option value="15">15% (Banyak Potongan)</option>
-        </select>
-    </div>
-
-    <button class="calc-btn" onclick="kirimKiraSPC()">Kira Sekarang & Visual</button>
-    
+    <button class="calc-btn" onclick="calculateSPC()">Kira & Lakaran Visual</button>
     <div class="result-box" id="resultBox">
         <h3>Pecahan Sebut Harga SPC:</h3>
-        <div id="spcBreakdown" style="line-height: 1.6; margin-bottom: 10px;"></div>
-        <div style="border-top: 1px solid #e2e8f0; margin: 10px 0;"></div>
-        <div style="display: flex; justify-content: space-between; font-size: 15px; font-weight: 800;">
-            <span>JUMLAH KESELURUHAN:</span>
-            <span id="jumlahHarga" style="color: #111;">-</span>
-        </div>
+        <div id="resultContent"></div>
         <button class="add-cart-main-btn" id="addCartBtn" onclick="addSPCToCart()">+ Masukkan ke Troli (Cart)</button>
     </div>
-
-    <!-- Kotak Visual Canvas -->
     <div class="visual-container" id="visualBox">
-        <h3 id="visualTitle" style="font-size: 14px; margin-top: 0;">Anggaran Susun Atur Lantai</h3>
+        <h3 id="visualTitle" style="font-size: 14px; margin-top: 0;">Lakaran Susun Atur Lantai</h3>
         <canvas id="canvasVisual"></canvas>
     </div>
 </div>
-
 <script>
-    const spcData = {
-        ecoflex: { name: "SPC Ecoflex", sqft: 24, price: 90 },
-        microcement: { name: "SPC Microcement", sqft: 20, price: 110 },
-        herringbone: { name: "SPC Herringbone", sqft: 16, price: 130 }
-    };
-
     let lastCalculatedRecord = null;
+    function calculateSPC() {
+        let type = document.getElementById('spcType').value;
+        let wMm = parseFloat(document.getElementById('roomWidth').value) || 0;
+        let lMm = parseFloat(document.getElementById('roomLength').value) || 0;
+        if (wMm <= 0 || lMm <= 0) { alert('Sila masukkan ukuran yang sah.'); return; }
 
-    function kirimKiraSPC() {
-        let unit = document.getElementById('unitUkuran').value;
-        let w = parseFloat(document.getElementById('lebarLantai').value) || 0;
-        let l = parseFloat(document.getElementById('panjangLantai').value) || 0;
-        let jenis = document.getElementById('jenisSPC').value;
-        let wastage = parseFloat(document.getElementById('wastagePerc').value) || 0;
+        let sqftArea = (wMm / 304.8) * (lMm / 304.8), adjustedSqft = sqftArea * 1.05;
+        let boxCount = 0, spcCost = 0, name = "";
+        if (type === 'ecoflex') { boxCount = Math.ceil(adjustedSqft / 21.6); spcCost = boxCount * 98; name = "Ecoflex"; }
+        else if (type === 'microcement') { boxCount = Math.ceil(adjustedSqft / 24); spcCost = boxCount * 138; name = "Microcement"; }
+        else if (type === 'herringbone') { boxCount = Math.ceil(adjustedSqft / 20.25); spcCost = boxCount * 128; name = "Herringbone"; }
 
-        if (w <= 0 || l <= 0) { alert("Sila masukkan ukuran yang sah!"); return; }
+        let skirtingSticks = Math.ceil((2 * (wMm + lMm) / 1000) / 2.4);
+        let skirtingCost = skirtingSticks * 23;
+        let grandTotal = spcCost + skirtingCost;
 
-        let areaSqft = 0;
-        let perimeterFt = 0;
-        if (unit === 'mm') {
-            areaSqft = (w / 304.8) * (l / 304.8);
-            perimeterFt = ((w / 304.8) + (l / 304.8)) * 2;
-        } else {
-            areaSqft = w * l;
-            perimeterFt = (w + l) * 2;
-        }
+        document.getElementById('resultContent').innerHTML = `Keluasan: ${sqftArea.toFixed(1)} sqft (+5% wastage)<br><b>${boxCount} Kotak ${name}</b> = RM ${spcCost.toFixed(2)}<br><b>Skirting (${skirtingSticks} btg)</b> = RM ${skirtingCost.toFixed(2)}<br><br><b>TOTAL: RM ${grandTotal.toFixed(2)}</b>`;
+        document.getElementById('resultBox').style.display = 'block';
+        document.getElementById('addCartBtn').style.display = 'block';
+        document.getElementById('visualBox').style.display = 'block';
 
-        let totalSqft = areaSqft * (1 + (wastage / 100));
-        let selectedSPC = spcData[jenis];
-        let kotakDiperlukan = Math.ceil(totalSqft / selectedSPC.sqft);
-        let hargaLantai = kotakDiperlukan * selectedSPC.price;
+        lastCalculatedRecord = { tajuk: `SPC Flooring (${name})`, info: `${wMm}x${lMm}mm`, harga: "RM " + grandTotal.toFixed(2) };
 
-        let skirtingBtg = Math.ceil(perimeterFt / 8);
-        let hargaSkirting = skirtingBtg * 25;
-        let grandTotal = hargaLantai + hargaSkirting;
-
-        document.getElementById('resultBox').style.display = "block";
-        document.getElementById('addCartBtn').style.display = "block";
-
-        document.getElementById('spcBreakdown').innerHTML = `
-            Keluasan Asal: <b>${areaSqft.toFixed(2)} sqft</b><br>
-            Termasuk Wastage (${wastage}%): <b>${totalSqft.toFixed(2)} sqft</b><br><br>
-            1. ${selectedSPC.name} (${selectedSPC.sqft} sqft/kotak)<br>
-            &nbsp;&nbsp;&nbsp;➡ ${kotakDiperlukan} Kotak x RM ${selectedSPC.price} = <b style="color:#111;">RM ${hargaLantai.toFixed(2)}</b><br>
-            2. Anggaran Skirting PVC (8ft/btg)<br>
-            &nbsp;&nbsp;&nbsp;➡ ${skirtingBtg} Btg x RM 25 = <b style="color:#111;">RM ${hargaSkirting.toFixed(2)}</b>
-        `;
-        
-        document.getElementById('jumlahHarga').innerText = `RM ${grandTotal.toFixed(2)}`;
-
-        lastCalculatedRecord = {
-            tajuk: "SPC Flooring",
-            info: `${w}x${l}${unit} (${selectedSPC.name})`,
-            harga: "RM " + grandTotal.toFixed(2)
-        };
-
-        document.getElementById('visualBox').style.display = "block";
-        document.getElementById('visualTitle').innerText = `Anggaran Susun Atur (${selectedSPC.name})`;
-        
-        if (jenis === 'herringbone') {
-            lukisVisualHerringbone(w, l);
-        } else {
-            lukisVisualBrick(w, l);
-        }
-    }
-
-    // 1. Lakaran Corak Brick / Staggered (Separuh-separuh berselang-seli untuk Ecoflex & Microcement)
-    function lukisVisualBrick(w, l) {
         let canvas = document.getElementById("canvasVisual");
         let ctx = canvas.getContext("2d");
-        canvas.width = canvas.parentElement.clientWidth - 30; 
-        canvas.height = 240;
+        canvas.width = canvas.parentElement.clientWidth - 30; canvas.height = 220;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        let scale = Math.min((canvas.width - 40) / w, (canvas.height - 40) / l);
-        let drawW = w * scale, drawH = l * scale;
+
+        let scale = Math.min((canvas.width - 40) / wMm, (canvas.height - 40) / lMm);
+        let drawW = wMm * scale, drawH = lMm * scale;
         let startX = (canvas.width - drawW) / 2, startY = (canvas.height - drawH) / 2;
 
-        ctx.fillStyle = "#fff8b0";
-        ctx.fillRect(startX, startY, drawW, drawH);
-        
-        ctx.strokeStyle = "#d4b200";
-        ctx.lineWidth = 1;
-        
-        let plankW = drawW / 8;
-        let plankH = drawH / 16;
+        ctx.fillStyle = "#fff8b0"; ctx.fillRect(startX, startY, drawW, drawH);
+        ctx.strokeStyle = "#111"; ctx.lineWidth = 3; ctx.strokeRect(startX, startY, drawW, drawH);
 
-        // Lukis corak berselang-seli separuh (Staggered offset)
-        for (let y = 0; y <= drawH; y += plankH) {
-            ctx.beginPath();
-            ctx.moveTo(startX, startY + y);
-            ctx.lineTo(startX + drawW, startY + y);
-            ctx.stroke();
-        }
-
-        let rowIndex = 0;
-        for (let y = 0; y < drawH; y += plankH) {
-            let offset = (rowIndex % 2 === 0) ? 0 : (plankW / 2);
-            for (let x = offset; x <= drawW; x += plankW) {
-                ctx.beginPath();
-                ctx.moveTo(startX + x, startY + y);
-                ctx.lineTo(startX + x, startY + y + plankH);
-                ctx.stroke();
+        // Lakaran mengikut jenis
+        if (type === 'herringbone') {
+            // Tulang Ikan Zig-Zag Sebenar (Chevron)
+            ctx.strokeStyle = "#b89b00"; ctx.lineWidth = 1;
+            let step = 16;
+            for (let x = -drawH; x < drawW + drawH; x += step) {
+                ctx.beginPath(); ctx.moveTo(startX + x, startY); ctx.lineTo(startX + x + drawH/2, startY + drawH/2); ctx.lineTo(startX + x, startY + drawH); ctx.stroke();
             }
-            rowIndex++;
+        } else {
+            // Papan Selang-seli (Brick Pattern Separuh-separuh)
+            ctx.strokeStyle = "#d4b200"; ctx.lineWidth = 1;
+            let pW = drawW / 6, pH = drawH / 12;
+            for (let y = 0; y < drawH; y += pH) {
+                ctx.beginPath(); ctx.moveTo(startX, startY + y); ctx.lineTo(startX + drawW, startY + y); ctx.stroke();
+            }
+            let row = 0;
+            for (let y = 0; y < drawH; y += pH) {
+                let off = (row % 2 === 0) ? 0 : (pW / 2);
+                for (let x = off; x <= drawW; x += pW) {
+                    ctx.beginPath(); ctx.moveTo(startX + x, startY + y); ctx.lineTo(startX + x, startY + y + pH); ctx.stroke();
+                }
+                row++;
+            }
         }
-
-        ctx.strokeStyle = "#111"; 
-        ctx.lineWidth = 4; 
-        ctx.strokeRect(startX, startY, drawW, drawH);
     }
-
-    // 2. Lakaran Corak Tulang Ikan (Herringbone Zig-Zag)
-    function lukisVisualHerringbone(w, l) {
-        let canvas = document.getElementById("canvasVisual");
-        let ctx = canvas.getContext("2d");
-        canvas.width = canvas.parentElement.clientWidth - 30; 
-        canvas.height = 240;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        let scale = Math.min((canvas.width - 40) / w, (canvas.height - 40) / l);
-        let drawW = w * scale, drawH = l * scale;
-        let startX = (canvas.width - drawW) / 2, startY = (canvas.height - drawH) / 2;
-
-        ctx.fillStyle = "#fff4cc";
-        ctx.fillRect(startX, startY, drawW, drawH);
-        
-        ctx.strokeStyle = "#b89b00";
-        ctx.lineWidth = 1;
-
-        let step = 18; // Saiz corak herringbone
-        for (let x = -drawH; x < drawW + drawH; x += step) {
-            ctx.beginPath();
-            ctx.moveTo(startX + x, startY);
-            ctx.lineTo(startX + x + drawH, startY + drawH);
-            ctx.stroke();
-
-            ctx.beginPath();
-            ctx.moveTo(startX + x + drawH, startY);
-            ctx.lineTo(startX + x, startY + drawH);
-            ctx.stroke();
-        }
-
-        ctx.strokeStyle = "#111"; 
-        ctx.lineWidth = 4; 
-        ctx.strokeRect(startX, startY, drawW, drawH);
-    }
-
     function addSPCToCart() {
-        if (!lastCalculatedRecord) { alert("Sila buat pengiraan terlebih dahulu!"); return; }
-        let c = JSON.parse(localStorage.getItem('diy_cart')) || []; 
-        c.push(lastCalculatedRecord); 
-        localStorage.setItem('diy_cart', JSON.stringify(c));
-
-        let h = JSON.parse(localStorage.getItem('diy_calc_history')) || []; 
-        h.push(lastCalculatedRecord); 
-        localStorage.setItem('diy_calc_history', JSON.stringify(h));
-
-        alert("Berjaya masukkan pengiraan SPC ke dalam Troli!");
+        if (!lastCalculatedRecord) return;
+        let c = JSON.parse(localStorage.getItem('diy_cart')) || []; c.push(lastCalculatedRecord); localStorage.setItem('diy_cart', JSON.stringify(c));
+        alert("Berjaya masukkan ke Troli!");
     }
 </script>
-
-<a href="../index.html" style="position: fixed; bottom: 20px; right: 20px; background: #fdee23; color: #111; padding: 12px 18px; border-radius: 30px; text-decoration: none; font-weight: 800; font-size: 14px; box-shadow: 0 4px 15px rgba(253,238,35,0.4); display: flex; align-items: center; gap: 6px; border: 1px solid #111;">
-    <span>←</span> Menu Utama
-</a>
-<script>
-    history.pushState(null, null, location.href);
-    window.addEventListener('popstate', function () { window.location.href = '../index.html'; });
-</script>
-
+<a href="../index.html" style="position: fixed; bottom: 20px; right: 20px; background: #fdee23; color: #111; padding: 12px 18px; border-radius: 30px; text-decoration: none; font-weight: 800; font-size: 14px; border: 1px solid #111;"><span>←</span> Menu Utama</a>
 </body>
 </html>
