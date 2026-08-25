@@ -56,6 +56,7 @@
 
         let sqftArea = (wMm / 304.8) * (lMm / 304.8), adjustedSqft = sqftArea * 1.05;
         let boxCount = 0, spcCost = 0, name = "";
+        
         if (type === 'ecoflex') { boxCount = Math.ceil(adjustedSqft / 21.6); spcCost = boxCount * 98; name = "Ecoflex"; }
         else if (type === 'microcement') { boxCount = Math.ceil(adjustedSqft / 24); spcCost = boxCount * 138; name = "Microcement"; }
         else if (type === 'herringbone') { boxCount = Math.ceil(adjustedSqft / 20.25); spcCost = boxCount * 128; name = "Herringbone"; }
@@ -83,16 +84,13 @@
         ctx.fillStyle = "#fff8b0"; ctx.fillRect(startX, startY, drawW, drawH);
         ctx.strokeStyle = "#111"; ctx.lineWidth = 3; ctx.strokeRect(startX, startY, drawW, drawH);
 
-        // Lakaran mengikut jenis
         if (type === 'herringbone') {
-            // Tulang Ikan Zig-Zag Sebenar (Chevron)
             ctx.strokeStyle = "#b89b00"; ctx.lineWidth = 1;
             let step = 16;
             for (let x = -drawH; x < drawW + drawH; x += step) {
                 ctx.beginPath(); ctx.moveTo(startX + x, startY); ctx.lineTo(startX + x + drawH/2, startY + drawH/2); ctx.lineTo(startX + x, startY + drawH); ctx.stroke();
             }
         } else {
-            // Papan Selang-seli (Brick Pattern Separuh-separuh)
             ctx.strokeStyle = "#d4b200"; ctx.lineWidth = 1;
             let pW = drawW / 6, pH = drawH / 12;
             for (let y = 0; y < drawH; y += pH) {
