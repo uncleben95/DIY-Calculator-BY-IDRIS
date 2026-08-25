@@ -3,24 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grab DIY & Tools</title>
+    <title>Idris Logistics & DIY Portal</title>
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="Grab DIY">
+    <meta name="apple-mobile-web-app-title" content="Idris Portal">
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --grab-green: #00B14F;
-            --grab-green-dark: #009441;
-            --bg-color: #f3f4f6;
+            --lalamove-orange: #FF6600;
+            --lalamove-dark: #E65C00;
+            --bg-color: #f4f6f8;
             --card-bg: #ffffff;
-            --text-main: #1c1c1c;
-            --text-sub: #7b7b7b;
-            --border-color: #e5e7eb;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --text-main: #222222;
+            --text-sub: #666666;
+            --border-color: #eaeaea;
+            --shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
         }
 
         @media (prefers-color-scheme: dark) {
@@ -30,7 +30,7 @@
                 --text-main: #f3f4f6;
                 --text-sub: #9ca3af;
                 --border-color: #2a2a2a;
-                --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+                --shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
             }
         }
 
@@ -48,70 +48,65 @@
             transition: background 0.3s ease, color 0.3s ease;
         }
 
-        /* SKRIN KUNCI PRO (FACE ID / TOUCH ID UI) */
+        /* SKRIN KUNCI BIOMETRIK PRO */
         #lockScreen {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.65);
+            background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
             z-index: 9999;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             padding: 20px; text-align: center;
-            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .lock-card {
             background: var(--card-bg); padding: 35px 24px; border-radius: 28px;
-            border: 1px solid var(--border-color); box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+            border: 1px solid var(--border-color); box-shadow: 0 20px 40px rgba(0,0,0,0.3);
             max-width: 330px; width: 100%; display: flex; flex-direction: column; align-items: center;
         }
         .biometric-icon-container {
-            width: 75px; height: 75px; border-radius: 22px; background: rgba(0, 177, 79, 0.1);
-            color: var(--grab-green); display: flex; align-items: center; justify-content: center;
-            font-size: 34px; margin-bottom: 20px; border: 1.5px solid rgba(0, 177, 79, 0.2);
+            width: 75px; height: 75px; border-radius: 22px; background: rgba(255, 102, 0, 0.1);
+            color: var(--lalamove-orange); display: flex; align-items: center; justify-content: center;
+            font-size: 34px; margin-bottom: 20px; border: 1.5px solid rgba(255, 102, 0, 0.2);
             animation: pulseGlow 2s infinite ease-in-out;
         }
         @keyframes pulseGlow {
-            0% { box-shadow: 0 0 0 0 rgba(0, 177, 79, 0.4); }
-            70% { box-shadow: 0 0 0 12px rgba(0, 177, 79, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(0, 177, 79, 0); }
+            0% { box-shadow: 0 0 0 0 rgba(255, 102, 0, 0.4); }
+            70% { box-shadow: 0 0 0 12px rgba(255, 102, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 102, 0, 0); }
         }
         .lock-card h3 { margin: 0 0 6px 0; font-size: 19px; font-weight: 700; color: var(--text-main); }
         .lock-card p { font-size: 13px; color: var(--text-sub); margin: 0 0 25px 0; line-height: 1.4; }
         
         .unlock-btn {
-            background: var(--grab-green); color: white; border: none; width: 100%;
+            background: var(--lalamove-orange); color: white; border: none; width: 100%;
             padding: 14px; border-radius: 16px; font-size: 15px; font-weight: 700;
-            cursor: pointer; box-shadow: 0 6px 16px rgba(0,177,79,0.3);
+            cursor: pointer; box-shadow: 0 6px 16px rgba(255,102,0,0.3);
             display: flex; align-items: center; justify-content: center; gap: 10px;
-            transition: transform 0.2s ease, background 0.2s ease;
         }
-        .unlock-btn:active { transform: scale(0.96); background: var(--grab-green-dark); }
+        .unlock-btn:active { transform: scale(0.96); background: var(--lalamove-dark); }
 
-        /* HEADER ALA GRAB */
+        /* HEADER PROFIL ALA LALAMOVE */
         .header-container {
             width: 100%; max-width: 440px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;
         }
-        .user-profile {
-            display: flex; align-items: center; gap: 12px; cursor: pointer;
-        }
+        .user-profile { display: flex; align-items: center; gap: 12px; cursor: pointer; }
         .avatar {
-            width: 48px; height: 48px; background: var(--grab-green); color: white;
+            width: 48px; height: 48px; background: var(--lalamove-orange); color: white;
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-weight: 700; font-size: 18px; overflow: hidden; border: 2px solid var(--grab-green);
+            font-weight: 700; font-size: 18px; overflow: hidden; border: 2px solid var(--lalamove-orange);
         }
         .avatar img { width: 100%; height: 100%; object-fit: cover; }
         .user-info h2 { font-size: 16px; margin: 0; font-weight: 700; display: flex; align-items: center; gap: 5px; }
         .user-info p { font-size: 12px; color: var(--text-sub); margin: 2px 0 0; }
 
-        /* BANNER */
+        /* BANNER OREN KORPORAT */
         .promo-banner {
             width: 100%; max-width: 440px;
-            background: linear-gradient(135deg, var(--grab-green), #00873b);
-            color: white; padding: 20px; border-radius: 20px; margin-bottom: 24px;
-            box-shadow: 0 8px 20px rgba(0, 177, 79, 0.25);
+            background: linear-gradient(135deg, var(--lalamove-orange), #ff8533);
+            color: white; padding: 22px; border-radius: 20px; margin-bottom: 24px;
+            box-shadow: 0 8px 24px rgba(255, 102, 0, 0.25);
         }
         .promo-banner h3 { margin: 0 0 6px 0; font-size: 18px; font-weight: 800; }
-        .promo-banner p { margin: 0; font-size: 13px; opacity: 0.9; line-height: 1.4; }
+        .promo-banner p { margin: 0; font-size: 13px; opacity: 0.95; line-height: 1.4; }
 
         /* SEKSYEN */
         .section-title {
@@ -125,7 +120,7 @@
             background: var(--card-bg); border: 1px solid var(--border-color); padding: 16px; border-radius: 16px;
             display: flex; align-items: center; gap: 16px; cursor: pointer; box-shadow: var(--shadow); transition: 0.2s;
         }
-        .service-card:active { transform: scale(0.97); border-color: var(--grab-green); }
+        .service-card:active { transform: scale(0.97); border-color: var(--lalamove-orange); }
         .service-img { width: 65px; height: 65px; border-radius: 12px; overflow: hidden; flex-shrink: 0; background: #e2e8f0; }
         .service-img img { width: 100%; height: 100%; object-fit: cover; }
         .service-details h4 { margin: 0 0 4px 0; font-size: 15px; font-weight: 700; color: var(--text-main); }
@@ -149,7 +144,7 @@
             width: 100%; max-width: 440px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: var(--text-sub); padding: 0 4px;
         }
         .visitor-badge { background: var(--card-bg); border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 12px; box-shadow: var(--shadow); }
-        .visitor-badge span { font-weight: 700; color: var(--grab-green); }
+        .visitor-badge span { font-weight: 700; color: var(--lalamove-orange); }
 
         /* MODAL */
         .overlay {
@@ -162,7 +157,7 @@
             text-align: center; width: 280px; border: 1px solid var(--border-color);
         }
         .spinner {
-            width: 36px; height: 36px; border: 4px solid rgba(0, 177, 79, 0.2); border-top-color: var(--grab-green);
+            width: 36px; height: 36px; border: 4px solid rgba(255, 102, 0, 0.2); border-top-color: var(--lalamove-orange);
             border-radius: 50%; margin: 0 auto 12px; animation: spin 1s linear infinite;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
@@ -170,26 +165,24 @@
 </head>
 <body>
 
-    <!-- SKRIN KUNCI PRO BIOMETRIK (FACE ID / TOUCH ID) -->
+    <!-- SKRIN KUNCI BIOMETRIK -->
     <div id="lockScreen">
         <div class="lock-card">
-            <div class="biometric-icon-container">
-                🔒
-            </div>
-            <h3>Keselamatan Portal</h3>
-            <p>Sahkan menggunakan Face ID atau Touch ID peranti anda untuk meneruskan.</p>
+            <div class="biometric-icon-container">🔒</div>
+            <h3>Idris Portal</h3>
+            <p>Sahkan menggunakan Face ID atau Touch ID peranti anda.</p>
             <button class="unlock-btn" onclick="triggerPasskeyUnlock()">
                 <span>🛡️</span> Buka Kunci Biometrik
             </button>
         </div>
     </div>
 
-    <!-- INPUT TERSEMBUNYI UNTUK UPLOAD GAMBAR GALERI -->
+    <!-- INPUT TERSEMBUNYI UNTUK UPLOAD GAMBAR -->
     <input type="file" id="galleryInput" accept="image/*" style="display: none;" onchange="previewProfileImage(event)">
 
     <!-- HEADER PROFIL -->
     <div class="header-container">
-        <div class="user-profile" onclick="triggerUploadModal()" title="Tekan untuk tukar gambar profil">
+        <div class="user-profile" onclick="triggerUploadModal()" title="Tukar gambar profil">
             <div class="avatar" id="headerAvatar">I</div>
             <div class="user-info">
                 <h2 id="userNameText">Idris DIY ⚙️</h2>
@@ -198,17 +191,28 @@
         </div>
     </div>
 
-    <!-- BANNER -->
+    <!-- BANNER UTAMA -->
     <div class="promo-banner">
-        <h3>Perkhidmatan DIY & Bina Rumah</h3>
-        <p>Pilih alat pengiraan pantas untuk projek hiasan dalaman anda hari ini.</p>
+        <h3>Portal Pengiriman & Hiasan Rumah</h3>
+        <p>Pilih perkhidmatan pengiraan diy dan logistik pantas di sini.</p>
     </div>
 
-    <div class="section-title">Pilihan Kalkulator</div>
+    <div class="section-title">Pilihan Perkhidmatan</div>
 
-    <!-- SERVICES GRID DENGAN IMEJ PRODUK -->
+    <!-- SERVICES GRID (TERMASUK KIRAAN LOGISTIK ALA LALAMOVE) -->
     <div class="services-grid">
-        <!-- 1. Wall Panelling -->
+        <!-- 1. Kalkulator Logistik / Penghantaran Bahan (Ala Lalamove) -->
+        <div class="service-card" onclick="bukaApps('logistics/index.html', 'Kira Logistik')">
+            <div class="service-img">
+                <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=150&auto=format&fit=crop&q=80" alt="Logistik Lalamove">
+            </div>
+            <div class="service-details">
+                <h4>Kira Kos Logistik (Van/Lori)</h4>
+                <p>Kira anggaran kos penghantaran barang binaan ikut jarak KM.</p>
+            </div>
+        </div>
+
+        <!-- 2. Wall Panelling -->
         <div class="service-card" onclick="bukaApps('wallpanelling/index.html', 'Wall Panelling')">
             <div class="service-img">
                 <img src="https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=150&auto=format&fit=crop&q=80" alt="Fluted Panel">
@@ -219,10 +223,10 @@
             </div>
         </div>
 
-        <!-- 2. Siri Siling -->
+        <!-- 3. Siri Siling -->
         <div class="service-card" onclick="bukaApps('ceilingseries/index.html', 'Siri Siling')">
             <div class="service-img">
-                <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=150&auto=format&fit=crop&q=80" alt="PVC Ceiling Siling">
+                <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=150&auto=format&fit=crop&q=80" alt="PVC Ceiling">
             </div>
             <div class="service-details">
                 <h4>Siri Siling</h4>
@@ -230,10 +234,10 @@
             </div>
         </div>
         
-        <!-- 3. Pro Wainscoting -->
+        <!-- 4. Pro Wainscoting -->
         <div class="service-card" onclick="bukaApps('wainscoting/index.html', 'Pro Wainscoting')">
             <div class="service-img">
-                <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?w=150&auto=format&fit=crop&q=80" alt="Wainscoting Dinding">
+                <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?w=150&auto=format&fit=crop&q=80" alt="Wainscoting">
             </div>
             <div class="service-details">
                 <h4>Pro Wainscoting</h4>
@@ -242,7 +246,7 @@
         </div>
     </div>
 
-    <!-- SEKSYEN SEJARAH (HISTORY) -->
+    <!-- SEJARAH -->
     <div class="section-title">
         <span>Sejarah Pengiraan</span>
         <button class="clear-btn" onclick="clearHistory()">Kosongkan</button>
@@ -253,21 +257,20 @@
 
     <!-- FOOTER -->
     <div class="footer-box">
-        <span>Idris Apps &bull; v3.3</span>
-        <div class="visitor-badge">Pelawat: <span id="visitorCount">1,548</span></div>
+        <span>Idris Apps &bull; v4.0</span>
+        <div class="visitor-badge">Pelawat: <span id="visitorCount">1,620</span></div>
     </div>
 
     <!-- LOADING OVERLAY -->
     <div class="overlay" id="loadingOverlay">
         <div class="popup">
             <div class="spinner"></div>
-            <h4 id="popupTitle">Membuka Aplikasi</h4>
+            <h4 id="popupTitle">Membuka Perkhidmatan</h4>
             <p>Sila tunggu sebentar...</p>
         </div>
     </div>
 
     <script>
-        // 1. SEMAK PASSKEY (PLATFORM AUTHENTICATOR: FACE ID / TOUCH ID SAHAJA)
         window.addEventListener('DOMContentLoaded', () => {
             const isUnlocked = sessionStorage.getItem('passkey_unlocked');
             if (isUnlocked === 'true') {
@@ -286,14 +289,10 @@
                         user: { id: new Uint8Array(16), name: "idris@portal", displayName: "Idris" },
                         pubKeyCredParams: [{ alg: -7, type: "public-key" }],
                         timeout: 30000,
-                        authenticatorSelection: {
-                            authenticatorAttachment: "platform",
-                            userVerification: "required"
-                        }
+                        authenticatorSelection: { authenticatorAttachment: "platform", userVerification: "required" }
                     };
                     await navigator.credentials.get({ publicKey }).catch(() => {});
                 }
-                
                 sessionStorage.setItem('passkey_unlocked', 'true');
                 let lock = document.getElementById('lockScreen');
                 lock.style.opacity = '0';
@@ -304,10 +303,7 @@
             }
         }
 
-        // 2. TUKAR GAMBAR PROFIL DARI GALERI
-        function triggerUploadModal() {
-            document.getElementById('galleryInput').click();
-        }
+        function triggerUploadModal() { document.getElementById('galleryInput').click(); }
 
         function previewProfileImage(event) {
             const file = event.target.files[0];
@@ -331,23 +327,19 @@
             document.getElementById('headerAvatar').innerHTML = `<img src="${imgSrc}" alt="Profil">`;
         }
 
-        // 3. NAVIGASI APPS
         function bukaApps(url, tajuk) {
             document.getElementById('popupTitle').innerText = 'Memuatkan ' + tajuk;
             document.getElementById('loadingOverlay').classList.add('active');
             setTimeout(() => { window.location.href = url; }, 800);
         }
 
-        // 4. PAPAR SEJARAH (HISTORY)
         function renderHistory() {
             const historyBox = document.getElementById('historyListBox');
             let historyData = JSON.parse(localStorage.getItem('diy_calc_history')) || [];
-            
             if (historyData.length === 0) {
                 historyBox.innerHTML = `<div style="font-size: 12px; color: var(--text-sub); text-align: center; padding: 10px;">Tiada sejarah tersimpan.</div>`;
                 return;
             }
-
             let html = '';
             historyData.slice(-5).reverse().forEach(item => {
                 html += `
@@ -356,7 +348,7 @@
                             <b>${item.tajuk}</b><br>
                             <span>${item.info}</span>
                         </div>
-                        <div style="text-align: right; font-weight: 600; color: var(--grab-green);">
+                        <div style="text-align: right; font-weight: 600; color: var(--lalamove-orange);">
                             ${item.harga}
                         </div>
                     </div>
