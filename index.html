@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Idris Logistics & DIY Portal</title>
+    <title>Idris DIY & Tools Portal</title>
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -13,13 +13,13 @@
     
     <style>
         :root {
-            --lalamove-orange: #FF6600;
-            --lalamove-dark: #E65C00;
-            --bg-color: #f4f6f8;
+            --tng-yellow: #fdee23;
+            --tng-dark: #111111;
+            --bg-color: #f4f5f7;
             --card-bg: #ffffff;
-            --text-main: #222222;
+            --text-main: #111111;
             --text-sub: #666666;
-            --border-color: #eaeaea;
+            --border-color: #e4e7eb;
             --shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
         }
 
@@ -45,68 +45,32 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            transition: background 0.3s ease, color 0.3s ease;
         }
 
-        /* SKRIN KUNCI BIOMETRIK PRO */
-        #lockScreen {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(16px);
-            z-index: 9999;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            padding: 20px; text-align: center;
-        }
-        .lock-card {
-            background: var(--card-bg); padding: 35px 24px; border-radius: 28px;
-            border: 1px solid var(--border-color); box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-            max-width: 330px; width: 100%; display: flex; flex-direction: column; align-items: center;
-        }
-        .biometric-icon-container {
-            width: 75px; height: 75px; border-radius: 22px; background: rgba(255, 102, 0, 0.1);
-            color: var(--lalamove-orange); display: flex; align-items: center; justify-content: center;
-            font-size: 34px; margin-bottom: 20px; border: 1.5px solid rgba(255, 102, 0, 0.2);
-            animation: pulseGlow 2s infinite ease-in-out;
-        }
-        @keyframes pulseGlow {
-            0% { box-shadow: 0 0 0 0 rgba(255, 102, 0, 0.4); }
-            70% { box-shadow: 0 0 0 12px rgba(255, 102, 0, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 102, 0, 0); }
-        }
-        .lock-card h3 { margin: 0 0 6px 0; font-size: 19px; font-weight: 700; color: var(--text-main); }
-        .lock-card p { font-size: 13px; color: var(--text-sub); margin: 0 0 25px 0; line-height: 1.4; }
-        
-        .unlock-btn {
-            background: var(--lalamove-orange); color: white; border: none; width: 100%;
-            padding: 14px; border-radius: 16px; font-size: 15px; font-weight: 700;
-            cursor: pointer; box-shadow: 0 6px 16px rgba(255,102,0,0.3);
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-        }
-        .unlock-btn:active { transform: scale(0.96); background: var(--lalamove-dark); }
-
-        /* HEADER PROFIL ALA LALAMOVE */
+        /* HEADER / PROFIL TNG STYLE */
         .header-container {
             width: 100%; max-width: 440px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;
         }
         .user-profile { display: flex; align-items: center; gap: 12px; cursor: pointer; }
         .avatar {
-            width: 48px; height: 48px; background: var(--lalamove-orange); color: white;
+            width: 48px; height: 48px; background: var(--tng-yellow); color: var(--tng-dark);
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-weight: 700; font-size: 18px; overflow: hidden; border: 2px solid var(--lalamove-orange);
+            font-weight: 800; font-size: 18px; overflow: hidden; border: 2px solid var(--tng-dark);
         }
         .avatar img { width: 100%; height: 100%; object-fit: cover; }
-        .user-info h2 { font-size: 16px; margin: 0; font-weight: 700; display: flex; align-items: center; gap: 5px; }
+        .user-info h2 { font-size: 16px; margin: 0; font-weight: 700; color: var(--text-main); }
         .user-info p { font-size: 12px; color: var(--text-sub); margin: 2px 0 0; }
 
-        /* BANNER OREN KORPORAT */
+        /* BANNER TNG E-WALLET STYLE */
         .promo-banner {
             width: 100%; max-width: 440px;
-            background: linear-gradient(135deg, var(--lalamove-orange), #ff8533);
-            color: white; padding: 22px; border-radius: 20px; margin-bottom: 24px;
-            box-shadow: 0 8px 24px rgba(255, 102, 0, 0.25);
+            background: linear-gradient(135deg, #fdee23, #ffcc00);
+            color: #111111; padding: 22px; border-radius: 20px; margin-bottom: 24px;
+            box-shadow: 0 8px 24px rgba(253, 238, 35, 0.25);
+            border: 1px solid rgba(0,0,0,0.05);
         }
         .promo-banner h3 { margin: 0 0 6px 0; font-size: 18px; font-weight: 800; }
-        .promo-banner p { margin: 0; font-size: 13px; opacity: 0.95; line-height: 1.4; }
+        .promo-banner p { margin: 0; font-size: 13px; opacity: 0.85; line-height: 1.4; }
 
         /* SEKSYEN */
         .section-title {
@@ -120,11 +84,11 @@
             background: var(--card-bg); border: 1px solid var(--border-color); padding: 16px; border-radius: 16px;
             display: flex; align-items: center; gap: 16px; cursor: pointer; box-shadow: var(--shadow); transition: 0.2s;
         }
-        .service-card:active { transform: scale(0.97); border-color: var(--lalamove-orange); }
-        .service-img { width: 65px; height: 65px; border-radius: 12px; overflow: hidden; flex-shrink: 0; background: #e2e8f0; }
+        .service-card:active { transform: scale(0.97); border-color: var(--tng-yellow); }
+        .service-img { width: 60px; height: 60px; border-radius: 14px; overflow: hidden; flex-shrink: 0; background: #e2e8f0; }
         .service-img img { width: 100%; height: 100%; object-fit: cover; }
-        .service-details h4 { margin: 0 0 4px 0; font-size: 15px; font-weight: 700; color: var(--text-main); }
-        .service-details p { margin: 0; font-size: 12px; color: var(--text-sub); line-height: 1.4; }
+        .service-details h4 { margin: 0 0 4px 0; font-size: 14px; font-weight: 700; color: var(--text-main); }
+        .service-details p { margin: 0; font-size: 11px; color: var(--text-sub); line-height: 1.4; }
 
         /* HISTORY */
         .history-container {
@@ -144,7 +108,7 @@
             width: 100%; max-width: 440px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: var(--text-sub); padding: 0 4px;
         }
         .visitor-badge { background: var(--card-bg); border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 12px; box-shadow: var(--shadow); }
-        .visitor-badge span { font-weight: 700; color: var(--lalamove-orange); }
+        .visitor-badge span { font-weight: 700; color: #d4b200; }
 
         /* MODAL */
         .overlay {
@@ -157,25 +121,13 @@
             text-align: center; width: 280px; border: 1px solid var(--border-color);
         }
         .spinner {
-            width: 36px; height: 36px; border: 4px solid rgba(255, 102, 0, 0.2); border-top-color: var(--lalamove-orange);
+            width: 36px; height: 36px; border: 4px solid rgba(253, 238, 35, 0.3); border-top-color: #111;
             border-radius: 50%; margin: 0 auto 12px; animation: spin 1s linear infinite;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
-
-    <!-- SKRIN KUNCI BIOMETRIK -->
-    <div id="lockScreen">
-        <div class="lock-card">
-            <div class="biometric-icon-container">🔒</div>
-            <h3>Idris Portal</h3>
-            <p>Sahkan menggunakan Face ID atau Touch ID peranti anda.</p>
-            <button class="unlock-btn" onclick="triggerPasskeyUnlock()">
-                <span>🛡️</span> Buka Kunci Biometrik
-            </button>
-        </div>
-    </div>
 
     <!-- INPUT TERSEMBUNYI UNTUK UPLOAD GAMBAR -->
     <input type="file" id="galleryInput" accept="image/*" style="display: none;" onchange="previewProfileImage(event)">
@@ -191,57 +143,56 @@
         </div>
     </div>
 
-    <!-- BANNER UTAMA -->
+    <!-- BANNER TNG STYLE -->
     <div class="promo-banner">
-        <h3>Portal Pengiriman & Hiasan Rumah</h3>
-        <p>Pilih perkhidmatan pengiraan diy dan logistik pantas di sini.</p>
+        <h3>Idris e-Portal & Calculator</h3>
+        <p>Pilih perkhidmatan kalkulator dan logistik pantas di hujung jari.</p>
     </div>
 
     <div class="section-title">Pilihan Perkhidmatan</div>
 
-    <!-- SERVICES GRID (TERMASUK KIRAAN LOGISTIK ALA LALAMOVE) -->
+    <!-- SERVICES GRID -->
     <div class="services-grid">
-        <!-- 1. Kalkulator Logistik / Penghantaran Bahan (Ala Lalamove) -->
-                <!-- 1. Buka Apps Lalamove Terus (iOS / Android) -->
+        <!-- 1. Lalamove -->
         <div class="service-card" onclick="bukaLalamoveApp()">
             <div class="service-img">
                 <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=150&auto=format&fit=crop&q=80" alt="Lalamove">
             </div>
             <div class="service-details">
-                <h4>Buka Apps Lalamove</h4>
+                <h4>Lalamove</h4>
                 <p>Tempah lori atau van penghantaran barang binaan dengan pantas.</p>
             </div>
         </div>
 
-        <!-- 2. Wall Panelling -->
-        <div class="service-card" onclick="bukaApps('wallpanelling/index.html', 'Wall Panelling')">
+        <!-- 2. Board with Fluted Panelling Calculator -->
+        <div class="service-card" onclick="bukaApps('wallpanelling/index.html', 'Board with Fluted Panelling Calculator')">
             <div class="service-img">
                 <img src="https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=150&auto=format&fit=crop&q=80" alt="Fluted Panel">
             </div>
             <div class="service-details">
-                <h4>Wall Panelling</h4>
+                <h4>Board with Fluted Panelling Calculator</h4>
                 <p>Kira kos & susun atur fluted panel serta wallboard dinding.</p>
             </div>
         </div>
 
-        <!-- 3. Siri Siling -->
-        <div class="service-card" onclick="bukaApps('ceilingseries/index.html', 'Siri Siling')">
+        <!-- 3. Ceiling Series Calculator -->
+        <div class="service-card" onclick="bukaApps('ceilingseries/index.html', 'Ceiling Series Calculator')">
             <div class="service-img">
-                <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=150&auto=format&fit=crop&q=80" alt="PVC Ceiling">
+                <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=150&auto=format&fit=crop&q=80" alt="Ceiling Series">
             </div>
             <div class="service-details">
-                <h4>Siri Siling</h4>
+                <h4>Ceiling Series Calculator</h4>
                 <p>Kira bahan dan ukuran siri siling rumah dengan tepat.</p>
             </div>
         </div>
         
-        <!-- 4. Pro Wainscoting -->
-        <div class="service-card" onclick="bukaApps('wainscoting/index.html', 'Pro Wainscoting')">
+        <!-- 4. Wainscoting Calculator -->
+        <div class="service-card" onclick="bukaApps('wainscoting/index.html', 'Wainscoting Calculator')">
             <div class="service-img">
                 <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?w=150&auto=format&fit=crop&q=80" alt="Wainscoting">
             </div>
             <div class="service-details">
-                <h4>Pro Wainscoting</h4>
+                <h4>Wainscoting Calculator</h4>
                 <p>Sebut harga terperinci & nisbah visual kotak wainscoting.</p>
             </div>
         </div>
@@ -258,8 +209,8 @@
 
     <!-- FOOTER -->
     <div class="footer-box">
-        <span>Idris Apps &bull; v4.0</span>
-        <div class="visitor-badge">Pelawat: <span id="visitorCount">1,620</span></div>
+        <span>Idris Portal &bull; v5.0</span>
+        <div class="visitor-badge">Pelawat: <span id="visitorCount">1,740</span></div>
     </div>
 
     <!-- LOADING OVERLAY -->
@@ -273,35 +224,20 @@
 
     <script>
         window.addEventListener('DOMContentLoaded', () => {
-            const isUnlocked = sessionStorage.getItem('passkey_unlocked');
-            if (isUnlocked === 'true') {
-                document.getElementById('lockScreen').style.display = 'none';
-            }
             loadSavedProfile();
             renderHistory();
         });
 
-        async function triggerPasskeyUnlock() {
-            try {
-                if (window.PublicKeyCredential && navigator.credentials) {
-                    const publicKey = {
-                        challenge: new Uint8Array([11,33,99,44]),
-                        rp: { name: "Idris DIY Portal" },
-                        user: { id: new Uint8Array(16), name: "idris@portal", displayName: "Idris" },
-                        pubKeyCredParams: [{ alg: -7, type: "public-key" }],
-                        timeout: 30000,
-                        authenticatorSelection: { authenticatorAttachment: "platform", userVerification: "required" }
-                    };
-                    await navigator.credentials.get({ publicKey }).catch(() => {});
+        function bukaLalamoveApp() {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            window.location.href = "lalamove://";
+            setTimeout(function() {
+                if (/android/i.test(userAgent)) {
+                    window.location.href = "https://play.google.com/store/apps/details?id=com.lalamove.hue.android";
+                } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                    window.location.href = "https://apps.apple.com/my/app/lalamove-delivery-service/id946343438";
                 }
-                sessionStorage.setItem('passkey_unlocked', 'true');
-                let lock = document.getElementById('lockScreen');
-                lock.style.opacity = '0';
-                setTimeout(() => { lock.style.display = 'none'; }, 400);
-            } catch(e) {
-                sessionStorage.setItem('passkey_unlocked', 'true');
-                document.getElementById('lockScreen').style.display = 'none';
-            }
+            }, 1500);
         }
 
         function triggerUploadModal() { document.getElementById('galleryInput').click(); }
@@ -349,7 +285,7 @@
                             <b>${item.tajuk}</b><br>
                             <span>${item.info}</span>
                         </div>
-                        <div style="text-align: right; font-weight: 600; color: var(--lalamove-orange);">
+                        <div style="text-align: right; font-weight: 600; color: #b89b00;">
                             ${item.harga}
                         </div>
                     </div>
@@ -363,29 +299,5 @@
             renderHistory();
         }
     </script>
-    <script>
-    function bukaLalamoveApp() {
-        // Kesan jenis peranti pengguna (iOS atau Android)
-        const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-        
-        // Pautan Universal / Deep Link Lalamove rasmi
-        let lalamoveAppSchema = "lalamove://"; // Skema universal
-        
-        // Cuba buka apps Lalamove
-        window.location.href = lalamoveAppSchema;
-
-        // Fallback: Jika dalam masa 1.5 saat apps tidak terbuka, arahkan ke kedai aplikasi mengikut peranti
-        setTimeout(function() {
-            if (/android/i.test(userAgent)) {
-                // Link Play Store Lalamove
-                window.location.href = "https://play.google.com/store/apps/details?id=com.lalamove.hue.android";
-            } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-                // Link App Store Lalamove
-                window.location.href = "https://apps.apple.com/my/app/lalamove-delivery-service/id946343438";
-            }
-        }, 1500);
-    }
-</script>
-
 </body>
 </html>
