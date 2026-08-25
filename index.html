@@ -180,25 +180,14 @@
     <!-- BANNER TNG STYLE -->
     <div class="promo-banner">
         <h3>Idris e-Portal & Calculator</h3>
-        <p>Pilih perkhidmatan kalkulator dan logistik pantas di hujung jari.</p>
+        <p>Pilih pelbagai jenis kalkulator sebut harga pembinaan di hujung jari.</p>
     </div>
 
-    <div class="section-title">Pilihan Perkhidmatan</div>
+    <div class="section-title">Pilihan Kalkulator</div>
 
-    <!-- SERVICES GRID DENGAN IMEJ BARU -->
+    <!-- SERVICES GRID KHUSUS KALKULATOR SAHAJA -->
     <div class="services-grid">
-        <!-- Lalamove -->
-        <div class="service-card" onclick="bukaLalamoveApp()">
-            <div class="service-img">
-                <img src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=150&auto=format&fit=crop&q=80" alt="Lalamove Logo">
-            </div>
-            <div class="service-details">
-                <h4>Lalamove</h4>
-                <p>Tempah lori atau van penghantaran barang binaan dengan pantas.</p>
-            </div>
-        </div>
-
-        <!-- SPC Flooring -->
+        <!-- 1. SPC Flooring -->
         <div class="service-card" onclick="bukaApps('spcflooring/index.html', 'SPC Flooring Calculator')">
             <div class="service-img">
                 <img src="https://images.unsplash.com/photo-1516455590571-18256e5bb9ff?w=150&auto=format&fit=crop&q=80" alt="SPC Flooring">
@@ -209,7 +198,7 @@
             </div>
         </div>
 
-        <!-- Fluted Panel -->
+        <!-- 2. Fluted Panel -->
         <div class="service-card" onclick="bukaApps('wallpanelling/index.html', 'Board with Fluted Panelling Calculator')">
             <div class="service-img">
                 <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=150&auto=format&fit=crop&q=80" alt="Fluted Panel">
@@ -220,7 +209,7 @@
             </div>
         </div>
 
-        <!-- Ceiling Series -->
+        <!-- 3. Ceiling Series -->
         <div class="service-card" onclick="bukaApps('ceilingseries/index.html', 'Ceiling Series Calculator')">
             <div class="service-img">
                 <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?w=150&auto=format&fit=crop&q=80" alt="Ceiling Series">
@@ -231,7 +220,7 @@
             </div>
         </div>
         
-        <!-- Wainscoting Eropah -->
+        <!-- 4. Wainscoting Eropah -->
         <div class="service-card" onclick="bukaApps('wainscoting/index.html', 'Wainscoting Calculator')">
             <div class="service-img">
                 <img src="https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=150&auto=format&fit=crop&q=80" alt="European Wainscoting">
@@ -239,6 +228,17 @@
             <div class="service-details">
                 <h4>Wainscoting Calculator</h4>
                 <p>Sebut harga terperinci & nisbah visual kotak wainscoting.</p>
+            </div>
+        </div>
+
+        <!-- 5. Postage Calculator -->
+        <div class="service-card" onclick="bukaApps('postage/index.html', 'Postage Calculator')">
+            <div class="service-img">
+                <img src="https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=150&auto=format&fit=crop&q=80" alt="Postage">
+            </div>
+            <div class="service-details">
+                <h4>Postage Calculator</h4>
+                <p>Kira kos pos barang atau sampel ke Semenanjung & Sabah/Sarawak.</p>
             </div>
         </div>
     </div>
@@ -254,8 +254,8 @@
 
     <!-- FOOTER -->
     <div class="footer-box">
-        <span>Idris Portal &bull; v6.3</span>
-        <div class="visitor-badge">Pelawat: <span id="visitorCount">1,920</span></div>
+        <span>Idris Portal &bull; v6.5</span>
+        <div class="visitor-badge">Pelawat: <span id="visitorCount">1,980</span></div>
     </div>
 
     <!-- SKRIN TROLI (CART MODAL) -->
@@ -268,9 +268,9 @@
             
             <div id="cartItemsContainer" style="max-height: 220px; overflow-y: auto;"></div>
 
-            <!-- Kotak Kos Lalamove -->
+            <!-- Kotak Kos Lalamove / Penghantaran Alternatif -->
             <div class="lalamove-box">
-                <label for="lalamoveFeeInput">🚚 Masukkan Caj Penghantaran Lalamove (RM):</label>
+                <label for="lalamoveFeeInput">🚚 Tambahan Caj Penghantaran (RM):</label>
                 <input type="number" id="lalamoveFeeInput" value="0" min="0" step="0.50" oninput="calculateCartTotal()">
             </div>
 
@@ -281,7 +281,7 @@
                     <span id="cartSubtotalText">RM 0.00</span>
                 </div>
                 <div class="summary-row">
-                    <span>Caj Lalamove:</span>
+                    <span>Tambahan Caj:</span>
                     <span id="cartLalamoveText">RM 0.00</span>
                 </div>
                 <div class="summary-total">
@@ -309,20 +309,6 @@
             renderHistory();
             updateCartBadge();
         });
-
-        function bukaLalamoveApp() {
-            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-            if (/android/i.test(userAgent)) {
-                window.location.href = "intent://#Intent;package=com.lalamove.hue.android;scheme=lalamove;end;";
-            } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-                window.location.href = "lalamove://";
-                setTimeout(function() {
-                    window.location.href = "https://apps.apple.com/my/app/lalamove-delivery-service/id946343438";
-                }, 1500);
-            } else {
-                window.open("https://www.lalamove.com/", "_blank");
-            }
-        }
 
         function renderHistory() {
             const historyBox = document.getElementById('historyListBox');
@@ -445,7 +431,7 @@
             cartData.forEach((item, i) => {
                 msg += `${i+1}. ${item.tajuk} - ${item.info} (${item.harga})\n`;
             });
-            msg += `\nCaj Lalamove: RM ${lalamoveFee.toFixed(2)}`;
+            msg += `\nTambahan Caj: RM ${lalamoveFee.toFixed(2)}`;
             msg += `\nTOTAL KESELURUHAN: ${grandTotalText}`;
 
             let url = `https://wa.me/?text=` + encodeURIComponent(msg);
