@@ -3,92 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kalkulator Fluted Panel & Board</title>
+    <title>Board with Fluted Panelling Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --tng-yellow: #fdee23;
+            --tng-dark: #111111;
+            --bg-color: #f4f5f7;
+            --card-bg: #ffffff;
+            --text-main: #111111;
+            --text-sub: #666666;
+            --border-color: #e4e7eb;
+            --shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f6f9;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
             margin: 0;
-            padding: 20px;
-            padding-bottom: 80px; /* Ruang untuk butang terapung bawah */
-            color: #333;
+            padding: 20px 16px 90px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
+
         .container {
-            max-width: 950px;
-            margin: 0 auto;
-            background: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            max-width: 600px;
+            width: 100%;
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
         }
+
         h2 {
             text-align: center;
-            color: #00B14F;
-            margin-bottom: 25px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        input, select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
-        button {
-            background-color: #00B14F;
-            color: white;
-            border: none;
-            padding: 12px;
-            width: 100%;
-            font-size: 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        button:hover {
-            background-color: #009441;
-        }
-        .result-box {
-            margin-top: 25px;
-            padding: 20px;
-            background: #eaf2f8;
-            border-radius: 5px;
-            border-left: 5px solid #00B14F;
-        }
-        .result-box h3 {
+            color: var(--text-main);
             margin-top: 0;
-            color: #009441;
+            margin-bottom: 25px;
+            font-size: 20px;
+            font-weight: 800;
         }
-        /* Kotak Visual Hitam Putih */
+
+        .form-group { margin-bottom: 16px; }
+        label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 13px; }
+        input, select {
+            width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 10px; font-size: 14px; box-sizing: border-box; outline: none; background: #fff;
+        }
+        input:focus, select:focus { border-color: #d4b200; box-shadow: 0 0 0 3px rgba(253, 238, 35, 0.2); }
+
+        button.calc-btn {
+            background-color: var(--tng-yellow); color: var(--tng-dark); border: none; padding: 15px; width: 100%; font-size: 16px; font-weight: 800; border-radius: 12px; cursor: pointer; margin-top: 10px; box-shadow: 0 4px 12px rgba(253, 238, 35, 0.3); transition: 0.2s;
+        }
+        button.calc-btn:active { transform: scale(0.98); }
+
+        .result-box {
+            margin-top: 25px; padding: 20px; background: #fffdf0; border-radius: 14px; border: 1.5px solid #f6e05e; display: none; font-size: 13px;
+        }
+        .result-box h3 { margin-top: 0; color: #111; font-size: 16px; }
+
         .visual-container {
-            margin-top: 30px;
-            padding: 20px;
-            background: #ffffff;
-            border: 2px solid #000;
-            border-radius: 5px;
-            text-align: center;
+            margin-top: 25px; padding: 15px; background: #ffffff; border: 1px solid var(--border-color); border-radius: 12px; text-align: center;
         }
-        #canvasVisual {
-            width: 100%;
-            max-width: 880px;
-            height: 380px;
-            border: 1px solid #000;
-            background: #fff;
-            margin-top: 10px;
+        #canvasVisual { width: 100%; max-width: 520px; height: 320px; border: 1px solid var(--border-color); background: #fff; margin-top: 10px; border-radius: 8px; }
+
+        .add-cart-main-btn {
+            background-color: #00B14F; color: white; border: none; padding: 14px; width: 100%; font-size: 15px; font-weight: 700; border-radius: 12px; cursor: pointer; margin-top: 15px; box-shadow: 0 4px 12px rgba(0, 177, 79, 0.3); display: none;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>Kalkulator Kos & Susun Atur Dinding</h2>
+    <h2>Board with Fluted Panelling Calculator</h2>
     
     <div class="form-group">
         <label for="lebarDinding">Lebar Dinding (mm):</label>
@@ -132,233 +122,142 @@
         </select>
     </div>
 
-    <button onclick="kirimKira()">Kira Sekarang</button>
+    <button class="calc-btn" onclick="kirimKira()">Kira Sekarang</button>
 
-    <div class="result-box" id="resultBox" style="display:none;">
+    <div class="result-box" id="resultBox">
         <h3>Keputusan Pengiraan:</h3>
         <p id="detailPanel">-</p>
         <p id="detailBoard">-</p>
         <p id="detailSambungan">-</p>
-        <h3 id="jumlahHarga" style="color: #c0392b;">-</h3>
+        <h3 id="jumlahHarga" style="color: #00B14F;">-</h3>
+        <button class="add-cart-main-btn" id="addCartBtn" onclick="addWallToCart()">+ Masukkan ke Troli (Cart)</button>
     </div>
 
     <div class="visual-container">
-        <h3>Kotak Visual Susun Atur Dinding (Hitam Putih Skala Sebenar)</h3>
-        <p id="infoVisual" style="font-size: 14px; font-weight: bold;">Sila masukkan ukuran dan tekan 'Kira Sekarang'.</p>
+        <h3 style="font-size: 14px; margin-top: 0;">Kotak Visual Susun Atur Dinding</h3>
+        <p id="infoVisual" style="font-size: 12px; color: var(--text-sub);">Sila masukkan ukuran dan tekan 'Kira Sekarang'.</p>
         <canvas id="canvasVisual"></canvas>
     </div>
 </div>
 
 <script>
-function toggleBoardOptions() {
-    let pilihan = document.getElementById("jenisFluted").value;
-    let groupBoard = document.getElementById("groupJenisBoard");
-    let groupJumlahBoard = document.getElementById("groupJumlahBoard");
-    
-    if (pilihan.includes("Wallboard") || pilihan.includes("UV")) {
-        groupBoard.style.display = "block";
-        groupJumlahBoard.style.display = "block";
-    } else {
-        groupBoard.style.display = "none";
-        groupJumlahBoard.style.display = "none";
-    }
-}
-
-function kirimKira() {
-    let lebarDinding = parseFloat(document.getElementById("lebarDinding").value);
-    let tinggiDinding = parseFloat(document.getElementById("tinggiDinding").value);
-    let jenisPilihan = document.getElementById("jenisFluted").value;
-    let jenisBoard = document.getElementById("jenisBoard").value;
-    let inputKepingBoard = parseInt(document.getElementById("jumlahBoardInput").value);
-
-    if (!lebarDinding || !tinggiDinding) {
-        alert("Sila masukkan ukuran lebar dan tinggi dinding terlebih dahulu!");
-        return;
+    function toggleBoardOptions() {
+        let pilihan = document.getElementById("jenisFluted").value;
+        let show = (pilihan.includes("Wallboard") || pilihan.includes("UV"));
+        document.getElementById("groupJenisBoard").style.display = show ? "block" : "none";
+        document.getElementById("groupJumlahBoard").style.display = show ? "block" : "none";
     }
 
-    let lebarFluted = 160; 
-    let hargaFluted = 43;
-    if (jenisPilihan === "PVC") { lebarFluted = 300; hargaFluted = 42; }
-    else if (jenisPilihan === "PS") { lebarFluted = 300; hargaFluted = 59; }
+    let lastCalculatedRecord = null;
+    let lastCalculatedTotal = 0;
 
-    let lebarBoardSatu = 0;
-    let hargaBoardSatu = 0;
-    if (jenisPilihan.includes("Wallboard") || jenisPilihan.includes("UV")) {
-        if (jenisBoard === "Mini") { lebarBoardSatu = 600; hargaBoardSatu = 150; }
-        else if (jenisBoard === "BF") { lebarBoardSatu = 1200; hargaBoardSatu = 240; }
-        else if (jenisBoard === "UV") { lebarBoardSatu = 1220; hargaBoardSatu = 199; }
-    }
+    function kirimKira() {
+        let lebarDinding = parseFloat(document.getElementById("lebarDinding").value);
+        let tinggiDinding = parseFloat(document.getElementById("tinggiDinding").value);
+        let jenisPilihan = document.getElementById("jenisFluted").value;
+        let jenisBoard = document.getElementById("jenisBoard").value;
+        let inputKepingBoard = parseInt(document.getElementById("jumlahBoardInput").value);
 
-    let lapisanMenegak = Math.ceil(tinggiDinding / 2900);
-    
-    let totalKepingBoard = 0;
-    let totalLebarBoardSemua = 0;
-    let jumlahBatangFlutedSatuLayer = 0;
-    let kepingFlutedSebelah = 0;
+        if (!lebarDinding || !tinggiDinding) { alert("Sila masukkan ukuran lebar dan tinggi dinding!"); return; }
 
-    if (jenisPilihan === "WPC" || jenisPilihan === "PVC" || jenisPilihan === "PS") {
-        jumlahBatangFlutedSatuLayer = Math.ceil(lebarDinding / lebarFluted);
-    } else {
-        totalKepingBoard = inputKepingBoard * lapisanMenegak;
-        totalLebarBoardSemua = lebarBoardSatu * inputKepingBoard;
+        let lebarFluted = 160, hargaFluted = 43;
+        if (jenisPilihan === "PVC") { lebarFluted = 300; hargaFluted = 42; }
+        else if (jenisPilihan === "PS") { lebarFluted = 300; hargaFluted = 59; }
 
-        let bakiLebar = lebarDinding - totalLebarBoardSemua;
-        if (bakiLebar < 0) bakiLebar = 0;
-
-        if (jenisPilihan === "Fluted-Wallboard" || jenisPilihan === "Fluted-UV") {
-            kepingFlutedSebelah = Math.ceil(bakiLebar / lebarFluted);
-            jumlahBatangFlutedSatuLayer = kepingFlutedSebelah;
-        } else if (jenisPilihan === "Fluted-Wallboard-Fluted" || jenisPilihan === "Fluted-UV-Fluted") {
-            let bakiSebelah = bakiLebar / 2;
-            kepingFlutedSebelah = Math.ceil(bakiSebelah / lebarFluted);
-            jumlahBatangFlutedSatuLayer = kepingFlutedSebelah * 2;
-        }
-    }
-
-    let totalBatangFlutedKeseluruhan = jumlahBatangFlutedSatuLayer * lapisanMenegak;
-    let batangSambunganFluted = totalBatangFlutedKeseluruhan - jumlahBatangFlutedSatuLayer;
-
-    let kosFluted = totalBatangFlutedKeseluruhan * hargaFluted;
-    let kosBoard = totalKepingBoard * hargaBoardSatu;
-    let jumlahKeseluruhan = kosFluted + kosBoard;
-
-    // --- RAKAM SEJARAH PENGIRAAN KE LOCALSTORAGE ---
-    let recordBaru = {
-        tajuk: "Wall Panelling",
-        info: `Dinding: ${lebarDinding}x${tinggiDinding}mm (${jenisPilihan})`,
-        harga: "RM " + jumlahKeseluruhan.toFixed(2)
-    };
-
-    let historyList = JSON.parse(localStorage.getItem('diy_calc_history')) || [];
-    historyList.push(recordBaru);
-    localStorage.setItem('diy_calc_history', JSON.stringify(historyList));
-    // ----------------------------------------------
-
-    document.getElementById("resultBox").style.display = "block";
-    if (jenisPilihan.includes("Wallboard") || jenisPilihan.includes("UV")) {
-        document.getElementById("detailPanel").innerText = `Jumlah Batang Fluted: ${jumlahBatangFlutedSatuLayer} batang seLayer`;
-        document.getElementById("detailBoard").innerText = `Jumlah Board (${jenisBoard} - ${inputKepingBoard} keping/layer): ${totalKepingBoard} keping keseluruhan`;
-    } else {
-        document.getElementById("detailPanel").innerText = `Jumlah Batang Fluted (${jenisPilihan}): ${jumlahBatangFlutedSatuLayer} batang seLayer`;
-        document.getElementById("detailBoard").innerText = "";
-    }
-
-    if (batangSambunganFluted > 0) {
-        document.getElementById("detailSambungan").innerText = `Ketinggian melebihi 2900mm. Perlukan ${batangSambunganFluted} batang tambahan untuk sambungan atas (Jumlah keseluruhan fluted: ${totalBatangFlutedKeseluruhan} batang).`;
-    } else {
-        document.getElementById("detailSambungan").innerText = `Ketinggian dalam had 2900mm. Tiada sambungan atas diperlukan.`;
-    }
-
-    document.getElementById("jumlahHarga").innerText = `Jumlah Anggaran Harga: RM ${jumlahKeseluruhan.toFixed(2)}`;
-
-    lukisVisual(lebarDinding, tinggiDinding, jenisPilihan, lebarBoardSatu, inputKepingBoard);
-}
-
-function lukisVisual(lebarDinding, tinggiDinding, jenisPilihan, lebarBoardSatu, jumlahKepingBoard) {
-    let canvas = document.getElementById("canvasVisual");
-    let ctx = canvas.getContext("2d");
-    
-    canvas.width = canvas.parentElement.clientWidth - 40;
-    canvas.height = 380;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    document.getElementById("infoVisual").innerHTML = `Paparan Dinding: <b>${lebarDinding}mm x ${tinggiDinding}mm</b> | Pilihan: <b>${jenisPilihan}</b> (${jumlahKepingBoard} Keping Board)`;
-
-    let margin = 40;
-    let maxW = canvas.width - (margin * 2);
-    let maxH = canvas.height - (margin * 2) - 30;
-
-    let scaleX = maxW / lebarDinding;
-    let scaleY = maxH / tinggiDinding;
-    let scale = Math.min(scaleX, scaleY);
-
-    let drawW = lebarDinding * scale;
-    let drawH = tinggiDinding * scale;
-    let startX = (canvas.width - drawW) / 2;
-    let startY = 40;
-
-    ctx.strokeStyle = "#000000";
-    ctx.lineWidth = 2;
-    ctx.strokeRect(startX, startY, drawW, drawH);
-
-    function drawFluted(x, w, h, label) {
-        if (w <= 0) return;
-        ctx.fillStyle = "#ffffff";
-        ctx.fillRect(x, startY, w, h);
-        ctx.strokeRect(x, startY, w, h);
-
-        ctx.lineWidth = 1;
-        ctx.strokeStyle = "#444444";
-        let gap = 12;
-        for (let gx = x + gap; gx < x + w; gx += gap) {
-            ctx.beginPath();
-            ctx.moveTo(gx, startY);
-            ctx.lineTo(gx, startY + h);
-            ctx.stroke();
+        let lebarBoardSatu = 0, hargaBoardSatu = 0;
+        if (jenisPilihan.includes("Wallboard") || jenisPilihan.includes("UV")) {
+            if (jenisBoard === "Mini") { lebarBoardSatu = 600; hargaBoardSatu = 150; }
+            else if (jenisBoard === "BF") { lebarBoardSatu = 1200; hargaBoardSatu = 240; }
+            else if (jenisBoard === "UV") { lebarBoardSatu = 1220; hargaBoardSatu = 199; }
         }
 
-        ctx.fillStyle = "#000000";
-        ctx.font = "bold 12px Arial";
-        ctx.textAlign = "center";
-        ctx.fillText(label, x + (w / 2), startY + (h / 2));
+        let lapisanMenegak = Math.ceil(tinggiDinding / 2900);
+        let totalKepingBoard = 0, jumlahBatangFlutedSatuLayer = 0;
+
+        if (jenisPilihan === "WPC" || jenisPilihan === "PVC" || jenisPilihan === "PS") {
+            jumlahBatangFlutedSatuLayer = Math.ceil(lebarDinding / lebarFluted);
+        } else {
+            totalKepingBoard = inputKepingBoard * lapisanMenegak;
+            let totalLebarBoardSemua = lebarBoardSatu * inputKepingBoard;
+            let bakiLebar = Math.max(0, lebarDinding - totalLebarBoardSemua);
+            if (jenisPilihan.includes("Wallboard") || jenisPilihan.includes("UV")) {
+                if (jenisPilihan.includes("Fluted-...") || jenisPilihan.includes("Fluted-Wallboard-Fluted") || jenisPilihan.includes("Fluted-UV-Fluted")) {
+                    jumlahBatangFlutedSatuLayer = Math.ceil((bakiLebar / 2) / lebarFluted) * 2;
+                } else {
+                    jumlahBatangFlutedSatuLayer = Math.ceil(bakiLebar / lebarFluted);
+                }
+            }
+        }
+
+        let totalBatangFlutedKeseluruhan = jumlahBatangFlutedSatuLayer * lapisanMenegak;
+        let batangSambunganFluted = totalBatangFlutedKeseluruhan - jumlahBatangFlutedSatuLayer;
+
+        let kosFluted = totalBatangFlutedKeseluruhan * hargaFluted;
+        let kosBoard = totalKepingBoard * hargaBoardSatu;
+        lastCalculatedTotal = kosFluted + kosBoard;
+
+        document.getElementById("resultBox").style.display = "block";
+        document.getElementById("addCartBtn").style.display = "block";
+        
+        if (jenisPilihan.includes("Wallboard") || jenisPilihan.includes("UV")) {
+            document.getElementById("detailPanel").innerText = `Jumlah Batang Fluted: ${jumlahBatangFlutedSatuLayer} batang seLayer`;
+            document.getElementById("detailBoard").innerText = `Jumlah Board (${jenisBoard}): ${totalKepingBoard} keping keseluruhan`;
+        } else {
+            document.getElementById("detailPanel").innerText = `Jumlah Batang Fluted (${jenisPilihan}): ${jumlahBatangFlutedSatuLayer} batang seLayer`;
+            document.getElementById("detailBoard").innerText = "";
+        }
+
+        document.getElementById("detailSambungan").innerText = batangSambunganFluted > 0 ? 
+            `Ketinggian melebihi 2900mm. Perlukan ${batangSambunganFluted} batang tambahan.` : `Ketinggian dalam had 2900mm. Tiada sambungan.`;
+        
+        document.getElementById("jumlahHarga").innerText = `Jumlah Anggaran Harga: RM ${lastCalculatedTotal.toFixed(2)}`;
+
+        lastCalculatedRecord = {
+            tajuk: "Wall Panelling",
+            info: `Dinding: ${lebarDinding}x${tinggiDinding}mm (${jenisPilihan})`,
+            harga: "RM " + lastCalculatedTotal.toFixed(2)
+        };
+
+        lukisVisual(lebarDinding, tinggiDinding, jenisPilihan, lebarBoardSatu, inputKepingBoard);
     }
 
-    function drawBoard(x, w, h, label) {
-        if (w <= 0) return;
-        ctx.fillStyle = "#f4f4f4";
-        ctx.fillRect(x, startY, w, h);
-        ctx.strokeStyle = "#000000";
-        ctx.lineWidth = 2;
-        ctx.strokeRect(x, startY, w, h);
+    function addWallToCart() {
+        if (!lastCalculatedRecord) return;
+        let cartData = JSON.parse(localStorage.getItem('diy_cart')) || [];
+        cartData.push(lastCalculatedRecord);
+        localStorage.setItem('diy_cart', JSON.stringify(cartData));
 
-        ctx.fillStyle = "#000000";
-        ctx.font = "bold 12px Arial";
-        ctx.textAlign = "center";
-        ctx.fillText(label, x + (w / 2), startY + (h / 2));
+        let historyList = JSON.parse(localStorage.getItem('diy_calc_history')) || [];
+        historyList.push(lastCalculatedRecord);
+        localStorage.setItem('diy_calc_history', JSON.stringify(historyList));
+
+        alert("Berjaya masukkan pengiraan Wall Panelling ke dalam Troli!");
     }
 
-    let boardLabel = jenisPilihan.includes("UV") ? "UV Board" : "Wallboard";
-    let totalWBoardPx = (lebarBoardSatu * jumlahKepingBoard) * scale;
+    function lukisVisual(lebarDinding, tinggiDinding, jenisPilihan, lebarBoardSatu, jumlahKepingBoard) {
+        let canvas = document.getElementById("canvasVisual");
+        let ctx = canvas.getContext("2d");
+        canvas.width = canvas.parentElement.clientWidth - 30;
+        canvas.height = 320;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    if (jenisPilihan === "WPC" || jenisPilihan === "PVC" || jenisPilihan === "PS") {
-        drawFluted(startX, drawW, drawH, "Fluted Panel (" + jenisPilihan + ")");
-    } 
-    else if (jenisPilihan === "Fluted-Wallboard" || jenisPilihan === "Fluted-UV") {
-        let wFlutedPx = drawW - totalWBoardPx;
-        drawFluted(startX, wFlutedPx, drawH, "Fluted");
-        drawBoard(startX + wFlutedPx, totalWBoardPx, drawH, `${jumlahKepingBoard}x ${boardLabel}`);
-    } 
-    else if (jenisPilihan === "Fluted-Wallboard-Fluted" || jenisPilihan === "Fluted-UV-Fluted") {
-        let sakiBakiW = drawW - totalWBoardPx;
-        let wFlutedSatu = sakiBakiW / 2;
+        let scale = Math.min((canvas.width - 40) / lebarDinding, (canvas.height - 60) / tinggiDinding);
+        let drawW = lebarDinding * scale, drawH = tinggiDinding * scale;
+        let startX = (canvas.width - drawW) / 2, startY = 30;
 
-        drawFluted(startX, wFlutedSatu, drawH, "Fluted");
-        drawBoard(startX + wFlutedSatu, totalWBoardPx, drawH, `${jumlahKepingBoard}x ${boardLabel}`);
-        drawFluted(startX + wFlutedSatu + totalWBoardPx, wFlutedSatu, drawH, "Fluted");
+        ctx.strokeStyle = "#111"; ctx.lineWidth = 2;
+        ctx.strokeRect(startX, startY, drawW, drawH);
     }
 
-    if (tinggiDinding > 2900) {
-        let ySambung = startY + (2900 * scale);
-        ctx.setLineDash([6, 6]);
-        ctx.strokeStyle = "#ff0000";
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(startX, ySambung);
-        ctx.lineTo(startX + drawW, ySambung);
-        ctx.stroke();
-        ctx.setLineDash([]);
-    }
-}
-
-window.onload = function() {
-    kirimKira();
-};
+    window.onload = function() { kirimKira(); };
 </script>
 
-<!-- Butang Kembali Terapung (Floating Back Button) -->
-<a href="../index.html" style="position: fixed; bottom: 20px; right: 20px; background: #00B14F; color: #fff; padding: 12px 18px; border-radius: 30px; text-decoration: none; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 14px; box-shadow: 0 4px 15px rgba(0, 177, 79, 0.4); display: flex; align-items: center; gap: 6px; z-index: 9999;">
+<a href="../index.html" style="position: fixed; bottom: 20px; right: 20px; background: #fdee23; color: #111; padding: 12px 18px; border-radius: 30px; text-decoration: none; font-family: 'Inter', sans-serif; font-weight: 800; font-size: 14px; box-shadow: 0 4px 15px rgba(253,238,35,0.4); display: flex; align-items: center; gap: 6px; z-index: 9999; border: 1px solid #111;">
     <span>←</span> Menu Utama
 </a>
-
+<script>
+    history.pushState(null, null, location.href);
+    window.addEventListener('popstate', function () { window.location.href = '../index.html'; });
+</script>
 </body>
 </html>
