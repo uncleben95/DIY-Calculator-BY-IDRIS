@@ -87,12 +87,13 @@
 
         <div id="visualContainer" class="hidden space-y-3">
             <div class="flex justify-between items-center">
-                <label class="block font-medium text-slate-700 text-sm">Visual Dinding (Nisbah Atas 2 : Bawah 1):</label>
+                <label class="block font-medium text-slate-700 text-sm">Visual Dinding (Selari & Terkawal):</label>
                 <button onclick="saveVisualToPhone()" class="bg-slate-800 hover:bg-slate-900 text-white text-xs px-3 py-1.5 rounded-lg transition shadow-sm font-medium">
                     📥 Save to Phone (.png)
                 </button>
             </div>
-            <div id="captureArea" class="w-full bg-white rounded-xl p-3 flex flex-col justify-between items-center border-2 border-slate-300 shadow-inner relative overflow-x-auto min-h-[340px]"></div>
+            <!-- Kotak Paparan Berkelakuan Teguh (Overflow Terkawal) -->
+            <div id="captureArea" class="w-full bg-white rounded-xl p-3 flex flex-col justify-between items-center border-2 border-slate-300 shadow-inner relative overflow-hidden max-w-full box-border" style="min-height: 320px;"></div>
         </div>
     </div>
 
@@ -182,7 +183,7 @@
             document.getElementById('totalPrice').innerText = 'RM ' + totalPrice.toFixed(2);
             document.getElementById('resultContainer').classList.remove('hidden');
 
-            // --- LUKIS VISUAL DENGAN NISBAH KETINGGIAN 2:1 (ATAS 2 BAHAGIAN, BAWAH 1 BAHAGIAN) ---
+            // --- LUKIS VISUAL DENGAN SUSUN ATUR SELARI DAN TERKAWAL ---
             let previewBox = document.getElementById('captureArea');
             previewBox.innerHTML = '';
             document.getElementById('visualContainer').classList.remove('hidden');
@@ -191,12 +192,13 @@
 
             function createBoxElement(bw, bh) {
                 let boxEl = document.createElement('div');
-                boxEl.className = `border-[3px] ${frameColorClass} bg-white rounded flex items-center justify-center text-[9px] font-bold shadow-xs relative p-2`;
+                boxEl.className = `border-[3px] ${frameColorClass} bg-white rounded flex items-center justify-center text-[9px] font-bold shadow-xs relative p-1 box-border`;
                 boxEl.style.flexGrow = bw; boxEl.style.flexBasis = '0'; boxEl.style.height = '100%';
+                boxEl.style.minWidth = '20px'; // Elak kotak terkeluar
                 
                 if (frameType === 'double') {
                     let innerBox = document.createElement('div');
-                    innerBox.className = `border-[1.5px] ${frameColorClass} w-full h-full flex items-center justify-center rounded`;
+                    innerBox.className = `border-[1.5px] ${frameColorClass} w-full h-full flex items-center justify-center rounded box-sizing-border overflow-hidden`;
                     innerBox.innerText = `${Math.round(bw)}x${Math.round(bh)}`;
                     boxEl.appendChild(innerBox);
                 } else {
@@ -207,18 +209,18 @@
 
             if (style === 'without_chairrail') {
                 let fullRow = document.createElement('div');
-                fullRow.className = 'w-full flex justify-around items-center gap-1.5 px-1';
-                fullRow.style.height = '240px';
+                fullRow.className = 'w-full flex justify-around items-center gap-2 px-2 box-border max-w-full';
+                fullRow.style.height = '220px';
 
                 boxWidths.forEach((bw) => {
                     fullRow.appendChild(createBoxElement(bw, targetBoxHeight));
                 });
                 previewBox.appendChild(fullRow);
             } else {
-                // Kotak Atas (Tinggi 180px - Nisbah 2)
+                // Kotak Atas (Nisbah Tinggi 2 = 160px)
                 let topRow = document.createElement('div');
-                topRow.className = 'w-full flex justify-around items-center gap-1.5 px-1';
-                topRow.style.height = '180px';
+                topRow.className = 'w-full flex justify-around items-center gap-2 px-2 box-border max-w-full';
+                topRow.style.height = '160px';
 
                 boxWidths.forEach((bw) => {
                     topRow.appendChild(createBoxElement(bw, targetBoxHeight));
@@ -226,14 +228,14 @@
                 previewBox.appendChild(topRow);
 
                 let chairRailEl = document.createElement('div');
-                chairRailEl.className = 'w-full bg-amber-800 my-2 text-white text-[9px] font-bold text-center py-0.5 rounded';
+                chairRailEl.className = 'w-full bg-amber-800 my-2 text-white text-[9px] font-bold text-center py-0.5 rounded box-border';
                 chairRailEl.innerText = '--- CHAIR RAIL ---';
                 previewBox.appendChild(chairRailEl);
 
-                // Kotak Bawah (Tinggi 90px - Nisbah 1, separuh daripada atas)
+                // Kotak Bawah (Nisbah Tinggi 1 = 80px - Tepat Separuh Atas & Selari)
                 let botRow = document.createElement('div');
-                botRow.className = 'w-full flex justify-around items-center gap-1.5 px-1';
-                botRow.style.height = '90px';
+                botRow.className = 'w-full flex justify-around items-center gap-2 px-2 box-border max-w-full';
+                botRow.style.height = '80px';
 
                 boxWidths.forEach((bw) => {
                     botRow.appendChild(createBoxElement(bw, 600));
