@@ -19,7 +19,7 @@
         .result-box { margin-top: 25px; padding: 20px; background: #fffdf0; border-radius: 14px; border: 1.5px solid #f6e05e; display: none; font-size: 13px; }
         .result-box h3 { margin-top: 0; color: #111; font-size: 16px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; }
         .visual-container { margin-top: 25px; padding: 15px; background: #ffffff; border: 1px solid var(--border-color); border-radius: 12px; text-align: center; display: none; }
-        canvas { width: 100%; max-width: 520px; height: 220px; border: 1px solid var(--border-color); background: #fafafa; margin-top: 10px; border-radius: 8px; }
+        canvas { width: 100%; max-width: 520px; height: 240px; border: 1px solid var(--border-color); background: #fafafa; margin-top: 10px; border-radius: 8px; }
         .add-cart-main-btn { background-color: var(--tng-yellow); color: var(--tng-dark); border: 1.5px solid #111; padding: 14px; width: 100%; font-size: 15px; font-weight: 800; border-radius: 12px; cursor: pointer; margin-top: 15px; display: none; box-shadow: 0 4px 12px rgba(253, 238, 35, 0.3); transition: 0.2s; }
         .add-cart-main-btn:active { transform: scale(0.98); }
     </style>
@@ -34,8 +34,8 @@
         <input type="number" id="lebarDinding" value="3000">
     </div>
     <div class="form-group">
-        <label>Tinggi Dinding (mm):</label>
-        <input type="number" id="tinggiDinding" value="2900">
+        <label>Tinggi Dinding (mm) [Standard Panel: 2900mm]:</label>
+        <input type="number" id="tinggiDinding" value="3073">
     </div>
 
     <div class="form-group">
@@ -70,6 +70,20 @@
         </select>
     </div>
 
+    <!-- Pilihan Aksesori Tambahan Manual -->
+    <div style="background: #f8fafc; padding: 12px; border-radius: 10px; border: 1px solid var(--border-color); margin-bottom: 16px;">
+        <label style="margin-bottom: 8px; color: #334155;">Tambah Aksesori Pilihan (Manual):</label>
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 8px;">
+            <select id="aksesoriType">
+                <option value="none">-- Tiada Aksesori Tambahan --</option>
+                <option value="l_cap">L Cap Fluted 2900mm (RM20)</option>
+                <option value="u_gold">U Shape Gold 2900mm (RM32)</option>
+                <option value="h_shape">H Shape Black/Gold 2900mm (RM25)</option>
+            </select>
+            <input type="number" id="aksesoriQty" value="1" min="1" placeholder="Kuantiti">
+        </div>
+    </div>
+
     <button class="calc-btn" onclick="kirimKiraPanel()">Kira Sebut Harga & Visual</button>
     
     <div class="result-box" id="resultBox">
@@ -84,7 +98,7 @@
     </div>
 
     <div class="visual-container" id="visualBox">
-        <h3 style="font-size: 14px; margin-top: 0;">Lakaran Susun Atur Dinding</h3>
+        <h3 style="font-size: 14px; margin-top: 0;">Lakaran Susun Atur Dinding (Dengan Sambungan Tinggi Tambahan)</h3>
         <canvas id="canvasVisual"></canvas>
     </div>
 </div>
@@ -105,6 +119,9 @@
         let jenis = document.getElementById("jenisFluted").value;
         let jenisBoard = document.getElementById("jenisBoard").value;
         let jmlBoard = parseInt(document.getElementById("jumlahBoardInput").value) || 1;
+        
+        let aksType = document.getElementById("aksesoriType").value;
+        let aksQty = parseInt(document.getElementById("aksesoriQty").value) || 0;
 
         if (w <= 0 || h <= 0) { alert("Sila masukkan ukuran dinding yang sah."); return; }
 
@@ -123,24 +140,52 @@
         let remainingWidth = w - totalBoardWidth;
         if (remainingWidth < 0) remainingWidth = 0;
 
-        let flutedBatang = Math.ceil(remainingWidth / flutedWidth);
+        let flutedBatangBase = Math.ceil(remainingWidth / flutedWidth);
         if (jenis === "WPC" || jenis === "PVC" || jenis === "PS") {
-            flutedBatang = Math.ceil(w / flutedWidth);
+            flutedBatangBase = Math.ceil(w / flutedWidth);
         }
 
-        let kosFluted = flutedBatang * flutedPrice;
-        let kosBoard = (jenis.includes("Wallboard") || jenis.includes("UV")) ? (jmlBoard * boardPrice) : 0;
-        let grandTotal = kosFluted + kosBoard;
+        // Logik Tinggi Standard 2900mm + Ekstra Batang Jika Melebihi 2900mm
+        let extraHeight = h > 2900 ? (h - 2900) : 0;
+        let totalFlutedBatang = flutedBatangBase;
+        if (extraHeight > 0) {
+            totalFlutedBatang += flutedBatangBase; // Tambah 1 set lagi untuk tampung lebihan tinggi
+        }
+
+        let kosFluted = totalFlutedBatang * flutedPrice;
+        
+        // Pengiraan Board (Jika tinggi > 2900mm, board juga perlu extra keping)
+        let totalBoardKeping = jmlBoard;
+        if (extraHeight > 0 && (jenis.includes("Wallboard") || jenis.includes("UV"))) {
+            totalBoardKeping += jmlBoard; 
+        }
+        let kosBoard = (jenis.includes("Wallboard") || jenis.includes("UV")) ? (totalBoardKeping * boardPrice) : 0;
+
+        // Kos Aksesori Manual
+        let aksPrice = 0, aksName = "";
+        if (aksType === 'l_cap') { aksPrice = 20; aksName = "L Cap Fluted"; }
+        else if (aksType === 'u_gold') { aksPrice = 32; aksName = "U Shape Gold"; }
+        else if (aksType === 'h_shape') { aksPrice = 25; aksName = "H Shape Black/Gold"; }
+        let kosAks = (aksType !== 'none') ? (aksQty * aksPrice) : 0;
+
+        let grandTotal = kosFluted + kosBoard + kosAks;
 
         document.getElementById("resultBox").style.display = "block";
         document.getElementById("addCartBtn").style.display = "block";
         document.getElementById("visualBox").style.display = "block";
 
-        let pecahanHtml = `Pilihan: <b>${jenis}</b><br>`;
-        if (jenis.includes("Wallboard") || jenis.includes("UV")) {
-            pecahanHtml += `• Board (${boardName}): ${jmlBoard} keping x RM ${boardPrice} = <b>RM ${kosBoard.toFixed(2)}</b><br>`;
+        let pecahanHtml = `Pilihan: <b>${jenis}</b> (Tinggi Dinding: ${h}mm)<br>`;
+        if (extraHeight > 0) {
+            pecahanHtml += `<span style="color: #b45309; font-weight: bold;">⚠️ Lebihan tinggi ${extraHeight}mm (Melebihi standard 2900mm) - Penambahan unit kuantiti diambil kira.</span><br>`;
         }
-        pecahanHtml += `• Batang Fluted: ${flutedBatang} btg x RM ${flutedPrice} = <b>RM ${kosFluted.toFixed(2)}</b>`;
+        if (jenis.includes("Wallboard") || jenis.includes("UV")) {
+            pecahanHtml += `• Board (${boardName}): ${totalBoardKeping} keping x RM ${boardPrice} = <b>RM ${kosBoard.toFixed(2)}</b><br>`;
+        }
+        pecahanHtml += `• Batang Fluted: ${totalFlutedBatang} btg x RM ${flutedPrice} = <b>RM ${kosFluted.toFixed(2)}</b><br>`;
+        
+        if (aksType !== 'none') {
+            pecahanHtml += `• Aksesori (${aksName}): ${aksQty} btg x RM ${aksPrice} = <b>RM ${kosAks.toFixed(2)}</b><br>`;
+        }
 
         document.getElementById("detailPecahan").innerHTML = pecahanHtml;
         document.getElementById("jumlahHarga").innerText = `RM ${grandTotal.toFixed(2)}`;
@@ -151,15 +196,15 @@
             harga: "RM " + grandTotal.toFixed(2)
         };
 
-        lukisVisualPanelling(w, h, jmlBoard, boardWidthMm, jenis);
+        lukisVisualPanelling(w, h, jmlBoard, boardWidthMm, jenis, extraHeight);
     }
 
-    function lukisVisualPanelling(w, h, jmlBoard, boardW, jenis) {
+    function lukisVisualPanelling(w, h, jmlBoard, boardW, jenis, extraHeight) {
         let canvas = document.getElementById("canvasVisual");
         let ctx = canvas.getContext("2d");
         
         canvas.width = canvas.parentElement.clientWidth - 30;
-        canvas.height = 220;
+        canvas.height = 240;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         let scale = Math.min((canvas.width - 40) / w, (canvas.height - 40) / h);
@@ -173,7 +218,6 @@
             let totalBoardW_scaled = (boardW * jmlBoard) * scale;
             let boardStartX = startX + (drawW - totalBoardW_scaled) / 2;
 
-            // Kawasan Board Tengah (Licin)
             ctx.fillStyle = "#ffffff";
             ctx.fillRect(boardStartX, startY, totalBoardW_scaled, drawH);
             ctx.strokeStyle = "#111";
@@ -188,7 +232,6 @@
                 ctx.stroke();
             }
 
-            // Kawasan Fluted Kiri & Kanan (Garis Rapat)
             let sideWidth = (drawW - totalBoardW_scaled) / 2;
             if (sideWidth > 0) {
                 ctx.fillStyle = "#fdee23";
@@ -207,7 +250,6 @@
                 }
             }
         } else {
-            // Full Fluted
             ctx.fillStyle = "#fdee23";
             ctx.fillRect(startX, startY, drawW, drawH);
             ctx.strokeStyle = "#d4b200";
@@ -220,6 +262,26 @@
         ctx.strokeStyle = "#111";
         ctx.lineWidth = 3;
         ctx.strokeRect(startX, startY, drawW, drawH);
+
+        // Jika ada ekstra ketinggian (>2900mm), lukis garisan dot dot di bahagian atas
+        if (extraHeight > 0) {
+            let standardH_scaled = 2900 * scale;
+            let splitY = startY + (drawH - standardH_scaled);
+            
+            ctx.strokeStyle = "#e11d48"; // Merah terang
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]); // Garisan dot-dot
+            ctx.beginPath();
+            ctx.moveTo(startX, splitY);
+            ctx.lineTo(startX + drawW, splitY);
+            ctx.stroke();
+            ctx.setLineDash([]); // Reset line dash
+
+            // Label text kecil untuk extra tinggi
+            ctx.fillStyle = "#e11d48";
+            ctx.font = "10px Inter, sans-serif";
+            ctx.fillText(`Sambungan Ekstra (${extraHeight}mm)`, startX + 5, splitY - 5);
+        }
     }
 
     function addWallToCart() {
