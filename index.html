@@ -4,9 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Idris DIY & Tools Portal</title>
+<title>Idris Business Portal</title>
 
 <link rel="manifest" href="manifest.json">
+
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Idris Portal">
@@ -15,17 +16,32 @@
 
 <style>
 
+/* =========================================================
+   CORE
+========================================================= */
+
 :root{
-    --yellow:#FFD600;
-    --yellow-soft:#FFF8CC;
-    --black:#111111;
-    --white:#FFFFFF;
-    --bg:#F4F5F7;
-    --text:#171717;
-    --muted:#777777;
-    --border:#E6E7EA;
-    --green:#16A34A;
-    --shadow:0 8px 25px rgba(0,0,0,.06);
+    --primary:#151B26;
+    --primary-2:#202938;
+
+    --accent:#F5D900;
+    --accent-dark:#B69F00;
+    --accent-soft:#FFF9D6;
+
+    --bg:#F5F6F8;
+    --card:#FFFFFF;
+
+    --text:#15171B;
+    --muted:#707780;
+    --light:#9AA1AA;
+
+    --border:#E5E7EB;
+
+    --green:#168447;
+    --red:#D92D20;
+
+    --shadow:0 6px 24px rgba(20,27,38,.055);
+    --shadow-hover:0 10px 30px rgba(20,27,38,.10);
 }
 
 *{
@@ -39,11 +55,9 @@ html{
 
 body{
     margin:0;
-    padding:18px 15px 35px;
+    padding:0;
     min-height:100vh;
-    background:
-        radial-gradient(circle at 100% 0%,rgba(255,214,0,.13),transparent 27%),
-        var(--bg);
+    background:var(--bg);
     color:var(--text);
     font-family:'Inter',sans-serif;
 }
@@ -53,46 +67,63 @@ input{
     font-family:inherit;
 }
 
-.app{
-    width:100%;
-    max-width:460px;
-    margin:auto;
+button{
+    -webkit-appearance:none;
 }
 
-/* =========================================
-   HEADER
-========================================= */
 
-.header{
+/* =========================================================
+   APP CONTAINER
+========================================================= */
+
+.app{
+    width:100%;
+    max-width:480px;
+    margin:0 auto;
+    padding:18px 16px 35px;
+}
+
+
+/* =========================================================
+   TOP NAV
+========================================================= */
+
+.topbar{
     display:flex;
     align-items:center;
     justify-content:space-between;
     gap:12px;
-    margin-bottom:20px;
+    margin-bottom:18px;
 }
 
 .profile{
     display:flex;
     align-items:center;
     gap:11px;
-    cursor:pointer;
     min-width:0;
+    cursor:pointer;
 }
 
 .avatar{
-    width:48px;
-    height:48px;
+    width:46px;
+    height:46px;
     flex-shrink:0;
-    border-radius:15px;
-    background:var(--yellow);
-    border:2px solid var(--black);
+
+    border-radius:13px;
+
+    background:var(--accent);
+    color:var(--primary);
+
+    border:1px solid rgba(0,0,0,.12);
+
     display:flex;
     align-items:center;
     justify-content:center;
-    overflow:hidden;
-    font-size:18px;
+
+    font-size:17px;
     font-weight:800;
-    box-shadow:3px 3px 0 var(--black);
+
+    overflow:hidden;
 }
 
 .avatar img{
@@ -105,22 +136,30 @@ input{
     min-width:0;
 }
 
-.profile-info h2{
+.profile-name{
     margin:0;
-    font-size:15px;
+
+    font-size:14px;
     font-weight:800;
+
     white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
 }
 
-.profile-info p{
+.profile-role{
     margin:3px 0 0;
-    font-size:9px;
+
     color:var(--muted);
+
+    font-size:9px;
+    font-weight:500;
 }
 
-/* =========================================
-   HEADER ACTIONS
-========================================= */
+
+/* =========================================================
+   ACTION BUTTONS
+========================================================= */
 
 .header-actions{
     display:flex;
@@ -128,431 +167,747 @@ input{
     gap:7px;
 }
 
-.header-action{
+.header-btn{
     position:relative;
-    height:42px;
-    border-radius:12px;
-    border:1.5px solid var(--black);
-    background:var(--white);
-    color:var(--black);
+
+    height:40px;
+
     padding:0 10px;
+
+    border:1px solid var(--border);
+    border-radius:10px;
+
+    background:#fff;
+    color:var(--primary);
+
     display:flex;
     align-items:center;
     justify-content:center;
     gap:5px;
-    font-size:10px;
+
+    font-size:9px;
     font-weight:800;
+
     cursor:pointer;
-    box-shadow:3px 3px 0 var(--black);
-    white-space:nowrap;
+
+    box-shadow:0 2px 7px rgba(0,0,0,.035);
+
+    transition:.18s ease;
 }
 
-.header-action:active{
-    transform:translate(2px,2px);
-    box-shadow:1px 1px 0 var(--black);
+.header-btn:hover{
+    border-color:#C9CDD3;
+    transform:translateY(-1px);
 }
 
-.header-action.lalamove{
-    background:var(--yellow);
+.header-btn.lalamove{
+    background:var(--accent);
+    border-color:var(--accent);
 }
 
 .cart-badge{
     position:absolute;
-    top:-8px;
-    right:-7px;
-    min-width:20px;
-    height:20px;
+
+    top:-6px;
+    right:-6px;
+
+    min-width:18px;
+    height:18px;
+
     padding:0 5px;
+
     border-radius:50px;
-    background:var(--black);
-    color:var(--yellow);
-    border:2px solid var(--white);
+
+    background:var(--primary);
+    color:var(--accent);
+
+    border:2px solid #fff;
+
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:9px;
-    font-weight:800;
-}
 
-/* =========================================
-   HERO
-========================================= */
-
-.hero{
-    position:relative;
-    overflow:hidden;
-    min-height:175px;
-    background:var(--black);
-    border-radius:23px;
-    padding:23px;
-    margin-bottom:25px;
-    color:white;
-    box-shadow:var(--shadow);
-}
-
-.hero::before{
-    content:"";
-    position:absolute;
-    width:180px;
-    height:180px;
-    border-radius:50%;
-    background:var(--yellow);
-    right:-75px;
-    top:-90px;
-}
-
-.hero::after{
-    content:"";
-    position:absolute;
-    width:110px;
-    height:110px;
-    border:18px solid rgba(255,214,0,.12);
-    border-radius:50%;
-    right:20px;
-    bottom:-65px;
-}
-
-.hero-content{
-    position:relative;
-    z-index:2;
-}
-
-.hero-label{
-    display:inline-flex;
-    background:var(--yellow);
-    color:var(--black);
-    border-radius:7px;
-    padding:6px 9px;
     font-size:8px;
     font-weight:800;
-    letter-spacing:.5px;
-    margin-bottom:12px;
 }
 
-.hero h1{
-    margin:0;
-    font-size:22px;
-    line-height:1.18;
-    letter-spacing:-.6px;
+
+/* =========================================================
+   PAGE INTRO
+========================================================= */
+
+.intro{
+    margin-bottom:22px;
 }
 
-.hero p{
-    max-width:295px;
-    margin:9px 0 0;
-    color:#c9c9c9;
-    font-size:10px;
-    line-height:1.55;
-}
-
-/* =========================================
-   SECTION HEADER
-========================================= */
-
-.section-header{
+.intro-eyebrow{
     display:flex;
     align-items:center;
-    justify-content:space-between;
-    margin:0 2px 11px;
+    gap:7px;
+
+    margin-bottom:7px;
+
+    color:var(--accent-dark);
+
+    font-size:8px;
+    font-weight:800;
+
+    letter-spacing:.8px;
+    text-transform:uppercase;
 }
 
-.section-title{
+.intro-dot{
+    width:6px;
+    height:6px;
+
+    border-radius:50%;
+
+    background:var(--accent-dark);
+}
+
+.intro h1{
+    margin:0;
+
+    font-size:24px;
+    line-height:1.15;
+
+    letter-spacing:-.7px;
+    font-weight:800;
+}
+
+.intro p{
+    margin:8px 0 0;
+
+    max-width:390px;
+
+    color:var(--muted);
+
+    font-size:10px;
+    line-height:1.6;
+}
+
+
+/* =========================================================
+   QUICK INFO BAR
+========================================================= */
+
+.info-bar{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+
+    margin-bottom:25px;
+
+    background:var(--primary);
+
+    border-radius:14px;
+
+    overflow:hidden;
+}
+
+.info-item{
+    padding:12px 9px;
+
+    text-align:center;
+
+    border-right:1px solid rgba(255,255,255,.10);
+}
+
+.info-item:last-child{
+    border-right:none;
+}
+
+.info-number{
+    display:block;
+
+    color:#fff;
+
     font-size:14px;
     font-weight:800;
 }
 
-.section-count{
+.info-label{
+    display:block;
+
+    margin-top:3px;
+
+    color:#AEB5BE;
+
+    font-size:7px;
+    font-weight:600;
+
+    text-transform:uppercase;
+    letter-spacing:.4px;
+}
+
+
+/* =========================================================
+   SECTION HEADER
+========================================================= */
+
+.section-header{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+
+    margin:0 1px 10px;
+}
+
+.section-heading{
+    margin:0;
+
+    font-size:13px;
+    font-weight:800;
+}
+
+.section-subheading{
+    margin:3px 0 0;
+
     color:var(--muted);
-    font-size:9px;
+
+    font-size:8px;
+}
+
+.section-action{
+    border:none;
+    background:none;
+
+    color:var(--red);
+
+    padding:4px 0;
+
+    font-size:8px;
     font-weight:700;
+
+    cursor:pointer;
 }
 
-/* =========================================
-   SERVICE CARDS
-========================================= */
 
-.services{
+/* =========================================================
+   CALCULATOR CARDS
+========================================================= */
+
+.calculator-list{
     display:grid;
-    gap:11px;
-    margin-bottom:26px;
+    gap:9px;
+
+    margin-bottom:27px;
 }
 
-.service-card{
+.calculator-card{
     position:relative;
+
     display:flex;
     align-items:center;
-    gap:13px;
-    padding:10px;
-    background:var(--white);
+
+    gap:12px;
+
+    padding:9px;
+
+    background:var(--card);
+
     border:1px solid var(--border);
-    border-radius:17px;
+    border-radius:14px;
+
     cursor:pointer;
-    overflow:hidden;
-    box-shadow:0 4px 16px rgba(0,0,0,.035);
-    transition:.2s ease;
+
+    box-shadow:var(--shadow);
+
+    transition:
+        transform .18s ease,
+        box-shadow .18s ease,
+        border-color .18s ease;
 }
 
-.service-card:active{
-    transform:scale(.975);
-    border-color:var(--yellow);
+.calculator-card:hover{
+    border-color:#D5D8DE;
+    box-shadow:var(--shadow-hover);
+    transform:translateY(-1px);
 }
 
-.service-image{
-    width:70px;
-    height:70px;
+.calculator-card:active{
+    transform:scale(.985);
+}
+
+.calculator-image{
+    width:68px;
+    height:68px;
+
     flex-shrink:0;
+
     overflow:hidden;
-    border-radius:12px;
-    background:#ddd;
+
+    border-radius:10px;
+
+    background:#ECEEF1;
 }
 
-.service-image img{
+.calculator-image img{
     width:100%;
     height:100%;
-    object-fit:cover;
+
     display:block;
+
+    object-fit:cover;
+
     transition:.3s ease;
 }
 
-.service-card:hover img{
-    transform:scale(1.06);
+.calculator-card:hover
+.calculator-image img{
+    transform:scale(1.05);
 }
 
-.service-content{
+.calculator-content{
     min-width:0;
-    padding-right:28px;
+
+    padding-right:22px;
 }
 
-.service-tag{
+.calculator-label{
     display:inline-block;
-    padding:4px 6px;
-    margin-bottom:5px;
-    border-radius:5px;
-    background:var(--yellow-soft);
-    color:#806C00;
-    font-size:7px;
+
+    margin-bottom:4px;
+
+    padding:3px 6px;
+
+    border-radius:4px;
+
+    background:var(--accent-soft);
+    color:#786A00;
+
+    font-size:6.5px;
     font-weight:800;
-    text-transform:uppercase;
+
+    letter-spacing:.35px;
 }
 
-.service-content h3{
+.calculator-title{
     margin:0 0 4px;
-    font-size:12px;
-    line-height:1.3;
+
+    color:var(--text);
+
+    font-size:11px;
+    line-height:1.35;
+
     font-weight:800;
 }
 
-.service-content p{
+.calculator-description{
     margin:0;
+
     color:var(--muted);
-    font-size:9px;
+
+    font-size:8.5px;
     line-height:1.45;
 }
 
-.service-card::after{
-    content:"›";
+.card-arrow{
     position:absolute;
-    right:13px;
+
+    right:10px;
     top:50%;
+
     transform:translateY(-50%);
-    width:25px;
-    height:25px;
+
+    width:22px;
+    height:22px;
+
     border-radius:50%;
-    background:#F4F4F4;
-    color:#777;
+
+    background:#F2F3F5;
+
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:17px;
+
+    color:#777;
+
+    font-size:14px;
 }
 
-/* =========================================
-   HISTORY
-========================================= */
 
-.history-box{
-    background:var(--white);
-    border:1px solid var(--border);
-    border-radius:17px;
-    overflow:hidden;
-    box-shadow:var(--shadow);
-    margin-bottom:20px;
-}
+/* =========================================================
+   RECORDS / HISTORY
+========================================================= */
 
-.history-inner{
-    padding:4px 15px;
-}
-
-.history-item{
+.records-header{
     display:flex;
     align-items:center;
     justify-content:space-between;
-    gap:10px;
-    padding:13px 0;
-    border-bottom:1px solid #EEEEEE;
+
+    margin-bottom:10px;
 }
 
-.history-item:last-child{
+.records-title-wrap{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.records-icon{
+    width:29px;
+    height:29px;
+
+    border-radius:8px;
+
+    background:var(--primary);
+    color:var(--accent);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:13px;
+}
+
+.records-title{
+    margin:0;
+
+    font-size:13px;
+    font-weight:800;
+}
+
+.records-subtitle{
+    margin:2px 0 0;
+
+    color:var(--muted);
+
+    font-size:8px;
+}
+
+.records-count{
+    padding:5px 8px;
+
+    border-radius:7px;
+
+    background:var(--accent-soft);
+    color:#766900;
+
+    font-size:8px;
+    font-weight:800;
+}
+
+.records-container{
+    background:#fff;
+
+    border:1px solid var(--border);
+    border-radius:14px;
+
+    box-shadow:var(--shadow);
+
+    overflow:hidden;
+
+    margin-bottom:20px;
+}
+
+.records-list{
+    padding:0 13px;
+}
+
+.record-item{
+    position:relative;
+
+    padding:14px 0;
+
+    border-bottom:1px solid #EEF0F2;
+}
+
+.record-item:last-child{
     border-bottom:none;
 }
 
-.history-info{
+.record-top{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+
+    gap:10px;
+}
+
+.record-main{
     min-width:0;
 }
 
-.history-info strong{
-    display:block;
-    font-size:11px;
-    margin-bottom:3px;
+.record-title{
+    margin:0 0 4px;
+
+    font-size:10.5px;
+    line-height:1.35;
+
+    font-weight:800;
 }
 
-.history-info span{
-    display:block;
+.record-info{
     color:var(--muted);
-    font-size:9px;
+
+    font-size:8.5px;
+    line-height:1.45;
+
+    word-break:break-word;
+}
+
+.record-date{
+    flex-shrink:0;
+
+    color:#999;
+
+    font-size:7px;
     line-height:1.4;
+
+    text-align:right;
 }
 
-.history-price{
-    color:#8A7400!important;
-    font-weight:800;
-    margin-top:2px;
+.record-bottom{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    margin-top:9px;
 }
 
-.add-cart{
-    border:1px solid var(--black);
-    background:var(--yellow);
-    color:var(--black);
-    padding:7px 9px;
-    border-radius:8px;
-    font-size:8px;
+.record-price{
+    color:#6F6100;
+
+    font-size:11px;
     font-weight:800;
+}
+
+.record-actions{
+    display:flex;
+    align-items:center;
+    gap:5px;
+}
+
+.record-action{
+    padding:6px 8px;
+
+    border-radius:7px;
+
+    font-size:7.5px;
+    font-weight:800;
+
     cursor:pointer;
 }
 
-.empty-history{
-    padding:25px 10px;
+.record-cart{
+    border:1px solid var(--primary);
+
+    background:var(--primary);
+    color:var(--accent);
+}
+
+.record-delete{
+    border:1px solid #E8D5D3;
+
+    background:#FFF7F6;
+    color:var(--red);
+}
+
+.empty-records{
+    padding:30px 15px;
+
     text-align:center;
-    color:var(--muted);
+}
+
+.empty-record-icon{
+    width:40px;
+    height:40px;
+
+    margin:0 auto 9px;
+
+    border-radius:11px;
+
+    background:#F1F2F4;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:18px;
+}
+
+.empty-records strong{
+    display:block;
+
     font-size:10px;
 }
 
-.clear-history{
-    border:none;
-    background:none;
-    color:#EF4444;
-    font-size:9px;
-    font-weight:700;
-    cursor:pointer;
+.empty-records p{
+    margin:5px auto 0;
+
+    max-width:250px;
+
+    color:var(--muted);
+
+    font-size:8px;
+    line-height:1.5;
 }
 
-/* =========================================
+
+/* =========================================================
    FOOTER
-========================================= */
+========================================================= */
 
 .footer{
     display:flex;
     align-items:center;
     justify-content:space-between;
-    padding:3px;
-    color:#888;
-    font-size:9px;
+
+    color:#9298A0;
+
+    font-size:7.5px;
 }
 
 .visitor{
-    background:white;
+    padding:5px 8px;
+
     border:1px solid var(--border);
-    border-radius:8px;
-    padding:6px 9px;
+    border-radius:7px;
+
+    background:#fff;
 }
 
 .visitor strong{
-    color:#806C00;
+    color:#776A00;
 }
 
-/* =========================================
-   CART MODAL
-========================================= */
 
-.cart-modal{
+/* =========================================================
+   CART MODAL
+========================================================= */
+
+.modal{
     position:fixed;
     inset:0;
-    z-index:9999;
+
+    z-index:5000;
+
     display:flex;
     align-items:flex-end;
     justify-content:center;
-    background:rgba(0,0,0,.62);
+
+    background:rgba(10,14,20,.60);
+
     backdrop-filter:blur(6px);
+
     opacity:0;
     pointer-events:none;
+
     transition:.25s ease;
 }
 
-.cart-modal.active{
+.modal.active{
     opacity:1;
     pointer-events:auto;
 }
 
-.cart-content{
+.modal-sheet{
     width:100%;
-    max-width:460px;
-    max-height:90vh;
+    max-width:480px;
+
+    max-height:91vh;
+
     overflow-y:auto;
-    padding:18px 17px 25px;
-    background:white;
-    border-radius:24px 24px 0 0;
+
+    background:#fff;
+
+    border-radius:22px 22px 0 0;
+
+    padding:16px 16px 26px;
+
     transform:translateY(100%);
+
     transition:.3s cubic-bezier(.2,.8,.2,1);
 }
 
-.cart-modal.active .cart-content{
+.modal.active .modal-sheet{
     transform:translateY(0);
 }
 
-.drag-line{
-    width:38px;
+.drag-handle{
+    width:35px;
     height:4px;
-    border-radius:20px;
-    background:#ddd;
-    margin:-6px auto 17px;
+
+    margin:-4px auto 16px;
+
+    border-radius:10px;
+
+    background:#D8DADF;
 }
 
-.cart-header{
+
+/* =========================================================
+   MODAL HEADER
+========================================================= */
+
+.modal-header{
     display:flex;
     align-items:center;
     justify-content:space-between;
+
     padding-bottom:13px;
+
     border-bottom:1px solid var(--border);
 }
 
-.cart-header h2{
+.modal-heading{
+    display:flex;
+    align-items:center;
+    gap:9px;
+}
+
+.modal-icon{
+    width:34px;
+    height:34px;
+
+    border-radius:9px;
+
+    background:var(--accent-soft);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:16px;
+}
+
+.modal-heading h2{
     margin:0;
-    font-size:17px;
+
+    font-size:14px;
     font-weight:800;
 }
 
-.cart-header small{
-    display:block;
-    margin-top:3px;
+.modal-heading p{
+    margin:3px 0 0;
+
     color:var(--muted);
-    font-size:9px;
+
+    font-size:8px;
 }
 
-.close-cart{
-    width:34px;
-    height:34px;
-    border-radius:50%;
+.close-btn{
+    width:33px;
+    height:33px;
+
     border:1px solid var(--border);
-    background:#F7F7F7;
-    font-size:15px;
+    border-radius:50%;
+
+    background:#F7F7F8;
+
+    color:#555;
+
     cursor:pointer;
 }
 
-/* =========================================
+
+/* =========================================================
    CART ITEMS
-========================================= */
+========================================================= */
 
 .cart-items{
     max-height:250px;
+
     overflow-y:auto;
 }
 
@@ -560,88 +915,159 @@ input{
     display:flex;
     align-items:center;
     justify-content:space-between;
+
     gap:10px;
+
     padding:12px 0;
-    border-bottom:1px dashed #ddd;
+
+    border-bottom:1px dashed #E1E3E6;
 }
 
 .cart-item-info{
     min-width:0;
 }
 
-.cart-item-info strong{
-    display:block;
-    font-size:11px;
-    margin-bottom:3px;
+.cart-item-title{
+    margin:0 0 4px;
+
+    font-size:10px;
+    font-weight:800;
 }
 
 .cart-item-info span{
     display:block;
+
     color:var(--muted);
-    font-size:9px;
+
+    font-size:8px;
+    line-height:1.4;
 }
 
 .cart-item-price{
-    color:var(--black)!important;
-    font-size:11px!important;
-    font-weight:800;
     margin-top:4px;
+
+    color:var(--text)!important;
+
+    font-size:10px!important;
+    font-weight:800;
 }
 
 .remove-item{
     flex-shrink:0;
+
     border:none;
-    background:#FFF0F0;
-    color:#DC2626;
-    padding:6px 8px;
     border-radius:7px;
-    font-size:8px;
+
+    padding:6px 8px;
+
+    background:#FFF4F3;
+    color:var(--red);
+
+    font-size:7.5px;
     font-weight:700;
+
     cursor:pointer;
 }
 
-/* =========================================
-   CART DELIVERY INFO
-========================================= */
 
-.delivery-note-box{
-    margin-top:15px;
-    padding:13px;
-    background:#FAFAFA;
+/* =========================================================
+   DELIVERY INFO
+========================================================= */
+
+.delivery-card{
+    margin-top:14px;
+
+    padding:12px;
+
     border:1px solid var(--border);
-    border-radius:14px;
+    border-radius:11px;
+
+    background:#FAFAFB;
 }
 
-.delivery-note-box strong{
+.delivery-card-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    gap:10px;
+}
+
+.delivery-title{
+    display:flex;
+    align-items:center;
+    gap:7px;
+}
+
+.delivery-icon{
+    width:28px;
+    height:28px;
+
+    border-radius:7px;
+
+    background:var(--accent);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:13px;
+}
+
+.delivery-title strong{
     display:block;
-    font-size:11px;
-    margin-bottom:5px;
-}
 
-.delivery-note-box p{
-    margin:0;
-    color:var(--muted);
     font-size:9px;
-    line-height:1.45;
 }
 
-/* =========================================
-   CART SUMMARY
-========================================= */
+.delivery-title span{
+    display:block;
+
+    margin-top:2px;
+
+    color:var(--muted);
+
+    font-size:7px;
+}
+
+.delivery-edit{
+    border:1px solid var(--border);
+    border-radius:7px;
+
+    background:#fff;
+
+    padding:6px 8px;
+
+    font-size:7.5px;
+    font-weight:800;
+
+    cursor:pointer;
+}
+
+
+/* =========================================================
+   SUMMARY
+========================================================= */
 
 .summary{
-    margin-top:15px;
-    padding:15px;
-    background:#FAFAFA;
+    margin-top:13px;
+
+    padding:13px;
+
     border:1px solid var(--border);
-    border-radius:14px;
+    border-radius:12px;
+
+    background:#FAFAFB;
 }
 
 .summary-row{
     display:flex;
+    align-items:center;
     justify-content:space-between;
-    margin-bottom:9px;
-    font-size:11px;
+
+    margin-bottom:8px;
+
+    font-size:9px;
 }
 
 .summary-row span:first-child{
@@ -652,204 +1078,231 @@ input{
     display:flex;
     align-items:center;
     justify-content:space-between;
-    padding-top:12px;
-    margin-top:5px;
+
+    padding-top:11px;
+
     border-top:1px solid var(--border);
-    font-size:13px;
-    font-weight:800;
-}
 
-.grand-total{
-    font-size:19px;
-}
-
-.checkout{
-    width:100%;
-    height:49px;
-    margin-top:14px;
-    border:1.5px solid var(--black);
-    border-radius:13px;
-    background:var(--black);
-    color:var(--yellow);
-    font-size:12px;
-    font-weight:800;
-    cursor:pointer;
-    box-shadow:4px 4px 0 var(--yellow);
-}
-
-.checkout:active{
-    transform:translate(2px,2px);
-    box-shadow:1px 1px 0 var(--yellow);
-}
-
-/* =========================================
-   LALAMOVE POPUP
-========================================= */
-
-.delivery-modal{
-    position:fixed;
-    inset:0;
-    z-index:10500;
-    background:rgba(0,0,0,.62);
-    backdrop-filter:blur(6px);
-    display:flex;
-    align-items:flex-end;
-    justify-content:center;
-    opacity:0;
-    pointer-events:none;
-    transition:.25s ease;
-}
-
-.delivery-modal.active{
-    opacity:1;
-    pointer-events:auto;
-}
-
-.delivery-content{
-    width:100%;
-    max-width:460px;
-    background:white;
-    border-radius:24px 24px 0 0;
-    padding:20px 18px 27px;
-    transform:translateY(100%);
-    transition:.3s ease;
-}
-
-.delivery-modal.active .delivery-content{
-    transform:translateY(0);
-}
-
-.delivery-top{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:18px;
-}
-
-.delivery-top h2{
-    margin:0;
-    font-size:17px;
-}
-
-.delivery-top p{
-    margin:4px 0 0;
-    color:var(--muted);
-    font-size:9px;
-}
-
-.delivery-close{
-    width:34px;
-    height:34px;
-    border-radius:50%;
-    border:1px solid var(--border);
-    background:#F7F7F7;
-    cursor:pointer;
-}
-
-.lalamove-main-button{
-    width:100%;
-    height:53px;
-    border-radius:14px;
-    border:1.5px solid var(--black);
-    background:var(--yellow);
-    color:var(--black);
-    font-size:13px;
-    font-weight:800;
-    cursor:pointer;
-    box-shadow:4px 4px 0 var(--black);
-}
-
-.lalamove-main-button:active{
-    transform:translate(2px,2px);
-    box-shadow:1px 1px 0 var(--black);
-}
-
-.delivery-input-title{
-    margin:17px 0 7px;
     font-size:10px;
     font-weight:800;
 }
 
-.fee-input-wrap{
+.grand-total{
+    color:var(--text);
+
+    font-size:17px;
+}
+
+
+/* =========================================================
+   CHECKOUT
+========================================================= */
+
+.checkout-btn{
+    width:100%;
+    height:47px;
+
+    margin-top:12px;
+
+    border:1px solid var(--primary);
+    border-radius:11px;
+
+    background:var(--primary);
+    color:var(--accent);
+
+    font-size:10px;
+    font-weight:800;
+
+    cursor:pointer;
+
+    transition:.18s ease;
+}
+
+.checkout-btn:active{
+    transform:scale(.98);
+}
+
+
+/* =========================================================
+   LALAMOVE MODAL
+========================================================= */
+
+.delivery-sheet{
+    padding-bottom:28px;
+}
+
+.lalamove-brand{
+    display:flex;
+    align-items:center;
+    gap:9px;
+}
+
+.lalamove-logo{
+    width:38px;
+    height:38px;
+
+    border-radius:10px;
+
+    background:var(--accent);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:18px;
+}
+
+.lalamove-brand h2{
+    margin:0;
+
+    font-size:14px;
+    font-weight:800;
+}
+
+.lalamove-brand p{
+    margin:3px 0 0;
+
+    color:var(--muted);
+
+    font-size:8px;
+}
+
+.lalamove-open{
+    width:100%;
+    height:47px;
+
+    margin-top:18px;
+
+    border:none;
+    border-radius:11px;
+
+    background:var(--primary);
+    color:var(--accent);
+
+    font-size:10px;
+    font-weight:800;
+
+    cursor:pointer;
+}
+
+.form-label{
+    display:block;
+
+    margin:16px 0 7px;
+
+    font-size:9px;
+    font-weight:800;
+}
+
+.input-wrap{
     position:relative;
 }
 
-.fee-input-wrap span{
+.input-prefix{
     position:absolute;
+
     left:12px;
     top:50%;
+
     transform:translateY(-50%);
-    font-size:11px;
-    font-weight:700;
+
     color:#777;
+
+    font-size:9px;
+    font-weight:700;
 }
 
 .fee-input{
     width:100%;
     height:43px;
+
+    padding:0 10px 0 35px;
+
     border:1px solid var(--border);
-    border-radius:10px;
-    padding:0 10px 0 38px;
-    font-size:12px;
+    border-radius:9px;
+
     outline:none;
+
+    background:#fff;
+
+    font-size:11px;
 }
 
 .fee-input:focus{
-    border-color:#BDA900;
+    border-color:var(--accent-dark);
 }
 
-.save-delivery{
+.save-fee{
     width:100%;
-    height:45px;
-    margin-top:10px;
-    border:1px solid var(--black);
-    border-radius:11px;
-    background:var(--black);
-    color:var(--yellow);
-    font-size:11px;
+    height:43px;
+
+    margin-top:9px;
+
+    border:1px solid var(--border);
+    border-radius:9px;
+
+    background:#F6F7F8;
+    color:var(--primary);
+
+    font-size:9px;
     font-weight:800;
+
     cursor:pointer;
 }
 
-/* =========================================
-   LOADING
-========================================= */
 
-.overlay{
+/* =========================================================
+   LOADING
+========================================================= */
+
+.loading-overlay{
     position:fixed;
     inset:0;
-    z-index:11000;
-    background:rgba(0,0,0,.7);
-    backdrop-filter:blur(6px);
+
+    z-index:9000;
+
     display:flex;
     align-items:center;
     justify-content:center;
+
+    background:rgba(10,14,20,.68);
+
+    backdrop-filter:blur(6px);
+
     opacity:0;
     pointer-events:none;
-    transition:.25s;
+
+    transition:.2s;
 }
 
-.overlay.active{
+.loading-overlay.active{
     opacity:1;
     pointer-events:auto;
 }
 
 .loading-box{
-    width:260px;
-    padding:25px;
-    background:white;
-    border-radius:20px;
+    width:240px;
+
+    padding:24px;
+
+    border-radius:17px;
+
+    background:#fff;
+
     text-align:center;
 }
 
 .spinner{
-    width:36px;
-    height:36px;
-    margin:0 auto 14px;
-    border:4px solid #eee;
-    border-top-color:var(--yellow);
-    border-right-color:var(--black);
+    width:32px;
+    height:32px;
+
+    margin:0 auto 12px;
+
+    border:3px solid #E8E9EB;
+    border-top-color:var(--accent-dark);
+
     border-radius:50%;
+
     animation:spin .8s linear infinite;
 }
 
@@ -861,41 +1314,88 @@ input{
 
 .loading-box h3{
     margin:0;
-    font-size:14px;
+
+    font-size:12px;
 }
 
 .loading-box p{
-    margin:6px 0 0;
+    margin:5px 0 0;
+
     color:var(--muted);
-    font-size:10px;
+
+    font-size:8px;
 }
 
-/* =========================================
+
+/* =========================================================
    TOAST
-========================================= */
+========================================================= */
 
 .toast{
     position:fixed;
+
     left:50%;
-    bottom:25px;
-    z-index:12000;
+    bottom:22px;
+
+    z-index:10000;
+
     max-width:85%;
-    padding:11px 15px;
-    border-radius:10px;
-    background:var(--black);
-    color:white;
-    font-size:10px;
+
+    padding:10px 14px;
+
+    border-radius:9px;
+
+    background:var(--primary);
+    color:#fff;
+
+    font-size:8px;
     font-weight:700;
+
     text-align:center;
+
     opacity:0;
+
     pointer-events:none;
-    transform:translate(-50%,20px);
-    transition:.25s;
+
+    transform:translate(-50%,15px);
+
+    transition:.25s ease;
 }
 
 .toast.show{
     opacity:1;
     transform:translate(-50%,0);
+}
+
+
+/* =========================================================
+   SMALL SCREEN
+========================================================= */
+
+@media(max-width:360px){
+
+    .app{
+        padding-left:12px;
+        padding-right:12px;
+    }
+
+    .header-btn{
+        padding:0 8px;
+    }
+
+    .profile-role{
+        display:none;
+    }
+
+    .calculator-image{
+        width:62px;
+        height:62px;
+    }
+
+    .intro h1{
+        font-size:22px;
+    }
+
 }
 
 </style>
@@ -904,22 +1404,15 @@ input{
 
 <body>
 
+
 <div class="app">
 
-<input
-    type="file"
-    id="galleryInput"
-    accept="image/*"
-    style="display:none"
-    onchange="previewProfileImage(event)"
->
 
-
-<!-- ======================================
+<!-- ======================================================
      HEADER
-====================================== -->
+====================================================== -->
 
-<header class="header">
+<header class="topbar">
 
     <div
         class="profile"
@@ -935,12 +1428,12 @@ input{
 
         <div class="profile-info">
 
-            <h2>
-                Idris DIY ⚙️
+            <h2 class="profile-name">
+                Idris DIY
             </h2>
 
-            <p>
-                Idris e-Portal & Calculator
+            <p class="profile-role">
+                Business Calculator Portal
             </p>
 
         </div>
@@ -948,13 +1441,12 @@ input{
     </div>
 
 
-    <!-- TWO SEPARATE BUTTONS -->
-
     <div class="header-actions">
 
         <!-- LALAMOVE -->
+
         <button
-            class="header-action lalamove"
+            class="header-btn lalamove"
             onclick="openLalamoveModal()"
         >
             🛵
@@ -965,13 +1457,14 @@ input{
 
 
         <!-- CART -->
+
         <button
-            class="header-action"
+            class="header-btn"
             onclick="toggleCartModal()"
         >
             🛒
             <span>
-                Troli
+                Pesanan
             </span>
 
             <span
@@ -988,65 +1481,135 @@ input{
 </header>
 
 
-<!-- ======================================
-     HERO
-====================================== -->
+<input
+    type="file"
+    id="galleryInput"
+    accept="image/*"
+    style="display:none"
+    onchange="previewProfileImage(event)"
+>
 
-<section class="hero">
 
-    <div class="hero-content">
+<!-- ======================================================
+     INTRO
+====================================================== -->
 
-        <div class="hero-label">
-            ⚡ IDRIS E-PORTAL
-        </div>
+<section class="intro">
 
-        <h1>
-            DIY & Construction<br>
-            Calculator
-        </h1>
+    <div class="intro-eyebrow">
 
-        <p>
-            Semua kalkulator untuk quotation,
-            material, panel, flooring dan penghantaran
-            dalam satu portal.
-        </p>
+        <span class="intro-dot"></span>
+
+        Business Tools
 
     </div>
+
+
+    <h1>
+        Calculator Portal
+    </h1>
+
+
+    <p>
+        Platform pengiraan untuk membantu penyediaan
+        quotation, material planning dan urusan penghantaran
+        secara lebih cepat dan tersusun.
+    </p>
 
 </section>
 
 
-<!-- ======================================
-     CALCULATORS
-====================================== -->
+<!-- ======================================================
+     INFO BAR
+====================================================== -->
 
-<div class="section-header">
+<div class="info-bar">
 
-    <div class="section-title">
-        Pilihan Kalkulator
+    <div class="info-item">
+
+        <span
+            class="info-number"
+            id="calculatorCount"
+        >
+            5
+        </span>
+
+        <span class="info-label">
+            Tools
+        </span>
+
     </div>
 
-    <div class="section-count">
-        5 TOOLS
+
+    <div class="info-item">
+
+        <span
+            class="info-number"
+            id="recordCount"
+        >
+            0
+        </span>
+
+        <span class="info-label">
+            Records
+        </span>
+
+    </div>
+
+
+    <div class="info-item">
+
+        <span
+            class="info-number"
+            id="cartCountTop"
+        >
+            0
+        </span>
+
+        <span class="info-label">
+            Pesanan
+        </span>
+
     </div>
 
 </div>
 
 
-<div class="services">
+<!-- ======================================================
+     CALCULATOR SECTION
+====================================================== -->
+
+<div class="section-header">
+
+    <div>
+
+        <h2 class="section-heading">
+            Business Calculators
+        </h2>
+
+        <p class="section-subheading">
+            Pilih modul pengiraan yang diperlukan
+        </p>
+
+    </div>
+
+</div>
 
 
-<!-- SPC -->
+<div class="calculator-list">
+
+
+<!-- SPC FLOORING -->
 
 <div
-    class="service-card"
+    class="calculator-card"
     onclick="bukaApps(
         'spcflooring/index.html',
         'SPC Flooring Calculator'
     )"
 >
 
-    <div class="service-image">
+    <div class="calculator-image">
 
         <img
             src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=500&auto=format&fit=crop&q=85"
@@ -1055,21 +1618,26 @@ input{
 
     </div>
 
-    <div class="service-content">
 
-        <span class="service-tag">
+    <div class="calculator-content">
+
+        <span class="calculator-label">
             FLOORING
         </span>
 
-        <h3>
+        <h3 class="calculator-title">
             SPC Flooring Calculator
         </h3>
 
-        <p>
-            Kira kotak SPC, wastage, aksesori
-            dan anggaran material.
+        <p class="calculator-description">
+            Pengiraan kotak SPC, wastage dan aksesori flooring.
         </p>
 
+    </div>
+
+
+    <div class="card-arrow">
+        ›
     </div>
 
 </div>
@@ -1078,14 +1646,14 @@ input{
 <!-- FLUTED -->
 
 <div
-    class="service-card"
+    class="calculator-card"
     onclick="bukaApps(
         'wallpanelling/index.html',
         'Board with Fluted Panelling Calculator'
     )"
 >
 
-    <div class="service-image">
+    <div class="calculator-image">
 
         <img
             src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=500&auto=format&fit=crop&q=85"
@@ -1094,21 +1662,26 @@ input{
 
     </div>
 
-    <div class="service-content">
 
-        <span class="service-tag">
+    <div class="calculator-content">
+
+        <span class="calculator-label">
             WALL PANEL
         </span>
 
-        <h3>
+        <h3 class="calculator-title">
             Board with Fluted Panelling
         </h3>
 
-        <p>
-            Kira susunan board, fluted panel
-            dan keperluan dinding.
+        <p class="calculator-description">
+            Pengiraan board, fluted panel dan susunan dinding.
         </p>
 
+    </div>
+
+
+    <div class="card-arrow">
+        ›
     </div>
 
 </div>
@@ -1117,14 +1690,14 @@ input{
 <!-- CEILING -->
 
 <div
-    class="service-card"
+    class="calculator-card"
     onclick="bukaApps(
         'ceilingseries/index.html',
         'Ceiling Series Calculator'
     )"
 >
 
-    <div class="service-image">
+    <div class="calculator-image">
 
         <img
             src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=500&auto=format&fit=crop&q=85"
@@ -1133,21 +1706,26 @@ input{
 
     </div>
 
-    <div class="service-content">
 
-        <span class="service-tag">
+    <div class="calculator-content">
+
+        <span class="calculator-label">
             CEILING
         </span>
 
-        <h3>
+        <h3 class="calculator-title">
             Ceiling Series Calculator
         </h3>
 
-        <p>
-            Kira ukuran, bahan dan keperluan
-            siri siling.
+        <p class="calculator-description">
+            Pengiraan ukuran, material dan keperluan siling.
         </p>
 
+    </div>
+
+
+    <div class="card-arrow">
+        ›
     </div>
 
 </div>
@@ -1156,37 +1734,42 @@ input{
 <!-- WAINSCOTING -->
 
 <div
-    class="service-card"
+    class="calculator-card"
     onclick="bukaApps(
         'wainscoting/index.html',
         'Wainscoting Calculator'
     )"
 >
 
-    <div class="service-image">
+    <div class="calculator-image">
 
         <img
             src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=500&auto=format&fit=crop&q=85"
-            alt="Wainscoting Wall"
+            alt="Wainscoting"
         >
 
     </div>
 
-    <div class="service-content">
 
-        <span class="service-tag">
+    <div class="calculator-content">
+
+        <span class="calculator-label">
             WALL DECOR
         </span>
 
-        <h3>
+        <h3 class="calculator-title">
             Wainscoting Calculator
         </h3>
 
-        <p>
-            Kira panel, ukuran kotak dan
-            anggaran kerja wainscoting.
+        <p class="calculator-description">
+            Pengiraan panel, ukuran dan anggaran kerja wainscoting.
         </p>
 
+    </div>
+
+
+    <div class="card-arrow">
+        ›
     </div>
 
 </div>
@@ -1195,14 +1778,14 @@ input{
 <!-- POSTAGE -->
 
 <div
-    class="service-card"
+    class="calculator-card"
     onclick="bukaApps(
         'postage/index.html',
         'Postage & Logistics Calculator'
     )"
 >
 
-    <div class="service-image">
+    <div class="calculator-image">
 
         <img
             src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=500&auto=format&fit=crop&q=85"
@@ -1211,114 +1794,150 @@ input{
 
     </div>
 
-    <div class="service-content">
 
-        <span class="service-tag">
+    <div class="calculator-content">
+
+        <span class="calculator-label">
             LOGISTICS
         </span>
 
-        <h3>
+        <h3 class="calculator-title">
             Postage & Logistics Calculator
         </h3>
 
-        <p>
-            Kira kos postage, parcel dan
-            penghantaran barang.
+        <p class="calculator-description">
+            Pengiraan kos penghantaran parcel dan logistics.
         </p>
 
     </div>
 
-</div>
 
-</div>
-
-
-<!-- ======================================
-     HISTORY
-====================================== -->
-
-<div class="section-header">
-
-    <div class="section-title">
-        Sejarah Pengiraan
+    <div class="card-arrow">
+        ›
     </div>
 
-    <button
-        class="clear-history"
-        onclick="clearHistory()"
-    >
-        Kosongkan
-    </button>
+</div>
+
 
 </div>
 
 
-<div class="history-box">
+<!-- ======================================================
+     RECORDS
+====================================================== -->
 
-    <div
-        class="history-inner"
-        id="historyListBox"
-    >
+<div class="records-header">
 
-        <div class="empty-history">
-            Tiada sejarah pengiraan tersimpan.
+    <div class="records-title-wrap">
+
+        <div class="records-icon">
+            ▣
+        </div>
+
+        <div>
+
+            <h2 class="records-title">
+                Rekod Pengiraan
+            </h2>
+
+            <p class="records-subtitle">
+                Rujukan pengiraan yang pernah disimpan
+            </p>
+
         </div>
 
     </div>
 
+
+    <div
+        class="records-count"
+        id="recordsBadge"
+    >
+        0 Rekod
+    </div>
+
 </div>
 
 
-<!-- FOOTER -->
+<div class="records-container">
+
+    <div
+        class="records-list"
+        id="historyListBox"
+    >
+
+        <!-- GENERATED BY JAVASCRIPT -->
+
+    </div>
+
+</div>
+
+
+<!-- ======================================================
+     FOOTER
+====================================================== -->
 
 <footer class="footer">
 
     <span>
-        Idris Portal • v7.1
+        Idris Business Portal • v8.0
     </span>
 
     <div class="visitor">
+
         Pelawat:
+        
         <strong id="visitorCount">
             1,980
         </strong>
+
     </div>
 
 </footer>
 
+
 </div>
 
 
-<!-- ======================================
+<!-- ======================================================
      CART MODAL
-====================================== -->
+====================================================== -->
 
 <div
-    class="cart-modal"
+    class="modal"
     id="cartModal"
 >
 
-<div class="cart-content">
+<div class="modal-sheet">
 
-    <div class="drag-line"></div>
+    <div class="drag-handle"></div>
 
 
-    <div class="cart-header">
+    <div class="modal-header">
 
-        <div>
+        <div class="modal-heading">
 
-            <h2>
-                🛒 Troli Pesanan
-            </h2>
+            <div class="modal-icon">
+                🛒
+            </div>
 
-            <small>
-                Semak item sebelum dihantar
-            </small>
+            <div>
+
+                <h2>
+                    Pesanan
+                </h2>
+
+                <p>
+                    Semak item sebelum dihantar
+                </p>
+
+            </div>
 
         </div>
 
+
         <button
-            class="close-cart"
+            class="close-btn"
             onclick="toggleCartModal()"
         >
             ✕
@@ -1333,16 +1952,39 @@ input{
     ></div>
 
 
-    <div class="delivery-note-box">
+    <div class="delivery-card">
 
-        <strong>
-            🚚 Caj Penghantaran
-        </strong>
+        <div class="delivery-card-row">
 
-        <p>
-            Untuk tambah caj Lalamove atau penghantaran,
-            gunakan butang <b>Lalamove</b> di bahagian atas.
-        </p>
+            <div class="delivery-title">
+
+                <div class="delivery-icon">
+                    🛵
+                </div>
+
+                <div>
+
+                    <strong>
+                        Lalamove / Delivery
+                    </strong>
+
+                    <span id="deliveryFeeStatus">
+                        Caj belum ditetapkan
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <button
+                class="delivery-edit"
+                onclick="openLalamoveFromCart()"
+            >
+                Ubah
+            </button>
+
+        </div>
 
     </div>
 
@@ -1365,7 +2007,7 @@ input{
         <div class="summary-row">
 
             <span>
-                Caj Penghantaran
+                Penghantaran
             </span>
 
             <span id="cartLalamoveText">
@@ -1378,7 +2020,7 @@ input{
         <div class="summary-total">
 
             <span>
-                TOTAL
+                JUMLAH KESELURUHAN
             </span>
 
             <span
@@ -1394,7 +2036,7 @@ input{
 
 
     <button
-        class="checkout"
+        class="checkout-btn"
         onclick="proceedCheckout()"
     >
         💬 Hantar Pesanan melalui WhatsApp
@@ -1405,33 +2047,45 @@ input{
 </div>
 
 
-<!-- ======================================
+<!-- ======================================================
      LALAMOVE MODAL
-====================================== -->
+====================================================== -->
 
 <div
-    class="delivery-modal"
+    class="modal"
     id="deliveryModal"
 >
 
-<div class="delivery-content">
+<div class="modal-sheet delivery-sheet">
 
-    <div class="delivery-top">
+    <div class="drag-handle"></div>
 
-        <div>
 
-            <h2>
-                🛵 Lalamove
-            </h2>
+    <div class="modal-header">
 
-            <p>
-                Penghantaran & caj delivery
-            </p>
+        <div class="lalamove-brand">
+
+            <div class="lalamove-logo">
+                🛵
+            </div>
+
+            <div>
+
+                <h2>
+                    Lalamove Delivery
+                </h2>
+
+                <p>
+                    Pengurusan caj penghantaran
+                </p>
+
+            </div>
 
         </div>
 
+
         <button
-            class="delivery-close"
+            class="close-btn"
             onclick="closeLalamoveModal()"
         >
             ✕
@@ -1441,21 +2095,21 @@ input{
 
 
     <button
-        class="lalamove-main-button"
+        class="lalamove-open"
         onclick="openLalamoveWebsite()"
     >
         🛵 Buka Lalamove
     </button>
 
 
-    <div class="delivery-input-title">
-        Masukkan Caj Penghantaran
-    </div>
+    <label class="form-label">
+        Caj Penghantaran
+    </label>
 
 
-    <div class="fee-input-wrap">
+    <div class="input-wrap">
 
-        <span>
+        <span class="input-prefix">
             RM
         </span>
 
@@ -1472,7 +2126,7 @@ input{
 
 
     <button
-        class="save-delivery"
+        class="save-fee"
         onclick="saveDeliveryFee()"
     >
         ✓ Simpan Caj Penghantaran
@@ -1483,12 +2137,12 @@ input{
 </div>
 
 
-<!-- ======================================
+<!-- ======================================================
      LOADING
-====================================== -->
+====================================================== -->
 
 <div
-    class="overlay"
+    class="loading-overlay"
     id="loadingOverlay"
 >
 
@@ -1509,6 +2163,8 @@ input{
 </div>
 
 
+<!-- TOAST -->
+
 <div
     class="toast"
     id="toast"
@@ -1517,9 +2173,9 @@ input{
 
 <script>
 
-/* =========================================
-   LOAD
-========================================= */
+/* =========================================================
+   INITIALIZE
+========================================================= */
 
 window.addEventListener(
     'DOMContentLoaded',
@@ -1533,208 +2189,683 @@ window.addEventListener(
 
         loadSavedDeliveryFee();
 
+        updateTopStats();
+
     }
 );
 
 
-/* =========================================
+/* =========================================================
+   SAFE JSON
+========================================================= */
+
+function safeJSON(key, fallback=[]){
+
+    try{
+
+        const value =
+            localStorage.getItem(key);
+
+        if(!value){
+            return fallback;
+        }
+
+        const parsed =
+            JSON.parse(value);
+
+        return parsed ?? fallback;
+
+    }catch(error){
+
+        return fallback;
+
+    }
+
+}
+
+
+/* =========================================================
    TOAST
-========================================= */
+========================================================= */
 
 function showToast(message){
 
     const toast =
         document.getElementById('toast');
 
-    toast.innerText = message;
+    toast.innerText =
+        message;
 
     toast.classList.add('show');
 
-    setTimeout(function(){
+    setTimeout(
+        function(){
 
-        toast.classList.remove('show');
+            toast.classList.remove('show');
 
-    },2200);
+        },
+        2200
+    );
 
 }
 
 
-/* =========================================
-   HISTORY
-========================================= */
+/* =========================================================
+   GET HISTORY
+========================================================= */
+
+function getHistory(){
+
+    let history =
+        safeJSON(
+            'diy_calc_history',
+            []
+        );
+
+
+    if(!Array.isArray(history)){
+        history=[];
+    }
+
+
+    return history;
+
+}
+
+
+/* =========================================================
+   NORMALIZE HISTORY
+   Support old / slightly different record formats
+========================================================= */
+
+function normalizeHistoryItem(item,index){
+
+    if(!item){
+        return null;
+    }
+
+
+    const title =
+        item.tajuk ||
+        item.title ||
+        item.name ||
+        item.calculator ||
+        'Pengiraan';
+
+
+    const info =
+        item.info ||
+        item.detail ||
+        item.details ||
+        item.description ||
+        'Rekod pengiraan';
+
+
+    const price =
+        item.harga ??
+        item.price ??
+        item.total ??
+        item.amount ??
+        'RM 0.00';
+
+
+    let date =
+        item.tarikh ||
+        item.date ||
+        item.datetime ||
+        item.createdAt ||
+        item.timestamp ||
+        '';
+
+
+    /* Convert timestamp */
+
+    if(
+        typeof date === 'number'
+    ){
+
+        try{
+
+            date =
+                new Date(date)
+                .toISOString();
+
+        }catch(e){}
+
+    }
+
+
+    return {
+
+        ...item,
+
+        _index:index,
+
+        tajuk:String(title),
+
+        info:String(info),
+
+        harga:String(price),
+
+        tarikh:date
+
+    };
+
+}
+
+
+/* =========================================================
+   DATE FORMAT
+========================================================= */
+
+function formatRecordDate(date){
+
+    if(!date){
+
+        return 'Tarikh tidak direkod';
+
+    }
+
+
+    try{
+
+        const d =
+            new Date(date);
+
+
+        if(
+            isNaN(
+                d.getTime()
+            )
+        ){
+
+            return String(date);
+
+        }
+
+
+        return d.toLocaleDateString(
+            'ms-MY',
+            {
+                day:'2-digit',
+                month:'short',
+                year:'numeric'
+            }
+        )
+        +
+        ' • '
+        +
+        d.toLocaleTimeString(
+            'ms-MY',
+            {
+                hour:'2-digit',
+                minute:'2-digit'
+            }
+        );
+
+    }catch(e){
+
+        return String(date);
+
+    }
+
+}
+
+
+/* =========================================================
+   PRICE FORMAT
+========================================================= */
+
+function extractPrice(value){
+
+    if(
+        typeof value === 'number'
+    ){
+
+        return value;
+
+    }
+
+
+    let text =
+        String(value || '');
+
+
+    /*
+       Supports:
+       RM 1,200.00
+       RM1,200
+       1200.00
+    */
+
+    text =
+        text.replace(
+            /,/g,
+            ''
+        );
+
+
+    const matches =
+        text.match(
+            /-?\d+(?:\.\d+)?/
+        );
+
+
+    if(!matches){
+
+        return 0;
+
+    }
+
+
+    return (
+        parseFloat(
+            matches[0]
+        ) || 0
+    );
+
+}
+
+
+/* =========================================================
+   RENDER HISTORY
+========================================================= */
 
 function renderHistory(){
 
-    const historyBox =
+    const box =
         document.getElementById(
             'historyListBox'
         );
 
-    let historyData =
-        JSON.parse(
-            localStorage.getItem(
-                'diy_calc_history'
+
+    const rawHistory =
+        getHistory();
+
+
+    const history =
+        rawHistory
+            .map(
+                normalizeHistoryItem
             )
-        ) || [];
+            .filter(Boolean);
 
 
-    if(historyData.length === 0){
+    document.getElementById(
+        'recordCount'
+    ).innerText =
+        history.length;
 
-        historyBox.innerHTML = `
-            <div class="empty-history">
-                Tiada sejarah pengiraan tersimpan.
+
+    document.getElementById(
+        'recordsBadge'
+    ).innerText =
+        history.length +
+        (
+            history.length === 1
+            ? ' Rekod'
+            : ' Rekod'
+        );
+
+
+    if(history.length === 0){
+
+        box.innerHTML = `
+
+            <div class="empty-records">
+
+                <div class="empty-record-icon">
+                    ▣
+                </div>
+
+                <strong>
+                    Tiada rekod pengiraan
+                </strong>
+
+                <p>
+                    Rekod daripada kalkulator akan
+                    dipaparkan di sini untuk rujukan
+                    dan pesanan semula.
+                </p>
+
             </div>
+
         `;
 
         return;
+
     }
 
 
     let html='';
 
 
-    historyData.forEach(
-        function(item,index){
+    /*
+       Latest record first
+    */
 
-            html += `
+    history
+        .slice()
+        .reverse()
+        .forEach(
+            function(item){
 
-                <div class="history-item">
+                const price =
+                    extractPrice(
+                        item.harga
+                    );
 
-                    <div class="history-info">
 
-                        <strong>
-                            ${item.tajuk}
-                        </strong>
+                html += `
 
-                        <span>
-                            ${item.info}
-                        </span>
+                    <div class="record-item">
 
-                        <span class="history-price">
-                            ${item.harga}
-                        </span>
+                        <div class="record-top">
+
+                            <div class="record-main">
+
+                                <h3 class="record-title">
+                                    ${escapeHTML(item.tajuk)}
+                                </h3>
+
+                                <div class="record-info">
+                                    ${escapeHTML(item.info)}
+                                </div>
+
+                            </div>
+
+
+                            <div class="record-date">
+                                ${escapeHTML(
+                                    formatRecordDate(
+                                        item.tarikh
+                                    )
+                                )}
+                            </div>
+
+                        </div>
+
+
+                        <div class="record-bottom">
+
+                            <div class="record-price">
+
+                                RM ${price.toFixed(2)}
+
+                            </div>
+
+
+                            <div class="record-actions">
+
+                                <button
+                                    class="record-action record-cart"
+                                    onclick="addRecordToCart(${item._index})"
+                                >
+                                    + Pesanan
+                                </button>
+
+                                <button
+                                    class="record-action record-delete"
+                                    onclick="deleteRecord(${item._index})"
+                                >
+                                    Padam
+                                </button>
+
+                            </div>
+
+                        </div>
 
                     </div>
 
-                    <button
-                        class="add-cart"
-                        onclick="addToCart(${index})"
-                    >
-                        + CART
-                    </button>
+                `;
 
-                </div>
-
-            `;
-
-        }
-    );
+            }
+        );
 
 
-    historyBox.innerHTML=html;
+    box.innerHTML =
+        html;
 
 }
 
 
-/* =========================================
-   CLEAR HISTORY
-========================================= */
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
 
-function clearHistory(){
+function escapeHTML(value){
+
+    return String(value ?? '')
+        .replace(
+            /&/g,
+            '&amp;'
+        )
+        .replace(
+            /</g,
+            '&lt;'
+        )
+        .replace(
+            />/g,
+            '&gt;'
+        )
+        .replace(
+            /"/g,
+            '&quot;'
+        )
+        .replace(
+            /'/g,
+            '&#039;'
+        );
+
+}
+
+
+/* =========================================================
+   DELETE ONE RECORD
+========================================================= */
+
+function deleteRecord(index){
+
+    let history =
+        getHistory();
+
+
+    if(
+        index < 0 ||
+        index >= history.length
+    ){
+
+        return;
+
+    }
+
+
+    history.splice(
+        index,
+        1
+    );
+
+
+    localStorage.setItem(
+        'diy_calc_history',
+        JSON.stringify(history)
+    );
+
+
+    renderHistory();
+
+    updateTopStats();
+
+    showToast(
+        'Rekod telah dipadam.'
+    );
+
+}
+
+
+/* =========================================================
+   CLEAR ALL RECORDS
+========================================================= */
+
+function clearAllRecords(){
+
+    const history =
+        getHistory();
+
+
+    if(history.length === 0){
+
+        showToast(
+            'Tiada rekod untuk dipadam.'
+        );
+
+        return;
+
+    }
+
+
+    if(
+        !confirm(
+            'Padam semua rekod pengiraan?'
+        )
+    ){
+
+        return;
+
+    }
+
 
     localStorage.removeItem(
         'diy_calc_history'
     );
 
+
     renderHistory();
 
+    updateTopStats();
+
+
     showToast(
-        'Sejarah pengiraan telah dikosongkan.'
+        'Semua rekod telah dipadam.'
     );
 
 }
 
 
-/* =========================================
-   ADD CART
-========================================= */
+/* =========================================================
+   ADD RECORD TO CART
+========================================================= */
 
-function addToCart(index){
+function addRecordToCart(index){
 
-    let historyData =
-        JSON.parse(
-            localStorage.getItem(
-                'diy_calc_history'
-            )
-        ) || [];
+    const history =
+        getHistory();
 
 
     const item =
-        historyData[index];
+        history[index];
 
 
     if(!item){
 
         showToast(
-            'Item tidak dijumpai.'
+            'Rekod tidak dijumpai.'
         );
 
         return;
+
     }
 
 
-    let cartData =
-        JSON.parse(
-            localStorage.getItem(
-                'diy_cart'
-            )
-        ) || [];
+    let cart =
+        safeJSON(
+            'diy_cart',
+            []
+        );
 
 
-    cartData.push(item);
+    cart.push(item);
 
 
     localStorage.setItem(
         'diy_cart',
-        JSON.stringify(cartData)
+        JSON.stringify(cart)
     );
 
 
     updateCartBadge();
 
+    updateTopStats();
+
 
     showToast(
-        'Item dimasukkan ke dalam troli.'
+        'Rekod ditambah ke Pesanan.'
     );
 
 }
 
 
-/* =========================================
+/* =========================================================
    CART BADGE
-========================================= */
+========================================================= */
 
 function updateCartBadge(){
 
-    let cartData =
-        JSON.parse(
-            localStorage.getItem(
-                'diy_cart'
-            )
-        ) || [];
+    const cart =
+        safeJSON(
+            'diy_cart',
+            []
+        );
+
+
+    const count =
+        cart.length;
 
 
     document.getElementById(
         'cartBadgeCount'
     ).innerText =
-        cartData.length;
+        count;
+
+
+    document.getElementById(
+        'cartCountTop'
+    ).innerText =
+        count;
 
 }
 
 
-/* =========================================
+/* =========================================================
+   TOP STATS
+========================================================= */
+
+function updateTopStats(){
+
+    const history =
+        getHistory();
+
+
+    document.getElementById(
+        'calculatorCount'
+    ).innerText =
+        '5';
+
+
+    document.getElementById(
+        'recordCount'
+    ).innerText =
+        history.length;
+
+
+    updateCartBadge();
+
+}
+
+
+/* =========================================================
    CART MODAL
-========================================= */
+========================================================= */
 
 function toggleCartModal(){
 
@@ -1762,18 +2893,17 @@ function toggleCartModal(){
 }
 
 
-/* =========================================
+/* =========================================================
    RENDER CART
-========================================= */
+========================================================= */
 
 function renderCartItems(){
 
-    let cartData =
-        JSON.parse(
-            localStorage.getItem(
-                'diy_cart'
-            )
-        ) || [];
+    const cart =
+        safeJSON(
+            'diy_cart',
+            []
+        );
 
 
     const container =
@@ -1782,15 +2912,24 @@ function renderCartItems(){
         );
 
 
-    if(cartData.length === 0){
+    if(cart.length === 0){
 
         container.innerHTML = `
 
-            <div class="empty-history">
+            <div class="empty-records">
 
-                🛒<br><br>
+                <div class="empty-record-icon">
+                    🛒
+                </div>
 
-                Troli anda masih kosong.
+                <strong>
+                    Tiada item dalam pesanan
+                </strong>
+
+                <p>
+                    Tambahkan rekod pengiraan
+                    yang diperlukan ke dalam pesanan.
+                </p>
 
             </div>
 
@@ -1800,14 +2939,21 @@ function renderCartItems(){
         calculateCartTotal();
 
         return;
+
     }
 
 
     let html='';
 
 
-    cartData.forEach(
+    cart.forEach(
         function(item,index){
+
+            const price =
+                extractPrice(
+                    item.harga
+                );
+
 
             html += `
 
@@ -1815,19 +2961,26 @@ function renderCartItems(){
 
                     <div class="cart-item-info">
 
-                        <strong>
-                            ${item.tajuk}
-                        </strong>
+                        <div class="cart-item-title">
+                            ${escapeHTML(
+                                item.tajuk ||
+                                'Pengiraan'
+                            )}
+                        </div>
 
                         <span>
-                            ${item.info}
+                            ${escapeHTML(
+                                item.info ||
+                                ''
+                            )}
                         </span>
 
                         <span class="cart-item-price">
-                            ${item.harga}
+                            RM ${price.toFixed(2)}
                         </span>
 
                     </div>
+
 
                     <button
                         class="remove-item"
@@ -1844,7 +2997,8 @@ function renderCartItems(){
     );
 
 
-    container.innerHTML=html;
+    container.innerHTML =
+        html;
 
 
     calculateCartTotal();
@@ -1852,21 +3006,20 @@ function renderCartItems(){
 }
 
 
-/* =========================================
+/* =========================================================
    REMOVE CART
-========================================= */
+========================================================= */
 
 function removeFromCart(index){
 
-    let cartData =
-        JSON.parse(
-            localStorage.getItem(
-                'diy_cart'
-            )
-        ) || [];
+    let cart =
+        safeJSON(
+            'diy_cart',
+            []
+        );
 
 
-    cartData.splice(
+    cart.splice(
         index,
         1
     );
@@ -1874,7 +3027,7 @@ function removeFromCart(index){
 
     localStorage.setItem(
         'diy_cart',
-        JSON.stringify(cartData)
+        JSON.stringify(cart)
     );
 
 
@@ -1885,9 +3038,9 @@ function removeFromCart(index){
 }
 
 
-/* =========================================
-   GET DELIVERY FEE
-========================================= */
+/* =========================================================
+   DELIVERY FEE
+========================================================= */
 
 function getDeliveryFee(){
 
@@ -1900,73 +3053,88 @@ function getDeliveryFee(){
 }
 
 
-/* =========================================
+/* =========================================================
    CALCULATE CART
-========================================= */
+========================================================= */
 
 function calculateCartTotal(){
 
-    let cartData =
-        JSON.parse(
-            localStorage.getItem(
-                'diy_cart'
-            )
-        ) || [];
+    const cart =
+        safeJSON(
+            'diy_cart',
+            []
+        );
 
 
     let subtotal=0;
 
 
-    cartData.forEach(
+    cart.forEach(
         function(item){
 
-            let price =
-                parseFloat(
-                    String(item.harga)
-                    .replace(
-                        /[^0-9.]/g,
-                        ''
-                    )
-                ) || 0;
-
-
-            subtotal += price;
+            subtotal +=
+                extractPrice(
+                    item.harga
+                );
 
         }
     );
 
 
-    const deliveryFee =
+    const delivery =
         getDeliveryFee();
 
 
     const total =
-        subtotal + deliveryFee;
+        subtotal + delivery;
 
 
     document.getElementById(
         'cartSubtotalText'
     ).innerText =
-        'RM ' + subtotal.toFixed(2);
+        'RM '+
+        subtotal.toFixed(2);
 
 
     document.getElementById(
         'cartLalamoveText'
     ).innerText =
-        'RM ' + deliveryFee.toFixed(2);
+        'RM '+
+        delivery.toFixed(2);
 
 
     document.getElementById(
         'cartGrandTotalText'
     ).innerText =
-        'RM ' + total.toFixed(2);
+        'RM '+
+        total.toFixed(2);
+
+
+    const status =
+        document.getElementById(
+            'deliveryFeeStatus'
+        );
+
+
+    if(delivery > 0){
+
+        status.innerText =
+            'Caj semasa: RM '+
+            delivery.toFixed(2);
+
+    }else{
+
+        status.innerText =
+            'Caj belum ditetapkan';
+
+    }
 
 }
 
 
-/* =========================================
-   LALAMOVE MODAL
-========================================= */
+/* =========================================================
+   LALAMOVE
+========================================================= */
 
 function openLalamoveModal(){
 
@@ -2002,9 +3170,16 @@ function closeLalamoveModal(){
 }
 
 
-/* =========================================
-   OPEN LALAMOVE
-========================================= */
+function openLalamoveFromCart(){
+
+    openLalamoveModal();
+
+}
+
+
+/* =========================================================
+   OPEN LALAMOVE WEBSITE
+========================================================= */
 
 function openLalamoveWebsite(){
 
@@ -2016,22 +3191,20 @@ function openLalamoveWebsite(){
 }
 
 
-/* =========================================
-   SAVE DELIVERY
-========================================= */
+/* =========================================================
+   SAVE DELIVERY FEE
+========================================================= */
 
 function saveDeliveryFee(){
 
-    const input =
+    const value =
         document.getElementById(
             'lalamoveFeeInput'
-        );
+        ).value;
 
 
     const fee =
-        parseFloat(
-            input.value
-        ) || 0;
+        parseFloat(value) || 0;
 
 
     localStorage.setItem(
@@ -2046,16 +3219,38 @@ function saveDeliveryFee(){
     closeLalamoveModal();
 
 
+    /*
+       If cart is open,
+       refresh it
+    */
+
+    const cartModal =
+        document.getElementById(
+            'cartModal'
+        );
+
+
+    if(
+        cartModal.classList.contains(
+            'active'
+        )
+    ){
+
+        renderCartItems();
+
+    }
+
+
     showToast(
-        'Caj penghantaran berjaya disimpan.'
+        'Caj penghantaran telah dikemaskini.'
     );
 
 }
 
 
-/* =========================================
-   LOAD DELIVERY
-========================================= */
+/* =========================================================
+   LOAD DELIVERY FEE
+========================================================= */
 
 function loadSavedDeliveryFee(){
 
@@ -2072,31 +3267,32 @@ function loadSavedDeliveryFee(){
     if(input){
 
         input.value =
-            fee > 0 ? fee : '';
+            fee > 0
+            ? fee
+            : '';
 
     }
 
 }
 
 
-/* =========================================
-   WHATSAPP
-========================================= */
+/* =========================================================
+   WHATSAPP CHECKOUT
+========================================================= */
 
 function proceedCheckout(){
 
-    let cartData =
-        JSON.parse(
-            localStorage.getItem(
-                'diy_cart'
-            )
-        ) || [];
+    const cart =
+        safeJSON(
+            'diy_cart',
+            []
+        );
 
 
-    if(cartData.length === 0){
+    if(cart.length === 0){
 
         showToast(
-            'Troli anda kosong!'
+            'Tiada item dalam pesanan.'
         );
 
         return;
@@ -2107,65 +3303,75 @@ function proceedCheckout(){
     let subtotal=0;
 
 
-    let msg =
-        'Hai Idris, saya ingin sahkan pesanan pengiraan berikut:\n\n';
+    let message =
+        'Assalamualaikum / Hi Idris, saya ingin membuat semakan pesanan berikut:\n\n';
 
 
-    cartData.forEach(
+    cart.forEach(
         function(item,index){
 
-            let price =
-                parseFloat(
-                    String(item.harga)
-                    .replace(
-                        /[^0-9.]/g,
-                        ''
-                    )
-                ) || 0;
+            const price =
+                extractPrice(
+                    item.harga
+                );
 
 
-            subtotal += price;
+            subtotal +=
+                price;
 
 
-            msg +=
-                `${index+1}. ${item.tajuk}\n`+
-                `   ${item.info}\n`+
-                `   ${item.harga}\n\n`;
+            message +=
+                `${index+1}. ${item.tajuk || 'Pengiraan'}\n`;
+
+            message +=
+                `   ${item.info || ''}\n`;
+
+            message +=
+                `   RM ${price.toFixed(2)}\n\n`;
 
         }
     );
 
 
-    const deliveryFee =
+    const delivery =
         getDeliveryFee();
 
 
-    const grandTotal =
-        subtotal + deliveryFee;
+    const total =
+        subtotal + delivery;
 
 
-    msg +=
-        `Jumlah Material: RM ${subtotal.toFixed(2)}\n`+
-        `Caj Lalamove / Penghantaran: RM ${deliveryFee.toFixed(2)}\n`+
-        `TOTAL KESELURUHAN: RM ${grandTotal.toFixed(2)}`;
+    message +=
+        '-------------------------\n';
+
+    message +=
+        `Jumlah Material: RM ${subtotal.toFixed(2)}\n`;
+
+    message +=
+        `Caj Lalamove / Penghantaran: RM ${delivery.toFixed(2)}\n`;
+
+    message +=
+        `JUMLAH KESELURUHAN: RM ${total.toFixed(2)}`;
 
 
-    const url =
+    const whatsappURL =
         'https://wa.me/?text='+
-        encodeURIComponent(msg);
+        encodeURIComponent(
+            message
+        );
 
 
     window.open(
-        url,
+        whatsappURL,
         '_blank'
     );
 
 }
 
 
-/* =========================================
-   PROFILE
-========================================= */
+/* =========================================================
+   PROFILE IMAGE
+========================================================= */
 
 function triggerUploadModal(){
 
@@ -2184,7 +3390,11 @@ function previewProfileImage(event){
         event.target.files[0];
 
 
-    if(!file) return;
+    if(!file){
+
+        return;
+
+    }
 
 
     const reader =
@@ -2210,7 +3420,7 @@ function previewProfileImage(event){
 
 
             showToast(
-                'Gambar profil berjaya ditukar.'
+                'Gambar profil dikemaskini.'
             );
 
         };
@@ -2256,16 +3466,20 @@ function applyProfileImage(src){
 }
 
 
-/* =========================================
+/* =========================================================
    OPEN CALCULATOR
-========================================= */
+========================================================= */
 
-function bukaApps(url,tajuk){
+function bukaApps(
+    url,
+    tajuk
+){
 
     document.getElementById(
         'popupTitle'
     ).innerText =
-        'Memuatkan '+tajuk;
+        'Membuka '+
+        tajuk;
 
 
     document.getElementById(
@@ -2282,18 +3496,20 @@ function bukaApps(url,tajuk){
                 url;
 
         },
-        500
+        450
     );
 
 }
 
 
-/* =========================================
-   CLICK OUTSIDE MODALS
-========================================= */
+/* =========================================================
+   OUTSIDE CLICK
+========================================================= */
 
 document
-    .getElementById('cartModal')
+    .getElementById(
+        'cartModal'
+    )
     .addEventListener(
         'click',
         function(e){
@@ -2311,7 +3527,9 @@ document
 
 
 document
-    .getElementById('deliveryModal')
+    .getElementById(
+        'deliveryModal'
+    )
     .addEventListener(
         'click',
         function(e){
@@ -2328,15 +3546,17 @@ document
     );
 
 
-/* =========================================
-   ESC
-========================================= */
+/* =========================================================
+   ESC KEY
+========================================================= */
 
 document.addEventListener(
     'keydown',
     function(e){
 
-        if(e.key === 'Escape'){
+        if(
+            e.key === 'Escape'
+        ){
 
             document
                 .getElementById(
@@ -2356,6 +3576,24 @@ document.addEventListener(
                 );
 
         }
+
+    }
+);
+
+
+/* =========================================================
+   AUTO REFRESH WHEN RETURNING TO PORTAL
+========================================================= */
+
+window.addEventListener(
+    'pageshow',
+    function(){
+
+        renderHistory();
+
+        updateTopStats();
+
+        calculateCartTotal();
 
     }
 );
