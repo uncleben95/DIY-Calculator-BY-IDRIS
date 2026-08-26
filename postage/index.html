@@ -3,228 +3,1303 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Postage Calculator</title>
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --tng-yellow: #fdee23;
-            --tng-dark: #111111;
-            --bg-color: #f4f5f7;
-            --card-bg: #ffffff;
-            --text-main: #111111;
-            --text-sub: #666666;
-            --border-color: #e4e7eb;
-            --shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+            --yellow: #fdee23;
+            --yellow-dark: #d9ca00;
+            --black: #111111;
+            --bg: #f4f5f7;
+            --white: #ffffff;
+            --text: #111111;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --soft: #f8fafc;
+            --success-bg: #f0fdf4;
+            --success-border: #bbf7d0;
+            --shadow: 0 8px 30px rgba(0,0,0,.07);
         }
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 20px 16px 90px; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
-        .container { max-width: 600px; width: 100%; background: var(--card-bg); padding: 25px; border-radius: 20px; box-shadow: var(--shadow); border: 1px solid var(--border-color); }
-        h2 { text-align: center; color: var(--text-main); margin-top: 0; margin-bottom: 20px; font-size: 20px; font-weight: 800; }
-        .form-group { margin-bottom: 16px; }
-        label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 13px; }
-        select, input[type="number"], input[type="text"] { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 10px; font-size: 14px; box-sizing: border-box; outline: none; background: #fff; }
-        select:focus, input:focus { border-color: #d4b200; box-shadow: 0 0 0 3px rgba(253, 238, 35, 0.2); }
-        .calc-btn { background-color: var(--tng-yellow); color: var(--tng-dark); border: 1.5px solid #111; padding: 15px; width: 100%; font-size: 16px; font-weight: 800; border-radius: 12px; cursor: pointer; margin-top: 20px; box-shadow: 0 4px 12px rgba(253, 238, 35, 0.3); transition: 0.2s; }
-        .calc-btn:active { transform: scale(0.98); }
-        .result-box { margin-top: 25px; padding: 20px; background: #fffdf0; border-radius: 14px; border: 1.5px solid #f6e05e; display: none; }
-        .result-box h3 { margin-top: 0; color: #111; font-size: 16px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; }
-        .price-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
-        .price-table th, .price-table td { border: 1px solid var(--border-color); padding: 8px 10px; text-align: left; }
-        .price-table th { background-color: #f1f5f9; }
-        .add-cart-main-btn { background-color: var(--tng-yellow); color: var(--tng-dark); border: 1.5px solid #111; padding: 14px; width: 100%; font-size: 15px; font-weight: 800; border-radius: 12px; cursor: pointer; margin-top: 15px; box-shadow: 0 4px 12px rgba(253, 238, 35, 0.3); display: none; transition: 0.2s; }
-        .add-cart-main-btn:active { transform: scale(0.98); }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px 15px 100px;
+            min-height: 100vh;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 620px;
+            margin: 0 auto;
+        }
+
+        /* =========================
+           MAIN CARD
+        ========================= */
+
+        .container {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .header {
+            padding: 24px 22px 20px;
+            border-bottom: 1px solid var(--border);
+            background:
+                linear-gradient(
+                    135deg,
+                    #ffffff 0%,
+                    #fffef0 100%
+                );
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 14px;
+            background: var(--yellow);
+            border: 1.5px solid var(--black);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+            box-shadow: 0 4px 10px rgba(253,238,35,.35);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 20px;
+            line-height: 1.2;
+            font-weight: 800;
+            letter-spacing: -.3px;
+        }
+
+        .header p {
+            margin: 5px 0 0;
+            font-size: 12px;
+            line-height: 1.5;
+            color: var(--muted);
+        }
+
+        /* =========================
+           CONTENT
+        ========================= */
+
+        .content {
+            padding: 22px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 15px;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .section-number {
+            width: 24px;
+            height: 24px;
+            border-radius: 8px;
+            background: #111;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #374151;
+        }
+
+        .input-wrap {
+            position: relative;
+        }
+
+        input,
+        select {
+            width: 100%;
+            min-height: 46px;
+            padding: 12px 13px;
+            border: 1px solid #dfe3e8;
+            border-radius: 11px;
+            background: #fff;
+            color: #111;
+            font-family: inherit;
+            font-size: 13px;
+            outline: none;
+            transition: .2s ease;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #c5b600;
+            box-shadow: 0 0 0 3px rgba(253,238,35,.22);
+        }
+
+        input::placeholder {
+            color: #9ca3af;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        /* =========================
+           INFO BOX
+        ========================= */
+
+        .info-box {
+            display: flex;
+            gap: 10px;
+            padding: 12px 13px;
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-top: 3px;
+            margin-bottom: 18px;
+        }
+
+        .info-icon {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #111;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        .info-text {
+            font-size: 11px;
+            line-height: 1.55;
+            color: #64748b;
+        }
+
+        .info-text b {
+            color: #111;
+        }
+
+        /* =========================
+           CALCULATE BUTTON
+        ========================= */
+
+        .calc-btn {
+            width: 100%;
+            min-height: 50px;
+            margin-top: 4px;
+            border: 1.5px solid #111;
+            border-radius: 12px;
+            background: var(--yellow);
+            color: #111;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 5px 14px rgba(253,238,35,.3);
+            transition: .15s ease;
+        }
+
+        .calc-btn:hover {
+            background: #f5e61b;
+        }
+
+        .calc-btn:active {
+            transform: scale(.985);
+            box-shadow: none;
+        }
+
+        /* =========================
+           RESULT
+        ========================= */
+
+        .result-box {
+            display: none;
+            margin-top: 22px;
+            border: 1px solid #f1df45;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #fffef5;
+        }
+
+        .result-header {
+            padding: 15px 16px;
+            background: #fffbea;
+            border-bottom: 1px solid #f1df45;
+        }
+
+        .result-header-title {
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .result-header-sub {
+            margin-top: 3px;
+            color: #78716c;
+            font-size: 10px;
+        }
+
+        .result-body {
+            padding: 15px;
+        }
+
+        /* =========================
+           POSTAGE SUMMARY
+        ========================= */
+
+        .summary-card {
+            padding: 13px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 12px;
+        }
+
+        .summary-label {
+            color: #6b7280;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .3px;
+        }
+
+        .summary-value {
+            margin-top: 4px;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        /* =========================
+           PRICE TABLE
+        ========================= */
+
+        .price-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 11px;
+            border: 1px solid var(--border);
+            background: #fff;
+        }
+
+        .price-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+            min-width: 430px;
+        }
+
+        .price-table th {
+            padding: 10px;
+            text-align: left;
+            background: #f8fafc;
+            border-bottom: 1px solid var(--border);
+            color: #475569;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .price-table td {
+            padding: 11px 10px;
+            border-bottom: 1px solid #edf0f2;
+            vertical-align: middle;
+        }
+
+        .price-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .price-table .total-row td {
+            background: #fff;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .total-price {
+            color: #111;
+            font-size: 15px !important;
+        }
+
+        /* =========================
+           CART BUTTON
+        ========================= */
+
+        .add-cart-main-btn {
+            width: 100%;
+            min-height: 48px;
+            margin-top: 14px;
+            border: 1.5px solid #111;
+            border-radius: 11px;
+            background: var(--yellow);
+            color: #111;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(253,238,35,.25);
+            transition: .15s ease;
+        }
+
+        .add-cart-main-btn:active {
+            transform: scale(.985);
+        }
+
+        /* =========================
+           HIDDEN FIELD
+        ========================= */
+
+        #postcodeGroup {
+            display: none;
+        }
+
+        /* =========================
+           MENU BUTTON
+        ========================= */
+
+        .home-btn {
+            position: fixed;
+            bottom: 18px;
+            right: 18px;
+            z-index: 9999;
+
+            display: flex;
+            align-items: center;
+            gap: 7px;
+
+            min-height: 44px;
+            padding: 0 16px;
+
+            background: var(--yellow);
+            color: #111;
+            text-decoration: none;
+
+            border: 1.5px solid #111;
+            border-radius: 999px;
+
+            font-size: 12px;
+            font-weight: 800;
+
+            box-shadow: 0 6px 18px rgba(0,0,0,.12);
+        }
+
+        .home-btn span {
+            font-size: 16px;
+            line-height: 1;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 480px) {
+
+            body {
+                padding: 12px 10px 90px;
+            }
+
+            .container {
+                border-radius: 18px;
+            }
+
+            .header {
+                padding: 20px 17px 17px;
+            }
+
+            .header-icon {
+                width: 42px;
+                height: 42px;
+                border-radius: 12px;
+                font-size: 20px;
+            }
+
+            .header h1 {
+                font-size: 18px;
+            }
+
+            .content {
+                padding: 17px;
+            }
+
+            .two-column {
+                gap: 9px;
+            }
+
+            input,
+            select {
+                min-height: 45px;
+                font-size: 13px;
+            }
+
+            .home-btn {
+                bottom: 14px;
+                right: 12px;
+            }
+        }
     </style>
 </head>
+
 <body>
 
-<div class="container">
-    <h2>Postage Calculator</h2>
-    
-    <div class="form-group">
-        <label for="destRegion">Destinasi Penghantaran:</label>
-        <select id="destRegion" onchange="togglePostcodeField()">
-            <option value="semenanjung">Semenanjung Malaysia</option>
-            <option value="sabah_sarawak">Sabah & Sarawak</option>
-        </select>
+<div class="page">
+
+    <div class="container">
+
+        <!-- HEADER -->
+        <div class="header">
+
+            <div class="header-top">
+
+                <div class="header-icon">
+                    🚚
+                </div>
+
+                <div>
+                    <h1>Postage Calculator</h1>
+                    <p>Kira anggaran kos penghantaran berdasarkan destinasi & berat barang.</p>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="content">
+
+            <!-- SECTION 1 -->
+            <div class="section-title">
+                <div class="section-number">1</div>
+                Maklumat Penghantaran
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="destRegion">
+                    Destinasi Penghantaran
+                </label>
+
+                <select id="destRegion" onchange="togglePostcodeField()">
+
+                    <option value="semenanjung">
+                        Semenanjung Malaysia
+                    </option>
+
+                    <option value="sabah_sarawak">
+                        Sabah & Sarawak
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group" id="postcodeGroup">
+
+                <label for="postcodeVal">
+                    Poskod Penerima
+                </label>
+
+                <input
+                    type="text"
+                    id="postcodeVal"
+                    inputmode="numeric"
+                    maxlength="5"
+                    placeholder="Contoh: 93000"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="itemWeight">
+                    Berat Barang (kg)
+                </label>
+
+                <input
+                    type="number"
+                    id="itemWeight"
+                    placeholder="Contoh: 1.5"
+                    step="0.1"
+                    min="0.1"
+                    value="1.0"
+                >
+
+            </div>
+
+
+            <!-- INFO -->
+            <div class="info-box">
+
+                <div class="info-icon">
+                    i
+                </div>
+
+                <div class="info-text">
+                    <b>Nota:</b>
+                    Caj minimum postage ialah RM35.
+                    Harga yang dipaparkan telah mengambil kira
+                    <b>SST 10% + RM10</b>.
+                </div>
+
+            </div>
+
+
+            <!-- BUTTON -->
+            <button class="calc-btn" onclick="calculatePostage()">
+                Kira Kos Postage
+            </button>
+
+
+            <!-- RESULT -->
+            <div class="result-box" id="resultBox">
+
+                <div class="result-header">
+
+                    <div class="result-header-title">
+                        ✓ Pengiraan Berjaya
+                    </div>
+
+                    <div class="result-header-sub">
+                        Pecahan kos penghantaran
+                    </div>
+
+                </div>
+
+
+                <div class="result-body">
+
+                    <div class="summary-card">
+
+                        <div class="summary-label">
+                            Destinasi / Berat
+                        </div>
+
+                        <div
+                            class="summary-value"
+                            id="summaryInfo"
+                        >
+                            -
+                        </div>
+
+                    </div>
+
+
+                    <div class="price-table-wrapper">
+
+                        <table class="price-table">
+
+                            <thead>
+
+                                <tr>
+                                    <th>Perkara</th>
+                                    <th>Butiran</th>
+                                    <th>Jumlah</th>
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="resultContent">
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+
+                    <button
+                        class="add-cart-main-btn"
+                        id="addCartBtn"
+                        onclick="addPostageToCart()"
+                    >
+                        + Masukkan ke Troli
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
 
-    <div class="form-group" id="postcodeGroup" style="display: none;">
-        <label for="postcodeVal">Masukkan Poskod Penerima:</label>
-        <input type="text" id="postcodeVal" placeholder="Cth: 93000 (Kuching) atau 88000 (KK)">
-    </div>
-
-    <div class="form-group">
-        <label for="itemWeight">Berat Barang (kg):</label>
-        <input type="number" id="itemWeight" placeholder="Cth: 1.5" step="0.1" min="0.1" value="1.0">
-    </div>
-
-    <button class="calc-btn" onclick="calculatePostage()">Kira Kos Postage</button>
-
-    <div class="result-box" id="resultBox">
-        <h3>Pecahan Kos Postage</h3>
-        <div id="resultContent"></div>
-        <button class="add-cart-main-btn" id="addCartBtn" onclick="addPostageToCart()">+ Masukkan ke Troli (Cart)</button>
-    </div>
 </div>
 
+
+<!-- MENU UTAMA -->
+<a
+    href="../index.html"
+    class="home-btn"
+>
+    <span>←</span>
+    Menu Utama
+</a>
+
+
 <script>
+
+    /* =====================================================
+       POSTCODE FIELD
+    ===================================================== */
+
     function togglePostcodeField() {
-        let region = document.getElementById('destRegion').value;
-        document.getElementById('postcodeGroup').style.display = (region === 'sabah_sarawak') ? 'block' : 'none';
+
+        const region =
+            document.getElementById('destRegion').value;
+
+        const postcodeGroup =
+            document.getElementById('postcodeGroup');
+
+        postcodeGroup.style.display =
+            region === 'sabah_sarawak'
+                ? 'block'
+                : 'none';
+
     }
+
+
+    /* =====================================================
+       LAST CALCULATED RECORD
+    ===================================================== */
 
     let lastCalculatedRecord = null;
 
-    // Senarai poskod khusus Sabah & Sarawak
+
+    /* =====================================================
+       SABAH POSTCODE
+    ===================================================== */
+
     const sabahPostcodes = [
-        { name: "Labuan", ranges: [[87008, 87033]] },
-        { name: "Kota Kinabalu", ranges: [[88700, 88875]] },
-        { name: "Sabah", ranges: [[89100, 89100], [89260, 89260], [89320, 89320], [89407, 89407], [89707, 89709]] },
-        { name: "Sandakan", ranges: [[90307, 90400], [90700, 90741]] },
-        { name: "Tawau", ranges: [[91007, 91035]] },
-        { name: "Lahad Datu", ranges: [[91105, 91109]] } // 91109-91105
+
+        {
+            name: "Labuan",
+            ranges: [
+                [87008, 87033]
+            ]
+        },
+
+        {
+            name: "Kota Kinabalu",
+            ranges: [
+                [88700, 88875]
+            ]
+        },
+
+        {
+            name: "Sabah",
+            ranges: [
+                [89100, 89100],
+                [89260, 89260],
+                [89320, 89320],
+                [89407, 89407],
+                [89707, 89709]
+            ]
+        },
+
+        {
+            name: "Sandakan",
+            ranges: [
+                [90307, 90400],
+                [90700, 90741]
+            ]
+        },
+
+        {
+            name: "Tawau",
+            ranges: [
+                [91007, 91035]
+            ]
+        },
+
+        {
+            name: "Lahad Datu",
+            ranges: [
+                [91105, 91109]
+            ]
+        }
+
     ];
+
+
+    /* =====================================================
+       SARAWAK POSTCODE
+    ===================================================== */
 
     const sarawakPostcodes = [
-        { name: "Kuching", ranges: [[93700, 93916]] },
-        { name: "Sarawak", ranges: [[92527, 92527], [94007, 94100], [94507, 94507], [94650, 94650], [94807, 94950], [95300, 95300], [95407, 95600], [95707, 95707], [96007, 96009], [96107, 96350], [96500, 96707], [96807, 96807], [96900, 96950], [97007, 97200], [98007, 98058], [98107, 98300], [98707, 98857]] }
+
+        {
+            name: "Kuching",
+            ranges: [
+                [93700, 93916]
+            ]
+        },
+
+        {
+            name: "Sarawak",
+            ranges: [
+                [92527, 92527],
+                [94007, 94100],
+                [94507, 94507],
+                [94650, 94650],
+                [94807, 94950],
+                [95300, 95300],
+                [95407, 95600],
+                [95707, 95707],
+                [96007, 96009],
+                [96107, 96350],
+                [96500, 96707],
+                [96807, 96807],
+                [96900, 96950],
+                [97007, 97200],
+                [98007, 98058],
+                [98107, 98300],
+                [98707, 98857]
+            ]
+        }
+
     ];
 
+
+    /* =====================================================
+       CHECK POSTCODE AREA
+    ===================================================== */
+
     function checkPostcodeArea(pc, list) {
-        let code = parseInt(pc);
-        if (isNaN(code)) return "Others";
-        
-        for (let area of list) {
-            for (let r of area.ranges) {
-                if (code >= r[0] && code <= r[1]) {
-                    return area.name;
-                }
-            }
+
+        const code = parseInt(pc);
+
+        if (isNaN(code)) {
+            return "Others";
         }
+
+        for (const area of list) {
+
+            for (const range of area.ranges) {
+
+                if (
+                    code >= range[0] &&
+                    code <= range[1]
+                ) {
+
+                    return area.name;
+
+                }
+
+            }
+
+        }
+
         return "Others";
+
     }
+
+
+    /* =====================================================
+       CALCULATE POSTAGE
+    ===================================================== */
 
     function calculatePostage() {
-        let region = document.getElementById('destRegion').value;
-        let weight = parseFloat(document.getElementById('itemWeight').value) || 0;
-        let postcode = document.getElementById('postcodeVal').value.trim();
+
+        const region =
+            document.getElementById('destRegion').value;
+
+        const weight =
+            parseFloat(
+                document.getElementById('itemWeight').value
+            ) || 0;
+
+        const postcode =
+            document
+                .getElementById('postcodeVal')
+                .value
+                .trim();
+
+
+        /* VALIDATE WEIGHT */
 
         if (weight <= 0) {
-            alert('Sila masukkan berat barang yang sah.');
+
+            alert(
+                'Sila masukkan berat barang yang sah.'
+            );
+
             return;
+
         }
 
-        let baseTotal = 0;
+
+        let finalCost = 0;
         let descInfo = "";
 
+
+        /* =================================================
+           SEMENANJUNG
+        ================================================= */
+
         if (region === 'semenanjung') {
-            // Kadar Semenanjung (1kg pertama RM8, seterusnya RM2.5)
-            baseTotal = (weight <= 1) ? 8.00 : (8.00 + ((Math.ceil(weight) - 1) * 2.50));
-            // Tambah SST 10% + RM10
-            let finalCost = (baseTotal * 1.10) + 10.00;
-            if (finalCost < 35.00) finalCost = 35.00;
 
-            descInfo = `Semenanjung (${weight}kg)`;
-            renderResult(descInfo, finalCost);
-        } else {
-            if (!postcode) {
-                alert('Sila masukkan poskod untuk kawasan Sabah / Sarawak.');
-                return;
+            /*
+                1kg pertama = RM8
+                Setiap kg seterusnya = RM2.50
+            */
+
+            const baseTotal =
+                weight <= 1
+                    ? 8.00
+                    : (
+                        8.00 +
+                        (
+                            (Math.ceil(weight) - 1)
+                            * 2.50
+                        )
+                    );
+
+
+            /*
+                SST 10% + RM10
+            */
+
+            finalCost =
+                (baseTotal * 1.10) + 10.00;
+
+
+            /*
+                Minimum RM35
+            */
+
+            if (finalCost < 35.00) {
+                finalCost = 35.00;
             }
 
-            let pcNum = parseInt(postcode);
-            let ratePerKg = 8.9; // Default Others
-            let locationName = "Others";
 
-            // Tentukan sama ada Sabah atau Sarawak berdasarkan poskod (Poskod Sabah bermula 87-91, Sarawak 93-98)
-            if (pcNum >= 87000 && pcNum <= 91299) {
-                // Sabah / Labuan
-                let matchedArea = checkPostcodeArea(postcode, sabahPostcodes);
-                if (matchedArea === "Kota Kinabalu") ratePerKg = 7.15;
-                else if (matchedArea === "Sandakan" || matchedArea === "Labuan" || matchedArea === "Tawau" || matchedArea === "Lahad Datu") ratePerKg = 8.00;
-                else ratePerKg = 8.90;
-                locationName = `Sabah (${matchedArea})`;
-            } else if (pcNum >= 92000 && pcNum <= 98899) {
-                // Sarawak
-                let matchedArea = checkPostcodeArea(postcode, sarawakPostcodes);
-                if (matchedArea === "Kuching") ratePerKg = 6.90;
-                else if (matchedArea === "Sibu") ratePerKg = 7.20;
-                else if (matchedArea === "Bintulu") ratePerKg = 7.30;
-                else if (matchedArea === "Miri") ratePerKg = 7.80;
-                else ratePerKg = 8.90;
-                locationName = `Sarawak (${matchedArea})`;
-            } else {
-                ratePerKg = 8.90;
-                locationName = `Sabah/Sarawak (Others)`;
-            }
+            descInfo =
+                `Semenanjung Malaysia • ${weight}kg`;
 
-            // Kos Asas = Berat * Kadar RM/kg
-            let rawCost = weight * ratePerKg;
-            // Formula: Kos Asas + 10% SST + RM10
-            let calculatedCost = (rawCost * 1.10) + 10.00;
 
-            // Caj minimum RM35
-            let finalCost = calculatedCost < 35.00 ? 35.00 : calculatedCost;
+            renderResult(
+                descInfo,
+                finalCost
+            );
 
-            descInfo = `${locationName} - ${weight}kg (Kadar: RM${ratePerKg}/kg)`;
-            renderResult(descInfo, finalCost);
-        }
-    }
-
-    function renderResult(infoText, totalCost) {
-        let tableHtml = `
-            <table class="price-table">
-                <tr>
-                    <th>Perkara</th>
-                    <th>Butiran</th>
-                    <th>Jumlah (RM)</th>
-                </tr>
-                <tr>
-                    <td>Kos Postage (SST 10% + RM10 Termasuk)</td>
-                    <td>${infoText}</td>
-                    <td>RM ${totalCost.toFixed(2)}</td>
-                </tr>
-                <tr style="font-weight: bold; background: #fff;">
-                    <td colspan="2" style="text-align: right;">TOTAL POSTAGE:</td>
-                    <td style="color: #111;">RM ${totalCost.toFixed(2)}</td>
-                </tr>
-            </table>
-        `;
-
-        document.getElementById('resultContent').innerHTML = tableHtml;
-        document.getElementById('resultBox').style.display = 'block';
-        document.getElementById('addCartBtn').style.display = 'block';
-
-        lastCalculatedRecord = {
-            tajuk: `Postage`,
-            info: infoText,
-            harga: "RM " + totalCost.toFixed(2)
-        };
-    }
-
-    function addPostageToCart() {
-        if (!lastCalculatedRecord) {
-            alert("Sila buat pengiraan terlebih dahulu!");
             return;
         }
 
-        let cartData = JSON.parse(localStorage.getItem('diy_cart')) || [];
-        cartData.push(lastCalculatedRecord);
-        localStorage.setItem('diy_cart', JSON.stringify(cartData));
 
-        let historyList = JSON.parse(localStorage.getItem('diy_calc_history')) || [];
-        historyList.push(lastCalculatedRecord);
-        localStorage.setItem('diy_calc_history', JSON.stringify(historyList));
+        /* =================================================
+           SABAH / SARAWAK
+        ================================================= */
 
-        alert("Berjaya masukkan kos postage ke dalam Troli!");
+        if (!postcode) {
+
+            alert(
+                'Sila masukkan poskod untuk kawasan Sabah / Sarawak.'
+            );
+
+            return;
+
+        }
+
+
+        const pcNum = parseInt(postcode);
+
+
+        if (
+            isNaN(pcNum) ||
+            postcode.length < 5
+        ) {
+
+            alert(
+                'Sila masukkan poskod 5 digit yang sah.'
+            );
+
+            return;
+
+        }
+
+
+        let ratePerKg = 8.90;
+        let locationName = "Others";
+
+
+        /* =================================================
+           SABAH
+        ================================================= */
+
+        if (
+            pcNum >= 87000 &&
+            pcNum <= 91299
+        ) {
+
+            const matchedArea =
+                checkPostcodeArea(
+                    postcode,
+                    sabahPostcodes
+                );
+
+
+            if (
+                matchedArea === "Kota Kinabalu"
+            ) {
+
+                ratePerKg = 7.15;
+
+            }
+
+            else if (
+                matchedArea === "Sandakan" ||
+                matchedArea === "Labuan" ||
+                matchedArea === "Tawau" ||
+                matchedArea === "Lahad Datu"
+            ) {
+
+                ratePerKg = 8.00;
+
+            }
+
+            else {
+
+                ratePerKg = 8.90;
+
+            }
+
+
+            locationName =
+                `Sabah (${matchedArea})`;
+
+        }
+
+
+        /* =================================================
+           SARAWAK
+        ================================================= */
+
+        else if (
+            pcNum >= 92000 &&
+            pcNum <= 98899
+        ) {
+
+            const matchedArea =
+                checkPostcodeArea(
+                    postcode,
+                    sarawakPostcodes
+                );
+
+
+            if (matchedArea === "Kuching") {
+
+                ratePerKg = 6.90;
+
+            }
+
+            else if (matchedArea === "Sibu") {
+
+                ratePerKg = 7.20;
+
+            }
+
+            else if (matchedArea === "Bintulu") {
+
+                ratePerKg = 7.30;
+
+            }
+
+            else if (matchedArea === "Miri") {
+
+                ratePerKg = 7.80;
+
+            }
+
+            else {
+
+                ratePerKg = 8.90;
+
+            }
+
+
+            locationName =
+                `Sarawak (${matchedArea})`;
+
+        }
+
+
+        /* =================================================
+           OTHERS
+        ================================================= */
+
+        else {
+
+            ratePerKg = 8.90;
+
+            locationName =
+                "Sabah / Sarawak (Others)";
+
+        }
+
+
+        /* =================================================
+           FINAL CALCULATION
+        ================================================= */
+
+        const rawCost =
+            weight * ratePerKg;
+
+
+        const calculatedCost =
+            (rawCost * 1.10) + 10.00;
+
+
+        finalCost =
+            calculatedCost < 35.00
+                ? 35.00
+                : calculatedCost;
+
+
+        descInfo =
+            `${locationName} • ${weight}kg • RM${ratePerKg}/kg`;
+
+
+        renderResult(
+            descInfo,
+            finalCost
+        );
+
     }
+
+
+    /* =====================================================
+       RENDER RESULT
+    ===================================================== */
+
+    function renderResult(
+        infoText,
+        totalCost
+    ) {
+
+        const tableHtml = `
+
+            <tr>
+
+                <td>
+                    Kos Postage
+                </td>
+
+                <td>
+                    ${infoText}<br>
+                    <span style="
+                        color:#64748b;
+                        font-size:10px;
+                    ">
+                        SST 10% + RM10 termasuk
+                    </span>
+                </td>
+
+                <td>
+                    RM ${totalCost.toFixed(2)}
+                </td>
+
+            </tr>
+
+
+            <tr class="total-row">
+
+                <td
+                    colspan="2"
+                    style="text-align:right;"
+                >
+                    TOTAL POSTAGE
+                </td>
+
+                <td class="total-price">
+                    RM ${totalCost.toFixed(2)}
+                </td>
+
+            </tr>
+
+        `;
+
+
+        document.getElementById(
+            'resultContent'
+        ).innerHTML = tableHtml;
+
+
+        document.getElementById(
+            'summaryInfo'
+        ).innerText = infoText;
+
+
+        document.getElementById(
+            'resultBox'
+        ).style.display = 'block';
+
+
+        document.getElementById(
+            'addCartBtn'
+        ).style.display = 'block';
+
+
+        /* SAVE RECORD */
+
+        lastCalculatedRecord = {
+
+            tajuk: `Postage`,
+
+            info: infoText,
+
+            harga:
+                "RM " +
+                totalCost.toFixed(2)
+
+        };
+
+    }
+
+
+    /* =====================================================
+       ADD TO CART
+    ===================================================== */
+
+    function addPostageToCart() {
+
+        if (!lastCalculatedRecord) {
+
+            alert(
+                "Sila buat pengiraan terlebih dahulu!"
+            );
+
+            return;
+
+        }
+
+
+        /* CART */
+
+        let cartData =
+            JSON.parse(
+                localStorage.getItem('diy_cart')
+            ) || [];
+
+
+        cartData.push(
+            lastCalculatedRecord
+        );
+
+
+        localStorage.setItem(
+            'diy_cart',
+            JSON.stringify(cartData)
+        );
+
+
+        /* HISTORY */
+
+        let historyList =
+            JSON.parse(
+                localStorage.getItem(
+                    'diy_calc_history'
+                )
+            ) || [];
+
+
+        historyList.push(
+            lastCalculatedRecord
+        );
+
+
+        localStorage.setItem(
+            'diy_calc_history',
+            JSON.stringify(historyList)
+        );
+
+
+        alert(
+            "✓ Berjaya masukkan kos postage ke dalam Troli!"
+        );
+
+    }
+
+
+    /* =====================================================
+       PREVENT NON-NUMERIC POSTCODE
+    ===================================================== */
+
+    document
+        .getElementById('postcodeVal')
+        .addEventListener(
+            'input',
+            function () {
+
+                this.value =
+                    this.value
+                        .replace(/\D/g, '')
+                        .slice(0, 5);
+
+            }
+        );
+
+
+    /* =====================================================
+       BACK BUTTON
+    ===================================================== */
+
+    history.pushState(
+        null,
+        null,
+        location.href
+    );
+
+
+    window.addEventListener(
+        'popstate',
+        function () {
+
+            window.location.href =
+                '../index.html';
+
+        }
+    );
+
 </script>
 
-<a href="../index.html" style="position: fixed; bottom: 20px; right: 20px; background: #fdee23; color: #111; padding: 12px 18px; border-radius: 30px; text-decoration: none; font-family: 'Inter', sans-serif; font-weight: 800; font-size: 14px; box-shadow: 0 4px 15px rgba(253,238,35,0.4); display: flex; align-items: center; gap: 6px; z-index: 9999; border: 1px solid #111;">
-    <span>←</span> Menu Utama
-</a>
-<script>
-    history.pushState(null, null, location.href);
-    window.addEventListener('popstate', function () { window.location.href = '../index.html'; });
-</script>
 </body>
 </html>
