@@ -16,6 +16,10 @@
 
 <style>
 
+/* =========================================================
+   CORE
+========================================================= */
+
 :root{
     --primary:#151B26;
     --primary-2:#202938;
@@ -69,6 +73,204 @@ button{
 
 
 /* =========================================================
+   WELCOME / ENTRANCE SCREEN
+========================================================= */
+
+#welcomeScreen{
+    position:fixed;
+    inset:0;
+
+    z-index:99999;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:
+        radial-gradient(
+            circle at 50% 42%,
+            #283344 0%,
+            #151B26 45%,
+            #0D121A 100%
+        );
+
+    color:#fff;
+
+    opacity:1;
+
+    transition:
+        opacity .65s ease,
+        visibility .65s ease;
+}
+
+#welcomeScreen.hide{
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+}
+
+.welcome-content{
+    width:100%;
+    max-width:480px;
+
+    padding:30px;
+
+    text-align:center;
+
+    animation:
+        welcomeContentIn .8s cubic-bezier(.2,.8,.2,1);
+}
+
+.welcome-logo{
+    position:relative;
+
+    width:92px;
+    height:92px;
+
+    margin:0 auto 24px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:24px;
+
+    background:#fff;
+
+    overflow:hidden;
+
+    box-shadow:
+        0 20px 55px rgba(0,0,0,.30);
+}
+
+.welcome-logo img{
+    width:74%;
+    height:74%;
+
+    object-fit:contain;
+
+    display:block;
+}
+
+.welcome-logo-fallback{
+    display:none;
+
+    width:100%;
+    height:100%;
+
+    align-items:center;
+    justify-content:center;
+
+    background:var(--accent);
+    color:var(--primary);
+
+    font-size:38px;
+    font-weight:800;
+}
+
+.welcome-title{
+    margin:0;
+
+    color:#fff;
+
+    font-size:25px;
+    line-height:1;
+
+    letter-spacing:4px;
+
+    font-weight:800;
+}
+
+.welcome-subtitle{
+    margin-top:8px;
+
+    color:var(--accent);
+
+    font-size:10px;
+    letter-spacing:3px;
+
+    font-weight:700;
+}
+
+.welcome-line{
+    width:38px;
+    height:2px;
+
+    margin:19px auto 13px;
+
+    border-radius:10px;
+
+    background:var(--accent);
+}
+
+.welcome-caption{
+    color:#AEB5BE;
+
+    font-size:8px;
+    letter-spacing:.2px;
+}
+
+.welcome-loader{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    gap:5px;
+
+    margin-top:25px;
+}
+
+.welcome-loader span{
+    width:5px;
+    height:5px;
+
+    border-radius:50%;
+
+    background:var(--accent);
+
+    animation:
+        welcomeDot 1s ease-in-out infinite;
+}
+
+.welcome-loader span:nth-child(2){
+    animation-delay:.15s;
+}
+
+.welcome-loader span:nth-child(3){
+    animation-delay:.3s;
+}
+
+@keyframes welcomeContentIn{
+
+    from{
+        opacity:0;
+        transform:translateY(18px) scale(.96);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+    }
+
+}
+
+@keyframes welcomeDot{
+
+    0%,
+    100%{
+        opacity:.25;
+        transform:translateY(0);
+    }
+
+    50%{
+        opacity:1;
+        transform:translateY(-3px);
+    }
+
+}
+
+
+/* =========================================================
    APP CONTAINER
 ========================================================= */
 
@@ -81,7 +283,7 @@ button{
 
 
 /* =========================================================
-   TOP NAV — CLEAN PROFESSIONAL
+   TOP NAV
 ========================================================= */
 
 .topbar{
@@ -89,8 +291,7 @@ button{
     align-items:center;
     justify-content:space-between;
     gap:12px;
-
-    margin-bottom:22px;
+    margin-bottom:18px;
 }
 
 .profile{
@@ -98,7 +299,6 @@ button{
     align-items:center;
     gap:11px;
     min-width:0;
-
     cursor:pointer;
 }
 
@@ -109,48 +309,26 @@ button{
 
     border-radius:13px;
 
-    background:var(--primary);
-    color:var(--accent);
+    background:var(--accent);
+    color:var(--primary);
 
-    border:1px solid rgba(21,27,38,.12);
+    border:1px solid rgba(0,0,0,.12);
 
     display:flex;
     align-items:center;
     justify-content:center;
 
+    font-size:17px;
+    font-weight:800;
+
     overflow:hidden;
-
-    box-shadow:
-        0 4px 12px rgba(21,27,38,.12);
-
-    transition:.18s ease;
-}
-
-.profile:hover .avatar{
-    transform:translateY(-1px);
-    box-shadow:
-        0 7px 18px rgba(21,27,38,.16);
-}
-
-
-/* CUSTOM ID LOGO */
-
-.id-logo{
-    width:100%;
-    height:100%;
-
-    display:block;
 }
 
 .avatar img{
     width:100%;
     height:100%;
-
     object-fit:cover;
 }
-
-
-/* PROFILE TEXT */
 
 .profile-info{
     min-width:0;
@@ -162,8 +340,6 @@ button{
     font-size:14px;
     font-weight:800;
 
-    letter-spacing:-.2px;
-
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
@@ -174,10 +350,8 @@ button{
 
     color:var(--muted);
 
-    font-size:8px;
-    font-weight:600;
-
-    letter-spacing:.15px;
+    font-size:9px;
+    font-weight:500;
 }
 
 
@@ -551,7 +725,7 @@ button{
 
 
 /* =========================================================
-   RECORDS
+   RECORDS / HISTORY
 ========================================================= */
 
 .records-header{
@@ -797,7 +971,7 @@ button{
 
 
 /* =========================================================
-   MODALS
+   CART MODAL
 ========================================================= */
 
 .modal{
@@ -860,7 +1034,9 @@ button{
 }
 
 
-/* MODAL HEADER */
+/* =========================================================
+   MODAL HEADER
+========================================================= */
 
 .modal-header{
     display:flex;
@@ -923,10 +1099,13 @@ button{
 }
 
 
-/* CART */
+/* =========================================================
+   CART ITEMS
+========================================================= */
 
 .cart-items{
     max-height:250px;
+
     overflow-y:auto;
 }
 
@@ -989,7 +1168,9 @@ button{
 }
 
 
-/* DELIVERY */
+/* =========================================================
+   DELIVERY INFO
+========================================================= */
 
 .delivery-card{
     margin-top:14px;
@@ -1062,7 +1243,9 @@ button{
 }
 
 
-/* SUMMARY */
+/* =========================================================
+   SUMMARY
+========================================================= */
 
 .summary{
     margin-top:13px;
@@ -1109,7 +1292,9 @@ button{
 }
 
 
-/* CHECKOUT */
+/* =========================================================
+   CHECKOUT
+========================================================= */
 
 .checkout-btn{
     width:100%;
@@ -1136,7 +1321,9 @@ button{
 }
 
 
-/* LALAMOVE */
+/* =========================================================
+   LALAMOVE MODAL
+========================================================= */
 
 .delivery-sheet{
     padding-bottom:28px;
@@ -1365,6 +1552,7 @@ button{
     text-align:center;
 
     opacity:0;
+
     pointer-events:none;
 
     transform:translate(-50%,15px);
@@ -1406,6 +1594,15 @@ button{
         font-size:22px;
     }
 
+    .welcome-logo{
+        width:82px;
+        height:82px;
+    }
+
+    .welcome-title{
+        font-size:22px;
+    }
+
 }
 
 </style>
@@ -1413,6 +1610,67 @@ button{
 
 
 <body>
+
+
+<!-- ======================================================
+     WELCOME ENTRANCE
+====================================================== -->
+
+<div id="welcomeScreen">
+
+    <div class="welcome-content">
+
+        <div class="welcome-logo">
+
+            <img
+                src="ikon.png"
+                alt="Idris Business Portal"
+                onerror="
+                    this.style.display='none';
+                    document.getElementById('welcomeFallback').style.display='flex';
+                "
+            >
+
+            <div
+                class="welcome-logo-fallback"
+                id="welcomeFallback"
+            >
+                I
+            </div>
+
+        </div>
+
+
+        <div class="welcome-title">
+            IDRIS
+        </div>
+
+
+        <div class="welcome-subtitle">
+            BUSINESS PORTAL
+        </div>
+
+
+        <div class="welcome-line"></div>
+
+
+        <div class="welcome-caption">
+            Business Tools & Calculator System
+        </div>
+
+
+        <div class="welcome-loader">
+
+            <span></span>
+            <span></span>
+            <span></span>
+
+        </div>
+
+    </div>
+
+</div>
+
 
 <div class="app">
 
@@ -1432,56 +1690,8 @@ button{
             class="avatar"
             id="headerAvatar"
         >
-
-            <!-- IDRIS DIY LOGO -->
-
-            <svg
-                class="id-logo"
-                viewBox="0 0 100 100"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-label="Idris DIY Logo"
-            >
-
-                <rect
-                    width="100"
-                    height="100"
-                    rx="22"
-                    fill="#151B26"
-                />
-
-                <!-- I -->
-
-                <rect
-                    x="20"
-                    y="25"
-                    width="12"
-                    height="50"
-                    rx="3"
-                    fill="#F5D900"
-                />
-
-                <!-- D -->
-
-                <path
-                    d="M42 25H58C70 25 78 34 78 50C78 66 70 75 58 75H42V25ZM53 35V65H58C64 65 67 60 67 50C67 40 64 35 58 35H53Z"
-                    fill="#F5D900"
-                />
-
-                <!-- SMALL ACCENT -->
-
-                <rect
-                    x="20"
-                    y="80"
-                    width="58"
-                    height="4"
-                    rx="2"
-                    fill="#F5D900"
-                />
-
-            </svg>
-
+            I
         </div>
-
 
         <div class="profile-info">
 
@@ -1490,7 +1700,7 @@ button{
             </h2>
 
             <p class="profile-role">
-                BUSINESS CALCULATOR PORTAL
+                Business Calculator Portal
             </p>
 
         </div>
@@ -1505,7 +1715,9 @@ button{
             onclick="openLalamoveModal()"
         >
             🛵
-            <span>Lalamove</span>
+            <span>
+                Lalamove
+            </span>
         </button>
 
 
@@ -1514,7 +1726,9 @@ button{
             onclick="toggleCartModal()"
         >
             🛒
-            <span>Pesanan</span>
+            <span>
+                Pesanan
+            </span>
 
             <span
                 class="cart-badge"
@@ -1957,6 +2171,7 @@ button{
 
     <div class="drag-handle"></div>
 
+
     <div class="modal-header">
 
         <div class="modal-heading">
@@ -2207,6 +2422,8 @@ button{
 </div>
 
 
+<!-- TOAST -->
+
 <div
     class="toast"
     id="toast"
@@ -2214,6 +2431,51 @@ button{
 
 
 <script>
+
+/* =========================================================
+   WELCOME ENTRANCE
+========================================================= */
+
+window.addEventListener(
+    'load',
+    function(){
+
+        setTimeout(
+            function(){
+
+                const welcome =
+                    document.getElementById(
+                        'welcomeScreen'
+                    );
+
+                if(welcome){
+
+                    welcome.classList.add(
+                        'hide'
+                    );
+
+                    setTimeout(
+                        function(){
+
+                            if(welcome){
+
+                                welcome.remove();
+
+                            }
+
+                        },
+                        700
+                    );
+
+                }
+
+            },
+            1500
+        );
+
+    }
+);
+
 
 /* =========================================================
    INITIALIZE
@@ -2325,12 +2587,14 @@ function normalizeHistoryItem(item,index){
         return null;
     }
 
+
     const title =
         item.tajuk ||
         item.title ||
         item.name ||
         item.calculator ||
         'Pengiraan';
+
 
     const info =
         item.info ||
@@ -2339,12 +2603,14 @@ function normalizeHistoryItem(item,index){
         item.description ||
         'Rekod pengiraan';
 
+
     const price =
         item.harga ??
         item.price ??
         item.total ??
         item.amount ??
         'RM 0.00';
+
 
     let date =
         item.tarikh ||
@@ -2354,7 +2620,10 @@ function normalizeHistoryItem(item,index){
         item.timestamp ||
         '';
 
-    if(typeof date === 'number'){
+
+    if(
+        typeof date === 'number'
+    ){
 
         try{
 
@@ -2365,6 +2634,7 @@ function normalizeHistoryItem(item,index){
         }catch(e){}
 
     }
+
 
     return {
 
@@ -2392,17 +2662,28 @@ function normalizeHistoryItem(item,index){
 function formatRecordDate(date){
 
     if(!date){
+
         return 'Tarikh tidak direkod';
+
     }
+
 
     try{
 
         const d =
             new Date(date);
 
-        if(isNaN(d.getTime())){
+
+        if(
+            isNaN(
+                d.getTime()
+            )
+        ){
+
             return String(date);
+
         }
+
 
         return d.toLocaleDateString(
             'ms-MY',
@@ -2438,12 +2719,18 @@ function formatRecordDate(date){
 
 function extractPrice(value){
 
-    if(typeof value === 'number'){
+    if(
+        typeof value === 'number'
+    ){
+
         return value;
+
     }
+
 
     let text =
         String(value || '');
+
 
     text =
         text.replace(
@@ -2451,14 +2738,19 @@ function extractPrice(value){
             ''
         );
 
+
     const matches =
         text.match(
             /-?\d+(?:\.\d+)?/
         );
 
+
     if(!matches){
+
         return 0;
+
     }
+
 
     return (
         parseFloat(
@@ -2480,23 +2772,31 @@ function renderHistory(){
             'historyListBox'
         );
 
+
     const rawHistory =
         getHistory();
 
+
     const history =
         rawHistory
-            .map(normalizeHistoryItem)
+            .map(
+                normalizeHistoryItem
+            )
             .filter(Boolean);
+
 
     document.getElementById(
         'recordCount'
     ).innerText =
         history.length;
 
+
     document.getElementById(
         'recordsBadge'
     ).innerText =
-        history.length + ' Rekod';
+        history.length +
+        ' Rekod';
+
 
     if(history.length === 0){
 
@@ -2526,7 +2826,9 @@ function renderHistory(){
 
     }
 
+
     let html='';
+
 
     history
         .slice()
@@ -2538,6 +2840,7 @@ function renderHistory(){
                     extractPrice(
                         item.harga
                     );
+
 
                 html += `
 
@@ -2557,6 +2860,7 @@ function renderHistory(){
 
                             </div>
 
+
                             <div class="record-date">
                                 ${escapeHTML(
                                     formatRecordDate(
@@ -2567,11 +2871,15 @@ function renderHistory(){
 
                         </div>
 
+
                         <div class="record-bottom">
 
                             <div class="record-price">
+
                                 RM ${price.toFixed(2)}
+
                             </div>
+
 
                             <div class="record-actions">
 
@@ -2600,6 +2908,7 @@ function renderHistory(){
             }
         );
 
+
     box.innerHTML =
         html;
 
@@ -2613,17 +2922,32 @@ function renderHistory(){
 function escapeHTML(value){
 
     return String(value ?? '')
-        .replace(/&/g,'&amp;')
-        .replace(/</g,'&lt;')
-        .replace(/>/g,'&gt;')
-        .replace(/"/g,'&quot;')
-        .replace(/'/g,'&#039;');
+        .replace(
+            /&/g,
+            '&amp;'
+        )
+        .replace(
+            /</g,
+            '&lt;'
+        )
+        .replace(
+            />/g,
+            '&gt;'
+        )
+        .replace(
+            /"/g,
+            '&quot;'
+        )
+        .replace(
+            /'/g,
+            '&#039;'
+        );
 
 }
 
 
 /* =========================================================
-   DELETE RECORD
+   DELETE ONE RECORD
 ========================================================= */
 
 function deleteRecord(index){
@@ -2631,22 +2955,28 @@ function deleteRecord(index){
     let history =
         getHistory();
 
+
     if(
         index < 0 ||
         index >= history.length
     ){
+
         return;
+
     }
+
 
     history.splice(
         index,
         1
     );
 
+
     localStorage.setItem(
         'diy_calc_history',
         JSON.stringify(history)
     );
+
 
     renderHistory();
 
@@ -2660,13 +2990,14 @@ function deleteRecord(index){
 
 
 /* =========================================================
-   CLEAR ALL
+   CLEAR ALL RECORDS
 ========================================================= */
 
 function clearAllRecords(){
 
     const history =
         getHistory();
+
 
     if(history.length === 0){
 
@@ -2678,21 +3009,27 @@ function clearAllRecords(){
 
     }
 
+
     if(
         !confirm(
             'Padam semua rekod pengiraan?'
         )
     ){
+
         return;
+
     }
+
 
     localStorage.removeItem(
         'diy_calc_history'
     );
 
+
     renderHistory();
 
     updateTopStats();
+
 
     showToast(
         'Semua rekod telah dipadam.'
@@ -2710,8 +3047,10 @@ function addRecordToCart(index){
     const history =
         getHistory();
 
+
     const item =
         history[index];
+
 
     if(!item){
 
@@ -2723,22 +3062,27 @@ function addRecordToCart(index){
 
     }
 
+
     let cart =
         safeJSON(
             'diy_cart',
             []
         );
 
+
     cart.push(item);
+
 
     localStorage.setItem(
         'diy_cart',
         JSON.stringify(cart)
     );
 
+
     updateCartBadge();
 
     updateTopStats();
+
 
     showToast(
         'Rekod ditambah ke Pesanan.'
@@ -2759,13 +3103,16 @@ function updateCartBadge(){
             []
         );
 
+
     const count =
         cart.length;
+
 
     document.getElementById(
         'cartBadgeCount'
     ).innerText =
         count;
+
 
     document.getElementById(
         'cartCountTop'
@@ -2784,15 +3131,18 @@ function updateTopStats(){
     const history =
         getHistory();
 
+
     document.getElementById(
         'calculatorCount'
     ).innerText =
         '5';
 
+
     document.getElementById(
         'recordCount'
     ).innerText =
         history.length;
+
 
     updateCartBadge();
 
@@ -2810,9 +3160,11 @@ function toggleCartModal(){
             'cartModal'
         );
 
+
     modal.classList.toggle(
         'active'
     );
+
 
     if(
         modal.classList.contains(
@@ -2839,10 +3191,12 @@ function renderCartItems(){
             []
         );
 
+
     const container =
         document.getElementById(
             'cartItemsContainer'
         );
+
 
     if(cart.length === 0){
 
@@ -2867,13 +3221,16 @@ function renderCartItems(){
 
         `;
 
+
         calculateCartTotal();
 
         return;
 
     }
 
+
     let html='';
+
 
     cart.forEach(
         function(item,index){
@@ -2882,6 +3239,7 @@ function renderCartItems(){
                 extractPrice(
                     item.harga
                 );
+
 
             html += `
 
@@ -2909,6 +3267,7 @@ function renderCartItems(){
 
                     </div>
 
+
                     <button
                         class="remove-item"
                         onclick="removeFromCart(${index})"
@@ -2923,8 +3282,10 @@ function renderCartItems(){
         }
     );
 
+
     container.innerHTML =
         html;
+
 
     calculateCartTotal();
 
@@ -2943,15 +3304,18 @@ function removeFromCart(index){
             []
         );
 
+
     cart.splice(
         index,
         1
     );
 
+
     localStorage.setItem(
         'diy_cart',
         JSON.stringify(cart)
     );
+
 
     updateCartBadge();
 
@@ -2987,7 +3351,9 @@ function calculateCartTotal(){
             []
         );
 
+
     let subtotal=0;
+
 
     cart.forEach(
         function(item){
@@ -3000,11 +3366,14 @@ function calculateCartTotal(){
         }
     );
 
+
     const delivery =
         getDeliveryFee();
 
+
     const total =
         subtotal + delivery;
+
 
     document.getElementById(
         'cartSubtotalText'
@@ -3012,11 +3381,13 @@ function calculateCartTotal(){
         'RM '+
         subtotal.toFixed(2);
 
+
     document.getElementById(
         'cartLalamoveText'
     ).innerText =
         'RM '+
         delivery.toFixed(2);
+
 
     document.getElementById(
         'cartGrandTotalText'
@@ -3024,10 +3395,12 @@ function calculateCartTotal(){
         'RM '+
         total.toFixed(2);
 
+
     const status =
         document.getElementById(
             'deliveryFeeStatus'
         );
+
 
     if(delivery > 0){
 
@@ -3056,10 +3429,12 @@ function openLalamoveModal(){
             'deliveryModal'
         );
 
+
     document.getElementById(
         'lalamoveFeeInput'
     ).value =
         getDeliveryFee() || '';
+
 
     modal.classList.add(
         'active'
@@ -3089,7 +3464,7 @@ function openLalamoveFromCart(){
 
 
 /* =========================================================
-   OPEN LALAMOVE
+   OPEN LALAMOVE WEBSITE
 ========================================================= */
 
 function openLalamoveWebsite(){
@@ -3113,22 +3488,28 @@ function saveDeliveryFee(){
             'lalamoveFeeInput'
         ).value;
 
+
     const fee =
         parseFloat(value) || 0;
+
 
     localStorage.setItem(
         'diy_lalamove_fee',
         fee.toString()
     );
 
+
     calculateCartTotal();
 
+
     closeLalamoveModal();
+
 
     const cartModal =
         document.getElementById(
             'cartModal'
         );
+
 
     if(
         cartModal.classList.contains(
@@ -3139,6 +3520,7 @@ function saveDeliveryFee(){
         renderCartItems();
 
     }
+
 
     showToast(
         'Caj penghantaran telah dikemaskini.'
@@ -3156,10 +3538,12 @@ function loadSavedDeliveryFee(){
     const fee =
         getDeliveryFee();
 
+
     const input =
         document.getElementById(
             'lalamoveFeeInput'
         );
+
 
     if(input){
 
@@ -3185,6 +3569,7 @@ function proceedCheckout(){
             []
         );
 
+
     if(cart.length === 0){
 
         showToast(
@@ -3195,10 +3580,13 @@ function proceedCheckout(){
 
     }
 
+
     let subtotal=0;
+
 
     let message =
         'Assalamualaikum / Hi Idris, saya ingin membuat semakan pesanan berikut:\n\n';
+
 
     cart.forEach(
         function(item,index){
@@ -3208,8 +3596,10 @@ function proceedCheckout(){
                     item.harga
                 );
 
+
             subtotal +=
                 price;
+
 
             message +=
                 `${index+1}. ${item.tajuk || 'Pengiraan'}\n`;
@@ -3223,11 +3613,14 @@ function proceedCheckout(){
         }
     );
 
+
     const delivery =
         getDeliveryFee();
 
+
     const total =
         subtotal + delivery;
+
 
     message +=
         '-------------------------\n';
@@ -3241,11 +3634,13 @@ function proceedCheckout(){
     message +=
         `JUMLAH KESELURUHAN: RM ${total.toFixed(2)}`;
 
+
     const whatsappURL =
         'https://wa.me/?text='+
         encodeURIComponent(
             message
         );
+
 
     window.open(
         whatsappURL,
@@ -3275,12 +3670,17 @@ function previewProfileImage(event){
     const file =
         event.target.files[0];
 
+
     if(!file){
+
         return;
+
     }
+
 
     const reader =
         new FileReader();
+
 
     reader.onload =
         function(e){
@@ -3288,20 +3688,24 @@ function previewProfileImage(event){
             const image =
                 e.target.result;
 
+
             localStorage.setItem(
                 'idris_profile_img',
                 image
             );
 
+
             applyProfileImage(
                 image
             );
+
 
             showToast(
                 'Gambar profil dikemaskini.'
             );
 
         };
+
 
     reader.readAsDataURL(file);
 
@@ -3314,6 +3718,7 @@ function loadSavedProfile(){
         localStorage.getItem(
             'idris_profile_img'
         );
+
 
     if(image){
 
@@ -3357,11 +3762,13 @@ function bukaApps(
         'Membuka '+
         tajuk;
 
+
     document.getElementById(
         'loadingOverlay'
     ).classList.add(
         'active'
     );
+
 
     setTimeout(
         function(){
@@ -3439,6 +3846,7 @@ document.addEventListener(
                 .classList.remove(
                     'active'
                 );
+
 
             document
                 .getElementById(
