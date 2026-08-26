@@ -1,195 +1,3175 @@
 <!DOCTYPE html>
 <html lang="ms">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPC Flooring Calculator</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        :root { --tng-yellow: #fdee23; --tng-dark: #111111; --bg-color: #f4f5f7; --card-bg: #ffffff; --text-main: #111111; --text-sub: #666666; --border-color: #e4e7eb; --shadow: 0 4px 16px rgba(0, 0, 0, 0.06); }
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 20px 16px 90px; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
-        .container { max-width: 600px; width: 100%; background: var(--card-bg); padding: 25px; border-radius: 20px; box-shadow: var(--shadow); border: 1px solid var(--border-color); }
-        h2 { text-align: center; color: var(--text-main); margin-top: 0; margin-bottom: 25px; font-size: 20px; font-weight: 800; }
-        .form-group { margin-bottom: 16px; }
-        label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 13px; }
-        input, select { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 10px; font-size: 14px; box-sizing: border-box; background: #fff; outline: none; }
-        input:focus, select:focus { border-color: #d4b200; box-shadow: 0 0 0 3px rgba(253, 238, 35, 0.2); }
-        button.calc-btn { background-color: var(--tng-yellow); color: var(--tng-dark); border: 1.5px solid #111; padding: 15px; width: 100%; font-size: 16px; font-weight: 800; border-radius: 12px; cursor: pointer; margin-top: 10px; box-shadow: 0 4px 12px rgba(253, 238, 35, 0.3); transition: 0.2s; }
-        button.calc-btn:active { transform: scale(0.98); }
-        .result-box { margin-top: 25px; padding: 20px; background: #fffdf0; border-radius: 14px; border: 1.5px solid #f6e05e; display: none; font-size: 13px; }
-        .result-box h3 { margin-top: 0; color: #111; font-size: 16px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; }
-        .visual-container { margin-top: 25px; padding: 15px; background: #ffffff; border: 1px solid var(--border-color); border-radius: 12px; text-align: center; display: none; }
-        canvas { width: 100%; max-width: 520px; height: 240px; border: 1px solid var(--border-color); background: #fafafa; margin-top: 10px; border-radius: 8px; }
-        .add-cart-main-btn { background-color: var(--tng-yellow); color: var(--tng-dark); border: 1.5px solid #111; padding: 14px; width: 100%; font-size: 15px; font-weight: 800; border-radius: 12px; cursor: pointer; margin-top: 15px; display: none; box-shadow: 0 4px 12px rgba(253, 238, 35, 0.3); transition: 0.2s; }
-        .add-cart-main-btn:active { transform: scale(0.98); }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#111111">
+
+<title>SPC Flooring Calculator | Idris Portal</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+    --primary:#111111;
+    --accent:#fdee23;
+    --accent-dark:#d4b900;
+
+    --bg:#f5f6f8;
+    --card:#ffffff;
+    --soft:#f8f9fb;
+    --border:#e5e7eb;
+
+    --text:#111827;
+    --muted:#6b7280;
+    --success:#16803c;
+    --danger:#dc2626;
+
+    --shadow:0 8px 28px rgba(15,23,42,.07);
+}
+
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    padding:0 14px 100px;
+}
+
+/* =========================
+   TOP BAR
+========================= */
+
+.topbar{
+    width:100%;
+    max-width:680px;
+    margin:0 auto;
+    padding:18px 2px 16px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.back-btn{
+    width:42px;
+    height:42px;
+    border-radius:12px;
+
+    background:#fff;
+    border:1px solid var(--border);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    text-decoration:none;
+    color:var(--primary);
+
+    font-size:20px;
+    font-weight:700;
+
+    box-shadow:0 3px 12px rgba(0,0,0,.04);
+}
+
+.top-title{
+    flex:1;
+    padding-left:12px;
+}
+
+.top-title small{
+    display:block;
+    font-size:10px;
+    font-weight:700;
+    color:var(--muted);
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    margin-bottom:3px;
+}
+
+.top-title strong{
+    font-size:15px;
+    font-weight:800;
+}
+
+.cart-top{
+    position:relative;
+    width:42px;
+    height:42px;
+
+    border-radius:12px;
+    border:1px solid var(--border);
+    background:#fff;
+
+    font-size:18px;
+    cursor:pointer;
+
+    box-shadow:0 3px 12px rgba(0,0,0,.04);
+}
+
+.cart-count{
+    position:absolute;
+    top:-5px;
+    right:-5px;
+
+    min-width:18px;
+    height:18px;
+    padding:0 5px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:20px;
+
+    background:var(--primary);
+    color:var(--accent);
+
+    font-size:9px;
+    font-weight:800;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.container{
+    width:100%;
+    max-width:680px;
+    margin:0 auto;
+}
+
+.hero{
+    background:var(--primary);
+    color:#fff;
+
+    border-radius:20px;
+    padding:22px;
+
+    margin-bottom:16px;
+
+    box-shadow:var(--shadow);
+    position:relative;
+    overflow:hidden;
+}
+
+.hero:after{
+    content:"";
+    position:absolute;
+    width:150px;
+    height:150px;
+
+    right:-60px;
+    top:-60px;
+
+    background:var(--accent);
+    border-radius:50%;
+    opacity:.9;
+}
+
+.hero-label{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+
+    background:rgba(255,255,255,.1);
+    border:1px solid rgba(255,255,255,.12);
+
+    padding:6px 9px;
+    border-radius:8px;
+
+    font-size:10px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+
+    position:relative;
+    z-index:1;
+}
+
+.hero h1{
+    margin:13px 0 7px;
+
+    font-size:23px;
+    line-height:1.15;
+    font-weight:800;
+
+    position:relative;
+    z-index:1;
+}
+
+.hero p{
+    margin:0;
+
+    color:#cbd5e1;
+    font-size:12px;
+    line-height:1.5;
+
+    max-width:500px;
+
+    position:relative;
+    z-index:1;
+}
+
+/* =========================
+   SECTION CARD
+========================= */
+
+.section-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:18px;
+
+    padding:18px;
+    margin-bottom:16px;
+
+    box-shadow:var(--shadow);
+}
+
+.section-heading{
+    display:flex;
+    align-items:flex-start;
+    gap:11px;
+
+    margin-bottom:17px;
+}
+
+.section-number{
+    width:30px;
+    height:30px;
+
+    border-radius:9px;
+
+    background:var(--accent);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:12px;
+    font-weight:800;
+
+    flex-shrink:0;
+}
+
+.section-heading h2{
+    margin:0;
+    font-size:14px;
+    font-weight:800;
+}
+
+.section-heading p{
+    margin:3px 0 0;
+
+    font-size:10px;
+    color:var(--muted);
+}
+
+/* =========================
+   FORM
+========================= */
+
+.dimension-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.form-group{
+    margin-bottom:14px;
+}
+
+.form-group:last-child{
+    margin-bottom:0;
+}
+
+label{
+    display:block;
+
+    margin-bottom:6px;
+
+    font-size:11px;
+    font-weight:700;
+
+    color:#374151;
+}
+
+.input-wrap{
+    position:relative;
+}
+
+input,
+select{
+    width:100%;
+
+    height:46px;
+
+    border:1px solid var(--border);
+    border-radius:11px;
+
+    background:#fff;
+
+    padding:0 12px;
+
+    font-family:inherit;
+    font-size:13px;
+    color:var(--text);
+
+    outline:none;
+
+    transition:.2s;
+}
+
+input:focus,
+select:focus{
+    border-color:#c5ad00;
+
+    box-shadow:0 0 0 3px rgba(253,238,35,.25);
+}
+
+.unit{
+    position:absolute;
+
+    right:12px;
+    top:50%;
+
+    transform:translateY(-50%);
+
+    color:var(--muted);
+
+    font-size:10px;
+    font-weight:700;
+
+    pointer-events:none;
+}
+
+input.has-unit{
+    padding-right:55px;
+}
+
+select{
+    appearance:auto;
+}
+
+/* =========================
+   MATERIAL OPTIONS
+========================= */
+
+.material-options{
+    display:grid;
+    gap:9px;
+}
+
+.material-option{
+    position:relative;
+}
+
+.material-option input{
+    position:absolute;
+    opacity:0;
+    pointer-events:none;
+}
+
+.material-option label{
+    display:block;
+
+    margin:0;
+    padding:13px;
+
+    border:1px solid var(--border);
+    border-radius:12px;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.material-option input:checked + label{
+    border-color:#c4ad00;
+    background:#fffef0;
+
+    box-shadow:0 0 0 2px rgba(253,238,35,.25);
+}
+
+.material-name{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    font-size:12px;
+    font-weight:800;
+}
+
+.material-price{
+    font-size:11px;
+    color:#374151;
+}
+
+.material-info{
+    margin-top:5px;
+
+    font-size:10px;
+    color:var(--muted);
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+.calculate-btn{
+    width:100%;
+
+    height:50px;
+
+    border:1.5px solid var(--primary);
+    border-radius:12px;
+
+    background:var(--accent);
+    color:var(--primary);
+
+    font-family:inherit;
+    font-size:14px;
+    font-weight:800;
+
+    cursor:pointer;
+
+    box-shadow:0 5px 15px rgba(253,238,35,.28);
+
+    transition:.2s;
+}
+
+.calculate-btn:active{
+    transform:scale(.98);
+}
+
+/* =========================
+   RESULT
+========================= */
+
+.result-section{
+    display:none;
+}
+
+.summary-highlight{
+    background:var(--primary);
+    color:#fff;
+
+    border-radius:16px;
+
+    padding:18px;
+
+    margin-bottom:12px;
+}
+
+.summary-label{
+    font-size:10px;
+    color:#9ca3af;
+
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    font-weight:700;
+}
+
+.summary-total{
+    margin-top:5px;
+
+    font-size:27px;
+    font-weight:800;
+
+    color:var(--accent);
+}
+
+.summary-sub{
+    margin-top:5px;
+
+    font-size:10px;
+    color:#cbd5e1;
+}
+
+.result-table{
+    width:100%;
+    border-collapse:collapse;
+
+    font-size:11px;
+}
+
+.result-table tr{
+    border-bottom:1px solid var(--border);
+}
+
+.result-table tr:last-child{
+    border-bottom:0;
+}
+
+.result-table td{
+    padding:10px 0;
+    vertical-align:top;
+}
+
+.result-table td:last-child{
+    text-align:right;
+    font-weight:700;
+}
+
+.result-name{
+    font-weight:700;
+    color:var(--text);
+}
+
+.result-desc{
+    margin-top:3px;
+    color:var(--muted);
+    font-size:10px;
+}
+
+.total-row{
+    margin-top:12px;
+    padding-top:13px;
+
+    border-top:2px solid var(--primary);
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.total-row span:first-child{
+    font-size:11px;
+    font-weight:800;
+}
+
+.total-row span:last-child{
+    font-size:18px;
+    font-weight:800;
+}
+
+/* =========================
+   CART BUTTON
+========================= */
+
+.add-cart-btn{
+    width:100%;
+
+    margin-top:14px;
+
+    height:46px;
+
+    border:1px solid var(--primary);
+    border-radius:11px;
+
+    background:#fff;
+
+    color:var(--primary);
+
+    font-family:inherit;
+    font-size:12px;
+    font-weight:800;
+
+    cursor:pointer;
+}
+
+.add-cart-btn:active{
+    background:#f8f8f8;
+}
+
+/* =========================
+   VISUAL
+========================= */
+
+.visual-box{
+    display:none;
+
+    background:#fff;
+    border:1px solid var(--border);
+
+    border-radius:16px;
+
+    padding:15px;
+
+    margin-bottom:16px;
+}
+
+.visual-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-bottom:8px;
+}
+
+.visual-header strong{
+    font-size:12px;
+}
+
+.visual-header span{
+    font-size:9px;
+    color:var(--muted);
+}
+
+canvas{
+    width:100%;
+    height:240px;
+
+    display:block;
+
+    border:1px solid var(--border);
+    border-radius:11px;
+
+    background:#fafafa;
+}
+
+/* =========================
+   HISTORY
+========================= */
+
+.history-section{
+    display:none;
+}
+
+.history-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-bottom:12px;
+}
+
+.history-header h2{
+    margin:0;
+    font-size:14px;
+    font-weight:800;
+}
+
+.clear-history{
+    border:0;
+    background:none;
+
+    color:var(--danger);
+
+    font-family:inherit;
+    font-size:10px;
+    font-weight:700;
+
+    cursor:pointer;
+}
+
+.history-item{
+    border:1px solid var(--border);
+    border-radius:12px;
+
+    padding:13px;
+
+    margin-bottom:9px;
+
+    background:#fff;
+}
+
+.history-top{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+}
+
+.history-title{
+    font-size:11px;
+    font-weight:800;
+}
+
+.history-price{
+    font-size:12px;
+    font-weight:800;
+}
+
+.history-meta{
+    margin-top:5px;
+
+    font-size:9px;
+    color:var(--muted);
+    line-height:1.5;
+}
+
+.history-actions{
+    display:flex;
+    gap:7px;
+
+    margin-top:10px;
+}
+
+.history-actions button{
+    flex:1;
+
+    height:32px;
+
+    border-radius:8px;
+
+    font-family:inherit;
+    font-size:9px;
+    font-weight:700;
+
+    cursor:pointer;
+}
+
+.use-history{
+    background:var(--accent);
+    color:var(--primary);
+
+    border:1px solid var(--primary);
+}
+
+.delete-history{
+    background:#fff;
+    color:var(--danger);
+
+    border:1px solid #fecaca;
+}
+
+/* =========================
+   EMPTY HISTORY
+========================= */
+
+.empty-history{
+    text-align:center;
+
+    padding:20px;
+
+    background:var(--soft);
+
+    border-radius:12px;
+
+    color:var(--muted);
+
+    font-size:10px;
+}
+
+/* =========================
+   CART MODAL
+========================= */
+
+.cart-modal{
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.55);
+
+    backdrop-filter:blur(5px);
+
+    z-index:5000;
+
+    opacity:0;
+    pointer-events:none;
+
+    transition:.25s;
+
+    display:flex;
+    align-items:flex-end;
+}
+
+.cart-modal.active{
+    opacity:1;
+    pointer-events:auto;
+}
+
+.cart-panel{
+    width:100%;
+    max-width:680px;
+
+    margin:auto;
+
+    background:#fff;
+
+    border-radius:22px 22px 0 0;
+
+    padding:20px;
+
+    max-height:88vh;
+    overflow-y:auto;
+
+    transform:translateY(100%);
+    transition:.3s;
+}
+
+.cart-modal.active .cart-panel{
+    transform:translateY(0);
+}
+
+.cart-modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding-bottom:13px;
+    border-bottom:1px solid var(--border);
+}
+
+.cart-modal-header h2{
+    margin:0;
+    font-size:16px;
+}
+
+.close-cart{
+    width:34px;
+    height:34px;
+
+    border:0;
+    border-radius:9px;
+
+    background:#f3f4f6;
+
+    cursor:pointer;
+
+    font-weight:700;
+}
+
+.cart-item{
+    padding:12px 0;
+
+    border-bottom:1px dashed var(--border);
+
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+}
+
+.cart-item strong{
+    font-size:11px;
+}
+
+.cart-item small{
+    display:block;
+
+    margin-top:4px;
+
+    font-size:9px;
+    color:var(--muted);
+}
+
+.cart-item-price{
+    font-size:11px;
+    font-weight:800;
+    white-space:nowrap;
+}
+
+.remove-cart{
+    margin-top:5px;
+
+    border:0;
+    background:none;
+
+    color:var(--danger);
+
+    font-family:inherit;
+    font-size:9px;
+    font-weight:700;
+
+    cursor:pointer;
+}
+
+.delivery-box{
+    background:var(--soft);
+
+    border:1px solid var(--border);
+
+    border-radius:12px;
+
+    padding:13px;
+
+    margin-top:14px;
+}
+
+.delivery-box label{
+    margin-bottom:6px;
+}
+
+.delivery-input{
+    position:relative;
+}
+
+.delivery-input span{
+    position:absolute;
+
+    left:12px;
+    top:50%;
+
+    transform:translateY(-50%);
+
+    font-size:12px;
+    font-weight:700;
+}
+
+.delivery-input input{
+    padding-left:38px;
+}
+
+.cart-total{
+    margin-top:15px;
+
+    padding-top:14px;
+
+    border-top:2px solid var(--primary);
+}
+
+.cart-row{
+    display:flex;
+    justify-content:space-between;
+
+    font-size:11px;
+
+    margin-bottom:8px;
+}
+
+.cart-grand{
+    display:flex;
+    justify-content:space-between;
+
+    font-size:17px;
+    font-weight:800;
+
+    margin-top:10px;
+}
+
+.whatsapp-btn{
+    width:100%;
+    height:48px;
+
+    margin-top:15px;
+
+    border:1px solid var(--primary);
+    border-radius:12px;
+
+    background:var(--accent);
+
+    color:var(--primary);
+
+    font-family:inherit;
+    font-size:13px;
+    font-weight:800;
+
+    cursor:pointer;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer{
+    width:100%;
+    max-width:680px;
+
+    margin:15px auto 0;
+
+    text-align:center;
+
+    color:var(--muted);
+
+    font-size:9px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:430px){
+
+    body{
+        padding-left:11px;
+        padding-right:11px;
+    }
+
+    .hero{
+        padding:19px;
+    }
+
+    .hero h1{
+        font-size:21px;
+    }
+
+    .section-card{
+        padding:15px;
+    }
+
+    canvas{
+        height:220px;
+    }
+}
+</style>
 </head>
+
 <body>
 
-<div class="container">
-    <h2>SPC Flooring Calculator</h2>
-    
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-        <div class="form-group">
-            <label>Lebar Ruang (mm):</label>
-            <input type="number" id="roomWidth" value="3000">
-        </div>
-        <div class="form-group">
-            <label>Panjang Ruang (mm):</label>
-            <input type="number" id="roomLength" value="5000">
-        </div>
+<!-- TOP BAR -->
+<div class="topbar">
+
+    <a href="../index.html" class="back-btn" aria-label="Kembali">
+        ←
+    </a>
+
+    <div class="top-title">
+        <small>Idris Portal</small>
+        <strong>SPC Flooring Calculator</strong>
     </div>
 
-    <div class="form-group">
-        <label>Pilihan Jenis SPC:</label>
-        <select id="spcType">
-            <option value="ecoflex">Ecoflex (RM98/box | Cover: 21.6 sqft)</option>
-            <option value="microcement">Microcement (RM138/box | Cover: 24 sqft)</option>
-            <option value="herringbone">Herringbone (RM128/box | Cover: 20.25 sqft)</option>
-        </select>
-    </div>
+    <button class="cart-top" onclick="toggleCart()">
+        🛒
+        <span class="cart-count" id="cartCount">0</span>
+    </button>
 
-    <div class="form-group">
-        <label>Pilihan Aksesori Tambahan:</label>
-        <select id="accessoryType">
-            <option value="skirting">Skirting PVC (RM23/btg)</option>
-            <option value="endcap">End Cap / Edge Profile (RM25/btg)</option>
-            <option value="tmolding">T-Molding / Transition (RM30/btg)</option>
-            <option value="none">Tiada Aksesori Tambahan</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label>Wastage / Lebihan (%):</label>
-        <select id="wastagePerc">
-            <option value="5" selected>5% (Standard)</option>
-            <option value="10">10% (Disyorkan)</option>
-            <option value="15">15% (Banyak Potongan)</option>
-        </select>
-    </div>
-
-    <button class="calc-btn" onclick="calculateSPC()">Kira Sebut Harga & Visual</button>
-    
-    <div class="result-box" id="resultBox">
-        <h3>Pecahan Sebut Harga SPC:</h3>
-        <div id="resultContent" style="line-height: 1.6; margin-bottom: 10px;"></div>
-        <div style="border-top: 1px solid #e2e8f0; margin: 10px 0;"></div>
-        <div style="display: flex; justify-content: space-between; font-size: 15px; font-weight: 800;">
-            <span>JUMLAH KESELURUHAN:</span>
-            <span id="jumlahHarga" style="color: #111;">-</span>
-        </div>
-        <button class="add-cart-main-btn" id="addCartBtn" onclick="addSPCToCart()">+ Masukkan ke Troli (Cart)</button>
-    </div>
-
-    <div class="visual-container" id="visualBox">
-        <h3 id="visualTitle" style="font-size: 14px; margin-top: 0;">Lakaran Susun Atur Lantai</h3>
-        <canvas id="canvasVisual"></canvas>
-    </div>
 </div>
 
+
+<div class="container">
+
+    <!-- HERO -->
+    <div class="hero">
+
+        <span class="hero-label">
+            Flooring Calculation
+        </span>
+
+        <h1>SPC Flooring Calculator</h1>
+
+        <p>
+            Kira keluasan lantai, keperluan material, aksesori,
+            wastage dan anggaran kos projek dengan lebih teratur.
+        </p>
+
+    </div>
+
+
+    <!-- PROJECT DIMENSIONS -->
+    <div class="section-card">
+
+        <div class="section-heading">
+
+            <div class="section-number">01</div>
+
+            <div>
+                <h2>Project Dimensions</h2>
+                <p>Masukkan ukuran ruang yang akan dipasang.</p>
+            </div>
+
+        </div>
+
+
+        <div class="dimension-grid">
+
+            <div class="form-group">
+
+                <label>Lebar Ruang</label>
+
+                <div class="input-wrap">
+
+                    <input
+                        type="number"
+                        id="roomWidth"
+                        class="has-unit"
+                        value="3000"
+                        min="1"
+                    >
+
+                    <span class="unit">mm</span>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Panjang Ruang</label>
+
+                <div class="input-wrap">
+
+                    <input
+                        type="number"
+                        id="roomLength"
+                        class="has-unit"
+                        value="5000"
+                        min="1"
+                    >
+
+                    <span class="unit">mm</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- MATERIAL -->
+    <div class="section-card">
+
+        <div class="section-heading">
+
+            <div class="section-number">02</div>
+
+            <div>
+                <h2>Material Selection</h2>
+                <p>Pilih jenis SPC yang diperlukan.</p>
+            </div>
+
+        </div>
+
+
+        <div class="material-options">
+
+            <div class="material-option">
+
+                <input
+                    type="radio"
+                    name="spcType"
+                    id="ecoflex"
+                    value="ecoflex"
+                    checked
+                >
+
+                <label for="ecoflex">
+
+                    <div class="material-name">
+                        <span>Ecoflex</span>
+                        <span class="material-price">RM98 / box</span>
+                    </div>
+
+                    <div class="material-info">
+                        Coverage: 21.6 sqft / box
+                    </div>
+
+                </label>
+
+            </div>
+
+
+            <div class="material-option">
+
+                <input
+                    type="radio"
+                    name="spcType"
+                    id="microcement"
+                    value="microcement"
+                >
+
+                <label for="microcement">
+
+                    <div class="material-name">
+                        <span>Microcement</span>
+                        <span class="material-price">RM138 / box</span>
+                    </div>
+
+                    <div class="material-info">
+                        Coverage: 24 sqft / box
+                    </div>
+
+                </label>
+
+            </div>
+
+
+            <div class="material-option">
+
+                <input
+                    type="radio"
+                    name="spcType"
+                    id="herringbone"
+                    value="herringbone"
+                >
+
+                <label for="herringbone">
+
+                    <div class="material-name">
+                        <span>Herringbone</span>
+                        <span class="material-price">RM128 / box</span>
+                    </div>
+
+                    <div class="material-info">
+                        Coverage: 20.25 sqft / box
+                    </div>
+
+                </label>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ACCESSORIES -->
+    <div class="section-card">
+
+        <div class="section-heading">
+
+            <div class="section-number">03</div>
+
+            <div>
+                <h2>Accessories & Wastage</h2>
+                <p>Tentukan aksesori dan allowance pemasangan.</p>
+            </div>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>Accessory Selection</label>
+
+            <select id="accessoryType">
+
+                <option value="skirting">
+                    Skirting PVC — RM23 / btg
+                </option>
+
+                <option value="endcap">
+                    End Cap / Edge Profile — RM25 / btg
+                </option>
+
+                <option value="tmolding">
+                    T-Molding / Transition — RM30 / btg
+                </option>
+
+                <option value="none">
+                    Tiada Aksesori
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>Wastage Allowance</label>
+
+            <select id="wastagePerc">
+
+                <option value="5">
+                    5% — Standard
+                </option>
+
+                <option value="10" selected>
+                    10% — Recommended
+                </option>
+
+                <option value="15">
+                    15% — Extensive Cutting
+                </option>
+
+            </select>
+
+        </div>
+
+    </div>
+
+
+    <!-- CALCULATE -->
+    <button
+        class="calculate-btn"
+        onclick="calculateSPC()"
+    >
+        Calculate Project Estimate
+    </button>
+
+
+    <!-- RESULT -->
+    <div
+        class="result-section"
+        id="resultSection"
+    >
+
+        <div class="section-card" style="margin-top:16px;">
+
+            <div class="section-heading">
+
+                <div class="section-number">04</div>
+
+                <div>
+                    <h2>Calculation Summary</h2>
+                    <p>Anggaran keperluan material dan kos projek.</p>
+                </div>
+
+            </div>
+
+
+            <div class="summary-highlight">
+
+                <div class="summary-label">
+                    Estimated Project Total
+                </div>
+
+                <div
+                    class="summary-total"
+                    id="jumlahHarga"
+                >
+                    RM 0.00
+                </div>
+
+                <div
+                    class="summary-sub"
+                    id="summarySub"
+                >
+                    -
+                </div>
+
+            </div>
+
+
+            <table class="result-table">
+
+                <tbody id="resultContent"></tbody>
+
+            </table>
+
+
+            <div class="total-row">
+
+                <span>
+                    TOTAL ESTIMATE
+                </span>
+
+                <span id="totalBottom">
+                    RM 0.00
+                </span>
+
+            </div>
+
+
+            <button
+                class="add-cart-btn"
+                onclick="addSPCToCart()"
+            >
+                + Add Calculation to Cart
+            </button>
+
+        </div>
+
+
+        <!-- VISUAL -->
+        <div
+            class="visual-box"
+            id="visualBox"
+        >
+
+            <div class="visual-header">
+
+                <strong>
+                    Floor Layout Preview
+                </strong>
+
+                <span>
+                    Indicative Layout
+                </span>
+
+            </div>
+
+            <canvas id="canvasVisual"></canvas>
+
+        </div>
+
+    </div>
+
+
+    <!-- HISTORY -->
+    <div
+        class="history-section section-card"
+        id="historySection"
+    >
+
+        <div class="history-header">
+
+            <h2>Calculation History</h2>
+
+            <button
+                class="clear-history"
+                onclick="clearHistory()"
+            >
+                Clear History
+            </button>
+
+        </div>
+
+        <div id="historyList"></div>
+
+    </div>
+
+
+</div>
+
+
+<div class="footer">
+    Idris Portal • SPC Flooring Calculator • Internal Use
+</div>
+
+
+<!-- =========================
+     CART MODAL
+========================= -->
+
+<div
+    class="cart-modal"
+    id="cartModal"
+    onclick="closeCartOutside(event)"
+>
+
+    <div
+        class="cart-panel"
+        onclick="event.stopPropagation()"
+    >
+
+        <div class="cart-modal-header">
+
+            <h2>Shopping Cart</h2>
+
+            <button
+                class="close-cart"
+                onclick="toggleCart()"
+            >
+                ✕
+            </button>
+
+        </div>
+
+
+        <div id="cartItems"></div>
+
+
+        <div class="delivery-box">
+
+            <label>
+                Additional Delivery / Lalamove Charge
+            </label>
+
+            <div class="delivery-input">
+
+                <span>RM</span>
+
+                <input
+                    type="number"
+                    id="deliveryFee"
+                    value="0"
+                    min="0"
+                    step="0.50"
+                    oninput="calculateCartTotal()"
+                >
+
+            </div>
+
+        </div>
+
+
+        <div class="cart-total">
+
+            <div class="cart-row">
+
+                <span>Material Total</span>
+
+                <span id="cartSubtotal">
+                    RM 0.00
+                </span>
+
+            </div>
+
+
+            <div class="cart-row">
+
+                <span>Delivery / Lalamove</span>
+
+                <span id="cartDelivery">
+                    RM 0.00
+                </span>
+
+            </div>
+
+
+            <div class="cart-grand">
+
+                <span>Total</span>
+
+                <span id="cartGrand">
+                    RM 0.00
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="whatsapp-btn"
+            onclick="proceedCheckout()"
+        >
+            Hantar Pesanan melalui WhatsApp
+        </button>
+
+    </div>
+
+</div>
+
+
 <script>
-    let lastCalculatedRecord = null;
 
-    function calculateSPC() {
-        let type = document.getElementById('spcType').value;
-        let accType = document.getElementById('accessoryType').value;
-        let wastage = parseFloat(document.getElementById('wastagePerc').value) || 5;
-        let wMm = parseFloat(document.getElementById('roomWidth').value) || 0;
-        let lMm = parseFloat(document.getElementById('roomLength').value) || 0;
+/* ==========================================
+   DATA
+========================================== */
 
-        if (wMm <= 0 || lMm <= 0) { alert('Sila masukkan ukuran ruang yang sah.'); return; }
+const materials = {
 
-        let sqftArea = (wMm / 304.8) * (lMm / 304.8);
-        let adjustedSqft = sqftArea * (1 + (wastage / 100));
-        let boxCount = 0, spcCost = 0, name = "";
+    ecoflex:{
+        name:"Ecoflex",
+        price:98,
+        coverage:21.6
+    },
 
-        if (type === 'ecoflex') { boxCount = Math.ceil(adjustedSqft / 21.6); spcCost = boxCount * 98; name = "Ecoflex"; }
-        else if (type === 'microcement') { boxCount = Math.ceil(adjustedSqft / 24); spcCost = boxCount * 138; name = "Microcement"; }
-        else if (type === 'herringbone') { boxCount = Math.ceil(adjustedSqft / 20.25); spcCost = boxCount * 128; name = "Herringbone"; }
+    microcement:{
+        name:"Microcement",
+        price:138,
+        coverage:24
+    },
 
-        // Kira Aksesori (Anggaran perimeter keliling ruang / batang standard 8 kaki atau 2.4 meter)
-        let perimeterMeters = (2 * (wMm + lMm)) / 1000;
-        let accSticks = Math.ceil(perimeterMeters / 2.4);
-        let accPrice = 0, accName = "";
+    herringbone:{
+        name:"Herringbone",
+        price:128,
+        coverage:20.25
+    }
 
-        if (accType === 'skirting') { accPrice = 23; accName = "Skirting PVC"; }
-        else if (accType === 'endcap') { accPrice = 25; accName = "End Cap Profile"; }
-        else if (accType === 'tmolding') { accPrice = 30; accName = "T-Molding Profile"; }
+};
 
-        let accTotalCost = (accType !== 'none') ? (accSticks * accPrice) : 0;
-        let grandTotal = spcCost + accTotalCost;
 
-        document.getElementById('resultBox').style.display = 'block';
-        document.getElementById('addCartBtn').style.display = 'block';
-        document.getElementById('visualBox').style.display = 'block';
+const accessories = {
 
-        let html = `
-            Keluasan Asal: <b>${sqftArea.toFixed(1)} sqft</b> (Wastage: ${wastage}%)<br>
-            • <b>${boxCount} Kotak ${name}</b> = RM ${spcCost.toFixed(2)}<br>
+    skirting:{
+        name:"Skirting PVC",
+        price:23
+    },
+
+    endcap:{
+        name:"End Cap / Edge Profile",
+        price:25
+    },
+
+    tmolding:{
+        name:"T-Molding / Transition",
+        price:30
+    }
+
+};
+
+
+let lastCalculatedRecord = null;
+
+
+/* ==========================================
+   INITIAL LOAD
+========================================== */
+
+document.addEventListener("DOMContentLoaded",function(){
+
+    updateCartCount();
+    renderHistory();
+
+});
+
+
+/* ==========================================
+   CALCULATE SPC
+========================================== */
+
+function calculateSPC(){
+
+    const type =
+        document.querySelector(
+            'input[name="spcType"]:checked'
+        ).value;
+
+    const accType =
+        document.getElementById("accessoryType").value;
+
+    const wastage =
+        parseFloat(
+            document.getElementById("wastagePerc").value
+        ) || 10;
+
+    const width =
+        parseFloat(
+            document.getElementById("roomWidth").value
+        ) || 0;
+
+    const length =
+        parseFloat(
+            document.getElementById("roomLength").value
+        ) || 0;
+
+
+    if(width <= 0 || length <= 0){
+
+        alert(
+            "Sila masukkan ukuran ruang yang sah."
+        );
+
+        return;
+
+    }
+
+
+    const material = materials[type];
+
+
+    /* AREA */
+
+    const sqft =
+        (width / 304.8) *
+        (length / 304.8);
+
+
+    const adjustedSqft =
+        sqft *
+        (1 + wastage / 100);
+
+
+    /* BOX */
+
+    const boxCount =
+        Math.ceil(
+            adjustedSqft /
+            material.coverage
+        );
+
+
+    const materialCost =
+        boxCount *
+        material.price;
+
+
+    /* ACCESSORY */
+
+    const perimeter =
+        (2 * (width + length)) /
+        1000;
+
+
+    const accessoryLength = 2.4;
+
+
+    const accessoryQty =
+        Math.ceil(
+            perimeter /
+            accessoryLength
+        );
+
+
+    let accessoryCost = 0;
+    let accessoryName = "";
+
+
+    if(accType !== "none"){
+
+        accessoryName =
+            accessories[accType].name;
+
+        accessoryCost =
+            accessoryQty *
+            accessories[accType].price;
+
+    }
+
+
+    const grandTotal =
+        materialCost +
+        accessoryCost;
+
+
+    /* ======================================
+       DISPLAY RESULT
+    ====================================== */
+
+    document.getElementById(
+        "resultSection"
+    ).style.display = "block";
+
+
+    document.getElementById(
+        "visualBox"
+    ).style.display = "block";
+
+
+    document.getElementById(
+        "jumlahHarga"
+    ).innerText =
+        "RM " +
+        grandTotal.toFixed(2);
+
+
+    document.getElementById(
+        "totalBottom"
+    ).innerText =
+        "RM " +
+        grandTotal.toFixed(2);
+
+
+    document.getElementById(
+        "summarySub"
+    ).innerText =
+        `${material.name} • ${boxCount} box • ${sqft.toFixed(1)} sqft`;
+
+
+    let resultHTML = "";
+
+
+    resultHTML += `
+
+        <tr>
+
+            <td>
+
+                <div class="result-name">
+                    Floor Area
+                </div>
+
+                <div class="result-desc">
+                    ${width} × ${length} mm
+                </div>
+
+            </td>
+
+            <td>
+                ${sqft.toFixed(1)} sqft
+            </td>
+
+        </tr>
+
+    `;
+
+
+    resultHTML += `
+
+        <tr>
+
+            <td>
+
+                <div class="result-name">
+                    ${material.name}
+                </div>
+
+                <div class="result-desc">
+                    ${boxCount} box × RM${material.price.toFixed(2)}
+                    • Coverage ${material.coverage} sqft/box
+                </div>
+
+            </td>
+
+            <td>
+                RM ${materialCost.toFixed(2)}
+            </td>
+
+        </tr>
+
+    `;
+
+
+    resultHTML += `
+
+        <tr>
+
+            <td>
+
+                <div class="result-name">
+                    Wastage Allowance
+                </div>
+
+                <div class="result-desc">
+                    ${wastage}% • Adjusted area
+                    ${adjustedSqft.toFixed(1)} sqft
+                </div>
+
+            </td>
+
+            <td>
+                Included
+            </td>
+
+        </tr>
+
+    `;
+
+
+    if(accType !== "none"){
+
+        resultHTML += `
+
+            <tr>
+
+                <td>
+
+                    <div class="result-name">
+                        ${accessoryName}
+                    </div>
+
+                    <div class="result-desc">
+                        ${accessoryQty} btg ×
+                        RM${accessories[accType].price.toFixed(2)}
+                    </div>
+
+                </td>
+
+                <td>
+                    RM ${accessoryCost.toFixed(2)}
+                </td>
+
+            </tr>
+
         `;
-        if (accType !== 'none') {
-            html += `• <b>${accSticks} btg ${accName}</b> ( @RM${accPrice} ) = RM ${accTotalCost.toFixed(2)}<br>`;
-        }
-        
-        document.getElementById('resultContent').innerHTML = html;
-        document.getElementById('jumlahHarga').innerText = `RM ${grandTotal.toFixed(2)}`;
 
-        lastCalculatedRecord = { 
-            tajuk: `SPC Flooring (${name})`, 
-            info: `${wMm}x${lMm}mm`, 
-            harga: "RM " + grandTotal.toFixed(2) 
-        };
-
-        // Lakaran Visual Canvas
-        let canvas = document.getElementById("canvasVisual");
-        let ctx = canvas.getContext("2d");
-        canvas.width = canvas.parentElement.clientWidth - 30; canvas.height = 220;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        let scale = Math.min((canvas.width - 40) / wMm, (canvas.height - 40) / lMm);
-        let drawW = wMm * scale, drawH = lMm * scale;
-        let startX = (canvas.width - drawW) / 2, startY = (canvas.height - drawH) / 2;
-
-        ctx.fillStyle = "#fff8b0"; ctx.fillRect(startX, startY, drawW, drawH);
-        ctx.strokeStyle = "#111"; ctx.lineWidth = 3; ctx.strokeRect(startX, startY, drawW, drawH);
-
-        if (type === 'herringbone') {
-            ctx.strokeStyle = "#b89b00"; ctx.lineWidth = 1;
-            let step = 16;
-            for (let x = -drawH; x < drawW + drawH; x += step) {
-                ctx.beginPath(); ctx.moveTo(startX + x, startY); ctx.lineTo(startX + x + drawH/2, startY + drawH/2); ctx.lineTo(startX + x, startY + drawH); ctx.stroke();
-            }
-        } else {
-            ctx.strokeStyle = "#d4b200"; ctx.lineWidth = 1;
-            let pW = drawW / 6, pH = drawH / 12;
-            for (let y = 0; y < drawH; y += pH) {
-                ctx.beginPath(); ctx.moveTo(startX, startY + y); ctx.lineTo(startX + drawW, startY + y); ctx.stroke();
-            }
-            let row = 0;
-            for (let y = 0; y < drawH; y += pH) {
-                let off = (row % 2 === 0) ? 0 : (pW / 2);
-                for (let x = off; x <= drawW; x += pW) {
-                    ctx.beginPath(); ctx.moveTo(startX + x, startY + y); ctx.lineTo(startX + x, startY + y + pH); ctx.stroke();
-                }
-                row++;
-            }
-        }
     }
 
-    function addSPCToCart() {
-        if (!lastCalculatedRecord) return;
-        let c = JSON.parse(localStorage.getItem('diy_cart')) || []; 
-        c.push(lastCalculatedRecord); 
-        localStorage.setItem('diy_cart', JSON.stringify(c));
 
-        let h = JSON.parse(localStorage.getItem('diy_calc_history')) || []; 
-        h.push(lastCalculatedRecord); 
-        localStorage.setItem('diy_calc_history', JSON.stringify(h));
+    document.getElementById(
+        "resultContent"
+    ).innerHTML = resultHTML;
 
-        alert("Berjaya masukkan ke Troli!");
+
+    /* ======================================
+       RECORD
+    ====================================== */
+
+    const now =
+        new Date();
+
+
+    const date =
+        now.toLocaleDateString(
+            "ms-MY",
+            {
+                day:"2-digit",
+                month:"2-digit",
+                year:"numeric"
+            }
+        );
+
+
+    const time =
+        now.toLocaleTimeString(
+            "ms-MY",
+            {
+                hour:"2-digit",
+                minute:"2-digit"
+            }
+        );
+
+
+    const reference =
+        "SPC-" +
+        Date.now().toString().slice(-6);
+
+
+    lastCalculatedRecord = {
+
+        id:reference,
+
+        tajuk:
+            `SPC Flooring — ${material.name}`,
+
+        info:
+            `${width} × ${length} mm`,
+
+        harga:
+            "RM " +
+            grandTotal.toFixed(2),
+
+        date:date,
+
+        time:time,
+
+        material:
+            material.name,
+
+        sqft:
+            sqft.toFixed(1),
+
+        wastage:
+            wastage,
+
+        boxes:
+            boxCount,
+
+        accessory:
+            accType === "none"
+                ? "Tiada"
+                : accessoryName,
+
+        accessoryQty:
+            accType === "none"
+                ? 0
+                : accessoryQty
+
+    };
+
+
+    /* AUTO SAVE HISTORY */
+
+    saveHistory(
+        lastCalculatedRecord
+    );
+
+
+    renderHistory();
+
+
+    /* DRAW VISUAL */
+
+    drawFloorLayout(
+        width,
+        length,
+        type
+    );
+
+
+    document.getElementById(
+        "resultSection"
+    ).scrollIntoView({
+        behavior:"smooth",
+        block:"start"
+    });
+
+}
+
+
+/* ==========================================
+   SAVE HISTORY
+========================================== */
+
+function saveHistory(record){
+
+    let history =
+        JSON.parse(
+            localStorage.getItem(
+                "diy_calc_history"
+            )
+        ) || [];
+
+
+    history.unshift(record);
+
+
+    /* Maximum 50 records */
+
+    if(history.length > 50){
+
+        history =
+            history.slice(0,50);
+
     }
+
+
+    localStorage.setItem(
+        "diy_calc_history",
+        JSON.stringify(history)
+    );
+
+}
+
+
+/* ==========================================
+   RENDER HISTORY
+========================================== */
+
+function renderHistory(){
+
+    const section =
+        document.getElementById(
+            "historySection"
+        );
+
+    const list =
+        document.getElementById(
+            "historyList"
+        );
+
+
+    let history =
+        JSON.parse(
+            localStorage.getItem(
+                "diy_calc_history"
+            )
+        ) || [];
+
+
+    if(history.length === 0){
+
+        section.style.display =
+            "block";
+
+        list.innerHTML = `
+
+            <div class="empty-history">
+
+                Tiada rekod pengiraan disimpan.
+
+                <br><br>
+
+                Rekod akan muncul secara automatik
+                selepas anda membuat pengiraan.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    section.style.display =
+        "block";
+
+
+    let html = "";
+
+
+    history.forEach(
+        (item,index)=>{
+
+            html += `
+
+                <div class="history-item">
+
+                    <div class="history-top">
+
+                        <div>
+
+                            <div class="history-title">
+                                ${escapeHTML(item.tajuk)}
+                            </div>
+
+                            <div class="history-meta">
+
+                                Ref: ${escapeHTML(item.id)}
+
+                                <br>
+
+                                ${escapeHTML(item.date)}
+                                •
+                                ${escapeHTML(item.time)}
+
+                                <br>
+
+                                Ukuran:
+                                ${escapeHTML(item.info)}
+
+                                •
+                                ${escapeHTML(item.sqft)} sqft
+
+                                <br>
+
+                                ${escapeHTML(item.boxes)}
+                                box
+                                •
+                                Aksesori:
+                                ${escapeHTML(item.accessory)}
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="history-price">
+
+                            ${escapeHTML(item.harga)}
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="history-actions">
+
+                        <button
+                            class="use-history"
+                            onclick="useHistory(${index})"
+                        >
+                            Gunakan Semula
+                        </button>
+
+                        <button
+                            class="delete-history"
+                            onclick="deleteHistory(${index})"
+                        >
+                            Padam
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    list.innerHTML =
+        html;
+
+}
+
+
+/* ==========================================
+   USE HISTORY
+========================================== */
+
+function useHistory(index){
+
+    let history =
+        JSON.parse(
+            localStorage.getItem(
+                "diy_calc_history"
+            )
+        ) || [];
+
+
+    const item =
+        history[index];
+
+
+    if(!item) return;
+
+
+    const dimensions =
+        item.info
+            .replace(/mm/g,"")
+            .split("×");
+
+
+    if(dimensions.length >= 2){
+
+        document.getElementById(
+            "roomWidth"
+        ).value =
+            parseFloat(dimensions[0]);
+
+
+        document.getElementById(
+            "roomLength"
+        ).value =
+            parseFloat(dimensions[1]);
+
+    }
+
+
+    /* MATERIAL */
+
+    const radio =
+        document.querySelector(
+            `input[name="spcType"][value="${getMaterialValue(item.material)}"]`
+        );
+
+
+    if(radio){
+
+        radio.checked =
+            true;
+
+    }
+
+
+    /* WASTAGE */
+
+    const wastage =
+        document.getElementById(
+            "wastagePerc"
+        );
+
+
+    const availableWastage =
+        Array.from(
+            wastage.options
+        ).map(
+            option =>
+                parseInt(option.value)
+        );
+
+
+    if(
+        availableWastage.includes(
+            parseInt(item.wastage)
+        )
+    ){
+
+        wastage.value =
+            item.wastage;
+
+    }
+
+
+    /* ACCESSORY */
+
+    const accessorySelect =
+        document.getElementById(
+            "accessoryType"
+        );
+
+
+    if(item.accessory === "Tiada"){
+
+        accessorySelect.value =
+            "none";
+
+    }
+    else{
+
+        const accValue =
+            Object.keys(
+                accessories
+            ).find(
+                key =>
+                    accessories[key].name ===
+                    item.accessory
+            );
+
+
+        if(accValue){
+
+            accessorySelect.value =
+                accValue;
+
+        }
+
+    }
+
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+
+    setTimeout(
+        calculateSPC,
+        300
+    );
+
+}
+
+
+/* ==========================================
+   MATERIAL VALUE
+========================================== */
+
+function getMaterialValue(name){
+
+    if(name === "Ecoflex")
+        return "ecoflex";
+
+    if(name === "Microcement")
+        return "microcement";
+
+    if(name === "Herringbone")
+        return "herringbone";
+
+    return "ecoflex";
+
+}
+
+
+/* ==========================================
+   DELETE HISTORY
+========================================== */
+
+function deleteHistory(index){
+
+    if(
+        !confirm(
+            "Padam rekod pengiraan ini?"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    let history =
+        JSON.parse(
+            localStorage.getItem(
+                "diy_calc_history"
+            )
+        ) || [];
+
+
+    history.splice(
+        index,
+        1
+    );
+
+
+    localStorage.setItem(
+        "diy_calc_history",
+        JSON.stringify(history)
+    );
+
+
+    renderHistory();
+
+}
+
+
+/* ==========================================
+   CLEAR HISTORY
+========================================== */
+
+function clearHistory(){
+
+    if(
+        !confirm(
+            "Adakah anda pasti mahu memadam semua rekod pengiraan?"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    localStorage.removeItem(
+        "diy_calc_history"
+    );
+
+
+    renderHistory();
+
+}
+
+
+/* ==========================================
+   ADD TO CART
+========================================== */
+
+function addSPCToCart(){
+
+    if(!lastCalculatedRecord){
+
+        alert(
+            "Sila buat pengiraan terlebih dahulu."
+        );
+
+        return;
+
+    }
+
+
+    let cart =
+        JSON.parse(
+            localStorage.getItem(
+                "diy_cart"
+            )
+        ) || [];
+
+
+    cart.push(
+        lastCalculatedRecord
+    );
+
+
+    localStorage.setItem(
+        "diy_cart",
+        JSON.stringify(cart)
+    );
+
+
+    updateCartCount();
+
+
+    alert(
+        "Pengiraan berjaya ditambahkan ke Shopping Cart."
+    );
+
+}
+
+
+/* ==========================================
+   CART COUNT
+========================================== */
+
+function updateCartCount(){
+
+    let cart =
+        JSON.parse(
+            localStorage.getItem(
+                "diy_cart"
+            )
+        ) || [];
+
+
+    document.getElementById(
+        "cartCount"
+    ).innerText =
+        cart.length;
+
+}
+
+
+/* ==========================================
+   CART
+========================================== */
+
+function toggleCart(){
+
+    const modal =
+        document.getElementById(
+            "cartModal"
+        );
+
+
+    modal.classList.toggle(
+        "active"
+    );
+
+
+    if(
+        modal.classList.contains(
+            "active"
+        )
+    ){
+
+        renderCart();
+
+    }
+
+}
+
+
+function closeCartOutside(event){
+
+    if(
+        event.target.id ===
+        "cartModal"
+    ){
+
+        toggleCart();
+
+    }
+
+}
+
+
+/* ==========================================
+   RENDER CART
+========================================== */
+
+function renderCart(){
+
+    let cart =
+        JSON.parse(
+            localStorage.getItem(
+                "diy_cart"
+            )
+        ) || [];
+
+
+    const container =
+        document.getElementById(
+            "cartItems"
+        );
+
+
+    if(cart.length === 0){
+
+        container.innerHTML = `
+
+            <div class="empty-history"
+                 style="margin-top:15px;">
+
+                Shopping Cart anda kosong.
+
+            </div>
+
+        `;
+
+
+        document.getElementById(
+            "cartSubtotal"
+        ).innerText =
+            "RM 0.00";
+
+
+        document.getElementById(
+            "cartGrand"
+        ).innerText =
+            "RM 0.00";
+
+
+        return;
+
+    }
+
+
+    let html = "";
+
+
+    cart.forEach(
+        (item,index)=>{
+
+            const price =
+                parseFloat(
+                    String(
+                        item.harga
+                    ).replace(
+                        /[^0-9.]/g,
+                        ""
+                    )
+                ) || 0;
+
+
+            html += `
+
+                <div class="cart-item">
+
+                    <div>
+
+                        <strong>
+                            ${escapeHTML(item.tajuk)}
+                        </strong>
+
+                        <small>
+
+                            ${escapeHTML(item.info)}
+
+                            •
+
+                            ${escapeHTML(item.sqft || "-")}
+                            sqft
+
+                            <br>
+
+                            Ref:
+                            ${escapeHTML(item.id || "-")}
+
+                        </small>
+
+
+                        <button
+                            class="remove-cart"
+                            onclick="removeCart(${index})"
+                        >
+                            Remove
+                        </button>
+
+                    </div>
+
+
+                    <div class="cart-item-price">
+
+                        RM ${price.toFixed(2)}
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    container.innerHTML =
+        html;
+
+
+    calculateCartTotal();
+
+}
+
+
+/* ==========================================
+   REMOVE CART
+========================================== */
+
+function removeCart(index){
+
+    let cart =
+        JSON.parse(
+            localStorage.getItem(
+                "diy_cart"
+            )
+        ) || [];
+
+
+    cart.splice(
+        index,
+        1
+    );
+
+
+    localStorage.setItem(
+        "diy_cart",
+        JSON.stringify(cart)
+    );
+
+
+    updateCartCount();
+
+    renderCart();
+
+}
+
+
+/* ==========================================
+   CART TOTAL
+========================================== */
+
+function calculateCartTotal(){
+
+    let cart =
+        JSON.parse(
+            localStorage.getItem(
+                "diy_cart"
+            )
+        ) || [];
+
+
+    let subtotal = 0;
+
+
+    cart.forEach(
+        item=>{
+
+            subtotal +=
+                parseFloat(
+                    String(
+                        item.harga
+                    ).replace(
+                        /[^0-9.]/g,
+                        ""
+                    )
+                ) || 0;
+
+        }
+    );
+
+
+    const delivery =
+        parseFloat(
+            document.getElementById(
+                "deliveryFee"
+            ).value
+        ) || 0;
+
+
+    const total =
+        subtotal +
+        delivery;
+
+
+    document.getElementById(
+        "cartSubtotal"
+    ).innerText =
+        "RM " +
+        subtotal.toFixed(2);
+
+
+    document.getElementById(
+        "cartDelivery"
+    ).innerText =
+        "RM " +
+        delivery.toFixed(2);
+
+
+    document.getElementById(
+        "cartGrand"
+    ).innerText =
+        "RM " +
+        total.toFixed(2);
+
+}
+
+
+/* ==========================================
+   WHATSAPP CHECKOUT
+========================================== */
+
+function proceedCheckout(){
+
+    let cart =
+        JSON.parse(
+            localStorage.getItem(
+                "diy_cart"
+            )
+        ) || [];
+
+
+    if(cart.length === 0){
+
+        alert(
+            "Shopping Cart anda kosong."
+        );
+
+        return;
+
+    }
+
+
+    const delivery =
+        parseFloat(
+            document.getElementById(
+                "deliveryFee"
+            ).value
+        ) || 0;
+
+
+    let subtotal = 0;
+
+
+    let message =
+        "HAI IDRIS DIY,\n\n" +
+        "SAYA INGIN MEMBUAT SEMAKAN PESANAN BERDASARKAN PENGIRAAN BERIKUT:\n\n";
+
+
+    cart.forEach(
+        (item,index)=>{
+
+            const price =
+                parseFloat(
+                    String(
+                        item.harga
+                    ).replace(
+                        /[^0-9.]/g,
+                        ""
+                    )
+                ) || 0;
+
+
+            subtotal += price;
+
+
+            message +=
+                `${index + 1}. ${item.tajuk}\n`;
+
+            message +=
+                `   Ukuran: ${item.info}\n`;
+
+            message +=
+                `   Area: ${item.sqft || "-"} sqft\n`;
+
+            message +=
+                `   Ref: ${item.id || "-"}\n`;
+
+            message +=
+                `   Jumlah: RM ${price.toFixed(2)}\n\n`;
+
+        }
+    );
+
+
+    const total =
+        subtotal +
+        delivery;
+
+
+    message +=
+        `Material Total: RM ${subtotal.toFixed(2)}\n`;
+
+    message +=
+        `Delivery / Lalamove: RM ${delivery.toFixed(2)}\n`;
+
+    message +=
+        `TOTAL: RM ${total.toFixed(2)}\n\n`;
+
+    message +=
+        "Mohon semak dan sahkan pesanan saya.";
+
+
+    const url =
+        "https://wa.me/?text=" +
+        encodeURIComponent(
+            message
+        );
+
+
+    window.open(
+        url,
+        "_blank"
+    );
+
+}
+
+
+/* ==========================================
+   FLOOR VISUAL
+========================================== */
+
+function drawFloorLayout(
+    width,
+    length,
+    type
+){
+
+    const canvas =
+        document.getElementById(
+            "canvasVisual"
+        );
+
+
+    const parent =
+        canvas.parentElement;
+
+
+    canvas.width =
+        Math.max(
+            300,
+            parent.clientWidth - 2
+        );
+
+
+    canvas.height =
+        240;
+
+
+    const ctx =
+        canvas.getContext(
+            "2d"
+        );
+
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    const padding =
+        35;
+
+
+    const scale =
+        Math.min(
+            (canvas.width - padding * 2) /
+                width,
+
+            (canvas.height - padding * 2) /
+                length
+        );
+
+
+    const drawW =
+        width * scale;
+
+
+    const drawH =
+        length * scale;
+
+
+    const startX =
+        (canvas.width - drawW) / 2;
+
+
+    const startY =
+        (canvas.height - drawH) / 2;
+
+
+    /* FLOOR */
+
+    ctx.fillStyle =
+        "#fffdf0";
+
+
+    ctx.fillRect(
+        startX,
+        startY,
+        drawW,
+        drawH
+    );
+
+
+    /* FLOOR BORDER */
+
+    ctx.strokeStyle =
+        "#111";
+
+
+    ctx.lineWidth =
+        2;
+
+
+    ctx.strokeRect(
+        startX,
+        startY,
+        drawW,
+        drawH
+    );
+
+
+    /* PATTERN */
+
+    if(type === "herringbone"){
+
+        ctx.strokeStyle =
+            "#c7ad00";
+
+        ctx.lineWidth =
+            1;
+
+
+        const step =
+            Math.max(
+                12,
+                Math.min(
+                    22,
+                    drawW / 12
+                )
+            );
+
+
+        for(
+            let x =
+                startX - drawH;
+
+            x <
+                startX + drawW + drawH;
+
+            x += step
+        ){
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                x,
+                startY
+            );
+
+            ctx.lineTo(
+                x + drawH / 2,
+                startY + drawH / 2
+            );
+
+            ctx.lineTo(
+                x,
+                startY + drawH
+            );
+
+            ctx.stroke();
+
+        }
+
+    }
+    else{
+
+        ctx.strokeStyle =
+            "#d4bd00";
+
+        ctx.lineWidth =
+            .7;
+
+
+        const rows =
+            Math.max(
+                5,
+                Math.min(
+                    14,
+                    Math.round(
+                        length / 400
+                    )
+                )
+            );
+
+
+        const rowHeight =
+            drawH / rows;
+
+
+        for(
+            let y =
+                startY;
+
+            y <=
+                startY + drawH;
+
+            y += rowHeight
+        ){
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                startX,
+                y
+            );
+
+            ctx.lineTo(
+                startX + drawW,
+                y
+            );
+
+            ctx.stroke();
+
+        }
+
+
+        const cols =
+            Math.max(
+                4,
+                Math.min(
+                    12,
+                    Math.round(
+                        width / 300
+                    )
+                )
+            );
+
+
+        const colWidth =
+            drawW / cols;
+
+
+        let row = 0;
+
+
+        for(
+            let y =
+                startY;
+
+            y <
+                startY + drawH;
+
+            y += rowHeight
+        ){
+
+            const offset =
+                row % 2 === 0
+                    ? 0
+                    : colWidth / 2;
+
+
+            for(
+                let x =
+                    startX + offset;
+
+                x <
+                    startX + drawW;
+
+                x += colWidth
+            ){
+
+                ctx.beginPath();
+
+                ctx.moveTo(
+                    x,
+                    y
+                );
+
+                ctx.lineTo(
+                    x,
+                    Math.min(
+                        y + rowHeight,
+                        startY + drawH
+                    )
+                );
+
+                ctx.stroke();
+
+            }
+
+
+            row++;
+
+        }
+
+    }
+
+
+    /* DIMENSIONS */
+
+    ctx.fillStyle =
+        "#111";
+
+
+    ctx.font =
+        "10px Inter";
+
+
+    ctx.textAlign =
+        "center";
+
+
+    ctx.fillText(
+        `Width: ${width} mm`,
+        canvas.width / 2,
+        Math.max(
+            13,
+            startY - 8
+        )
+    );
+
+
+    ctx.save();
+
+
+    ctx.translate(
+        Math.max(
+            10,
+            startX - 12
+        ),
+        canvas.height / 2
+    );
+
+
+    ctx.rotate(
+        -Math.PI / 2
+    );
+
+
+    ctx.fillText(
+        `Length: ${length} mm`,
+        0,
+        0
+    );
+
+
+    ctx.restore();
+
+}
+
+
+/* ==========================================
+   ESCAPE HTML
+========================================== */
+
+function escapeHTML(value){
+
+    return String(value ?? "")
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
 </script>
 
-<a href="../index.html" style="position: fixed; bottom: 20px; right: 20px; background: #fdee23; color: #111; padding: 12px 18px; border-radius: 30px; text-decoration: none; font-weight: 800; font-size: 14px; border: 1px solid #111;"><span>←</span> Menu Utama</a>
 </body>
 </html>
