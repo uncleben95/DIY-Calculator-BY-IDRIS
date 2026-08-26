@@ -47,7 +47,7 @@
                     <option value="1:2:1">1:2:1 (Lebar - 400mm | 4 Bahagian)</option>
                     <option value="1:1:2:1:1">1:1:2:1:1 (Lebar - 600mm | 6 Bahagian)</option>
                     <option value="2:1:2:1:2">2:1:2:1:2 (Lebar - 600mm | 8 Bahagian)</option>
-                    <option value="1:2:1:2:1">1:2:1:2:1 (Lebar - 600mm | 7 Bahagian)</option>
+                    <option value="1:2:1:2:1" selected>1:2:1:2:1 (Lebar - 600mm | 7 Bahagian)</option>
                     <option value="1">1 (Lebar - 200mm | 1 Bahagian)</option>
                 </select>
             </div>
@@ -87,7 +87,7 @@
 
         <div id="visualContainer" class="hidden space-y-3">
             <div class="flex justify-between items-center">
-                <label class="block font-medium text-slate-700 text-sm">Visual Dinding (Nisbah Tepat):</label>
+                <label class="block font-medium text-slate-700 text-sm">Visual Dinding:</label>
                 <button onclick="saveVisualToPhone()" class="bg-slate-800 hover:bg-slate-900 text-white text-xs px-3 py-1.5 rounded-lg transition shadow-sm font-medium">
                     📥 Save to Phone (.png)
                 </button>
@@ -128,27 +128,22 @@
             let targetBoxHeight = (style === 'without_chairrail') ? (hMm - 200) : (hMm - 1070);
             if (targetBoxHeight < 300) targetBoxHeight = 300;
 
-            // Pengiraan Lebar Berdasarkan Nisbah Bahagian & Tolak Gap
+            // Pengiraan Lebar Mengikut Nisbah Bahagian Tepat
             let boxWidths = [];
             if (pattern === '1:1') {
-                let remW = wMm - 300; // tolakan 300mm untuk gap
-                let uW = remW / 2;
+                let uW = (wMm - 300) / 2;
                 boxWidths = [uW, uW];
             } else if (pattern === '1:2:1') {
-                let remW = wMm - 400; // tolakan 400mm untuk 4 gap
-                let uW = remW / 4;    // 4 bahagian (1 + 2 + 1)
+                let uW = (wMm - 400) / 4; // 1+2+1 = 4 bahagian
                 boxWidths = [uW, uW * 2, uW];
             } else if (pattern === '1:1:2:1:1') {
-                let remW = wMm - 600; // tolakan 600mm untuk 6 gap
-                let uW = remW / 6;    // 6 bahagian (1 + 1 + 2 + 1 + 1)
+                let uW = (wMm - 600) / 6; // 1+1+2+1+1 = 6 bahagian
                 boxWidths = [uW, uW, uW * 2, uW, uW];
             } else if (pattern === '2:1:2:1:2') {
-                let remW = wMm - 600; // tolakan 600mm untuk 8 gap
-                let uW = remW / 8;    // 8 bahagian (2 + 1 + 2 + 1 + 2)
+                let uW = (wMm - 600) / 8; // 2+1+2+1+2 = 8 bahagian
                 boxWidths = [uW * 2, uW, uW * 2, uW, uW * 2];
             } else if (pattern === '1:2:1:2:1') {
-                let remW = wMm - 600; // tolakan 600mm untuk 8 gap
-                let uW = remW / 8;    // 8 bahagian (1 + 2 + 1 + 2 + 1)
+                let uW = (wMm - 600) / 7; // 1+2+1+2+1 = 7 bahagian tepat!
                 boxWidths = [uW, uW * 2, uW, uW * 2, uW];
             } else {
                 let remW = wMm - 200;
