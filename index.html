@@ -1,40 +1,2369 @@
 <!DOCTYPE html>
 <html lang="ms">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Idris DIY & Tools Portal</title>
-    <link rel="manifest" href="manifest.json">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="Idris Portal">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --tng-yellow: #fdee23;
-            --tng-dark: #111111;
-            --bg-color: #f4f5f7;
-            --card-bg: #ffffff;
-            --text-main: #111111;
-            --text-sub: #666666;
-            --border-color: #e4e7eb;
-            --shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Idris DIY & Tools Portal</title>
+
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Idris Portal">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+    --yellow:#FFD600;
+    --yellow-soft:#FFF8CC;
+    --black:#111111;
+    --white:#FFFFFF;
+    --bg:#F4F5F7;
+    --text:#171717;
+    --muted:#777777;
+    --border:#E6E7EA;
+    --green:#16A34A;
+    --shadow:0 8px 25px rgba(0,0,0,.06);
+}
+
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    margin:0;
+    padding:18px 15px 35px;
+    min-height:100vh;
+    background:
+        radial-gradient(circle at 100% 0%,rgba(255,214,0,.13),transparent 27%),
+        var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+}
+
+button,
+input{
+    font-family:inherit;
+}
+
+.app{
+    width:100%;
+    max-width:460px;
+    margin:auto;
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+.header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:20px;
+}
+
+.profile{
+    display:flex;
+    align-items:center;
+    gap:11px;
+    cursor:pointer;
+    min-width:0;
+}
+
+.avatar{
+    width:48px;
+    height:48px;
+    flex-shrink:0;
+    border-radius:15px;
+    background:var(--yellow);
+    border:2px solid var(--black);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    font-size:18px;
+    font-weight:800;
+    box-shadow:3px 3px 0 var(--black);
+}
+
+.avatar img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.profile-info{
+    min-width:0;
+}
+
+.profile-info h2{
+    margin:0;
+    font-size:15px;
+    font-weight:800;
+    white-space:nowrap;
+}
+
+.profile-info p{
+    margin:3px 0 0;
+    font-size:9px;
+    color:var(--muted);
+}
+
+/* =========================================
+   HEADER ACTIONS
+========================================= */
+
+.header-actions{
+    display:flex;
+    align-items:center;
+    gap:7px;
+}
+
+.header-action{
+    position:relative;
+    height:42px;
+    border-radius:12px;
+    border:1.5px solid var(--black);
+    background:var(--white);
+    color:var(--black);
+    padding:0 10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:5px;
+    font-size:10px;
+    font-weight:800;
+    cursor:pointer;
+    box-shadow:3px 3px 0 var(--black);
+    white-space:nowrap;
+}
+
+.header-action:active{
+    transform:translate(2px,2px);
+    box-shadow:1px 1px 0 var(--black);
+}
+
+.header-action.lalamove{
+    background:var(--yellow);
+}
+
+.cart-badge{
+    position:absolute;
+    top:-8px;
+    right:-7px;
+    min-width:20px;
+    height:20px;
+    padding:0 5px;
+    border-radius:50px;
+    background:var(--black);
+    color:var(--yellow);
+    border:2px solid var(--white);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:9px;
+    font-weight:800;
+}
+
+/* =========================================
+   HERO
+========================================= */
+
+.hero{
+    position:relative;
+    overflow:hidden;
+    min-height:175px;
+    background:var(--black);
+    border-radius:23px;
+    padding:23px;
+    margin-bottom:25px;
+    color:white;
+    box-shadow:var(--shadow);
+}
+
+.hero::before{
+    content:"";
+    position:absolute;
+    width:180px;
+    height:180px;
+    border-radius:50%;
+    background:var(--yellow);
+    right:-75px;
+    top:-90px;
+}
+
+.hero::after{
+    content:"";
+    position:absolute;
+    width:110px;
+    height:110px;
+    border:18px solid rgba(255,214,0,.12);
+    border-radius:50%;
+    right:20px;
+    bottom:-65px;
+}
+
+.hero-content{
+    position:relative;
+    z-index:2;
+}
+
+.hero-label{
+    display:inline-flex;
+    background:var(--yellow);
+    color:var(--black);
+    border-radius:7px;
+    padding:6px 9px;
+    font-size:8px;
+    font-weight:800;
+    letter-spacing:.5px;
+    margin-bottom:12px;
+}
+
+.hero h1{
+    margin:0;
+    font-size:22px;
+    line-height:1.18;
+    letter-spacing:-.6px;
+}
+
+.hero p{
+    max-width:295px;
+    margin:9px 0 0;
+    color:#c9c9c9;
+    font-size:10px;
+    line-height:1.55;
+}
+
+/* =========================================
+   SECTION HEADER
+========================================= */
+
+.section-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin:0 2px 11px;
+}
+
+.section-title{
+    font-size:14px;
+    font-weight:800;
+}
+
+.section-count{
+    color:var(--muted);
+    font-size:9px;
+    font-weight:700;
+}
+
+/* =========================================
+   SERVICE CARDS
+========================================= */
+
+.services{
+    display:grid;
+    gap:11px;
+    margin-bottom:26px;
+}
+
+.service-card{
+    position:relative;
+    display:flex;
+    align-items:center;
+    gap:13px;
+    padding:10px;
+    background:var(--white);
+    border:1px solid var(--border);
+    border-radius:17px;
+    cursor:pointer;
+    overflow:hidden;
+    box-shadow:0 4px 16px rgba(0,0,0,.035);
+    transition:.2s ease;
+}
+
+.service-card:active{
+    transform:scale(.975);
+    border-color:var(--yellow);
+}
+
+.service-image{
+    width:70px;
+    height:70px;
+    flex-shrink:0;
+    overflow:hidden;
+    border-radius:12px;
+    background:#ddd;
+}
+
+.service-image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+    transition:.3s ease;
+}
+
+.service-card:hover img{
+    transform:scale(1.06);
+}
+
+.service-content{
+    min-width:0;
+    padding-right:28px;
+}
+
+.service-tag{
+    display:inline-block;
+    padding:4px 6px;
+    margin-bottom:5px;
+    border-radius:5px;
+    background:var(--yellow-soft);
+    color:#806C00;
+    font-size:7px;
+    font-weight:800;
+    text-transform:uppercase;
+}
+
+.service-content h3{
+    margin:0 0 4px;
+    font-size:12px;
+    line-height:1.3;
+    font-weight:800;
+}
+
+.service-content p{
+    margin:0;
+    color:var(--muted);
+    font-size:9px;
+    line-height:1.45;
+}
+
+.service-card::after{
+    content:"›";
+    position:absolute;
+    right:13px;
+    top:50%;
+    transform:translateY(-50%);
+    width:25px;
+    height:25px;
+    border-radius:50%;
+    background:#F4F4F4;
+    color:#777;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:17px;
+}
+
+/* =========================================
+   HISTORY
+========================================= */
+
+.history-box{
+    background:var(--white);
+    border:1px solid var(--border);
+    border-radius:17px;
+    overflow:hidden;
+    box-shadow:var(--shadow);
+    margin-bottom:20px;
+}
+
+.history-inner{
+    padding:4px 15px;
+}
+
+.history-item{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding:13px 0;
+    border-bottom:1px solid #EEEEEE;
+}
+
+.history-item:last-child{
+    border-bottom:none;
+}
+
+.history-info{
+    min-width:0;
+}
+
+.history-info strong{
+    display:block;
+    font-size:11px;
+    margin-bottom:3px;
+}
+
+.history-info span{
+    display:block;
+    color:var(--muted);
+    font-size:9px;
+    line-height:1.4;
+}
+
+.history-price{
+    color:#8A7400!important;
+    font-weight:800;
+    margin-top:2px;
+}
+
+.add-cart{
+    border:1px solid var(--black);
+    background:var(--yellow);
+    color:var(--black);
+    padding:7px 9px;
+    border-radius:8px;
+    font-size:8px;
+    font-weight:800;
+    cursor:pointer;
+}
+
+.empty-history{
+    padding:25px 10px;
+    text-align:center;
+    color:var(--muted);
+    font-size:10px;
+}
+
+.clear-history{
+    border:none;
+    background:none;
+    color:#EF4444;
+    font-size:9px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.footer{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:3px;
+    color:#888;
+    font-size:9px;
+}
+
+.visitor{
+    background:white;
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:6px 9px;
+}
+
+.visitor strong{
+    color:#806C00;
+}
+
+/* =========================================
+   CART MODAL
+========================================= */
+
+.cart-modal{
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    background:rgba(0,0,0,.62);
+    backdrop-filter:blur(6px);
+    opacity:0;
+    pointer-events:none;
+    transition:.25s ease;
+}
+
+.cart-modal.active{
+    opacity:1;
+    pointer-events:auto;
+}
+
+.cart-content{
+    width:100%;
+    max-width:460px;
+    max-height:90vh;
+    overflow-y:auto;
+    padding:18px 17px 25px;
+    background:white;
+    border-radius:24px 24px 0 0;
+    transform:translateY(100%);
+    transition:.3s cubic-bezier(.2,.8,.2,1);
+}
+
+.cart-modal.active .cart-content{
+    transform:translateY(0);
+}
+
+.drag-line{
+    width:38px;
+    height:4px;
+    border-radius:20px;
+    background:#ddd;
+    margin:-6px auto 17px;
+}
+
+.cart-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding-bottom:13px;
+    border-bottom:1px solid var(--border);
+}
+
+.cart-header h2{
+    margin:0;
+    font-size:17px;
+    font-weight:800;
+}
+
+.cart-header small{
+    display:block;
+    margin-top:3px;
+    color:var(--muted);
+    font-size:9px;
+}
+
+.close-cart{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    border:1px solid var(--border);
+    background:#F7F7F7;
+    font-size:15px;
+    cursor:pointer;
+}
+
+/* =========================================
+   CART ITEMS
+========================================= */
+
+.cart-items{
+    max-height:250px;
+    overflow-y:auto;
+}
+
+.cart-item{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding:12px 0;
+    border-bottom:1px dashed #ddd;
+}
+
+.cart-item-info{
+    min-width:0;
+}
+
+.cart-item-info strong{
+    display:block;
+    font-size:11px;
+    margin-bottom:3px;
+}
+
+.cart-item-info span{
+    display:block;
+    color:var(--muted);
+    font-size:9px;
+}
+
+.cart-item-price{
+    color:var(--black)!important;
+    font-size:11px!important;
+    font-weight:800;
+    margin-top:4px;
+}
+
+.remove-item{
+    flex-shrink:0;
+    border:none;
+    background:#FFF0F0;
+    color:#DC2626;
+    padding:6px 8px;
+    border-radius:7px;
+    font-size:8px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+/* =========================================
+   CART DELIVERY INFO
+========================================= */
+
+.delivery-note-box{
+    margin-top:15px;
+    padding:13px;
+    background:#FAFAFA;
+    border:1px solid var(--border);
+    border-radius:14px;
+}
+
+.delivery-note-box strong{
+    display:block;
+    font-size:11px;
+    margin-bottom:5px;
+}
+
+.delivery-note-box p{
+    margin:0;
+    color:var(--muted);
+    font-size:9px;
+    line-height:1.45;
+}
+
+/* =========================================
+   CART SUMMARY
+========================================= */
+
+.summary{
+    margin-top:15px;
+    padding:15px;
+    background:#FAFAFA;
+    border:1px solid var(--border);
+    border-radius:14px;
+}
+
+.summary-row{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:9px;
+    font-size:11px;
+}
+
+.summary-row span:first-child{
+    color:var(--muted);
+}
+
+.summary-total{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding-top:12px;
+    margin-top:5px;
+    border-top:1px solid var(--border);
+    font-size:13px;
+    font-weight:800;
+}
+
+.grand-total{
+    font-size:19px;
+}
+
+.checkout{
+    width:100%;
+    height:49px;
+    margin-top:14px;
+    border:1.5px solid var(--black);
+    border-radius:13px;
+    background:var(--black);
+    color:var(--yellow);
+    font-size:12px;
+    font-weight:800;
+    cursor:pointer;
+    box-shadow:4px 4px 0 var(--yellow);
+}
+
+.checkout:active{
+    transform:translate(2px,2px);
+    box-shadow:1px 1px 0 var(--yellow);
+}
+
+/* =========================================
+   LALAMOVE POPUP
+========================================= */
+
+.delivery-modal{
+    position:fixed;
+    inset:0;
+    z-index:10500;
+    background:rgba(0,0,0,.62);
+    backdrop-filter:blur(6px);
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    opacity:0;
+    pointer-events:none;
+    transition:.25s ease;
+}
+
+.delivery-modal.active{
+    opacity:1;
+    pointer-events:auto;
+}
+
+.delivery-content{
+    width:100%;
+    max-width:460px;
+    background:white;
+    border-radius:24px 24px 0 0;
+    padding:20px 18px 27px;
+    transform:translateY(100%);
+    transition:.3s ease;
+}
+
+.delivery-modal.active .delivery-content{
+    transform:translateY(0);
+}
+
+.delivery-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.delivery-top h2{
+    margin:0;
+    font-size:17px;
+}
+
+.delivery-top p{
+    margin:4px 0 0;
+    color:var(--muted);
+    font-size:9px;
+}
+
+.delivery-close{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    border:1px solid var(--border);
+    background:#F7F7F7;
+    cursor:pointer;
+}
+
+.lalamove-main-button{
+    width:100%;
+    height:53px;
+    border-radius:14px;
+    border:1.5px solid var(--black);
+    background:var(--yellow);
+    color:var(--black);
+    font-size:13px;
+    font-weight:800;
+    cursor:pointer;
+    box-shadow:4px 4px 0 var(--black);
+}
+
+.lalamove-main-button:active{
+    transform:translate(2px,2px);
+    box-shadow:1px 1px 0 var(--black);
+}
+
+.delivery-input-title{
+    margin:17px 0 7px;
+    font-size:10px;
+    font-weight:800;
+}
+
+.fee-input-wrap{
+    position:relative;
+}
+
+.fee-input-wrap span{
+    position:absolute;
+    left:12px;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:11px;
+    font-weight:700;
+    color:#777;
+}
+
+.fee-input{
+    width:100%;
+    height:43px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:0 10px 0 38px;
+    font-size:12px;
+    outline:none;
+}
+
+.fee-input:focus{
+    border-color:#BDA900;
+}
+
+.save-delivery{
+    width:100%;
+    height:45px;
+    margin-top:10px;
+    border:1px solid var(--black);
+    border-radius:11px;
+    background:var(--black);
+    color:var(--yellow);
+    font-size:11px;
+    font-weight:800;
+    cursor:pointer;
+}
+
+/* =========================================
+   LOADING
+========================================= */
+
+.overlay{
+    position:fixed;
+    inset:0;
+    z-index:11000;
+    background:rgba(0,0,0,.7);
+    backdrop-filter:blur(6px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    opacity:0;
+    pointer-events:none;
+    transition:.25s;
+}
+
+.overlay.active{
+    opacity:1;
+    pointer-events:auto;
+}
+
+.loading-box{
+    width:260px;
+    padding:25px;
+    background:white;
+    border-radius:20px;
+    text-align:center;
+}
+
+.spinner{
+    width:36px;
+    height:36px;
+    margin:0 auto 14px;
+    border:4px solid #eee;
+    border-top-color:var(--yellow);
+    border-right-color:var(--black);
+    border-radius:50%;
+    animation:spin .8s linear infinite;
+}
+
+@keyframes spin{
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+.loading-box h3{
+    margin:0;
+    font-size:14px;
+}
+
+.loading-box p{
+    margin:6px 0 0;
+    color:var(--muted);
+    font-size:10px;
+}
+
+/* =========================================
+   TOAST
+========================================= */
+
+.toast{
+    position:fixed;
+    left:50%;
+    bottom:25px;
+    z-index:12000;
+    max-width:85%;
+    padding:11px 15px;
+    border-radius:10px;
+    background:var(--black);
+    color:white;
+    font-size:10px;
+    font-weight:700;
+    text-align:center;
+    opacity:0;
+    pointer-events:none;
+    transform:translate(-50%,20px);
+    transition:.25s;
+}
+
+.toast.show{
+    opacity:1;
+    transform:translate(-50%,0);
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="app">
+
+<input
+    type="file"
+    id="galleryInput"
+    accept="image/*"
+    style="display:none"
+    onchange="previewProfileImage(event)"
+>
+
+
+<!-- ======================================
+     HEADER
+====================================== -->
+
+<header class="header">
+
+    <div
+        class="profile"
+        onclick="triggerUploadModal()"
+    >
+
+        <div
+            class="avatar"
+            id="headerAvatar"
+        >
+            I
+        </div>
+
+        <div class="profile-info">
+
+            <h2>
+                Idris DIY ⚙️
+            </h2>
+
+            <p>
+                Idris e-Portal & Calculator
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- TWO SEPARATE BUTTONS -->
+
+    <div class="header-actions">
+
+        <!-- LALAMOVE -->
+        <button
+            class="header-action lalamove"
+            onclick="openLalamoveModal()"
+        >
+            🛵
+            <span>
+                Lalamove
+            </span>
+        </button>
+
+
+        <!-- CART -->
+        <button
+            class="header-action"
+            onclick="toggleCartModal()"
+        >
+            🛒
+            <span>
+                Troli
+            </span>
+
+            <span
+                class="cart-badge"
+                id="cartBadgeCount"
+            >
+                0
+            </span>
+
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- ======================================
+     HERO
+====================================== -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div class="hero-label">
+            ⚡ IDRIS E-PORTAL
+        </div>
+
+        <h1>
+            DIY & Construction<br>
+            Calculator
+        </h1>
+
+        <p>
+            Semua kalkulator untuk quotation,
+            material, panel, flooring dan penghantaran
+            dalam satu portal.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ======================================
+     CALCULATORS
+====================================== -->
+
+<div class="section-header">
+
+    <div class="section-title">
+        Pilihan Kalkulator
+    </div>
+
+    <div class="section-count">
+        5 TOOLS
+    </div>
+
+</div>
+
+
+<div class="services">
+
+
+<!-- SPC -->
+
+<div
+    class="service-card"
+    onclick="bukaApps(
+        'spcflooring/index.html',
+        'SPC Flooring Calculator'
+    )"
+>
+
+    <div class="service-image">
+
+        <img
+            src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=500&auto=format&fit=crop&q=85"
+            alt="SPC Flooring"
+        >
+
+    </div>
+
+    <div class="service-content">
+
+        <span class="service-tag">
+            FLOORING
+        </span>
+
+        <h3>
+            SPC Flooring Calculator
+        </h3>
+
+        <p>
+            Kira kotak SPC, wastage, aksesori
+            dan anggaran material.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- FLUTED -->
+
+<div
+    class="service-card"
+    onclick="bukaApps(
+        'wallpanelling/index.html',
+        'Board with Fluted Panelling Calculator'
+    )"
+>
+
+    <div class="service-image">
+
+        <img
+            src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=500&auto=format&fit=crop&q=85"
+            alt="Fluted Wall Panel"
+        >
+
+    </div>
+
+    <div class="service-content">
+
+        <span class="service-tag">
+            WALL PANEL
+        </span>
+
+        <h3>
+            Board with Fluted Panelling
+        </h3>
+
+        <p>
+            Kira susunan board, fluted panel
+            dan keperluan dinding.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- CEILING -->
+
+<div
+    class="service-card"
+    onclick="bukaApps(
+        'ceilingseries/index.html',
+        'Ceiling Series Calculator'
+    )"
+>
+
+    <div class="service-image">
+
+        <img
+            src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=500&auto=format&fit=crop&q=85"
+            alt="Ceiling"
+        >
+
+    </div>
+
+    <div class="service-content">
+
+        <span class="service-tag">
+            CEILING
+        </span>
+
+        <h3>
+            Ceiling Series Calculator
+        </h3>
+
+        <p>
+            Kira ukuran, bahan dan keperluan
+            siri siling.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- WAINSCOTING -->
+
+<div
+    class="service-card"
+    onclick="bukaApps(
+        'wainscoting/index.html',
+        'Wainscoting Calculator'
+    )"
+>
+
+    <div class="service-image">
+
+        <img
+            src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=500&auto=format&fit=crop&q=85"
+            alt="Wainscoting Wall"
+        >
+
+    </div>
+
+    <div class="service-content">
+
+        <span class="service-tag">
+            WALL DECOR
+        </span>
+
+        <h3>
+            Wainscoting Calculator
+        </h3>
+
+        <p>
+            Kira panel, ukuran kotak dan
+            anggaran kerja wainscoting.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- POSTAGE -->
+
+<div
+    class="service-card"
+    onclick="bukaApps(
+        'postage/index.html',
+        'Postage & Logistics Calculator'
+    )"
+>
+
+    <div class="service-image">
+
+        <img
+            src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=500&auto=format&fit=crop&q=85"
+            alt="Parcel Logistics"
+        >
+
+    </div>
+
+    <div class="service-content">
+
+        <span class="service-tag">
+            LOGISTICS
+        </span>
+
+        <h3>
+            Postage & Logistics Calculator
+        </h3>
+
+        <p>
+            Kira kos postage, parcel dan
+            penghantaran barang.
+        </p>
+
+    </div>
+
+</div>
+
+</div>
+
+
+<!-- ======================================
+     HISTORY
+====================================== -->
+
+<div class="section-header">
+
+    <div class="section-title">
+        Sejarah Pengiraan
+    </div>
+
+    <button
+        class="clear-history"
+        onclick="clearHistory()"
+    >
+        Kosongkan
+    </button>
+
+</div>
+
+
+<div class="history-box">
+
+    <div
+        class="history-inner"
+        id="historyListBox"
+    >
+
+        <div class="empty-history">
+            Tiada sejarah pengiraan tersimpan.
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- FOOTER -->
+
+<footer class="footer">
+
+    <span>
+        Idris Portal • v7.1
+    </span>
+
+    <div class="visitor">
+        Pelawat:
+        <strong id="visitorCount">
+            1,980
+        </strong>
+    </div>
+
+</footer>
+
+</div>
+
+
+<!-- ======================================
+     CART MODAL
+====================================== -->
+
+<div
+    class="cart-modal"
+    id="cartModal"
+>
+
+<div class="cart-content">
+
+    <div class="drag-line"></div>
+
+
+    <div class="cart-header">
+
+        <div>
+
+            <h2>
+                🛒 Troli Pesanan
+            </h2>
+
+            <small>
+                Semak item sebelum dihantar
+            </small>
+
+        </div>
+
+        <button
+            class="close-cart"
+            onclick="toggleCartModal()"
+        >
+            ✕
+        </button>
+
+    </div>
+
+
+    <div
+        class="cart-items"
+        id="cartItemsContainer"
+    ></div>
+
+
+    <div class="delivery-note-box">
+
+        <strong>
+            🚚 Caj Penghantaran
+        </strong>
+
+        <p>
+            Untuk tambah caj Lalamove atau penghantaran,
+            gunakan butang <b>Lalamove</b> di bahagian atas.
+        </p>
+
+    </div>
+
+
+    <div class="summary">
+
+        <div class="summary-row">
+
+            <span>
+                Jumlah Material
+            </span>
+
+            <span id="cartSubtotalText">
+                RM 0.00
+            </span>
+
+        </div>
+
+
+        <div class="summary-row">
+
+            <span>
+                Caj Penghantaran
+            </span>
+
+            <span id="cartLalamoveText">
+                RM 0.00
+            </span>
+
+        </div>
+
+
+        <div class="summary-total">
+
+            <span>
+                TOTAL
+            </span>
+
+            <span
+                id="cartGrandTotalText"
+                class="grand-total"
+            >
+                RM 0.00
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <button
+        class="checkout"
+        onclick="proceedCheckout()"
+    >
+        💬 Hantar Pesanan melalui WhatsApp
+    </button>
+
+</div>
+
+</div>
+
+
+<!-- ======================================
+     LALAMOVE MODAL
+====================================== -->
+
+<div
+    class="delivery-modal"
+    id="deliveryModal"
+>
+
+<div class="delivery-content">
+
+    <div class="delivery-top">
+
+        <div>
+
+            <h2>
+                🛵 Lalamove
+            </h2>
+
+            <p>
+                Penghantaran & caj delivery
+            </p>
+
+        </div>
+
+        <button
+            class="delivery-close"
+            onclick="closeLalamoveModal()"
+        >
+            ✕
+        </button>
+
+    </div>
+
+
+    <button
+        class="lalamove-main-button"
+        onclick="openLalamoveWebsite()"
+    >
+        🛵 Buka Lalamove
+    </button>
+
+
+    <div class="delivery-input-title">
+        Masukkan Caj Penghantaran
+    </div>
+
+
+    <div class="fee-input-wrap">
+
+        <span>
+            RM
+        </span>
+
+        <input
+            type="number"
+            id="lalamoveFeeInput"
+            class="fee-input"
+            min="0"
+            step="0.50"
+            placeholder="0.00"
+        >
+
+    </div>
+
+
+    <button
+        class="save-delivery"
+        onclick="saveDeliveryFee()"
+    >
+        ✓ Simpan Caj Penghantaran
+    </button>
+
+</div>
+
+</div>
+
+
+<!-- ======================================
+     LOADING
+====================================== -->
+
+<div
+    class="overlay"
+    id="loadingOverlay"
+>
+
+<div class="loading-box">
+
+    <div class="spinner"></div>
+
+    <h3 id="popupTitle">
+        Membuka Calculator
+    </h3>
+
+    <p>
+        Sila tunggu sebentar...
+    </p>
+
+</div>
+
+</div>
+
+
+<div
+    class="toast"
+    id="toast"
+></div>
+
+
+<script>
+
+/* =========================================
+   LOAD
+========================================= */
+
+window.addEventListener(
+    'DOMContentLoaded',
+    function(){
+
+        loadSavedProfile();
+
+        renderHistory();
+
+        updateCartBadge();
+
+        loadSavedDeliveryFee();
+
+    }
+);
+
+
+/* =========================================
+   TOAST
+========================================= */
+
+function showToast(message){
+
+    const toast =
+        document.getElementById('toast');
+
+    toast.innerText = message;
+
+    toast.classList.add('show');
+
+    setTimeout(function(){
+
+        toast.classList.remove('show');
+
+    },2200);
+
+}
+
+
+/* =========================================
+   HISTORY
+========================================= */
+
+function renderHistory(){
+
+    const historyBox =
+        document.getElementById(
+            'historyListBox'
+        );
+
+    let historyData =
+        JSON.parse(
+            localStorage.getItem(
+                'diy_calc_history'
+            )
+        ) || [];
+
+
+    if(historyData.length === 0){
+
+        historyBox.innerHTML = `
+            <div class="empty-history">
+                Tiada sejarah pengiraan tersimpan.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    let html='';
+
+
+    historyData.forEach(
+        function(item,index){
+
+            html += `
+
+                <div class="history-item">
+
+                    <div class="history-info">
+
+                        <strong>
+                            ${item.tajuk}
+                        </strong>
+
+                        <span>
+                            ${item.info}
+                        </span>
+
+                        <span class="history-price">
+                            ${item.harga}
+                        </span>
+
+                    </div>
+
+                    <button
+                        class="add-cart"
+                        onclick="addToCart(${index})"
+                    >
+                        + CART
+                    </button>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    historyBox.innerHTML=html;
+
+}
+
+
+/* =========================================
+   CLEAR HISTORY
+========================================= */
+
+function clearHistory(){
+
+    localStorage.removeItem(
+        'diy_calc_history'
+    );
+
+    renderHistory();
+
+    showToast(
+        'Sejarah pengiraan telah dikosongkan.'
+    );
+
+}
+
+
+/* =========================================
+   ADD CART
+========================================= */
+
+function addToCart(index){
+
+    let historyData =
+        JSON.parse(
+            localStorage.getItem(
+                'diy_calc_history'
+            )
+        ) || [];
+
+
+    const item =
+        historyData[index];
+
+
+    if(!item){
+
+        showToast(
+            'Item tidak dijumpai.'
+        );
+
+        return;
+    }
+
+
+    let cartData =
+        JSON.parse(
+            localStorage.getItem(
+                'diy_cart'
+            )
+        ) || [];
+
+
+    cartData.push(item);
+
+
+    localStorage.setItem(
+        'diy_cart',
+        JSON.stringify(cartData)
+    );
+
+
+    updateCartBadge();
+
+
+    showToast(
+        'Item dimasukkan ke dalam troli.'
+    );
+
+}
+
+
+/* =========================================
+   CART BADGE
+========================================= */
+
+function updateCartBadge(){
+
+    let cartData =
+        JSON.parse(
+            localStorage.getItem(
+                'diy_cart'
+            )
+        ) || [];
+
+
+    document.getElementById(
+        'cartBadgeCount'
+    ).innerText =
+        cartData.length;
+
+}
+
+
+/* =========================================
+   CART MODAL
+========================================= */
+
+function toggleCartModal(){
+
+    const modal =
+        document.getElementById(
+            'cartModal'
+        );
+
+
+    modal.classList.toggle(
+        'active'
+    );
+
+
+    if(
+        modal.classList.contains(
+            'active'
+        )
+    ){
+
+        renderCartItems();
+
+    }
+
+}
+
+
+/* =========================================
+   RENDER CART
+========================================= */
+
+function renderCartItems(){
+
+    let cartData =
+        JSON.parse(
+            localStorage.getItem(
+                'diy_cart'
+            )
+        ) || [];
+
+
+    const container =
+        document.getElementById(
+            'cartItemsContainer'
+        );
+
+
+    if(cartData.length === 0){
+
+        container.innerHTML = `
+
+            <div class="empty-history">
+
+                🛒<br><br>
+
+                Troli anda masih kosong.
+
+            </div>
+
+        `;
+
+
+        calculateCartTotal();
+
+        return;
+    }
+
+
+    let html='';
+
+
+    cartData.forEach(
+        function(item,index){
+
+            html += `
+
+                <div class="cart-item">
+
+                    <div class="cart-item-info">
+
+                        <strong>
+                            ${item.tajuk}
+                        </strong>
+
+                        <span>
+                            ${item.info}
+                        </span>
+
+                        <span class="cart-item-price">
+                            ${item.harga}
+                        </span>
+
+                    </div>
+
+                    <button
+                        class="remove-item"
+                        onclick="removeFromCart(${index})"
+                    >
+                        Buang
+                    </button>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    container.innerHTML=html;
+
+
+    calculateCartTotal();
+
+}
+
+
+/* =========================================
+   REMOVE CART
+========================================= */
+
+function removeFromCart(index){
+
+    let cartData =
+        JSON.parse(
+            localStorage.getItem(
+                'diy_cart'
+            )
+        ) || [];
+
+
+    cartData.splice(
+        index,
+        1
+    );
+
+
+    localStorage.setItem(
+        'diy_cart',
+        JSON.stringify(cartData)
+    );
+
+
+    updateCartBadge();
+
+    renderCartItems();
+
+}
+
+
+/* =========================================
+   GET DELIVERY FEE
+========================================= */
+
+function getDeliveryFee(){
+
+    return parseFloat(
+        localStorage.getItem(
+            'diy_lalamove_fee'
+        )
+    ) || 0;
+
+}
+
+
+/* =========================================
+   CALCULATE CART
+========================================= */
+
+function calculateCartTotal(){
+
+    let cartData =
+        JSON.parse(
+            localStorage.getItem(
+                'diy_cart'
+            )
+        ) || [];
+
+
+    let subtotal=0;
+
+
+    cartData.forEach(
+        function(item){
+
+            let price =
+                parseFloat(
+                    String(item.harga)
+                    .replace(
+                        /[^0-9.]/g,
+                        ''
+                    )
+                ) || 0;
+
+
+            subtotal += price;
+
+        }
+    );
+
+
+    const deliveryFee =
+        getDeliveryFee();
+
+
+    const total =
+        subtotal + deliveryFee;
+
+
+    document.getElementById(
+        'cartSubtotalText'
+    ).innerText =
+        'RM ' + subtotal.toFixed(2);
+
+
+    document.getElementById(
+        'cartLalamoveText'
+    ).innerText =
+        'RM ' + deliveryFee.toFixed(2);
+
+
+    document.getElementById(
+        'cartGrandTotalText'
+    ).innerText =
+        'RM ' + total.toFixed(2);
+
+}
+
+
+/* =========================================
+   LALAMOVE MODAL
+========================================= */
+
+function openLalamoveModal(){
+
+    const modal =
+        document.getElementById(
+            'deliveryModal'
+        );
+
+
+    document.getElementById(
+        'lalamoveFeeInput'
+    ).value =
+        getDeliveryFee() || '';
+
+
+    modal.classList.add(
+        'active'
+    );
+
+}
+
+
+function closeLalamoveModal(){
+
+    document
+        .getElementById(
+            'deliveryModal'
+        )
+        .classList.remove(
+            'active'
+        );
+
+}
+
+
+/* =========================================
+   OPEN LALAMOVE
+========================================= */
+
+function openLalamoveWebsite(){
+
+    window.open(
+        'https://www.lalamove.com/en-my/',
+        '_blank'
+    );
+
+}
+
+
+/* =========================================
+   SAVE DELIVERY
+========================================= */
+
+function saveDeliveryFee(){
+
+    const input =
+        document.getElementById(
+            'lalamoveFeeInput'
+        );
+
+
+    const fee =
+        parseFloat(
+            input.value
+        ) || 0;
+
+
+    localStorage.setItem(
+        'diy_lalamove_fee',
+        fee.toString()
+    );
+
+
+    calculateCartTotal();
+
+
+    closeLalamoveModal();
+
+
+    showToast(
+        'Caj penghantaran berjaya disimpan.'
+    );
+
+}
+
+
+/* =========================================
+   LOAD DELIVERY
+========================================= */
+
+function loadSavedDeliveryFee(){
+
+    const fee =
+        getDeliveryFee();
+
+
+    const input =
+        document.getElementById(
+            'lalamoveFeeInput'
+        );
+
+
+    if(input){
+
+        input.value =
+            fee > 0 ? fee : '';
+
+    }
+
+}
+
+
+/* =========================================
+   WHATSAPP
+========================================= */
+
+function proceedCheckout(){
+
+    let cartData =
+        JSON.parse(
+            localStorage.getItem(
+                'diy_cart'
+            )
+        ) || [];
+
+
+    if(cartData.length === 0){
+
+        showToast(
+            'Troli anda kosong!'
+        );
+
+        return;
+
+    }
+
+
+    let subtotal=0;
+
+
+    let msg =
+        'Hai Idris, saya ingin sahkan pesanan pengiraan berikut:\n\n';
+
+
+    cartData.forEach(
+        function(item,index){
+
+            let price =
+                parseFloat(
+                    String(item.harga)
+                    .replace(
+                        /[^0-9.]/g,
+                        ''
+                    )
+                ) || 0;
+
+
+            subtotal += price;
+
+
+            msg +=
+                `${index+1}. ${item.tajuk}\n`+
+                `   ${item.info}\n`+
+                `   ${item.harga}\n\n`;
+
+        }
+    );
+
+
+    const deliveryFee =
+        getDeliveryFee();
+
+
+    const grandTotal =
+        subtotal + deliveryFee;
+
+
+    msg +=
+        `Jumlah Material: RM ${subtotal.toFixed(2)}\n`+
+        `Caj Lalamove / Penghantaran: RM ${deliveryFee.toFixed(2)}\n`+
+        `TOTAL KESELURUHAN: RM ${grandTotal.toFixed(2)}`;
+
+
+    const url =
+        'https://wa.me/?text='+
+        encodeURIComponent(msg);
+
+
+    window.open(
+        url,
+        '_blank'
+    );
+
+}
+
+
+/* =========================================
+   PROFILE
+========================================= */
+
+function triggerUploadModal(){
+
+    document
+        .getElementById(
+            'galleryInput'
+        )
+        .click();
+
+}
+
+
+function previewProfileImage(event){
+
+    const file =
+        event.target.files[0];
+
+
+    if(!file) return;
+
+
+    const reader =
+        new FileReader();
+
+
+    reader.onload =
+        function(e){
+
+            const image =
+                e.target.result;
+
+
+            localStorage.setItem(
+                'idris_profile_img',
+                image
+            );
+
+
+            applyProfileImage(
+                image
+            );
+
+
+            showToast(
+                'Gambar profil berjaya ditukar.'
+            );
+
+        };
+
+
+    reader.readAsDataURL(file);
+
+}
+
+
+function loadSavedProfile(){
+
+    const image =
+        localStorage.getItem(
+            'idris_profile_img'
+        );
+
+
+    if(image){
+
+        applyProfileImage(
+            image
+        );
+
+    }
+
+}
+
+
+function applyProfileImage(src){
+
+    document.getElementById(
+        'headerAvatar'
+    ).innerHTML = `
+
+        <img
+            src="${src}"
+            alt="Profil"
+        >
+
+    `;
+
+}
+
+
+/* =========================================
+   OPEN CALCULATOR
+========================================= */
+
+function bukaApps(url,tajuk){
+
+    document.getElementById(
+        'popupTitle'
+    ).innerText =
+        'Memuatkan '+tajuk;
+
+
+    document.getElementById(
+        'loadingOverlay'
+    ).classList.add(
+        'active'
+    );
+
+
+    setTimeout(
+        function(){
+
+            window.location.href =
+                url;
+
+        },
+        500
+    );
+
+}
+
+
+/* =========================================
+   CLICK OUTSIDE MODALS
+========================================= */
+
+document
+    .getElementById('cartModal')
+    .addEventListener(
+        'click',
+        function(e){
+
+            if(
+                e.target === this
+            ){
+
+                toggleCartModal();
+
+            }
+
+        }
+    );
+
+
+document
+    .getElementById('deliveryModal')
+    .addEventListener(
+        'click',
+        function(e){
+
+            if(
+                e.target === this
+            ){
+
+                closeLalamoveModal();
+
+            }
+
+        }
+    );
+
+
+/* =========================================
+   ESC
+========================================= */
+
+document.addEventListener(
+    'keydown',
+    function(e){
+
+        if(e.key === 'Escape'){
+
+            document
+                .getElementById(
+                    'cartModal'
+                )
+                .classList.remove(
+                    'active'
+                );
+
+
+            document
+                .getElementById(
+                    'deliveryModal'
+                )
+                .classList.remove(
+                    'active'
+                );
+
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            margin: 0;
-            padding: 20px 16px 40px;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+    }
+);
+
+</script>
+
+</body>
+</html>        }
 
         /* HEADER / PROFIL & CART BUTTON */
         .header-container {
