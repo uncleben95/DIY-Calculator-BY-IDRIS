@@ -17,7 +17,7 @@
     <div class="max-w-lg w-full bg-white rounded-2xl shadow-xl p-5 md:p-6 space-y-6 border border-slate-200">
         <div>
             <h2 class="text-xl md:text-2xl font-bold text-slate-900">Wainscoting Calculator</h2>
-            <p class="text-xs md:text-sm text-slate-500">Sebut harga terperinci, formula tepat, & muat turun imej.</p>
+            <p class="text-xs md:text-sm text-slate-500">Sebut harga terperinci, formula nisbah tepat, & muat turun imej.</p>
         </div>
 
         <div class="space-y-4 text-sm">
@@ -43,12 +43,12 @@
             <div>
                 <label class="block font-medium text-slate-700 mb-1">Pilihan Corak Kotak (Nisbah)</label>
                 <select id="boxPattern" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white font-medium text-amber-700">
-                    <option value="1:1">1:1 (2 Kotak)</option>
-                    <option value="1:2:1">1:2:1 (3 Kotak)</option>
-                    <option value="1:1:2:1:1">1:1:2:1:1 (5 Kotak)</option>
-                    <option value="2:1:2:1:2">2:1:2:1:2 (5 Kotak)</option>
-                    <option value="1:2:1:2:1">1:2:1:2:1 (5 Kotak)</option>
-                    <option value="1">1 (1 Kotak Penuh)</option>
+                    <option value="1:1">1:1 (Lebar - 300mm | 2 Bahagian)</option>
+                    <option value="1:2:1">1:2:1 (Lebar - 400mm | 4 Bahagian)</option>
+                    <option value="1:1:2:1:1">1:1:2:1:1 (Lebar - 600mm | 6 Bahagian)</option>
+                    <option value="2:1:2:1:2">2:1:2:1:2 (Lebar - 600mm | 8 Bahagian)</option>
+                    <option value="1:2:1:2:1">1:2:1:2:1 (Lebar - 600mm | 7 Bahagian)</option>
+                    <option value="1">1 (Lebar - 200mm | 1 Bahagian)</option>
                 </select>
             </div>
 
@@ -87,7 +87,7 @@
 
         <div id="visualContainer" class="hidden space-y-3">
             <div class="flex justify-between items-center">
-                <label class="block font-medium text-slate-700 text-sm">Visual Dinding:</label>
+                <label class="block font-medium text-slate-700 text-sm">Visual Dinding (Nisbah Tepat):</label>
                 <button onclick="saveVisualToPhone()" class="bg-slate-800 hover:bg-slate-900 text-white text-xs px-3 py-1.5 rounded-lg transition shadow-sm font-medium">
                     📥 Save to Phone (.png)
                 </button>
@@ -110,7 +110,7 @@
         function getCeilStandardSize(val) {
             let standards = [300, 600, 900, 1200, 1500, 1800, 2400];
             for (let i = 0; i < standards.length; i++) { if (val <= standards[i]) return standards[i]; }
-            return 2400; // max standard size
+            return 2400;
         }
 
         let lastCalculatedRecord = null;
@@ -125,31 +125,35 @@
 
             if (wMm <= 0 || hMm <= 0) { alert('Sila masukkan ukuran dinding yang sah.'); return; }
 
-            // Logik tinggi kotak: Full height tolak 200, ada chair rail tolak 1070
             let targetBoxHeight = (style === 'without_chairrail') ? (hMm - 200) : (hMm - 1070);
             if (targetBoxHeight < 300) targetBoxHeight = 300;
 
-            let numBoxes = 2;
-            if (pattern === '1:2:1') numBoxes = 3;
-            else if (pattern.includes('2:1') || pattern.includes('1:1:2') || pattern.includes('1:2:1:2')) numBoxes = 5;
-            else if (pattern === '1') numBoxes = 1;
-
-            let totalGapWidth = (numBoxes + 1) * 100;
-            let effectiveWidth = wMm - totalGapWidth;
-            if (effectiveWidth < 200) effectiveWidth = wMm - 200;
-
-            let unitWidth = effectiveWidth / numBoxes;
+            // Pengiraan Lebar Berdasarkan Nisbah Bahagian & Tolak Gap
             let boxWidths = [];
-
-            if (pattern === '1:1') boxWidths = [unitWidth, unitWidth];
-            else if (pattern === '1:2:1') boxWidths = [unitWidth, unitWidth * 2, unitWidth];
-            else if (pattern === '1:1:2:1:1') boxWidths = [unitWidth, unitWidth, unitWidth * 2, unitWidth, unitWidth];
-            else if (pattern === '2:1:2:1:2') boxWidths = [unitWidth * 2, unitWidth, unitWidth * 2, unitWidth, unitWidth * 2];
-            else if (pattern === '1:2:1:2:1') {
-                let uW = effectiveWidth / 7;
+            if (pattern === '1:1') {
+                let remW = wMm - 300; // tolakan 300mm untuk gap
+                let uW = remW / 2;
+                boxWidths = [uW, uW];
+            } else if (pattern === '1:2:1') {
+                let remW = wMm - 400; // tolakan 400mm untuk 4 gap
+                let uW = remW / 4;    // 4 bahagian (1 + 2 + 1)
+                boxWidths = [uW, uW * 2, uW];
+            } else if (pattern === '1:1:2:1:1') {
+                let remW = wMm - 600; // tolakan 600mm untuk 6 gap
+                let uW = remW / 6;    // 6 bahagian (1 + 1 + 2 + 1 + 1)
+                boxWidths = [uW, uW, uW * 2, uW, uW];
+            } else if (pattern === '2:1:2:1:2') {
+                let remW = wMm - 600; // tolakan 600mm untuk 8 gap
+                let uW = remW / 8;    // 8 bahagian (2 + 1 + 2 + 1 + 2)
+                boxWidths = [uW * 2, uW, uW * 2, uW, uW * 2];
+            } else if (pattern === '1:2:1:2:1') {
+                let remW = wMm - 600; // tolakan 600mm untuk 8 gap
+                let uW = remW / 8;    // 8 bahagian (1 + 2 + 1 + 2 + 1)
                 boxWidths = [uW, uW * 2, uW, uW * 2, uW];
+            } else {
+                let remW = wMm - 200;
+                boxWidths = [remW];
             }
-            else boxWidths = [effectiveWidth];
 
             let totalPrice = 0, breakdownHtml = "", sizeCounts = {};
 
