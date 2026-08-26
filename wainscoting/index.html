@@ -92,7 +92,7 @@
                     📥 Save to Phone (.png)
                 </button>
             </div>
-            <div id="captureArea" class="w-full bg-white rounded-xl p-3 flex flex-col justify-between items-center border-2 border-slate-300 shadow-inner relative overflow-x-auto min-h-[300px]"></div>
+            <div id="captureArea" class="w-full bg-white rounded-xl p-3 flex flex-col justify-between items-center border-2 border-slate-300 shadow-inner relative overflow-x-auto min-h-[320px]"></div>
         </div>
     </div>
 
@@ -134,7 +134,7 @@
             else if (pattern === '1') { effectiveWidth = wMm - 200; boxWidths = [effectiveWidth]; }
 
             let totalPrice = 0, breakdownHtml = "", sizeCounts = {};
-            let targetBoxHeight = (style === 'without_chairrail') ? (hMm - 300) : (hMm - 1000);
+            let targetBoxHeight = (style === 'without_chairrail') ? (hMm - 300) : (hMm - 900);
             if (targetBoxHeight < 300) targetBoxHeight = 300;
 
             boxWidths.forEach((bw) => {
@@ -182,7 +182,7 @@
             document.getElementById('totalPrice').innerText = 'RM ' + totalPrice.toFixed(2);
             document.getElementById('resultContainer').classList.remove('hidden');
 
-            // --- LUKIS VISUAL WAINCOTING DENGAN SOKONGAN DOUBLE FRAME ---
+            // --- LUKIS VISUAL KOTAK ATAS LEBIH BESAR DARIPADA KOTAK BAWAH ---
             let previewBox = document.getElementById('captureArea');
             previewBox.innerHTML = '';
             document.getElementById('visualContainer').classList.remove('hidden');
@@ -195,7 +195,6 @@
                 boxEl.style.flexGrow = bw; boxEl.style.flexBasis = '0'; boxEl.style.height = '100%';
                 
                 if (frameType === 'double') {
-                    // Cipta inner frame (bingkai kedua di dalam untuk double frame)
                     let innerBox = document.createElement('div');
                     innerBox.className = `border-[1.5px] ${frameColorClass} w-full h-full flex items-center justify-center rounded`;
                     innerBox.innerText = `${Math.round(bw)}x${Math.round(bh)}`;
@@ -216,9 +215,10 @@
                 });
                 previewBox.appendChild(fullRow);
             } else {
+                // Kotak Atas (Lebih Tinggi / Besar - cth: 150px)
                 let topRow = document.createElement('div');
                 topRow.className = 'w-full flex justify-around items-center gap-1.5 px-1';
-                topRow.style.height = '110px';
+                topRow.style.height = '150px';
 
                 boxWidths.forEach((bw) => {
                     topRow.appendChild(createBoxElement(bw, targetBoxHeight));
@@ -230,9 +230,10 @@
                 chairRailEl.innerText = '--- CHAIR RAIL ---';
                 previewBox.appendChild(chairRailEl);
 
+                // Kotak Bawah (Lebih Rendah / Kecil - cth: 85px)
                 let botRow = document.createElement('div');
                 botRow.className = 'w-full flex justify-around items-center gap-1.5 px-1';
-                botRow.style.height = '100px';
+                botRow.style.height = '85px';
 
                 boxWidths.forEach((bw) => {
                     botRow.appendChild(createBoxElement(bw, 600));
