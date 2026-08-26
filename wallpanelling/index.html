@@ -3,300 +3,2003 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Board with Fluted Panelling Calculator</title>
+    <title>Board & Fluted Panelling Calculator</title>
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <style>
-        :root { --tng-yellow: #fdee23; --tng-dark: #111111; --bg-color: #f4f5f7; --card-bg: #ffffff; --text-main: #111111; --text-sub: #666666; --border-color: #e4e7eb; --shadow: 0 4px 16px rgba(0, 0, 0, 0.06); }
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 20px 16px 90px; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
-        .container { max-width: 600px; width: 100%; background: var(--card-bg); padding: 25px; border-radius: 20px; box-shadow: var(--shadow); border: 1px solid var(--border-color); }
-        h2 { text-align: center; color: var(--text-main); margin-top: 0; margin-bottom: 25px; font-size: 20px; font-weight: 800; }
-        .form-group { margin-bottom: 16px; }
-        label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 13px; }
-        input, select { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 10px; font-size: 14px; box-sizing: border-box; background: #fff; outline: none; }
-        input:focus, select:focus { border-color: #d4b200; box-shadow: 0 0 0 3px rgba(253, 238, 35, 0.2); }
-        button.calc-btn { background-color: var(--tng-yellow); color: var(--tng-dark); border: 1.5px solid #111; padding: 15px; width: 100%; font-size: 16px; font-weight: 800; border-radius: 12px; cursor: pointer; margin-top: 10px; box-shadow: 0 4px 12px rgba(253, 238, 35, 0.3); transition: 0.2s; }
-        button.calc-btn:active { transform: scale(0.98); }
-        .result-box { margin-top: 25px; padding: 20px; background: #fffdf0; border-radius: 14px; border: 1.5px solid #f6e05e; display: none; font-size: 13px; }
-        .result-box h3 { margin-top: 0; color: #111; font-size: 16px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; }
-        .visual-container { margin-top: 25px; padding: 15px; background: #ffffff; border: 1px solid var(--border-color); border-radius: 12px; text-align: center; display: none; }
-        canvas { width: 100%; max-width: 520px; height: 240px; border: 1px solid var(--border-color); background: #fafafa; margin-top: 10px; border-radius: 8px; }
-        .add-cart-main-btn { background-color: var(--tng-yellow); color: var(--tng-dark); border: 1.5px solid #111; padding: 14px; width: 100%; font-size: 15px; font-weight: 800; border-radius: 12px; cursor: pointer; margin-top: 15px; display: none; box-shadow: 0 4px 12px rgba(253, 238, 35, 0.3); transition: 0.2s; }
-        .add-cart-main-btn:active { transform: scale(0.98); }
+        :root {
+            --primary: #fdee23;
+            --primary-dark: #d9c900;
+            --dark: #111111;
+            --text: #17202a;
+            --muted: #64748b;
+            --bg: #f5f6f8;
+            --white: #ffffff;
+            --border: #e2e6eb;
+            --soft: #f8fafc;
+            --success: #15803d;
+            --warning: #b45309;
+            --danger: #dc2626;
+            --shadow: 0 8px 30px rgba(15, 23, 42, 0.07);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px 15px 100px;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 680px;
+            margin: auto;
+        }
+
+        /* HEADER */
+        .page-header {
+            background: var(--dark);
+            color: white;
+            padding: 22px 22px;
+            border-radius: 18px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+        }
+
+        .eyebrow {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.3px;
+            text-transform: uppercase;
+            color: #d1d5db;
+            margin-bottom: 7px;
+        }
+
+        .page-header h1 {
+            margin: 0;
+            font-size: 21px;
+            line-height: 1.25;
+            font-weight: 800;
+        }
+
+        .page-header p {
+            margin: 7px 0 0;
+            color: #cbd5e1;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        /* CARD */
+        .card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin-bottom: 18px;
+        }
+
+        .section-number {
+            width: 27px;
+            height: 27px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            background: var(--primary);
+            color: var(--dark);
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .section-title h2 {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .section-title span {
+            display: block;
+            font-size: 10px;
+            color: var(--muted);
+            font-weight: 500;
+            margin-top: 2px;
+        }
+
+        /* FORM */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: #334155;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .input-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            height: 45px;
+            padding: 0 12px;
+            border: 1px solid #d9dee5;
+            border-radius: 10px;
+            background: white;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 13px;
+            outline: none;
+            transition: .2s;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #b7aa00;
+            box-shadow: 0 0 0 3px rgba(253, 238, 35, .18);
+        }
+
+        /* ACCESSORY */
+        .accessory-box {
+            background: var(--soft);
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            padding: 14px;
+        }
+
+        .accessory-title {
+            font-size: 11px;
+            font-weight: 800;
+            color: #334155;
+            margin-bottom: 9px;
+        }
+
+        .accessory-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 9px;
+        }
+
+        /* BUTTONS */
+        .btn {
+            width: 100%;
+            min-height: 46px;
+            border-radius: 11px;
+            border: 1px solid var(--dark);
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: .18s;
+        }
+
+        .btn:active {
+            transform: scale(.985);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--dark);
+            box-shadow: 0 5px 15px rgba(253, 238, 35, .25);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-dark {
+            background: var(--dark);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--dark);
+            border-color: #cbd5e1;
+        }
+
+        .button-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        /* RESULT */
+        .result-card {
+            display: none;
+            background: #fffdf0;
+            border: 1px solid #eadf62;
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 16px;
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+            border-bottom: 1px solid #ece7b8;
+            padding-bottom: 12px;
+            margin-bottom: 12px;
+        }
+
+        .result-header h2 {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .status-badge {
+            background: #dcfce7;
+            color: var(--success);
+            border-radius: 20px;
+            padding: 5px 8px;
+            font-size: 9px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .result-details {
+            font-size: 12px;
+            line-height: 1.7;
+            color: #475569;
+        }
+
+        .result-details strong {
+            color: var(--text);
+        }
+
+        .warning {
+            display: block;
+            margin: 9px 0;
+            padding: 9px 10px;
+            border-radius: 9px;
+            background: #fff7ed;
+            color: var(--warning);
+            border: 1px solid #fed7aa;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .breakdown {
+            margin-top: 12px;
+            border: 1px solid #e6e2b8;
+            border-radius: 10px;
+            overflow: hidden;
+            background: white;
+        }
+
+        .breakdown-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 10px 11px;
+            border-bottom: 1px solid #edf0f2;
+            font-size: 11px;
+        }
+
+        .breakdown-row:last-child {
+            border-bottom: none;
+        }
+
+        .breakdown-row span:first-child {
+            color: #475569;
+        }
+
+        .breakdown-row span:last-child {
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .total-row {
+            background: #fffef0;
+            padding: 13px 11px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            border-top: 1px solid #e6e2b8;
+        }
+
+        .total-label {
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .total-price {
+            font-size: 19px;
+            font-weight: 800;
+        }
+
+        /* VISUAL */
+        .visual-card {
+            display: none;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 16px;
+        }
+
+        .visual-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .visual-header h2 {
+            margin: 0;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .save-btn {
+            background: var(--dark);
+            color: white;
+            border: none;
+            padding: 8px 10px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 10px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        canvas {
+            width: 100%;
+            height: 250px;
+            display: block;
+            border: 1px solid var(--border);
+            border-radius: 11px;
+            background: #fafafa;
+        }
+
+        /* HISTORY */
+        .history-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 17px;
+            box-shadow: var(--shadow);
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .history-header h2 {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .clear-history {
+            background: none;
+            border: none;
+            color: var(--danger);
+            font-family: inherit;
+            font-size: 10px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .history-empty {
+            padding: 18px 10px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 11px;
+            border: 1px dashed #d7dce2;
+            border-radius: 10px;
+        }
+
+        .history-item {
+            border: 1px solid #e5e7eb;
+            border-radius: 11px;
+            padding: 11px;
+            margin-bottom: 8px;
+            background: #fff;
+        }
+
+        .history-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .history-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+
+        .history-title {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--text);
+        }
+
+        .history-price {
+            font-size: 11px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .history-info {
+            color: var(--muted);
+            font-size: 10px;
+            line-height: 1.5;
+        }
+
+        .history-date {
+            color: #94a3b8;
+            font-size: 9px;
+            margin-top: 5px;
+        }
+
+        /* FIXED BACK */
+        .back-button {
+            position: fixed;
+            right: 15px;
+            bottom: 18px;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--dark);
+            color: white;
+            text-decoration: none;
+            padding: 11px 15px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 800;
+            border: 1px solid #000;
+            box-shadow: 0 6px 20px rgba(0,0,0,.2);
+        }
+
+        .back-button span {
+            color: var(--primary);
+            font-size: 16px;
+        }
+
+        @media (max-width: 500px) {
+            body {
+                padding: 12px 10px 90px;
+            }
+
+            .page-header {
+                padding: 18px;
+                border-radius: 15px;
+            }
+
+            .card,
+            .result-card,
+            .visual-card,
+            .history-card {
+                border-radius: 15px;
+            }
+
+            .input-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .button-row {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
+
 <body>
 
 <div class="container">
-    <h2>Board with Fluted Panelling Calculator</h2>
-    
-    <div class="form-group">
-        <label>Lebar Dinding (mm):</label>
-        <input type="number" id="lebarDinding" value="3000">
-    </div>
-    <div class="form-group">
-        <label>Tinggi Dinding (mm) [Standard Panel: 2900mm]:</label>
-        <input type="number" id="tinggiDinding" value="3073">
+
+    <!-- HEADER -->
+    <div class="page-header">
+        <div class="eyebrow">iPainter DIY • Calculation System</div>
+        <h1>Board & Fluted Panelling</h1>
+        <p>Professional quotation calculator untuk pengiraan material, aksesori dan anggaran kos projek.</p>
     </div>
 
-    <div class="form-group">
-        <label>Pilihan Jenis Kombinasi/Panel:</label>
-        <select id="jenisFluted" onchange="toggleBoardOptions()">
-            <option value="WPC">WPC Standard (160mm | RM43/btg)</option>
-            <option value="PVC">PVC Standard (300mm | RM42/btg)</option>
-            <option value="PS">PS Standard (300mm | RM59/btg)</option>
-            <option value="Fluted-Wallboard">Fluted + Wallboard</option>
-            <option value="Fluted-Wallboard-Fluted">Fluted + Wallboard + Fluted</option>
-            <option value="Fluted-UV">Fluted + UV Board</option>
-            <option value="Fluted-UV-Fluted">Fluted + UV Board + Fluted</option>
-        </select>
+
+    <!-- INPUT -->
+    <div class="card">
+
+        <div class="section-title">
+            <div class="section-number">01</div>
+            <div>
+                <h2>Project Dimension</h2>
+                <span>Masukkan ukuran sebenar dinding</span>
+            </div>
+        </div>
+
+        <div class="input-grid">
+
+            <div class="form-group">
+                <label>Lebar Dinding (mm)</label>
+                <input type="number" id="lebarDinding" value="3000" min="1">
+            </div>
+
+            <div class="form-group">
+                <label>Tinggi Dinding (mm)</label>
+                <input type="number" id="tinggiDinding" value="3073" min="1">
+            </div>
+
+        </div>
+
     </div>
 
-    <div class="form-group" id="groupJenisBoard" style="display:none;">
-        <label>Jenis Board:</label>
-        <select id="jenisBoard">
-            <option value="Mini">Mini Wallboard (600mm | RM150)</option>
-            <option value="BF">BF Wallboard (1200mm | RM240)</option>
-            <option value="UV">UV Board (1220mm | RM199)</option>
-        </select>
-    </div>
 
-    <div class="form-group" id="groupJumlahBoard" style="display:none;">
-        <label>Bilangan Keping Board:</label>
-        <select id="jumlahBoardInput">
-            <option value="1">1 Keping</option>
-            <option value="2">2 Keping</option>
-            <option value="3">3 Keping</option>
-            <option value="4">4 Keping</option>
-        </select>
-    </div>
+    <!-- PRODUCT -->
+    <div class="card">
 
-    <!-- Pilihan Aksesori Tambahan Manual -->
-    <div style="background: #f8fafc; padding: 12px; border-radius: 10px; border: 1px solid var(--border-color); margin-bottom: 16px;">
-        <label style="margin-bottom: 8px; color: #334155;">Tambah Aksesori Pilihan (Manual):</label>
-        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 8px;">
-            <select id="aksesoriType">
-                <option value="none">-- Tiada Aksesori Tambahan --</option>
-                <option value="l_cap">L Cap Fluted 2900mm (RM20)</option>
-                <option value="u_gold">U Shape Gold 2900mm (RM32)</option>
-                <option value="h_shape">H Shape Black/Gold 2900mm (RM25)</option>
+        <div class="section-title">
+            <div class="section-number">02</div>
+            <div>
+                <h2>Material Selection</h2>
+                <span>Pilih kombinasi material yang diperlukan</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Jenis Kombinasi / Panel</label>
+
+            <select id="jenisFluted" onchange="toggleBoardOptions()">
+
+                <option value="WPC">
+                    WPC Standard — 160mm | RM43/btg
+                </option>
+
+                <option value="PVC">
+                    PVC Standard — 300mm | RM42/btg
+                </option>
+
+                <option value="PS">
+                    PS Standard — 300mm | RM59/btg
+                </option>
+
+                <option value="Fluted-Wallboard">
+                    Fluted + Wallboard
+                </option>
+
+                <option value="Fluted-Wallboard-Fluted">
+                    Fluted + Wallboard + Fluted
+                </option>
+
+                <option value="Fluted-UV">
+                    Fluted + UV Board
+                </option>
+
+                <option value="Fluted-UV-Fluted">
+                    Fluted + UV Board + Fluted
+                </option>
+
             </select>
-            <input type="number" id="aksesoriQty" value="1" min="1" placeholder="Kuantiti">
         </div>
+
+
+        <div class="form-group" id="groupJenisBoard" style="display:none;">
+
+            <label>Jenis Board</label>
+
+            <select id="jenisBoard">
+
+                <option value="Mini">
+                    Mini Wallboard — 600mm | RM150
+                </option>
+
+                <option value="BF">
+                    BF Wallboard — 1200mm | RM240
+                </option>
+
+                <option value="UV">
+                    UV Board — 1220mm | RM199
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="form-group" id="groupJumlahBoard" style="display:none;">
+
+            <label>Bilangan Keping Board</label>
+
+            <select id="jumlahBoardInput">
+
+                <option value="1">1 Keping</option>
+                <option value="2">2 Keping</option>
+                <option value="3">3 Keping</option>
+                <option value="4">4 Keping</option>
+
+            </select>
+
+        </div>
+
     </div>
 
-    <button class="calc-btn" onclick="kirimKiraPanel()">Kira Sebut Harga & Visual</button>
-    
-    <div class="result-box" id="resultBox">
-        <h3>Keputusan Pengiraan:</h3>
-        <div id="detailPecahan" style="line-height: 1.6; margin-bottom: 10px;"></div>
-        <div style="border-top: 1px solid #e2e8f0; margin: 10px 0;"></div>
-        <div style="display: flex; justify-content: space-between; font-size: 15px; font-weight: 800;">
-            <span>JUMLAH KESELURUHAN:</span>
-            <span id="jumlahHarga" style="color: #111;">-</span>
+
+    <!-- ACCESSORIES -->
+    <div class="card">
+
+        <div class="section-title">
+            <div class="section-number">03</div>
+            <div>
+                <h2>Additional Accessories</h2>
+                <span>Aksesori tambahan secara manual</span>
+            </div>
         </div>
-        <button class="add-cart-main-btn" id="addCartBtn" onclick="addWallToCart()">+ Masukkan ke Troli (Cart)</button>
+
+        <div class="accessory-box">
+
+            <div class="accessory-title">
+                Pilihan Aksesori
+            </div>
+
+            <div class="accessory-grid">
+
+                <select id="aksesoriType">
+
+                    <option value="none">
+                        Tiada Aksesori Tambahan
+                    </option>
+
+                    <option value="l_cap">
+                        L Cap Fluted 2900mm — RM20
+                    </option>
+
+                    <option value="u_gold">
+                        U Shape Gold 2900mm — RM32
+                    </option>
+
+                    <option value="h_shape">
+                        H Shape Black/Gold 2900mm — RM25
+                    </option>
+
+                </select>
+
+                <input
+                    type="number"
+                    id="aksesoriQty"
+                    value="1"
+                    min="1"
+                    placeholder="Qty"
+                >
+
+            </div>
+
+        </div>
+
+        <button
+            class="btn btn-primary"
+            style="margin-top:14px;"
+            onclick="kirimKiraPanel()"
+        >
+            Calculate Quotation
+        </button>
+
     </div>
 
-    <div class="visual-container" id="visualBox">
-        <h3 style="font-size: 14px; margin-top: 0;">Lakaran Susun Atur Dinding (Dengan Sambungan Tinggi Tambahan)</h3>
+
+    <!-- RESULT -->
+    <div class="result-card" id="resultBox">
+
+        <div class="result-header">
+
+            <div>
+                <h2>Quotation Summary</h2>
+            </div>
+
+            <div class="status-badge">
+                CALCULATION READY
+            </div>
+
+        </div>
+
+        <div id="detailPecahan" class="result-details"></div>
+
+        <div class="breakdown" id="breakdownTable"></div>
+
+        <div class="total-row">
+
+            <div class="total-label">
+                ESTIMATED TOTAL
+            </div>
+
+            <div
+                id="jumlahHarga"
+                class="total-price"
+            >
+                RM 0.00
+            </div>
+
+        </div>
+
+        <div class="button-row">
+
+            <button
+                class="btn btn-primary"
+                onclick="addWallToCart()"
+            >
+                + Add to Cart
+            </button>
+
+            <button
+                class="btn btn-secondary"
+                onclick="scrollToHistory()"
+            >
+                View Calculation History
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- VISUAL -->
+    <div class="visual-card" id="visualBox">
+
+        <div class="visual-header">
+
+            <h2>Panel Layout Preview</h2>
+
+            <button
+                class="save-btn"
+                onclick="saveVisualToPhone()"
+            >
+                Save PNG
+            </button>
+
+        </div>
+
         <canvas id="canvasVisual"></canvas>
+
     </div>
+
+
+    <!-- HISTORY -->
+    <div class="history-card" id="historySection">
+
+        <div class="history-header">
+
+            <h2>Calculation History</h2>
+
+            <button
+                class="clear-history"
+                onclick="clearHistory()"
+            >
+                Clear History
+            </button>
+
+        </div>
+
+        <div id="historyList"></div>
+
+    </div>
+
 </div>
 
+
+<!-- BACK -->
+<a href="../index.html" class="back-button">
+    <span>←</span>
+    Main Menu
+</a>
+
+
 <script>
+
+    /* =========================================================
+       BOARD OPTIONS
+    ========================================================= */
+
     function toggleBoardOptions() {
-        let p = document.getElementById("jenisFluted").value;
-        let show = (p.includes("Wallboard") || p.includes("UV"));
-        document.getElementById("groupJenisBoard").style.display = show ? "block" : "none";
-        document.getElementById("groupJumlahBoard").style.display = show ? "block" : "none";
+
+        const type =
+            document.getElementById("jenisFluted").value;
+
+        const show =
+            type.includes("Wallboard") ||
+            type.includes("UV");
+
+        document.getElementById("groupJenisBoard").style.display =
+            show ? "block" : "none";
+
+        document.getElementById("groupJumlahBoard").style.display =
+            show ? "block" : "none";
     }
+
+
+    /* =========================================================
+       LAST CALCULATION
+    ========================================================= */
 
     let lastCalculatedRecord = null;
 
+
+    /* =========================================================
+       MAIN CALCULATION
+    ========================================================= */
+
     function kirimKiraPanel() {
-        let w = parseFloat(document.getElementById("lebarDinding").value) || 0;
-        let h = parseFloat(document.getElementById("tinggiDinding").value) || 0;
-        let jenis = document.getElementById("jenisFluted").value;
-        let jenisBoard = document.getElementById("jenisBoard").value;
-        let jmlBoard = parseInt(document.getElementById("jumlahBoardInput").value) || 1;
-        
-        let aksType = document.getElementById("aksesoriType").value;
-        let aksQty = parseInt(document.getElementById("aksesoriQty").value) || 0;
 
-        if (w <= 0 || h <= 0) { alert("Sila masukkan ukuran dinding yang sah."); return; }
+        const w =
+            parseFloat(
+                document.getElementById("lebarDinding").value
+            ) || 0;
 
-        let flutedWidth = 160, flutedPrice = 43;
-        if (jenis === "PVC") { flutedWidth = 300; flutedPrice = 42; }
-        else if (jenis === "PS") { flutedWidth = 300; flutedPrice = 59; }
+        const h =
+            parseFloat(
+                document.getElementById("tinggiDinding").value
+            ) || 0;
 
-        let boardWidthMm = 0, boardPrice = 0, boardName = "";
-        if (jenis.includes("Wallboard") || jenis.includes("UV")) {
-            if (jenisBoard === "Mini") { boardWidthMm = 600; boardPrice = 150; boardName = "Mini Wallboard"; }
-            else if (jenisBoard === "BF") { boardWidthMm = 1200; boardPrice = 240; boardName = "BF Wallboard"; }
-            else if (jenisBoard === "UV") { boardWidthMm = 1220; boardPrice = 199; boardName = "UV Board"; }
+        const jenis =
+            document.getElementById("jenisFluted").value;
+
+        const jenisBoard =
+            document.getElementById("jenisBoard").value;
+
+        const jmlBoard =
+            parseInt(
+                document.getElementById("jumlahBoardInput").value
+            ) || 1;
+
+        const aksType =
+            document.getElementById("aksesoriType").value;
+
+        const aksQty =
+            parseInt(
+                document.getElementById("aksesoriQty").value
+            ) || 0;
+
+
+        if (w <= 0 || h <= 0) {
+
+            alert(
+                "Sila masukkan ukuran dinding yang sah."
+            );
+
+            return;
         }
 
-        let totalBoardWidth = boardWidthMm * jmlBoard;
-        let remainingWidth = w - totalBoardWidth;
-        if (remainingWidth < 0) remainingWidth = 0;
 
-        let flutedBatangBase = Math.ceil(remainingWidth / flutedWidth);
-        if (jenis === "WPC" || jenis === "PVC" || jenis === "PS") {
-            flutedBatangBase = Math.ceil(w / flutedWidth);
+        /* FLUTED */
+
+        let flutedWidth = 160;
+        let flutedPrice = 43;
+
+        if (jenis === "PVC") {
+
+            flutedWidth = 300;
+            flutedPrice = 42;
+
+        } else if (jenis === "PS") {
+
+            flutedWidth = 300;
+            flutedPrice = 59;
+
         }
 
-        // Logik Betul: Hanya tambah 1 batang ekstra sahaja jika tinggi melebihi 2900mm
-        let extraHeight = h > 2900 ? (h - 2900) : 0;
-        let totalFlutedBatang = flutedBatangBase;
+
+        /* BOARD */
+
+        let boardWidthMm = 0;
+        let boardPrice = 0;
+        let boardName = "";
+
+        if (
+            jenis.includes("Wallboard") ||
+            jenis.includes("UV")
+        ) {
+
+            if (jenisBoard === "Mini") {
+
+                boardWidthMm = 600;
+                boardPrice = 150;
+                boardName = "Mini Wallboard";
+
+            } else if (jenisBoard === "BF") {
+
+                boardWidthMm = 1200;
+                boardPrice = 240;
+                boardName = "BF Wallboard";
+
+            } else if (jenisBoard === "UV") {
+
+                boardWidthMm = 1220;
+                boardPrice = 199;
+                boardName = "UV Board";
+
+            }
+
+        }
+
+
+        /* BOARD WIDTH */
+
+        const totalBoardWidth =
+            boardWidthMm * jmlBoard;
+
+        let remainingWidth =
+            w - totalBoardWidth;
+
+        if (remainingWidth < 0) {
+            remainingWidth = 0;
+        }
+
+
+        /* FLUTED QTY */
+
+        let flutedBatangBase =
+            Math.ceil(
+                remainingWidth / flutedWidth
+            );
+
+        if (
+            jenis === "WPC" ||
+            jenis === "PVC" ||
+            jenis === "PS"
+        ) {
+
+            flutedBatangBase =
+                Math.ceil(
+                    w / flutedWidth
+                );
+
+        }
+
+
+        /* EXTRA HEIGHT */
+
+        const extraHeight =
+            h > 2900
+                ? h - 2900
+                : 0;
+
+
+        let totalFlutedBatang =
+            flutedBatangBase;
+
         if (extraHeight > 0) {
-            totalFlutedBatang += 1; // Penambahan tepat 1 batang sahaja untuk baki atas
+
+            totalFlutedBatang += 1;
+
         }
 
-        let kosFluted = totalFlutedBatang * flutedPrice;
-        
-        // Pengiraan Board (Jika tinggi > 2900mm, tambah 1 keping ekstra board jika guna wallboard)
-        let totalBoardKeping = jmlBoard;
-        if (extraHeight > 0 && (jenis.includes("Wallboard") || jenis.includes("UV"))) {
-            totalBoardKeping += 1; 
+
+        const kosFluted =
+            totalFlutedBatang *
+            flutedPrice;
+
+
+        /* BOARD COST */
+
+        let totalBoardKeping =
+            jmlBoard;
+
+        if (
+            extraHeight > 0 &&
+            (
+                jenis.includes("Wallboard") ||
+                jenis.includes("UV")
+            )
+        ) {
+
+            totalBoardKeping += 1;
+
         }
-        let kosBoard = (jenis.includes("Wallboard") || jenis.includes("UV")) ? (totalBoardKeping * boardPrice) : 0;
 
-        // Kos Aksesori Manual
-        let aksPrice = 0, aksName = "";
-        if (aksType === 'l_cap') { aksPrice = 20; aksName = "L Cap Fluted"; }
-        else if (aksType === 'u_gold') { aksPrice = 32; aksName = "U Shape Gold"; }
-        else if (aksType === 'h_shape') { aksPrice = 25; aksName = "H Shape Black/Gold"; }
-        let kosAks = (aksType !== 'none') ? (aksQty * aksPrice) : 0;
 
-        let grandTotal = kosFluted + kosBoard + kosAks;
+        const kosBoard =
+            (
+                jenis.includes("Wallboard") ||
+                jenis.includes("UV")
+            )
+            ? totalBoardKeping * boardPrice
+            : 0;
 
-        document.getElementById("resultBox").style.display = "block";
-        document.getElementById("addCartBtn").style.display = "block";
-        document.getElementById("visualBox").style.display = "block";
 
-        let pecahanHtml = `Pilihan: <b>${jenis}</b> (Tinggi Dinding: ${h}mm)<br>`;
+        /* ACCESSORIES */
+
+        let aksPrice = 0;
+        let aksName = "";
+
+        if (aksType === "l_cap") {
+
+            aksPrice = 20;
+            aksName = "L Cap Fluted";
+
+        } else if (aksType === "u_gold") {
+
+            aksPrice = 32;
+            aksName = "U Shape Gold";
+
+        } else if (aksType === "h_shape") {
+
+            aksPrice = 25;
+            aksName = "H Shape Black/Gold";
+
+        }
+
+
+        const kosAks =
+            aksType !== "none"
+                ? aksQty * aksPrice
+                : 0;
+
+
+        /* GRAND TOTAL */
+
+        const grandTotal =
+            kosFluted +
+            kosBoard +
+            kosAks;
+
+
+        /* =====================================================
+           RESULT
+        ===================================================== */
+
+        document.getElementById(
+            "resultBox"
+        ).style.display = "block";
+
+        document.getElementById(
+            "visualBox"
+        ).style.display = "block";
+
+
+        let detailHtml = `
+
+            <div>
+                <strong>Material:</strong> ${jenis}
+            </div>
+
+            <div>
+                <strong>Wall Dimension:</strong>
+                ${w}mm × ${h}mm
+            </div>
+
+        `;
+
+
         if (extraHeight > 0) {
-            pecahanHtml += `<span style="color: #b45309; font-weight: bold;">⚠️ Lebihan tinggi ${extraHeight}mm (Melebihi standard 2900mm) - Penambahan 1 batang ekstra diambil kira.</span><br>`;
-        }
-        if (jenis.includes("Wallboard") || jenis.includes("UV")) {
-            pecahanHtml += `• Board (${boardName}): ${totalBoardKeping} keping x RM ${boardPrice} = <b>RM ${kosBoard.toFixed(2)}</b><br>`;
-        }
-        pecahanHtml += `• Batang Fluted: ${totalFlutedBatang} btg x RM ${flutedPrice} = <b>RM ${kosFluted.toFixed(2)}</b><br>`;
-        
-        if (aksType !== 'none') {
-            pecahanHtml += `• Aksesori (${aksName}): ${aksQty} btg x RM ${aksPrice} = <b>RM ${kosAks.toFixed(2)}</b><br>`;
+
+            detailHtml += `
+
+                <span class="warning">
+                    ⚠️ Wall height exceeds standard
+                    2900mm by <strong>${extraHeight}mm</strong>.
+                    One additional fluted piece has been included
+                    in the calculation.
+                </span>
+
+            `;
+
         }
 
-        document.getElementById("detailPecahan").innerHTML = pecahanHtml;
-        document.getElementById("jumlahHarga").innerText = `RM ${grandTotal.toFixed(2)}`;
+
+        document.getElementById(
+            "detailPecahan"
+        ).innerHTML = detailHtml;
+
+
+        /* BREAKDOWN */
+
+        let breakdownHtml = "";
+
+
+        if (
+            jenis.includes("Wallboard") ||
+            jenis.includes("UV")
+        ) {
+
+            breakdownHtml += `
+
+                <div class="breakdown-row">
+
+                    <span>
+                        ${boardName}
+                        × ${totalBoardKeping}
+                    </span>
+
+                    <span>
+                        RM ${kosBoard.toFixed(2)}
+                    </span>
+
+                </div>
+
+            `;
+
+        }
+
+
+        breakdownHtml += `
+
+            <div class="breakdown-row">
+
+                <span>
+                    ${jenis === "WPC"
+                        ? "WPC Fluted"
+                        : jenis === "PVC"
+                            ? "PVC Fluted"
+                            : jenis === "PS"
+                                ? "PS Fluted"
+                                : "Fluted Panel"
+                    }
+                    × ${totalFlutedBatang}
+                </span>
+
+                <span>
+                    RM ${kosFluted.toFixed(2)}
+                </span>
+
+            </div>
+
+        `;
+
+
+        if (aksType !== "none") {
+
+            breakdownHtml += `
+
+                <div class="breakdown-row">
+
+                    <span>
+                        ${aksName} × ${aksQty}
+                    </span>
+
+                    <span>
+                        RM ${kosAks.toFixed(2)}
+                    </span>
+
+                </div>
+
+            `;
+
+        }
+
+
+        document.getElementById(
+            "breakdownTable"
+        ).innerHTML = breakdownHtml;
+
+
+        document.getElementById(
+            "jumlahHarga"
+        ).innerText =
+            `RM ${grandTotal.toFixed(2)}`;
+
+
+        /* =====================================================
+           CREATE RECORD
+        ===================================================== */
 
         lastCalculatedRecord = {
-            tajuk: "Wall Panelling",
-            info: `${w}x${h}mm (${jenis})`,
-            harga: "RM " + grandTotal.toFixed(2)
+
+            id: Date.now(),
+
+            tajuk: "Board & Fluted Panelling",
+
+            info:
+                `${w}x${h}mm | ${jenis}`,
+
+            harga:
+                "RM " + grandTotal.toFixed(2),
+
+            date:
+                new Date().toLocaleString(
+                    "ms-MY",
+                    {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit"
+                    }
+                )
+
         };
 
-        lukisVisualPanelling(w, h, jmlBoard, boardWidthMm, jenis, extraHeight);
+
+        /* =====================================================
+           AUTO SAVE HISTORY
+        ===================================================== */
+
+        saveCalculationHistory(
+            lastCalculatedRecord
+        );
+
+
+        /* VISUAL */
+
+        lukisVisualPanelling(
+            w,
+            h,
+            jmlBoard,
+            boardWidthMm,
+            jenis,
+            extraHeight
+        );
+
+
+        renderHistory();
+
     }
 
-    function lukisVisualPanelling(w, h, jmlBoard, boardW, jenis, extraHeight) {
-        let canvas = document.getElementById("canvasVisual");
-        let ctx = canvas.getContext("2d");
-        
-        canvas.width = canvas.parentElement.clientWidth - 30;
-        canvas.height = 240;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        let scale = Math.min((canvas.width - 40) / w, (canvas.height - 40) / h);
-        let drawW = w * scale, drawH = h * scale;
-        let startX = (canvas.width - drawW) / 2, startY = 15;
+    /* =========================================================
+       HISTORY
+    ========================================================= */
 
-        ctx.fillStyle = "#fafafa";
-        ctx.fillRect(startX, startY, drawW, drawH);
+    function saveCalculationHistory(record) {
 
-        if (jenis.includes("Wallboard") || jenis.includes("UV")) {
-            let totalBoardW_scaled = (boardW * jmlBoard) * scale;
-            let boardStartX = startX + (drawW - totalBoardW_scaled) / 2;
+        let history =
+            JSON.parse(
+                localStorage.getItem(
+                    "diy_calc_history"
+                )
+            ) || [];
+
+
+        /*
+           Remove exact same ID
+           supaya tidak duplicate
+        */
+
+        history =
+            history.filter(
+                item => item.id !== record.id
+            );
+
+
+        history.unshift(record);
+
+
+        /*
+           Keep last 50 calculations
+        */
+
+        history =
+            history.slice(0, 50);
+
+
+        localStorage.setItem(
+            "diy_calc_history",
+            JSON.stringify(history)
+        );
+
+    }
+
+
+    function renderHistory() {
+
+        const list =
+            document.getElementById(
+                "historyList"
+            );
+
+
+        let history =
+            JSON.parse(
+                localStorage.getItem(
+                    "diy_calc_history"
+                )
+            ) || [];
+
+
+        /*
+           Only show relevant calculation
+           records. Existing records from
+           other calculators remain untouched.
+        */
+
+        history =
+            history.filter(
+                item =>
+                    item.tajuk &&
+                    (
+                        item.tajuk
+                            .toLowerCase()
+                            .includes("wall") ||
+                        item.tajuk
+                            .toLowerCase()
+                            .includes("fluted")
+                    )
+            );
+
+
+        if (history.length === 0) {
+
+            list.innerHTML = `
+
+                <div class="history-empty">
+
+                    Belum ada rekod pengiraan
+                    Board & Fluted Panelling.
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        let html = "";
+
+
+        history.forEach(
+            (item, index) => {
+
+                html += `
+
+                    <div class="history-item">
+
+                        <div class="history-top">
+
+                            <div class="history-title">
+
+                                ${index === 0
+                                    ? "Latest Calculation"
+                                    : item.tajuk
+                                }
+
+                            </div>
+
+                            <div class="history-price">
+
+                                ${item.harga || "RM 0.00"}
+
+                            </div>
+
+                        </div>
+
+                        <div class="history-info">
+
+                            ${item.info || "-"}
+
+                        </div>
+
+                        <div class="history-date">
+
+                            ${item.date || "Historical Record"}
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }
+        );
+
+
+        list.innerHTML = html;
+
+    }
+
+
+    function clearHistory() {
+
+        const confirmClear =
+            confirm(
+                "Padam semua rekod pengiraan Board & Fluted Panelling?"
+            );
+
+
+        if (!confirmClear) return;
+
+
+        let history =
+            JSON.parse(
+                localStorage.getItem(
+                    "diy_calc_history"
+                )
+            ) || [];
+
+
+        history =
+            history.filter(
+                item =>
+                    !(
+                        item.tajuk &&
+                        (
+                            item.tajuk
+                                .toLowerCase()
+                                .includes("wall") ||
+                            item.tajuk
+                                .toLowerCase()
+                                .includes("fluted")
+                        )
+                    )
+            );
+
+
+        localStorage.setItem(
+            "diy_calc_history",
+            JSON.stringify(history)
+        );
+
+
+        renderHistory();
+
+    }
+
+
+    function scrollToHistory() {
+
+        document
+            .getElementById(
+                "historySection"
+            )
+            .scrollIntoView({
+                behavior: "smooth"
+            });
+
+    }
+
+
+    /* =========================================================
+       VISUAL
+    ========================================================= */
+
+    function lukisVisualPanelling(
+        w,
+        h,
+        jmlBoard,
+        boardW,
+        jenis,
+        extraHeight
+    ) {
+
+        const canvas =
+            document.getElementById(
+                "canvasVisual"
+            );
+
+        const ctx =
+            canvas.getContext("2d");
+
+
+        canvas.width =
+            canvas.parentElement.clientWidth - 30;
+
+        canvas.height = 250;
+
+
+        ctx.clearRect(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+
+        const scale =
+            Math.min(
+                (canvas.width - 40) / w,
+                (canvas.height - 40) / h
+            );
+
+
+        const drawW =
+            w * scale;
+
+        const drawH =
+            h * scale;
+
+
+        const startX =
+            (canvas.width - drawW) / 2;
+
+        const startY =
+            (canvas.height - drawH) / 2;
+
+
+        /* BACKGROUND */
+
+        ctx.fillStyle = "#f8fafc";
+
+        ctx.fillRect(
+            startX,
+            startY,
+            drawW,
+            drawH
+        );
+
+
+        /*
+           BOARD + FLUTED
+        */
+
+        if (
+            jenis.includes("Wallboard") ||
+            jenis.includes("UV")
+        ) {
+
+            const totalBoardW =
+                boardW *
+                jmlBoard *
+                scale;
+
+
+            const boardStartX =
+                startX +
+                (drawW - totalBoardW) / 2;
+
+
+            /* BOARD */
 
             ctx.fillStyle = "#ffffff";
-            ctx.fillRect(boardStartX, startY, totalBoardW_scaled, drawH);
-            ctx.strokeStyle = "#111";
-            ctx.lineWidth = 2;
-            ctx.strokeRect(boardStartX, startY, totalBoardW_scaled, drawH);
 
-            let singleBoardW_scaled = boardW * scale;
-            for(let i = 1; i < jmlBoard; i++) {
+            ctx.fillRect(
+                boardStartX,
+                startY,
+                totalBoardW,
+                drawH
+            );
+
+
+            ctx.strokeStyle =
+                "#64748b";
+
+            ctx.lineWidth = 1.5;
+
+            ctx.strokeRect(
+                boardStartX,
+                startY,
+                totalBoardW,
+                drawH
+            );
+
+
+            /* BOARD DIVIDER */
+
+            const singleBoard =
+                boardW * scale;
+
+
+            for (
+                let i = 1;
+                i < jmlBoard;
+                i++
+            ) {
+
                 ctx.beginPath();
-                ctx.moveTo(boardStartX + (i * singleBoardW_scaled), startY);
-                ctx.lineTo(boardStartX + (i * singleBoardW_scaled), startY + drawH);
+
+                ctx.moveTo(
+                    boardStartX +
+                    i * singleBoard,
+                    startY
+                );
+
+                ctx.lineTo(
+                    boardStartX +
+                    i * singleBoard,
+                    startY + drawH
+                );
+
                 ctx.stroke();
+
             }
 
-            let sideWidth = (drawW - totalBoardW_scaled) / 2;
+
+            /* FLUTED SIDES */
+
+            const sideWidth =
+                (
+                    drawW -
+                    totalBoardW
+                ) / 2;
+
+
             if (sideWidth > 0) {
-                ctx.fillStyle = "#fdee23";
-                ctx.fillRect(startX, startY, sideWidth, drawH);
-                ctx.fillRect(boardStartX + totalBoardW_scaled, startY, sideWidth, drawH);
-                ctx.strokeRect(startX, startY, sideWidth, drawH);
-                ctx.strokeRect(boardStartX + totalBoardW_scaled, startY, sideWidth, drawH);
 
-                ctx.strokeStyle = "#d4b200";
-                ctx.lineWidth = 1;
-                for (let x = startX; x < startX + sideWidth; x += 6) {
-                    ctx.beginPath(); ctx.moveTo(x, startY); ctx.lineTo(x, startY + drawH); ctx.stroke();
-                }
-                for (let x = boardStartX + totalBoardW_scaled; x < boardStartX + totalBoardW_scaled + sideWidth; x += 6) {
-                    ctx.beginPath(); ctx.moveTo(x, startY); ctx.lineTo(x, startY + drawH); ctx.stroke();
-                }
+                drawFluted(
+                    ctx,
+                    startX,
+                    startY,
+                    sideWidth,
+                    drawH
+                );
+
+
+                drawFluted(
+                    ctx,
+                    boardStartX +
+                    totalBoardW,
+                    startY,
+                    sideWidth,
+                    drawH
+                );
+
             }
+
         } else {
-            ctx.fillStyle = "#fdee23";
-            ctx.fillRect(startX, startY, drawW, drawH);
-            ctx.strokeStyle = "#d4b200";
-            ctx.lineWidth = 1;
-            for (let x = startX; x < startX + drawW; x += 6) {
-                ctx.beginPath(); ctx.moveTo(x, startY); ctx.lineTo(x, startY + drawH); ctx.stroke();
-            }
+
+            drawFluted(
+                ctx,
+                startX,
+                startY,
+                drawW,
+                drawH
+            );
+
         }
 
-        ctx.strokeStyle = "#111";
-        ctx.lineWidth = 3;
-        ctx.strokeRect(startX, startY, drawW, drawH);
 
-        // Garisan dot-dot untuk sambungan ekstra di bahagian atas
+        /* OUTER FRAME */
+
+        ctx.strokeStyle =
+            "#111111";
+
+        ctx.lineWidth = 2.5;
+
+        ctx.strokeRect(
+            startX,
+            startY,
+            drawW,
+            drawH
+        );
+
+
+        /* EXTRA HEIGHT */
+
         if (extraHeight > 0) {
-            let standardH_scaled = 2900 * scale;
-            let splitY = startY + (drawH - standardH_scaled);
-            
-            ctx.strokeStyle = "#e11d48";
+
+            const standardH =
+                2900 * scale;
+
+
+            const splitY =
+                startY +
+                drawH -
+                standardH;
+
+
+            ctx.strokeStyle =
+                "#dc2626";
+
             ctx.lineWidth = 2;
-            ctx.setLineDash([5, 5]);
+
+            ctx.setLineDash([
+                5,
+                5
+            ]);
+
+
             ctx.beginPath();
-            ctx.moveTo(startX, splitY);
-            ctx.lineTo(startX + drawW, splitY);
+
+            ctx.moveTo(
+                startX,
+                splitY
+            );
+
+            ctx.lineTo(
+                startX + drawW,
+                splitY
+            );
+
             ctx.stroke();
+
+
             ctx.setLineDash([]);
 
-            ctx.fillStyle = "#e11d48";
-            ctx.font = "10px Inter, sans-serif";
-            ctx.fillText(`Sambungan Ekstra (${extraHeight}mm)`, startX + 5, splitY - 5);
+
+            ctx.fillStyle =
+                "#dc2626";
+
+            ctx.font =
+                "bold 10px Inter";
+
+
+            ctx.fillText(
+                `Additional ${extraHeight}mm`,
+                startX + 6,
+                splitY - 6
+            );
+
         }
+
+
+        /* DIMENSIONS */
+
+        ctx.fillStyle =
+            "#334155";
+
+        ctx.font =
+            "bold 10px Inter";
+
+
+        ctx.textAlign =
+            "center";
+
+        ctx.fillText(
+            `${w} mm`,
+            startX + drawW / 2,
+            startY - 7
+        );
+
+
+        ctx.save();
+
+        ctx.translate(
+            startX - 9,
+            startY + drawH / 2
+        );
+
+        ctx.rotate(
+            -Math.PI / 2
+        );
+
+        ctx.fillText(
+            `${h} mm`,
+            0,
+            0
+        );
+
+        ctx.restore();
+
+        ctx.textAlign =
+            "left";
+
     }
+
+
+    function drawFluted(
+        ctx,
+        x,
+        y,
+        width,
+        height
+    ) {
+
+        ctx.fillStyle =
+            "#fdee23";
+
+        ctx.fillRect(
+            x,
+            y,
+            width,
+            height
+        );
+
+
+        ctx.strokeStyle =
+            "#c7b900";
+
+        ctx.lineWidth = 1;
+
+
+        for (
+            let lineX = x;
+            lineX <= x + width;
+            lineX += 6
+        ) {
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                lineX,
+                y
+            );
+
+            ctx.lineTo(
+                lineX,
+                y + height
+            );
+
+            ctx.stroke();
+
+        }
+
+    }
+
+
+    /* =========================================================
+       CART
+    ========================================================= */
 
     function addWallToCart() {
-        if (!lastCalculatedRecord) { alert("Sila buat pengiraan terlebih dahulu!"); return; }
-        let c = JSON.parse(localStorage.getItem('diy_cart')) || [];
-        c.push(lastCalculatedRecord);
-        localStorage.setItem('diy_cart', JSON.stringify(c));
-        
-        let h = JSON.parse(localStorage.getItem('diy_calc_history')) || [];
-        h.push(lastCalculatedRecord);
-        localStorage.setItem('diy_calc_history', JSON.stringify(h));
 
-        alert("Berjaya masukkan Wall Panelling ke dalam Troli!");
+        if (!lastCalculatedRecord) {
+
+            alert(
+                "Sila buat pengiraan terlebih dahulu."
+            );
+
+            return;
+
+        }
+
+
+        let cart =
+            JSON.parse(
+                localStorage.getItem(
+                    "diy_cart"
+                )
+            ) || [];
+
+
+        /*
+           Copy record supaya cart
+           mempunyai object sendiri.
+        */
+
+        cart.push({
+            ...lastCalculatedRecord
+        });
+
+
+        localStorage.setItem(
+            "diy_cart",
+            JSON.stringify(cart)
+        );
+
+
+        alert(
+            "Quotation berjaya dimasukkan ke Troli."
+        );
+
     }
+
+
+    /* =========================================================
+       SAVE VISUAL
+    ========================================================= */
+
+    function saveVisualToPhone() {
+
+        const canvas =
+            document.getElementById(
+                "canvasVisual"
+            );
+
+
+        try {
+
+            const link =
+                document.createElement("a");
+
+            link.download =
+                "board-fluted-panelling.png";
+
+            link.href =
+                canvas.toDataURL(
+                    "image/png"
+                );
+
+            link.click();
+
+        } catch (error) {
+
+            alert(
+                "Visual tidak dapat disimpan pada peranti ini."
+            );
+
+        }
+
+    }
+
+
+    /* =========================================================
+       INITIALISE
+    ========================================================= */
+
+    toggleBoardOptions();
+
+    renderHistory();
+
+
+    /* =========================================================
+       REDRAW CANVAS WHEN SCREEN SIZE CHANGES
+    ========================================================= */
+
+    window.addEventListener(
+        "resize",
+        function () {
+
+            if (
+                lastCalculatedRecord
+            ) {
+
+                const w =
+                    parseFloat(
+                        document.getElementById(
+                            "lebarDinding"
+                        ).value
+                    ) || 0;
+
+                const h =
+                    parseFloat(
+                        document.getElementById(
+                            "tinggiDinding"
+                        ).value
+                    ) || 0;
+
+                const jenis =
+                    document.getElementById(
+                        "jenisFluted"
+                    ).value;
+
+                const board =
+                    document.getElementById(
+                        "jenisBoard"
+                    ).value;
+
+                const qty =
+                    parseInt(
+                        document.getElementById(
+                            "jumlahBoardInput"
+                        ).value
+                    ) || 1;
+
+
+                let boardW = 0;
+
+                if (board === "Mini")
+                    boardW = 600;
+
+                if (board === "BF")
+                    boardW = 1200;
+
+                if (board === "UV")
+                    boardW = 1220;
+
+
+                const extra =
+                    h > 2900
+                        ? h - 2900
+                        : 0;
+
+
+                lukisVisualPanelling(
+                    w,
+                    h,
+                    qty,
+                    boardW,
+                    jenis,
+                    extra
+                );
+
+            }
+
+        }
+    );
+
 </script>
 
-<a href="../index.html" style="position: fixed; bottom: 20px; right: 20px; background: #fdee23; color: #111; padding: 12px 18px; border-radius: 30px; text-decoration: none; font-weight: 800; font-size: 14px; box-shadow: 0 4px 15px rgba(253,238,35,0.4); display: flex; align-items: center; gap: 6px; border: 1px solid #111;"><span>←</span> Menu Utama</a>
 </body>
 </html>
