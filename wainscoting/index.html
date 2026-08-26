@@ -128,22 +128,22 @@
             let targetBoxHeight = (style === 'without_chairrail') ? (hMm - 200) : (hMm - 1070);
             if (targetBoxHeight < 300) targetBoxHeight = 300;
 
-            // Pengiraan Lebar Mengikut Nisbah Bahagian Tepat
+            // Pengiraan Lebar Tepat Berdasarkan Pembahagian Bahagian Asas (uW)
             let boxWidths = [];
             if (pattern === '1:1') {
                 let uW = (wMm - 300) / 2;
                 boxWidths = [uW, uW];
             } else if (pattern === '1:2:1') {
-                let uW = (wMm - 400) / 4; // 1+2+1 = 4 bahagian
+                let uW = (wMm - 400) / 4; // 1 + 2 + 1 = 4 bahagian
                 boxWidths = [uW, uW * 2, uW];
             } else if (pattern === '1:1:2:1:1') {
-                let uW = (wMm - 600) / 6; // 1+1+2+1+1 = 6 bahagian
+                let uW = (wMm - 600) / 6; // 1 + 1 + 2 + 1 + 1 = 6 bahagian
                 boxWidths = [uW, uW, uW * 2, uW, uW];
             } else if (pattern === '2:1:2:1:2') {
-                let uW = (wMm - 600) / 8; // 2+1+2+1+2 = 8 bahagian
+                let uW = (wMm - 600) / 7; // 2 + 1 + 2 + 1 + 2 = 7 bahagian (nisbah 2 adalah double nisbah 1)
                 boxWidths = [uW * 2, uW, uW * 2, uW, uW * 2];
             } else if (pattern === '1:2:1:2:1') {
-                let uW = (wMm - 600) / 7; // 1+2+1+2+1 = 7 bahagian tepat!
+                let uW = (wMm - 600) / 7; // 1 + 2 + 1 + 2 + 1 = 7 bahagian tepat!
                 boxWidths = [uW, uW * 2, uW, uW * 2, uW];
             } else {
                 let remW = wMm - 200;
