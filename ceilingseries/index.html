@@ -3,219 +3,2014 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ceiling Series Calculator</title>
+    <title>Ceiling Series | Idris e-Portal</title>
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <style>
-        :root { --tng-yellow: #fdee23; --tng-dark: #111111; --bg-color: #f4f5f7; --card-bg: #ffffff; --text-main: #111111; --text-sub: #666666; --border-color: #e4e7eb; --shadow: 0 4px 16px rgba(0, 0, 0, 0.06); }
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 20px 16px 90px; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
-        .container { max-width: 600px; width: 100%; background: var(--card-bg); padding: 25px; border-radius: 20px; box-shadow: var(--shadow); border: 1px solid var(--border-color); }
-        h1 { text-align: center; color: var(--text-main); font-size: 20px; font-weight: 800; margin-top: 0; margin-bottom: 25px; }
-        .form-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 20px; }
-        .form-group { display: flex; flex-direction: column; }
-        label { font-weight: 600; margin-bottom: 6px; font-size: 13px; }
-        select, input { padding: 12px; border: 1px solid var(--border-color); border-radius: 10px; font-size: 14px; outline: none; background: #fff; }
-        button.calc-btn { background-color: var(--tng-yellow); color: var(--tng-dark); border: 1.5px solid #111; padding: 15px; font-size: 16px; font-weight: 800; border-radius: 12px; cursor: pointer; width: 100%; box-shadow: 0 4px 12px rgba(253, 238, 35, 0.3); }
-        .result-section { margin-top: 25px; border-top: 2px solid var(--border-color); padding-top: 20px; }
-        .result-card { background: #fffdf0; padding: 16px; border-radius: 12px; margin-bottom: 15px; border: 1.5px solid #f6e05e; font-size: 13px; }
-        .price-table { width: 100%; border-collapse: collapse; margin-top: 10px; background: #fff; font-size: 13px; }
-        .price-table th, .price-table td { border: 1px solid var(--border-color); padding: 8px 10px; text-align: left; }
-        .price-table th { background-color: #f1f5f9; }
-        .visual-container { margin-top: 20px; text-align: center; background: #fff; border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; }
-        canvas { width: 100%; max-width: 520px; height: 240px; border: 1px solid var(--border-color); background: #fafafa; margin-top: 10px; border-radius: 8px; }
-        .add-cart-main-btn { background-color: var(--tng-yellow); color: var(--tng-dark); border: 1.5px solid #111; padding: 14px; width: 100%; font-size: 15px; font-weight: 800; border-radius: 12px; cursor: pointer; margin-top: 15px; display: none; }
+        :root {
+            --primary: #f4d900;
+            --primary-dark: #c8ad00;
+            --black: #111111;
+            --bg: #f5f6f8;
+            --white: #ffffff;
+            --text: #171717;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --soft: #f9fafb;
+            --success: #15803d;
+            --danger: #dc2626;
+            --shadow: 0 8px 30px rgba(15, 23, 42, .07);
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            padding: 0 14px 100px;
+            min-height: 100vh;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+        }
+
+        button,
+        input,
+        select {
+            font-family: inherit;
+        }
+
+        /* ================= HEADER ================= */
+
+        .topbar {
+            width: 100%;
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 18px 2px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+        .brand-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: var(--black);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 19px;
+            font-weight: 800;
+            box-shadow: 0 4px 12px rgba(0,0,0,.12);
+        }
+
+        .brand-text strong {
+            display: block;
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: -.2px;
+        }
+
+        .brand-text span {
+            display: block;
+            font-size: 10px;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--white);
+            border: 1px solid var(--border);
+            padding: 7px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--muted);
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--success);
+        }
+
+        /* ================= HERO ================= */
+
+        .hero {
+            width: 100%;
+            max-width: 680px;
+            margin: 0 auto 15px;
+            background: var(--black);
+            color: white;
+            border-radius: 20px;
+            padding: 22px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            right: -55px;
+            top: -65px;
+            border-radius: 50%;
+            background: var(--primary);
+            opacity: .95;
+        }
+
+        .hero-label {
+            font-size: 10px;
+            font-weight: 800;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 7px;
+        }
+
+        .hero h1 {
+            margin: 0;
+            font-size: 23px;
+            line-height: 1.2;
+            letter-spacing: -.7px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero p {
+            margin: 8px 0 0;
+            color: #cbd5e1;
+            font-size: 12px;
+            line-height: 1.5;
+            max-width: 500px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ================= MAIN ================= */
+
+        .container {
+            width: 100%;
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        .section-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 19px;
+            margin-bottom: 15px;
+            box-shadow: var(--shadow);
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .section-number {
+            width: 29px;
+            height: 29px;
+            border-radius: 9px;
+            background: #fff8bf;
+            color: var(--black);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        .section-heading h2 {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .section-heading p {
+            margin: 2px 0 0;
+            font-size: 10px;
+            color: var(--muted);
+        }
+
+        /* ================= FORM ================= */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #374151;
+            margin-bottom: 7px;
+        }
+
+        .input-wrap {
+            position: relative;
+        }
+
+        select,
+        input {
+            width: 100%;
+            min-height: 46px;
+            padding: 11px 12px;
+            border-radius: 11px;
+            border: 1px solid var(--border);
+            background: #fff;
+            color: var(--text);
+            font-size: 13px;
+            outline: none;
+            transition: .2s;
+        }
+
+        select:focus,
+        input:focus {
+            border-color: var(--black);
+            box-shadow: 0 0 0 3px rgba(244,217,0,.18);
+        }
+
+        .unit {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 10px;
+            color: var(--muted);
+            font-weight: 700;
+            pointer-events: none;
+        }
+
+        .helper {
+            margin-top: 5px;
+            font-size: 9px;
+            color: var(--muted);
+        }
+
+        /* ================= CALCULATE ================= */
+
+        .calc-btn {
+            width: 100%;
+            margin-top: 17px;
+            min-height: 50px;
+            border: 1.5px solid var(--black);
+            border-radius: 12px;
+            background: var(--primary);
+            color: var(--black);
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 5px 14px rgba(244,217,0,.22);
+            transition: .18s;
+        }
+
+        .calc-btn:active {
+            transform: scale(.98);
+        }
+
+        /* ================= RESULT ================= */
+
+        #resultSection {
+            display: none;
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .result-header h2 {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .result-header p {
+            margin: 4px 0 0;
+            font-size: 10px;
+            color: var(--muted);
+        }
+
+        .result-status {
+            padding: 6px 9px;
+            border-radius: 20px;
+            background: #ecfdf3;
+            color: var(--success);
+            font-size: 9px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .recommendation {
+            background: #fffbea;
+            border: 1px solid #f4df58;
+            border-radius: 13px;
+            padding: 13px;
+            margin-bottom: 14px;
+        }
+
+        .recommendation-label {
+            font-size: 9px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: .7px;
+            color: #8b7500;
+            margin-bottom: 5px;
+        }
+
+        .recommendation-title {
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .recommendation-sub {
+            margin-top: 4px;
+            font-size: 10px;
+            color: var(--muted);
+        }
+
+        /* ================= PRICE TABLE ================= */
+
+        .table-wrap {
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+
+        .price-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 430px;
+            background: white;
+            font-size: 11px;
+        }
+
+        .price-table th {
+            background: #f8fafc;
+            color: #475569;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: .4px;
+            font-weight: 800;
+        }
+
+        .price-table th,
+        .price-table td {
+            padding: 11px 10px;
+            border-bottom: 1px solid var(--border);
+            text-align: left;
+        }
+
+        .price-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .price-table td:last-child,
+        .price-table th:last-child {
+            text-align: right;
+        }
+
+        .total-row td {
+            background: #fffbea;
+            font-weight: 800;
+            font-size: 12px;
+        }
+
+        .total-price {
+            font-size: 15px !important;
+        }
+
+        /* ================= CART ================= */
+
+        .add-cart-main-btn {
+            width: 100%;
+            min-height: 47px;
+            margin-top: 14px;
+            border: 1.5px solid var(--black);
+            border-radius: 11px;
+            background: var(--black);
+            color: white;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            display: none;
+            transition: .18s;
+        }
+
+        .add-cart-main-btn:active {
+            transform: scale(.98);
+        }
+
+        /* ================= VISUAL ================= */
+
+        .visual-container {
+            margin-top: 18px;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 14px;
+            background: #fafafa;
+        }
+
+        .visual-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 7px;
+        }
+
+        .visual-header h3 {
+            margin: 0;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .visual-header span {
+            font-size: 9px;
+            color: var(--muted);
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 240px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+        }
+
+        /* ================= HISTORY ================= */
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 13px;
+        }
+
+        .history-header h2 {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .clear-btn {
+            border: none;
+            background: transparent;
+            color: var(--danger);
+            font-size: 10px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .history-empty {
+            text-align: center;
+            padding: 22px 10px;
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .history-item {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 13px;
+            margin-bottom: 9px;
+            background: #fff;
+        }
+
+        .history-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .history-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .history-title {
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .history-date {
+            font-size: 9px;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        .history-info {
+            margin-top: 5px;
+            font-size: 10px;
+            color: var(--muted);
+        }
+
+        .history-price {
+            margin-top: 7px;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .history-actions {
+            display: flex;
+            gap: 7px;
+            margin-top: 10px;
+        }
+
+        .history-action {
+            flex: 1;
+            min-height: 32px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: white;
+            font-size: 9px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .history-action.cart {
+            background: var(--primary);
+            border-color: var(--black);
+        }
+
+        .history-action.delete {
+            color: var(--danger);
+        }
+
+        /* ================= FOOTER ================= */
+
+        .footer {
+            max-width: 680px;
+            width: 100%;
+            margin: 18px auto 0;
+            text-align: center;
+            color: var(--muted);
+            font-size: 9px;
+            line-height: 1.5;
+        }
+
+        /* ================= BACK BUTTON ================= */
+
+        .back-btn {
+            position: fixed;
+            bottom: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            min-width: 145px;
+            padding: 11px 17px;
+            border-radius: 30px;
+            text-decoration: none;
+            text-align: center;
+            background: var(--black);
+            color: white;
+            border: 1px solid #000;
+            font-size: 11px;
+            font-weight: 800;
+            box-shadow: 0 8px 25px rgba(0,0,0,.18);
+        }
+
+        .back-btn span {
+            color: var(--primary);
+            margin-right: 5px;
+        }
+
+        /* ================= TOAST ================= */
+
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 75px;
+            transform: translate(-50%, 20px);
+            background: var(--black);
+            color: white;
+            padding: 11px 15px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 700;
+            opacity: 0;
+            pointer-events: none;
+            transition: .25s;
+            z-index: 3000;
+            max-width: 85%;
+            text-align: center;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translate(-50%, 0);
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 500px) {
+            body {
+                padding-left: 11px;
+                padding-right: 11px;
+            }
+
+            .topbar {
+                padding-top: 14px;
+            }
+
+            .hero {
+                padding: 19px;
+                border-radius: 17px;
+            }
+
+            .hero h1 {
+                font-size: 20px;
+            }
+
+            .section-card {
+                padding: 15px;
+                border-radius: 15px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+
+            .status {
+                display: none;
+            }
+        }
     </style>
 </head>
+
 <body>
-<div class="container">
-    <h1>Ceiling Series Calculator</h1>
-    <div class="form-grid">
-        <div class="form-group">
-            <label>Pilih Jenis Ceiling:</label>
-            <select id="seriesType" onchange="toggleSoffitSubtype()">
-                <option value="pvc_300">PVC Ceiling (300mm)</option>
-                <option value="soffit_a">Soffit A (340mm)</option>
-                <option value="soffit_f">Soffit F (190mm)</option>
-            </select>
+
+    <!-- HEADER -->
+    <header class="topbar">
+        <div class="brand">
+            <div class="brand-icon">ID</div>
+            <div class="brand-text">
+                <strong>Idris e-Portal</strong>
+                <span>Construction Calculator System</span>
+            </div>
         </div>
-        <div class="form-group" id="subtypeGroup" style="display: none;">
-            <label>Kategori Soffit A:</label>
-            <select id="soffitSubtype">
-                <option value="internal">Internal</option>
-                <option value="external">External</option>
-            </select>
+
+        <div class="status">
+            <span class="status-dot"></span>
+            Sistem Aktif
         </div>
-        <div class="form-group"><label>Lebar Ruang (mm):</label><input type="number" id="roomWidth" value="3000"></div>
-        <div class="form-group"><label>Panjang Ruang (mm):</label><input type="number" id="roomLength" value="6000"></div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-label">Product Calculator</div>
+        <h1>Ceiling Series Calculator</h1>
+        <p>
+            Pengiraan keperluan material dan anggaran kos berdasarkan ukuran ruang
+            serta jenis profil ceiling yang dipilih.
+        </p>
+    </section>
+
+    <main class="container">
+
+        <!-- INPUT -->
+        <section class="section-card">
+
+            <div class="section-heading">
+                <div class="section-number">01</div>
+                <div>
+                    <h2>Maklumat Projek</h2>
+                    <p>Masukkan spesifikasi ruang dan jenis ceiling</p>
+                </div>
+            </div>
+
+            <div class="form-grid">
+
+                <div class="form-group full">
+                    <label for="seriesType">Jenis Ceiling</label>
+
+                    <select id="seriesType" onchange="toggleSoffitSubtype()">
+                        <option value="pvc_300">PVC Ceiling — 300mm</option>
+                        <option value="soffit_a">Soffit A — 340mm</option>
+                        <option value="soffit_f">Soffit F — 190mm</option>
+                    </select>
+                </div>
+
+                <div class="form-group full" id="subtypeGroup" style="display:none;">
+                    <label for="soffitSubtype">Kategori Soffit A</label>
+
+                    <select id="soffitSubtype">
+                        <option value="internal">Internal</option>
+                        <option value="external">External</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="roomWidth">Lebar Ruang</label>
+
+                    <div class="input-wrap">
+                        <input
+                            type="number"
+                            id="roomWidth"
+                            value="3000"
+                            min="1"
+                            placeholder="Contoh: 3000"
+                        >
+                        <span class="unit">mm</span>
+                    </div>
+
+                    <div class="helper">
+                        Masukkan ukuran lebar sebenar.
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="roomLength">Panjang Ruang</label>
+
+                    <div class="input-wrap">
+                        <input
+                            type="number"
+                            id="roomLength"
+                            value="6000"
+                            min="1"
+                            placeholder="Contoh: 6000"
+                        >
+                        <span class="unit">mm</span>
+                    </div>
+
+                    <div class="helper">
+                        Masukkan ukuran panjang sebenar.
+                    </div>
+                </div>
+
+            </div>
+
+            <button class="calc-btn" onclick="calculateCeiling()">
+                Kira Material & Anggaran Kos
+            </button>
+
+        </section>
+
+        <!-- RESULT -->
+        <section class="section-card" id="resultSection">
+
+            <div class="result-header">
+                <div>
+                    <h2>Ringkasan Pengiraan</h2>
+                    <p>Cadangan konfigurasi berdasarkan ukuran yang dimasukkan.</p>
+                </div>
+
+                <div class="result-status">
+                    Pengiraan Selesai
+                </div>
+            </div>
+
+            <div class="recommendation">
+                <div class="recommendation-label">
+                    Cadangan Optimum
+                </div>
+
+                <div class="recommendation-title" id="recommendationTitle">
+                    -
+                </div>
+
+                <div class="recommendation-sub" id="recommendationSub">
+                    -
+                </div>
+            </div>
+
+            <div class="table-wrap">
+                <div id="resultText"></div>
+            </div>
+
+            <button
+                class="add-cart-main-btn"
+                id="addCartBtn"
+                onclick="addCeilingToCart()"
+            >
+                + Masukkan Pengiraan ke Troli
+            </button>
+
+            <!-- VISUAL -->
+            <div class="visual-container">
+
+                <div class="visual-header">
+                    <h3>Visualisasi Susun Atur</h3>
+                    <span>Skematik • Bukan ukuran skala pembinaan</span>
+                </div>
+
+                <canvas id="canvasCeiling"></canvas>
+
+            </div>
+
+        </section>
+
+        <!-- HISTORY -->
+        <section class="section-card">
+
+            <div class="history-header">
+                <div>
+                    <h2>Rekod Pengiraan</h2>
+                    <div style="font-size:10px;color:var(--muted);margin-top:3px;">
+                        Rekod disimpan secara automatik pada peranti ini.
+                    </div>
+                </div>
+
+                <button class="clear-btn" onclick="clearHistory()">
+                    Padam Semua
+                </button>
+            </div>
+
+            <div id="historyListBox">
+                <div class="history-empty">
+                    Belum terdapat rekod pengiraan.
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <div class="footer">
+        Idris e-Portal • Ceiling Series Calculator<br>
+        Data pengiraan disimpan secara setempat pada peranti.
     </div>
-    <button class="calc-btn" onclick="calculateCeiling()">Kira Pengiraan & Harga Optimum</button>
-    <div class="result-section" id="resultSection" style="display: none;">
-        <div class="result-card">
-            <h3>Hasil Pengiraan & Anggaran Kos</h3>
-            <div id="resultText"></div>
-            <button class="add-cart-main-btn" id="addCartBtn" onclick="addCeilingToCart()">+ Masukkan ke Troli (Cart)</button>
-        </div>
-        <div class="visual-container">
-            <h3 style="font-size: 14px; margin-top:0;">Visualisasi Siling & Sambungan (Dotted)</h3>
-            <canvas id="canvasCeiling"></canvas>
-        </div>
-    </div>
-</div>
+
+    <!-- BACK -->
+    <a href="../index.html" class="back-btn">
+        <span>←</span> Menu Utama
+    </a>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast"></div>
 
 <script>
+
+    /* =========================================================
+       PRICING DATA — DIKEKALKAN
+    ========================================================= */
+
     const pricingData = {
-        pvc_300: { width: 300, lengths: { 5500: 57.60, 6400: 67.20 }, accessoryName: "U Clip", accessoryPrice: 32.00 },
-        soffit_a_internal: { width: 340, lengths: { 5500: 90.00, 6400: 110.00 }, accessoryName: "End Cap", accessoryPrice: 50.00 },
-        soffit_a_external: { width: 340, lengths: { 5500: 115.00, 6400: 125.00 }, accessoryName: "End Cap", accessoryPrice: 60.00 },
-        soffit_f: { width: 190, lengths: { 5500: 85.00, 6400: 105.00 }, accessoryName: "End Cap", accessoryPrice: 50.00 }
+        pvc_300: {
+            width: 300,
+            lengths: {
+                5500: 57.60,
+                6400: 67.20
+            },
+            accessoryName: "U Clip",
+            accessoryPrice: 32.00
+        },
+
+        soffit_a_internal: {
+            width: 340,
+            lengths: {
+                5500: 90.00,
+                6400: 110.00
+            },
+            accessoryName: "End Cap",
+            accessoryPrice: 50.00
+        },
+
+        soffit_a_external: {
+            width: 340,
+            lengths: {
+                5500: 115.00,
+                6400: 125.00
+            },
+            accessoryName: "End Cap",
+            accessoryPrice: 60.00
+        },
+
+        soffit_f: {
+            width: 190,
+            lengths: {
+                5500: 85.00,
+                6400: 105.00
+            },
+            accessoryName: "End Cap",
+            accessoryPrice: 50.00
+        }
     };
 
-    function toggleSoffitSubtype() {
-        let type = document.getElementById('seriesType').value;
-        document.getElementById('subtypeGroup').style.display = (type === 'soffit_a') ? 'flex' : 'none';
-    }
 
     let lastCalculatedRecord = null;
 
+
+    /* =========================================================
+       INITIAL LOAD
+    ========================================================= */
+
+    window.addEventListener("DOMContentLoaded", function () {
+        toggleSoffitSubtype();
+        renderHistory();
+    });
+
+
+    /* =========================================================
+       TOGGLE SOFFIT
+    ========================================================= */
+
+    function toggleSoffitSubtype() {
+
+        const type = document.getElementById("seriesType").value;
+        const group = document.getElementById("subtypeGroup");
+
+        group.style.display =
+            type === "soffit_a" ? "flex" : "none";
+    }
+
+
+    /* =========================================================
+       MAIN CALCULATION
+    ========================================================= */
+
     function calculateCeiling() {
-        let type = document.getElementById('seriesType').value;
-        let sub = document.getElementById('soffitSubtype').value;
-        let roomW = parseFloat(document.getElementById('roomWidth').value) || 0;
-        let roomL = parseFloat(document.getElementById('roomLength').value) || 0;
 
-        if (!roomW || !roomL) { alert('Sila masukkan ukuran ruang yang sah.'); return; }
+        const type =
+            document.getElementById("seriesType").value;
 
-        let key = (type === 'soffit_a') ? `soffit_a_${sub}` : type;
-        let prof = pricingData[key];
-        let panelW = prof.width;
+        const sub =
+            document.getElementById("soffitSubtype").value;
 
-        // Penilaian minimum wastage untuk saiz 5500 dan 6400 (Melintang & Menegak)
+        const roomW =
+            parseFloat(document.getElementById("roomWidth").value) || 0;
+
+        const roomL =
+            parseFloat(document.getElementById("roomLength").value) || 0;
+
+
+        if (!roomW || !roomL || roomW <= 0 || roomL <= 0) {
+
+            showToast("Sila masukkan ukuran ruang yang sah.");
+
+            return;
+        }
+
+
+        const key =
+            type === "soffit_a"
+                ? `soffit_a_${sub}`
+                : type;
+
+
+        const prof = pricingData[key];
+
+        const panelW = prof.width;
+
+
         let candidates = [];
-        [5500, 6400].forEach(lenOption => {
-            let pricePerPcs = prof.lengths[lenOption];
-            
-            // Arah A: Melintang (Panjang selari dengan roomL)
+
+
+        /* ---------------------------------------------------------
+           OPTION 1 — STANDARD LENGTH
+        --------------------------------------------------------- */
+
+        [5500, 6400].forEach(function (lenOption) {
+
+            const pricePerPcs =
+                prof.lengths[lenOption];
+
+
+            /* MELINTANG */
+
             if (lenOption >= roomW) {
-                let pcsA = Math.ceil(roomL / panelW);
-                let wastageA = (lenOption - roomW) * pcsA;
-                candidates.push({ orientation: 'Melintang', len: lenOption, pcs: pcsA, unitPrice: pricePerPcs, wastage: wastageA, total: pcsA * pricePerPcs });
+
+                const pcsA =
+                    Math.ceil(roomL / panelW);
+
+                const wastageA =
+                    (lenOption - roomW) * pcsA;
+
+                candidates.push({
+
+                    orientation: "Melintang",
+
+                    len: lenOption,
+
+                    pcs: pcsA,
+
+                    unitPrice: pricePerPcs,
+
+                    wastage: wastageA,
+
+                    total: pcsA * pricePerPcs
+                });
             }
 
-            // Arah B: Menegak (Panjang selari dengan roomW)
+
+            /* MENEGAK */
+
             if (lenOption >= roomL) {
-                let pcsB = Math.ceil(roomW / panelW);
-                let wastageB = (lenOption - roomL) * pcsB;
-                candidates.push({ orientation: 'Menegak', len: lenOption, pcs: pcsB, unitPrice: pricePerPcs, wastage: wastageB, total: pcsB * pricePerPcs });
+
+                const pcsB =
+                    Math.ceil(roomW / panelW);
+
+                const wastageB =
+                    (lenOption - roomL) * pcsB;
+
+                candidates.push({
+
+                    orientation: "Menegak",
+
+                    len: lenOption,
+
+                    pcs: pcsB,
+
+                    unitPrice: pricePerPcs,
+
+                    wastage: wastageB,
+
+                    total: pcsB * pricePerPcs
+                });
             }
+
         });
 
-        // Jika ruang lebih besar dari saiz profil maksimum, ambil kira keperluan sambungan
+
+        /* ---------------------------------------------------------
+           OPTION 2 — NEED JOINING
+        --------------------------------------------------------- */
+
         if (candidates.length === 0) {
-            let defaultLen = 6400;
-            let pricePerPcs = prof.lengths[defaultLen];
-            let pcs = Math.ceil((roomL / panelW) * (roomW / defaultLen));
-            candidates.push({ orientation: 'Melintang (Sambungan)', len: defaultLen, pcs: pcs, unitPrice: pricePerPcs, wastage: 0, total: pcs * pricePerPcs });
+
+            const defaultLen = 6400;
+
+            const pricePerPcs =
+                prof.lengths[defaultLen];
+
+            const pcs =
+                Math.ceil(
+                    (roomL / panelW) *
+                    (roomW / defaultLen)
+                );
+
+            candidates.push({
+
+                orientation: "Melintang (Sambungan)",
+
+                len: defaultLen,
+
+                pcs: pcs,
+
+                unitPrice: pricePerPcs,
+
+                wastage: 0,
+
+                total: pcs * pricePerPcs
+
+            });
         }
 
-        // Pilih calon dengan jumlah kos paling rendah / wastage paling minimum
-        candidates.sort((a, b) => a.total - b.total);
-        let best = candidates[0];
 
-        let pCost = best.total;
-        let accN = Math.ceil((2 * (roomW + roomL)) / 5500);
-        let accCost = accN * prof.accessoryPrice;
-        let grandTotal = pCost + accCost;
+        /* ---------------------------------------------------------
+           SELECT LOWEST COST
+        --------------------------------------------------------- */
 
-        document.getElementById('resultSection').style.display = 'block'; 
-        document.getElementById('addCartBtn').style.display = 'block';
+        candidates.sort(function (a, b) {
 
-        let typeLabel = (type === 'soffit_a') ? `Soffit A (${sub})` : (type === 'soffit_f' ? 'Soffit F' : 'PVC 300mm');
+            if (a.total !== b.total) {
+                return a.total - b.total;
+            }
 
-        document.getElementById('resultText').innerHTML = `
-            <strong>Pilihan Optimum: ${typeLabel} (${best.orientation})</strong><br>
-            Panjang Profil Dipilih: <b>${best.len}mm</b> | Kuantiti: ${best.pcs} kpg<br>
+            return a.wastage - b.wastage;
+
+        });
+
+
+        const best = candidates[0];
+
+
+        const pCost = best.total;
+
+
+        const accN =
+            Math.ceil(
+                (2 * (roomW + roomL)) / 5500
+            );
+
+
+        const accCost =
+            accN * prof.accessoryPrice;
+
+
+        const grandTotal =
+            pCost + accCost;
+
+
+        const typeLabel =
+            type === "soffit_a"
+                ? `Soffit A — ${capitalize(sub)}`
+                : type === "soffit_f"
+                    ? "Soffit F"
+                    : "PVC Ceiling — 300mm";
+
+
+        /* ---------------------------------------------------------
+           SHOW RESULT
+        --------------------------------------------------------- */
+
+        document.getElementById("resultSection").style.display =
+            "block";
+
+        document.getElementById("addCartBtn").style.display =
+            "block";
+
+
+        document.getElementById("recommendationTitle").innerText =
+            `${typeLabel} • ${best.orientation}`;
+
+
+        document.getElementById("recommendationSub").innerText =
+            `Profil ${best.len}mm • ${best.pcs} keping • Ruang ${roomW} × ${roomL}mm`;
+
+
+        document.getElementById("resultText").innerHTML = `
+
             <table class="price-table">
-                <tr><th>Komponen</th><th>Kuantiti</th><th>Jumlah</th></tr>
-                <tr><td>Panel (${best.len}mm)</td><td>${best.pcs} kpg</td><td>RM ${pCost.toFixed(2)}</td></tr>
-                <tr><td>Aksesori (${prof.accessoryName})</td><td>${accN} btg</td><td>RM ${accCost.toFixed(2)}</td></tr>
-                <tr style="font-weight:bold;"><td colspan="2" style="text-align:right;">TOTAL:</td><td style="color:#111;">RM ${grandTotal.toFixed(2)}</td></tr>
+
+                <thead>
+                    <tr>
+                        <th>Komponen</th>
+                        <th>Kuantiti</th>
+                        <th>Jumlah</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>
+                            Panel ${best.len}mm
+                        </td>
+
+                        <td>
+                            ${best.pcs} kpg
+                        </td>
+
+                        <td>
+                            RM ${pCost.toFixed(2)}
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>
+                            ${prof.accessoryName}
+                        </td>
+
+                        <td>
+                            ${accN} btg
+                        </td>
+
+                        <td>
+                            RM ${accCost.toFixed(2)}
+                        </td>
+                    </tr>
+
+
+                    <tr class="total-row">
+
+                        <td colspan="2">
+                            JUMLAH KESELURUHAN
+                        </td>
+
+                        <td class="total-price">
+                            RM ${grandTotal.toFixed(2)}
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
             </table>
+
         `;
 
-        lastCalculatedRecord = { 
-            tajuk: `Ceiling (${typeLabel})`, 
-            info: `${roomW}x${roomL}mm`, 
-            harga: "RM " + grandTotal.toFixed(2) 
+
+        /* ---------------------------------------------------------
+           RECORD
+        --------------------------------------------------------- */
+
+        lastCalculatedRecord = {
+
+            tajuk: `Ceiling (${typeLabel})`,
+
+            info:
+                `${roomW} × ${roomL}mm | ${best.orientation} | Profil ${best.len}mm | ${best.pcs} kpg`,
+
+            harga:
+                "RM " + grandTotal.toFixed(2),
+
+            timestamp:
+                new Date().toISOString(),
+
+            detail: {
+                typeLabel,
+                roomW,
+                roomL,
+                orientation: best.orientation,
+                length: best.len,
+                pcs: best.pcs,
+                panelCost: pCost,
+                accessoryName: prof.accessoryName,
+                accessoryQty: accN,
+                accessoryCost: accCost,
+                total: grandTotal
+            }
         };
 
-        // --- LUKIS VISUAL DENGAN UKURAN & SAMBUNGAN DOT-DOT ---
-        let canvas = document.getElementById("canvasCeiling");
-        let ctx = canvas.getContext("2d");
-        canvas.width = canvas.parentElement.clientWidth - 30; 
-        canvas.height = 240;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        let scale = Math.min((canvas.width - 60) / roomW, (canvas.height - 60) / roomL);
-        let drawW = roomW * scale, drawH = roomL * scale;
-        let startX = (canvas.width - drawW) / 2 + 10, startY = (canvas.height - drawH) / 2 + 10;
+        saveHistory(lastCalculatedRecord);
 
-        // Lakar Ruang Kotak Siling
-        ctx.fillStyle = "#fffdf0"; 
-        ctx.fillRect(startX, startY, drawW, drawH);
-        
-        ctx.strokeStyle = "#d4b200"; 
-        ctx.lineWidth = 1;
-        let gap = Math.max(drawH / 12, 14);
-        for (let y = startY; y <= startY + drawH; y += gap) {
-            ctx.beginPath(); ctx.moveTo(startX, y); ctx.lineTo(startX + drawW, y); ctx.stroke();
-        }
+        renderHistory();
 
-        // Bingkai Luar Siling
-        ctx.strokeStyle = "#111"; 
-        ctx.lineWidth = 2; 
-        ctx.strokeRect(startX, startY, drawW, drawH);
+        drawCeilingVisual(
+            roomW,
+            roomL,
+            best
+        );
 
-        // Jika saiz ruang melebihi panjang standard, lukis garisan dot-dot sambungan
-        if (roomW > best.len || roomL > best.len) {
-            ctx.strokeStyle = "#e11d48";
-            ctx.lineWidth = 2;
-            ctx.setLineDash([4, 4]);
-            ctx.beginPath();
-            if (roomW > best.len) {
-                let splitX = startX + (best.len * scale);
-                ctx.moveTo(splitX, startY); ctx.lineTo(splitX, startY + drawH);
-            } else {
-                let splitY = startY + (best.len * scale);
-                ctx.moveTo(startX, splitY); ctx.lineTo(startX + drawW, splitY);
-            }
-            ctx.stroke();
-            ctx.setLineDash([]); // Reset dash
 
-            ctx.fillStyle = "#e11d48";
-            ctx.font = "10px Inter, sans-serif";
-            ctx.fillText("Garisan Sambungan Profil", startX + 5, startY + 15);
-        }
+        showToast(
+            "Pengiraan berjaya disimpan dalam Rekod Pengiraan."
+        );
 
-        // Paparkan Label Ukuran pada Visual
-        ctx.fillStyle = "#111";
-        ctx.font = "11px Inter, sans-serif";
-        ctx.fillText(`Lebar: ${roomW}mm`, startX + (drawW / 2) - 40, startY - 5);
-        
-        ctx.save();
-        ctx.translate(startX - 15, startY + (drawH / 2));
-        ctx.rotate(-Math.PI / 2);
-        ctx.fillText(`Panjang: ${roomL}mm`, -30, 0);
-        ctx.restore();
+
+        setTimeout(function () {
+
+            document.getElementById("resultSection")
+                .scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+
+        }, 100);
+
     }
+
+
+    /* =========================================================
+       SAVE HISTORY
+    ========================================================= */
+
+    function saveHistory(record) {
+
+        let history =
+            JSON.parse(
+                localStorage.getItem("diy_calc_history")
+            ) || [];
+
+
+        /*
+         Elakkan duplicate jika user tekan
+         calculate berulang dengan data sama.
+        */
+
+        const duplicate =
+            history.length > 0 &&
+            history[0].tajuk === record.tajuk &&
+            history[0].info === record.info &&
+            history[0].harga === record.harga;
+
+
+        if (!duplicate) {
+
+            history.unshift(record);
+
+            /*
+             Simpan maksimum 50 rekod
+            */
+
+            history =
+                history.slice(0, 50);
+
+            localStorage.setItem(
+                "diy_calc_history",
+                JSON.stringify(history)
+            );
+        }
+    }
+
+
+    /* =========================================================
+       RENDER HISTORY
+    ========================================================= */
+
+    function renderHistory() {
+
+        const box =
+            document.getElementById("historyListBox");
+
+
+        let history =
+            JSON.parse(
+                localStorage.getItem("diy_calc_history")
+            ) || [];
+
+
+        /*
+         Hanya ambil record Ceiling untuk page ini.
+         */
+
+        history =
+            history.filter(function(item) {
+
+                return item.tajuk &&
+                    item.tajuk.toLowerCase()
+                    .includes("ceiling");
+
+            });
+
+
+        if (history.length === 0) {
+
+            box.innerHTML = `
+
+                <div class="history-empty">
+                    Belum terdapat rekod pengiraan ceiling.
+                </div>
+
+            `;
+
+            return;
+        }
+
+
+        let html = "";
+
+
+        history.forEach(function(item, index) {
+
+            const date =
+                item.timestamp
+                    ? formatDate(item.timestamp)
+                    : "";
+
+
+            html += `
+
+                <div class="history-item">
+
+                    <div class="history-top">
+
+                        <div class="history-title">
+                            ${escapeHTML(item.tajuk)}
+                        </div>
+
+                        <div class="history-date">
+                            ${date}
+                        </div>
+
+                    </div>
+
+
+                    <div class="history-info">
+                        ${escapeHTML(item.info || "")}
+                    </div>
+
+
+                    <div class="history-price">
+                        ${escapeHTML(item.harga || "RM 0.00")}
+                    </div>
+
+
+                    <div class="history-actions">
+
+                        <button
+                            class="history-action cart"
+                            onclick="addHistoryToCart(${index})"
+                        >
+                            + Masukkan ke Troli
+                        </button>
+
+                        <button
+                            class="history-action delete"
+                            onclick="deleteHistory(${index})"
+                        >
+                            Padam
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        });
+
+
+        box.innerHTML = html;
+    }
+
+
+    /* =========================================================
+       DELETE HISTORY
+    ========================================================= */
+
+    function deleteHistory(index) {
+
+        let allHistory =
+            JSON.parse(
+                localStorage.getItem("diy_calc_history")
+            ) || [];
+
+
+        let ceilingHistory =
+            allHistory.filter(function(item) {
+
+                return item.tajuk &&
+                    item.tajuk.toLowerCase()
+                    .includes("ceiling");
+
+            });
+
+
+        const target =
+            ceilingHistory[index];
+
+
+        allHistory =
+            allHistory.filter(function(item) {
+
+                return item !== target;
+
+            });
+
+
+        localStorage.setItem(
+            "diy_calc_history",
+            JSON.stringify(allHistory)
+        );
+
+
+        renderHistory();
+
+        showToast("Rekod telah dipadam.");
+    }
+
+
+    /* =========================================================
+       CLEAR HISTORY
+    ========================================================= */
+
+    function clearHistory() {
+
+        let allHistory =
+            JSON.parse(
+                localStorage.getItem("diy_calc_history")
+            ) || [];
+
+
+        const filtered =
+            allHistory.filter(function(item) {
+
+                return !(
+                    item.tajuk &&
+                    item.tajuk.toLowerCase()
+                    .includes("ceiling")
+                );
+
+            });
+
+
+        localStorage.setItem(
+            "diy_calc_history",
+            JSON.stringify(filtered)
+        );
+
+
+        renderHistory();
+
+        showToast("Semua rekod ceiling telah dipadam.");
+    }
+
+
+    /* =========================================================
+       ADD HISTORY TO CART
+    ========================================================= */
+
+    function addHistoryToCart(index) {
+
+        let history =
+            JSON.parse(
+                localStorage.getItem("diy_calc_history")
+            ) || [];
+
+
+        history =
+            history.filter(function(item) {
+
+                return item.tajuk &&
+                    item.tajuk.toLowerCase()
+                    .includes("ceiling");
+
+            });
+
+
+        const item =
+            history[index];
+
+
+        if (!item) return;
+
+
+        let cart =
+            JSON.parse(
+                localStorage.getItem("diy_cart")
+            ) || [];
+
+
+        cart.push({
+
+            tajuk: item.tajuk,
+
+            info: item.info,
+
+            harga: item.harga
+
+        });
+
+
+        localStorage.setItem(
+            "diy_cart",
+            JSON.stringify(cart)
+        );
+
+
+        showToast(
+            "Pengiraan berjaya dimasukkan ke Troli."
+        );
+    }
+
+
+    /* =========================================================
+       ADD CURRENT CALCULATION TO CART
+    ========================================================= */
 
     function addCeilingToCart() {
-        if (!lastCalculatedRecord) return;
-        let c = JSON.parse(localStorage.getItem('diy_cart')) || []; 
-        c.push(lastCalculatedRecord); 
-        localStorage.setItem('diy_cart', JSON.stringify(c));
-        alert("Berjaya masukkan ke Troli!");
+
+        if (!lastCalculatedRecord) {
+
+            showToast(
+                "Sila buat pengiraan terlebih dahulu."
+            );
+
+            return;
+        }
+
+
+        let cart =
+            JSON.parse(
+                localStorage.getItem("diy_cart")
+            ) || [];
+
+
+        cart.push({
+
+            tajuk:
+                lastCalculatedRecord.tajuk,
+
+            info:
+                lastCalculatedRecord.info,
+
+            harga:
+                lastCalculatedRecord.harga
+
+        });
+
+
+        localStorage.setItem(
+            "diy_cart",
+            JSON.stringify(cart)
+        );
+
+
+        showToast(
+            "Pengiraan berjaya dimasukkan ke Troli."
+        );
     }
+
+
+    /* =========================================================
+       DRAW VISUAL
+    ========================================================= */
+
+    function drawCeilingVisual(
+        roomW,
+        roomL,
+        best
+    ) {
+
+        const canvas =
+            document.getElementById("canvasCeiling");
+
+
+        const parent =
+            canvas.parentElement;
+
+
+        const availableWidth =
+            Math.max(
+                280,
+                parent.clientWidth - 30
+            );
+
+
+        canvas.width =
+            availableWidth;
+
+
+        canvas.height =
+            240;
+
+
+        const ctx =
+            canvas.getContext("2d");
+
+
+        ctx.clearRect(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+
+        /* BACKGROUND */
+
+        ctx.fillStyle = "#ffffff";
+
+        ctx.fillRect(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+
+        const padding = 55;
+
+
+        const scale =
+            Math.min(
+
+                (canvas.width - padding * 2) / roomW,
+
+                (canvas.height - padding * 2) / roomL
+
+            );
+
+
+        const drawW =
+            roomW * scale;
+
+
+        const drawH =
+            roomL * scale;
+
+
+        const startX =
+            (canvas.width - drawW) / 2;
+
+
+        const startY =
+            (canvas.height - drawH) / 2;
+
+
+        /* CEILING AREA */
+
+        ctx.fillStyle =
+            "#fffbea";
+
+
+        ctx.fillRect(
+            startX,
+            startY,
+            drawW,
+            drawH
+        );
+
+
+        /* PANEL LINES */
+
+        ctx.strokeStyle =
+            "#d8c100";
+
+
+        ctx.lineWidth = 1;
+
+
+        const gap =
+            Math.max(
+                drawH / 12,
+                14
+            );
+
+
+        for (
+            let y = startY;
+            y <= startY + drawH;
+            y += gap
+        ) {
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                startX,
+                y
+            );
+
+            ctx.lineTo(
+                startX + drawW,
+                y
+            );
+
+            ctx.stroke();
+        }
+
+
+        /* OUTER BORDER */
+
+        ctx.strokeStyle =
+            "#111111";
+
+
+        ctx.lineWidth = 2;
+
+
+        ctx.strokeRect(
+            startX,
+            startY,
+            drawW,
+            drawH
+        );
+
+
+        /* JOIN LINE */
+
+        if (
+            roomW > best.len ||
+            roomL > best.len
+        ) {
+
+            ctx.strokeStyle =
+                "#dc2626";
+
+
+            ctx.lineWidth = 2;
+
+
+            ctx.setLineDash([
+                5,
+                4
+            ]);
+
+
+            ctx.beginPath();
+
+
+            if (roomW > best.len) {
+
+                const splitX =
+                    startX +
+                    best.len * scale;
+
+
+                ctx.moveTo(
+                    splitX,
+                    startY
+                );
+
+
+                ctx.lineTo(
+                    splitX,
+                    startY + drawH
+                );
+
+            } else {
+
+                const splitY =
+                    startY +
+                    best.len * scale;
+
+
+                ctx.moveTo(
+                    startX,
+                    splitY
+                );
+
+
+                ctx.lineTo(
+                    startX + drawW,
+                    splitY
+                );
+            }
+
+
+            ctx.stroke();
+
+            ctx.setLineDash([]);
+
+
+            ctx.fillStyle =
+                "#dc2626";
+
+
+            ctx.font =
+                "9px Inter";
+
+
+            ctx.fillText(
+                "Sambungan Profil",
+                startX + 7,
+                startY + 15
+            );
+        }
+
+
+        /* WIDTH LABEL */
+
+        ctx.fillStyle =
+            "#111111";
+
+
+        ctx.font =
+            "10px Inter";
+
+
+        ctx.textAlign =
+            "center";
+
+
+        ctx.fillText(
+            `Lebar ${roomW}mm`,
+            startX + drawW / 2,
+            Math.max(13, startY - 9)
+        );
+
+
+        /* LENGTH LABEL */
+
+        ctx.save();
+
+
+        ctx.translate(
+            Math.max(10, startX - 18),
+            startY + drawH / 2
+        );
+
+
+        ctx.rotate(
+            -Math.PI / 2
+        );
+
+
+        ctx.fillText(
+            `Panjang ${roomL}mm`,
+            0,
+            0
+        );
+
+
+        ctx.restore();
+
+
+        ctx.textAlign =
+            "left";
+    }
+
+
+    /* =========================================================
+       HELPERS
+    ========================================================= */
+
+    function capitalize(text) {
+
+        if (!text) return "";
+
+        return text.charAt(0).toUpperCase() +
+            text.slice(1);
+    }
+
+
+    function formatDate(dateString) {
+
+        const d =
+            new Date(dateString);
+
+
+        if (isNaN(d.getTime())) {
+            return "";
+        }
+
+
+        const date =
+            d.toLocaleDateString(
+                "ms-MY",
+                {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric"
+                }
+            );
+
+
+        const time =
+            d.toLocaleTimeString(
+                "ms-MY",
+                {
+                    hour: "2-digit",
+                    minute: "2-digit"
+                }
+            );
+
+
+        return `${date} • ${time}`;
+    }
+
+
+    function escapeHTML(value) {
+
+        if (value === undefined ||
+            value === null) {
+            return "";
+        }
+
+
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+
+    function showToast(message) {
+
+        const toast =
+            document.getElementById("toast");
+
+
+        toast.innerText =
+            message;
+
+
+        toast.classList.add("show");
+
+
+        clearTimeout(
+            window.toastTimer
+        );
+
+
+        window.toastTimer =
+            setTimeout(function () {
+
+                toast.classList.remove("show");
+
+            }, 2500);
+    }
+
 </script>
 
-<a href="../index.html" style="position: fixed; bottom: 20px; right: 20px; background: #fdee23; color: #111; padding: 12px 18px; border-radius: 30px; text-decoration: none; font-weight: 800; font-size: 14px; border: 1px solid #111;"><span>←</span> Menu Utama</a>
 </body>
 </html>
