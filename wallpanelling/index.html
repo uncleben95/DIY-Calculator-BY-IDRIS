@@ -145,19 +145,19 @@
             flutedBatangBase = Math.ceil(w / flutedWidth);
         }
 
-        // Logik Tinggi Standard 2900mm + Ekstra Batang Jika Melebihi 2900mm
+        // Logik Betul: Hanya tambah 1 batang ekstra sahaja jika tinggi melebihi 2900mm
         let extraHeight = h > 2900 ? (h - 2900) : 0;
         let totalFlutedBatang = flutedBatangBase;
         if (extraHeight > 0) {
-            totalFlutedBatang += flutedBatangBase; // Tambah 1 set lagi untuk tampung lebihan tinggi
+            totalFlutedBatang += 1; // Penambahan tepat 1 batang sahaja untuk baki atas
         }
 
         let kosFluted = totalFlutedBatang * flutedPrice;
         
-        // Pengiraan Board (Jika tinggi > 2900mm, board juga perlu extra keping)
+        // Pengiraan Board (Jika tinggi > 2900mm, tambah 1 keping ekstra board jika guna wallboard)
         let totalBoardKeping = jmlBoard;
         if (extraHeight > 0 && (jenis.includes("Wallboard") || jenis.includes("UV"))) {
-            totalBoardKeping += jmlBoard; 
+            totalBoardKeping += 1; 
         }
         let kosBoard = (jenis.includes("Wallboard") || jenis.includes("UV")) ? (totalBoardKeping * boardPrice) : 0;
 
@@ -176,7 +176,7 @@
 
         let pecahanHtml = `Pilihan: <b>${jenis}</b> (Tinggi Dinding: ${h}mm)<br>`;
         if (extraHeight > 0) {
-            pecahanHtml += `<span style="color: #b45309; font-weight: bold;">⚠️ Lebihan tinggi ${extraHeight}mm (Melebihi standard 2900mm) - Penambahan unit kuantiti diambil kira.</span><br>`;
+            pecahanHtml += `<span style="color: #b45309; font-weight: bold;">⚠️ Lebihan tinggi ${extraHeight}mm (Melebihi standard 2900mm) - Penambahan 1 batang ekstra diambil kira.</span><br>`;
         }
         if (jenis.includes("Wallboard") || jenis.includes("UV")) {
             pecahanHtml += `• Board (${boardName}): ${totalBoardKeping} keping x RM ${boardPrice} = <b>RM ${kosBoard.toFixed(2)}</b><br>`;
@@ -263,21 +263,20 @@
         ctx.lineWidth = 3;
         ctx.strokeRect(startX, startY, drawW, drawH);
 
-        // Jika ada ekstra ketinggian (>2900mm), lukis garisan dot dot di bahagian atas
+        // Garisan dot-dot untuk sambungan ekstra di bahagian atas
         if (extraHeight > 0) {
             let standardH_scaled = 2900 * scale;
             let splitY = startY + (drawH - standardH_scaled);
             
-            ctx.strokeStyle = "#e11d48"; // Merah terang
+            ctx.strokeStyle = "#e11d48";
             ctx.lineWidth = 2;
-            ctx.setLineDash([5, 5]); // Garisan dot-dot
+            ctx.setLineDash([5, 5]);
             ctx.beginPath();
             ctx.moveTo(startX, splitY);
             ctx.lineTo(startX + drawW, splitY);
             ctx.stroke();
-            ctx.setLineDash([]); // Reset line dash
+            ctx.setLineDash([]);
 
-            // Label text kecil untuk extra tinggi
             ctx.fillStyle = "#e11d48";
             ctx.font = "10px Inter, sans-serif";
             ctx.fillText(`Sambungan Ekstra (${extraHeight}mm)`, startX + 5, splitY - 5);
