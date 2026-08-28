@@ -172,8 +172,6 @@
             transform: scale(.985);
         }
 
-        /* RESULT */
-
         .result-container {
             display: none;
             margin-top: 22px;
@@ -266,8 +264,6 @@
             background: #252525;
         }
 
-        /* VISUAL */
-
         .visual-container {
             display: none;
             margin-top: 20px;
@@ -315,8 +311,6 @@
             align-items: center;
             overflow: hidden;
         }
-
-        /* HISTORY */
 
         .history-section {
             margin-top: 24px;
@@ -449,8 +443,6 @@
             border: 1px solid #fecaca;
         }
 
-        /* BACK */
-
         .back-btn {
             position: fixed;
             right: 15px;
@@ -471,6 +463,7 @@
         }
 
         @media (max-width: 480px) {
+
             body {
                 padding: 10px 10px 85px;
             }
@@ -494,6 +487,7 @@
             .total-price {
                 font-size: 18px;
             }
+
         }
     </style>
 </head>
@@ -504,8 +498,8 @@
 
     <div class="main-card">
 
-        <!-- HEADER -->
         <div class="header">
+
             <div class="brand-label">
                 <span class="brand-dot"></span>
                 iPainter DIY • Calculation Portal
@@ -517,44 +511,60 @@
                 Sediakan anggaran material dan kos wainscoting berdasarkan
                 ukuran dinding serta konfigurasi pilihan.
             </p>
+
         </div>
+
 
         <div class="content">
 
-            <!-- INPUT -->
             <div class="form-section">
 
                 <div class="section-title">
                     Maklumat Projek
                 </div>
 
+
                 <div class="grid-2">
 
                     <div class="form-group">
-                        <label>Lebar Dinding (mm)</label>
+
+                        <label>
+                            Lebar Dinding (mm)
+                        </label>
+
                         <input
                             type="number"
                             id="wallWidth"
                             value="3000"
                             min="1"
                         >
+
                     </div>
 
+
                     <div class="form-group">
-                        <label>Tinggi Dinding (mm)</label>
+
+                        <label>
+                            Tinggi Dinding (mm)
+                        </label>
+
                         <input
                             type="number"
                             id="wallHeight"
                             value="2900"
                             min="1"
                         >
+
                     </div>
 
                 </div>
 
+
                 <div class="form-group">
 
-                    <label>Konfigurasi Susun Atur</label>
+                    <label>
+                        Konfigurasi Susun Atur
+                    </label>
 
                     <select id="layoutStyle">
 
@@ -574,9 +584,12 @@
 
                 </div>
 
+
                 <div class="form-group">
 
-                    <label>Corak Kotak / Nisbah</label>
+                    <label>
+                        Corak Kotak / Nisbah
+                    </label>
 
                     <select id="boxPattern">
 
@@ -608,11 +621,14 @@
 
                 </div>
 
+
                 <div class="grid-2">
 
                     <div class="form-group">
 
-                        <label>Jenis Bingkai</label>
+                        <label>
+                            Jenis Bingkai
+                        </label>
 
                         <select id="frameType">
 
@@ -628,9 +644,12 @@
 
                     </div>
 
+
                     <div class="form-group">
 
-                        <label>Finishing Bingkai</label>
+                        <label>
+                            Finishing Bingkai
+                        </label>
 
                         <select id="frameColor">
 
@@ -648,6 +667,7 @@
 
                 </div>
 
+
                 <button
                     class="calculate-btn"
                     onclick="calculateWainscoting()"
@@ -658,7 +678,6 @@
             </div>
 
 
-            <!-- RESULT -->
             <div
                 id="resultContainer"
                 class="result-container"
@@ -676,12 +695,14 @@
 
                 </div>
 
+
                 <div class="result-body">
 
                     <div
                         id="priceBreakdown"
                         class="breakdown"
                     ></div>
+
 
                     <div class="total-box">
 
@@ -698,6 +719,7 @@
 
                     </div>
 
+
                     <button
                         class="cart-btn"
                         onclick="addWainscotingToCart()"
@@ -710,7 +732,6 @@
             </div>
 
 
-            <!-- VISUAL -->
             <div
                 id="visualContainer"
                 class="visual-container"
@@ -731,12 +752,12 @@
 
                 </div>
 
+
                 <div id="captureArea"></div>
 
             </div>
 
 
-            <!-- HISTORY -->
             <div class="history-section">
 
                 <div class="history-header">
@@ -755,6 +776,7 @@
                         </span>
 
                     </div>
+
 
                     <div class="history-actions">
 
@@ -775,6 +797,7 @@
                     </div>
 
                 </div>
+
 
                 <div
                     id="historyList"
@@ -800,298 +823,550 @@
 
 <script>
 
-    /* =========================================================
-       PRICE DATABASE
-    ========================================================= */
+/* =========================================================
+   PRICE DATABASE
+   ========================================================= */
 
-    const singlePrices = {
+const singlePrices = {
 
-        "300x300": 30,
-        "300x600": 40,
-        "300x900": 50,
-        "300x1200": 60,
-        "300x1500": 70,
-        "300x1800": 90,
-        "300x2400": 110,
+    "300x300": 30,
+    "300x600": 40,
+    "300x900": 50,
+    "300x1200": 60,
+    "300x1500": 70,
+    "300x1800": 90,
+    "300x2400": 110,
 
-        "600x600": 50,
-        "600x900": 60,
-        "600x1200": 70,
-        "600x1500": 90,
-        "600x1800": 100,
-        "600x2400": 130,
+    "600x600": 50,
+    "600x900": 60,
+    "600x1200": 70,
+    "600x1500": 90,
+    "600x1800": 100,
+    "600x2400": 130,
 
-        "900x900": 70,
-        "900x1200": 90,
-        "900x1500": 100,
-        "900x1800": 110,
-        "900x2400": 140,
+    "900x900": 70,
+    "900x1200": 90,
+    "900x1500": 100,
+    "900x1800": 110,
+    "900x2400": 140,
 
-        "1200x1200": 100,
-        "1200x1500": 110,
-        "1200x1800": 130,
-        "1200x2400": 150,
+    "1200x1200": 100,
+    "1200x1500": 110,
+    "1200x1800": 130,
+    "1200x2400": 150,
 
-        "1500x1500": 130,
-        "1500x1800": 140,
-        "1500x2400": 160,
+    "1500x1500": 130,
+    "1500x1800": 140,
+    "1500x2400": 160,
 
-        "1800x1800": 150,
-        "1800x2400": 190,
+    "1800x1800": 150,
+    "1800x2400": 190,
 
-        "2400x2400": 210
-    };
-
-
-    const doublePrices = {
-
-        "300x300": 15,
-        "300x600": 25,
-        "300x900": 35,
-        "300x1200": 45,
-        "300x1500": 55,
-        "300x1800": 65,
-        "300x2400": 75,
-
-        "600x600": 35,
-        "600x900": 45,
-        "600x1200": 55,
-        "600x1500": 65,
-        "600x1800": 75,
-        "600x2400": 115,
-
-        "900x900": 55,
-        "900x1200": 65,
-        "900x1500": 75,
-        "900x1800": 85,
-        "900x2400": 120,
-
-        "1200x1200": 75,
-        "1200x1500": 85,
-        "1200x1800": 115,
-        "1200x2400": 125,
-
-        "1500x1500": 115,
-        "1500x1800": 120,
-        "1500x2400": 145,
-
-        "1800x1800": 125,
-        "1800x2400": 155,
-
-        "2400x2400": 175
-    };
+    "2400x2400": 210
+};
 
 
-    const HISTORY_KEY = "diy_wainscoting_history";
+const doublePrices = {
 
-    let lastCalculatedRecord = null;
+    "300x300": 15,
+    "300x600": 25,
+    "300x900": 35,
+    "300x1200": 45,
+    "300x1500": 55,
+    "300x1800": 65,
+    "300x2400": 75,
+
+    "600x600": 35,
+    "600x900": 45,
+    "600x1200": 55,
+    "600x1500": 65,
+    "600x1800": 75,
+    "600x2400": 115,
+
+    "900x900": 55,
+    "900x1200": 65,
+    "900x1500": 75,
+    "900x1800": 85,
+    "900x2400": 120,
+
+    "1200x1200": 75,
+    "1200x1500": 85,
+    "1200x1800": 115,
+    "1200x2400": 125,
+
+    "1500x1500": 115,
+    "1500x1800": 120,
+    "1500x2400": 145,
+
+    "1800x1800": 125,
+    "1800x2400": 155,
+
+    "2400x2400": 175
+};
 
 
-    /* =========================================================
-       PRICE FUNCTION
-    ========================================================= */
+const HISTORY_KEY =
+    "diy_wainscoting_history";
 
-    function getFlexiblePrice(w, h, priceTable, defaultVal) {
+let lastCalculatedRecord = null;
 
-        let key1 = `${w}x${h}`;
-        let key2 = `${h}x${w}`;
 
-        if (priceTable[key1] !== undefined) {
-            return priceTable[key1];
-        }
+/* =========================================================
+   PRICE FUNCTION
+   ========================================================= */
 
-        if (priceTable[key2] !== undefined) {
-            return priceTable[key2];
-        }
+function getFlexiblePrice(
+    w,
+    h,
+    priceTable,
+    defaultVal
+) {
 
-        return defaultVal;
+    let key1 = `${w}x${h}`;
+    let key2 = `${h}x${w}`;
+
+
+    if (priceTable[key1] !== undefined) {
+        return priceTable[key1];
     }
 
 
-    function getCeilStandardSize(val) {
+    if (priceTable[key2] !== undefined) {
+        return priceTable[key2];
+    }
 
-        let standards = [
-            300,
-            600,
-            900,
-            1200,
-            1500,
-            1800,
-            2400
+
+    return defaultVal;
+
+}
+
+
+/* =========================================================
+   STANDARD SIZES
+   ========================================================= */
+
+const standardSizes = [
+
+    300,
+    600,
+    900,
+    1200,
+    1500,
+    1800,
+    2400
+
+];
+
+
+/* =========================================================
+   GET NEXT STANDARD SIZE
+   ========================================================= */
+
+function getNextStandardSize(value) {
+
+    for (let size of standardSizes) {
+
+        if (value <= size) {
+            return size;
+        }
+
+    }
+
+    return 2400;
+
+}
+
+
+/* =========================================================
+   ADD SIZE ITEM
+   ========================================================= */
+
+function addSizeItem(
+    actualW,
+    actualH,
+    type,
+    custom = false
+) {
+
+    let stdW =
+        getNextStandardSize(actualW);
+
+    let stdH =
+        getNextStandardSize(actualH);
+
+
+    let key =
+        `${stdW}x${stdH}|${type}|${custom}`;
+
+
+    if (!sizeCounts[key]) {
+
+        sizeCounts[key] = {
+
+            count: 0,
+
+            w: actualW,
+
+            h: actualH,
+
+            stdW: stdW,
+
+            stdH: stdH,
+
+            type: type,
+
+            custom: custom
+
+        };
+
+    }
+
+
+    sizeCounts[key].count++;
+
+}
+
+
+/* =========================================================
+   CUSTOM DIMENSION ENGINE
+
+   >2400mm:
+   2400mm + baki
+
+   Contoh:
+   2500x600
+
+   = 2400x600 (1 set)
+   + 100x600
+   = 300x600 (1 set)
+
+   Remark = Custom Size
+   ========================================================= */
+
+function addCustomDimension(
+    width,
+    height,
+    type
+) {
+
+    /*
+       WIDTH > 2400
+    */
+
+    if (width > 2400) {
+
+        let fullPieces =
+            Math.floor(width / 2400);
+
+        let remainder =
+            width % 2400;
+
+
+        for (
+            let i = 0;
+            i < fullPieces;
+            i++
+        ) {
+
+            addSizeItem(
+                2400,
+                height,
+                type,
+                true
+            );
+
+        }
+
+
+        if (remainder > 0) {
+
+            addSizeItem(
+                remainder,
+                height,
+                type,
+                true
+            );
+
+        }
+
+        return;
+
+    }
+
+
+    /*
+       HEIGHT > 2400
+    */
+
+    if (height > 2400) {
+
+        let fullPieces =
+            Math.floor(height / 2400);
+
+        let remainder =
+            height % 2400;
+
+
+        for (
+            let i = 0;
+            i < fullPieces;
+            i++
+        ) {
+
+            addSizeItem(
+                width,
+                2400,
+                type,
+                true
+            );
+
+        }
+
+
+        if (remainder > 0) {
+
+            addSizeItem(
+                width,
+                remainder,
+                type,
+                true
+            );
+
+        }
+
+        return;
+
+    }
+
+
+    /*
+       NORMAL
+    */
+
+    addSizeItem(
+        width,
+        height,
+        type,
+        false
+    );
+
+}
+
+
+/* =========================================================
+   CALCULATE
+   ========================================================= */
+
+function calculateWainscoting(
+    saveToHistory = true
+) {
+
+    let wMm =
+        parseFloat(
+            document.getElementById(
+                'wallWidth'
+            ).value
+        ) || 0;
+
+
+    let hMm =
+        parseFloat(
+            document.getElementById(
+                'wallHeight'
+            ).value
+        ) || 0;
+
+
+    let style =
+        document.getElementById(
+            'layoutStyle'
+        ).value;
+
+
+    let pattern =
+        document.getElementById(
+            'boxPattern'
+        ).value;
+
+
+    let frameType =
+        document.getElementById(
+            'frameType'
+        ).value;
+
+
+    let frameColor =
+        document.getElementById(
+            'frameColor'
+        ).value;
+
+
+    if (
+        wMm <= 0 ||
+        hMm <= 0
+    ) {
+
+        alert(
+            "Sila masukkan ukuran dinding yang sah."
+        );
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       DETERMINE BOX HEIGHT
+       ===================================================== */
+
+    let targetBoxHeight =
+        style === 'without_chairrail'
+            ? hMm - 200
+            : hMm - 1070;
+
+
+    if (targetBoxHeight < 300) {
+
+        targetBoxHeight = 300;
+
+    }
+
+
+    /* =====================================================
+       DETERMINE BOX WIDTHS
+
+       FORMULA ASAL DIKEKALKAN
+       ===================================================== */
+
+    let boxWidths = [];
+
+
+    if (pattern === '1:1') {
+
+        let uW =
+            (wMm - 300) / 2;
+
+
+        boxWidths = [
+            uW,
+            uW
         ];
 
-        for (let i = 0; i < standards.length; i++) {
-
-            if (val <= standards[i]) {
-                return standards[i];
-            }
-
-        }
-
-        return 2400;
     }
 
 
-    /* =========================================================
-       CALCULATE
-    ========================================================= */
+    else if (pattern === '1:2:1') {
 
-    function calculateWainscoting(saveToHistory = true) {
-
-        let wMm =
-            parseFloat(document.getElementById('wallWidth').value) || 0;
-
-        let hMm =
-            parseFloat(document.getElementById('wallHeight').value) || 0;
-
-        let style =
-            document.getElementById('layoutStyle').value;
-
-        let pattern =
-            document.getElementById('boxPattern').value;
-
-        let frameType =
-            document.getElementById('frameType').value;
-
-        let frameColor =
-            document.getElementById('frameColor').value;
+        let uW =
+            (wMm - 400) / 4;
 
 
-        if (wMm <= 0 || hMm <= 0) {
+        boxWidths = [
+            uW,
+            uW * 2,
+            uW
+        ];
 
-            alert("Sila masukkan ukuran dinding yang sah.");
-
-            return;
-
-        }
-
-
-        /* =====================================================
-           DETERMINE BOX HEIGHT
-        ===================================================== */
-
-        let targetBoxHeight =
-            style === 'without_chairrail'
-                ? hMm - 200
-                : hMm - 1070;
+    }
 
 
-        if (targetBoxHeight < 300) {
-            targetBoxHeight = 300;
-        }
+    else if (
+        pattern === '1:1:2:1:1'
+    ) {
+
+        let uW =
+            (wMm - 600) / 6;
 
 
-        /* =====================================================
-           DETERMINE BOX WIDTHS
-        ===================================================== */
+        boxWidths = [
+            uW,
+            uW,
+            uW * 2,
+            uW,
+            uW
+        ];
 
-        let boxWidths = [];
-
-
-        if (pattern === '1:1') {
-
-            let uW = (wMm - 300) / 2;
-
-            boxWidths = [
-                uW,
-                uW
-            ];
-
-        }
+    }
 
 
-        else if (pattern === '1:2:1') {
+    else if (
+        pattern === '2:1:2:1:2'
+    ) {
 
-            let uW = (wMm - 400) / 4;
-
-            boxWidths = [
-                uW,
-                uW * 2,
-                uW
-            ];
-
-        }
+        let uW =
+            (wMm - 600) / 8;
 
 
-        else if (pattern === '1:1:2:1:1') {
+        boxWidths = [
+            uW * 2,
+            uW,
+            uW * 2,
+            uW,
+            uW * 2
+        ];
 
-            let uW = (wMm - 600) / 6;
-
-            boxWidths = [
-                uW,
-                uW,
-                uW * 2,
-                uW,
-                uW
-            ];
-
-        }
+    }
 
 
-        else if (pattern === '2:1:2:1:2') {
+    else if (
+        pattern === '1:2:1:2:1'
+    ) {
 
-            let uW = (wMm - 600) / 8;
-
-            boxWidths = [
-                uW * 2,
-                uW,
-                uW * 2,
-                uW,
-                uW * 2
-            ];
-
-        }
+        let uW =
+            (wMm - 600) / 7;
 
 
-        else if (pattern === '1:2:1:2:1') {
+        boxWidths = [
+            uW,
+            uW * 2,
+            uW,
+            uW * 2,
+            uW
+        ];
 
-            let uW = (wMm - 600) / 7;
-
-            boxWidths = [
-                uW,
-                uW * 2,
-                uW,
-                uW * 2,
-                uW
-            ];
-
-        }
+    }
 
 
-        else {
+    else {
 
-            let remW = wMm - 200;
-
-            boxWidths = [
-                remW
-            ];
-
-        }
+        let remW =
+            wMm - 200;
 
 
-        /* =====================================================
-           PRICE CALCULATION
-        ===================================================== */
+        boxWidths = [
+            remW
+        ];
 
-        let totalPrice = 0;
-
-        let breakdownHtml = "";
-
-        let sizeCounts = {};
+    }
 
 
-        boxWidths.forEach((bw) => {
+    /* =====================================================
+       PRICE CALCULATION
+       ===================================================== */
 
-            let roundedW = Math.round(bw);
+    let totalPrice = 0;
 
-            let stdW =
-                getCeilStandardSize(roundedW);
+    let breakdownHtml = "";
 
-            let stdH =
-                getCeilStandardSize(targetBoxHeight);
+    let sizeCounts = {};
 
-            let key =
-                `${stdW}x${stdH}`;
+
+    /* =====================================================
+       TOP BOXES
+       ===================================================== */
+
+    boxWidths.forEach(
+        (bw) => {
+
+            let roundedW =
+                Math.round(bw);
+
+
+            let roundedH =
+                Math.round(
+                    targetBoxHeight
+                );
+
 
             let labelType =
                 style === 'without_chairrail'
@@ -1099,479 +1374,573 @@
                     : 'Atas';
 
 
-            let isCustom =
-                roundedW > 2400 ||
-                targetBoxHeight > 2400;
+            addCustomDimension(
+                roundedW,
+                roundedH,
+                labelType
+            );
 
 
-            if (!sizeCounts[key]) {
+            /* =================================================
+               BOTTOM BOX
+               ================================================= */
 
-                sizeCounts[key] = {
-
-                    count: 0,
-
-                    w: roundedW,
-
-                    h: Math.round(targetBoxHeight),
-
-                    stdW: stdW,
-
-                    stdH: stdH,
-
-                    type: labelType,
-
-                    custom: isCustom
-
-                };
-
-            }
-
-
-            sizeCounts[key].count++;
-
-
-            /* BOTTOM BOX */
-
-            if (style === 'with_chairrail') {
+            if (
+                style ===
+                'with_chairrail'
+            ) {
 
                 let botBoxH = 600;
 
-                let stdH_Bot =
-                    getCeilStandardSize(botBoxH);
 
-                let keyBot =
-                    `${stdW}x${stdH_Bot}`;
-
-
-                if (!sizeCounts[keyBot]) {
-
-                    sizeCounts[keyBot] = {
-
-                        count: 0,
-
-                        w: roundedW,
-
-                        h: botBoxH,
-
-                        stdW: stdW,
-
-                        stdH: stdH_Bot,
-
-                        type: 'Bawah',
-
-                        custom: false
-
-                    };
-
-                }
-
-
-                sizeCounts[keyBot].count++;
+                addCustomDimension(
+                    roundedW,
+                    botBoxH,
+                    'Bawah'
+                );
 
             }
 
-        });
+        }
+    );
 
 
-        /* =====================================================
-           BREAKDOWN
-        ===================================================== */
+    /* =====================================================
+       BREAKDOWN
+       ===================================================== */
 
-        for (let key in sizeCounts) {
+    for (
+        let key in sizeCounts
+    ) {
 
-            let item =
-                sizeCounts[key];
+        let item =
+            sizeCounts[key];
 
 
-            let unitPrice =
+        let unitPrice =
+            getFlexiblePrice(
+                item.stdW,
+                item.stdH,
+                singlePrices,
+                60
+            );
+
+
+        /* DOUBLE FRAME */
+
+        if (
+            frameType === 'double'
+        ) {
+
+            unitPrice +=
                 getFlexiblePrice(
                     item.stdW,
                     item.stdH,
-                    singlePrices,
-                    60
+                    doublePrices,
+                    45
                 );
 
-
-            if (frameType === 'double') {
-
-                unitPrice +=
-                    getFlexiblePrice(
-                        item.stdW,
-                        item.stdH,
-                        doublePrices,
-                        45
-                    );
-
-            }
-
-
-            if (frameColor === 'gold') {
-
-                unitPrice += 5;
-
-            }
-
-
-            let subTotal =
-                unitPrice * item.count;
-
-
-            totalPrice += subTotal;
-
-
-            let remarkText =
-                item.custom
-                    ? `<span style="color:#dc2626;font-weight:800;">Custom Size</span>`
-                    : "";
-
-
-            breakdownHtml += `
-
-                <div class="breakdown-row">
-
-                    <span>
-                        Kotak ${item.type}
-                        (${item.w} × ${item.h}mm)
-                        ${remarkText}
-                        <br>
-                        <small style="color:#9ca3af;">
-                            ${item.count} unit × RM ${unitPrice.toFixed(2)}
-                        </small>
-                    </span>
-
-                    <span>
-                        RM ${subTotal.toFixed(2)}
-                    </span>
-
-                </div>
-
-            `;
-
         }
 
 
-        /* =====================================================
-           CHAIR RAIL
-        ===================================================== */
+        /* GOLD */
 
-        let chairRailSticks = 0;
-
-        let chairRailTotalCost = 0;
-
-
-        if (style === 'with_chairrail') {
-
-            chairRailSticks =
-                Math.ceil((wMm * 1.10) / 2400);
-
-
-            chairRailTotalCost =
-                chairRailSticks * 70;
-
-
-            totalPrice +=
-                chairRailTotalCost;
-
-
-            breakdownHtml += `
-
-                <div class="breakdown-row"
-                     style="padding-top:8px;border-top:1px solid #eee5a5;">
-
-                    <span>
-                        Chair Rail
-                        <br>
-                        <small style="color:#9ca3af;">
-                            ${chairRailSticks} batang × RM70.00
-                        </small>
-                    </span>
-
-                    <span>
-                        RM ${chairRailTotalCost.toFixed(2)}
-                    </span>
-
-                </div>
-
-            `;
-
-        }
-
-
-        /* =====================================================
-           LABELS
-        ===================================================== */
-
-        let styleLabel =
-            style === 'with_chairrail'
-                ? 'Dengan Chair Rail'
-                : 'Tanpa Chair Rail';
-
-
-        let frameLabel =
-            frameType === 'single'
-                ? 'Single Frame'
-                : 'Double Frame';
-
-
-        let colorLabel =
+        if (
             frameColor === 'gold'
-                ? 'Gold'
-                : 'Hitam Standard';
+        ) {
 
-
-        /* =====================================================
-           SAVE RECORD
-        ===================================================== */
-
-        lastCalculatedRecord = {
-
-            id: Date.now(),
-
-            tajuk: "Wainscoting",
-
-            info:
-                `${wMm} × ${hMm}mm | ${styleLabel} | ${pattern}`,
-
-            harga:
-                "RM " + totalPrice.toFixed(2),
-
-            width: wMm,
-
-            height: hMm,
-
-            style: style,
-
-            pattern: pattern,
-
-            frameType: frameType,
-
-            frameColor: frameColor,
-
-            total: totalPrice,
-
-            createdAt:
-                new Date().toISOString()
-
-        };
-
-
-        /* =====================================================
-           SHOW RESULT
-        ===================================================== */
-
-        document
-            .getElementById('priceBreakdown')
-            .innerHTML = breakdownHtml;
-
-
-        document
-            .getElementById('totalPrice')
-            .innerText =
-                'RM ' + totalPrice.toFixed(2);
-
-
-        document
-            .getElementById('resultContainer')
-            .style.display = 'block';
-
-
-        document
-            .getElementById('visualContainer')
-            .style.display = 'block';
-
-
-        /* =====================================================
-           SAVE HISTORY
-        ===================================================== */
-
-        if (saveToHistory) {
-
-            saveCalculationHistory(
-                lastCalculatedRecord
-            );
+            unitPrice += 5;
 
         }
 
 
-        /* =====================================================
-           VISUAL
-        ===================================================== */
-
-        drawVisual(
-            boxWidths,
-            targetBoxHeight,
-            style,
-            frameType,
-            frameColor
-        );
+        let subTotal =
+            unitPrice *
+            item.count;
 
 
-        /* =====================================================
-           SCROLL RESULT
-        ===================================================== */
+        totalPrice +=
+            subTotal;
 
-        setTimeout(() => {
 
-            document
-                .getElementById('resultContainer')
-                .scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'nearest'
-                });
+        let remarkText =
+            item.custom
 
-        }, 100);
+                ? `
+                    <span style="
+                        color:#dc2626;
+                        font-weight:800;
+                    ">
+                        Custom Size
+                    </span>
+                  `
+
+                : "";
+
+
+        let standardInfo =
+            item.custom
+
+                ? `
+                    <br>
+                    <small style="
+                        color:#9ca3af;
+                    ">
+                        Dihantar sebagai
+                        ${item.stdW} × ${item.stdH}mm
+                    </small>
+                  `
+
+                : "";
+
+
+        breakdownHtml += `
+
+            <div class="breakdown-row">
+
+                <span>
+
+                    Kotak ${item.type}
+
+                    (${item.w} × ${item.h}mm)
+
+                    ${remarkText}
+
+                    <br>
+
+                    <small style="
+                        color:#9ca3af;
+                    ">
+
+                        ${item.count} set ×
+                        RM ${unitPrice.toFixed(2)}
+
+                    </small>
+
+                    ${standardInfo}
+
+                </span>
+
+
+                <span>
+
+                    RM ${subTotal.toFixed(2)}
+
+                </span>
+
+            </div>
+
+        `;
 
     }
 
 
-    /* =========================================================
-       VISUAL
-    ========================================================= */
+    /* =====================================================
+       CHAIR RAIL
 
-    function drawVisual(
+       FORMULA ASAL KEKAL
+       ===================================================== */
+
+    let chairRailSticks = 0;
+
+    let chairRailTotalCost = 0;
+
+
+    if (
+        style === 'with_chairrail'
+    ) {
+
+        chairRailSticks =
+            Math.ceil(
+                (wMm * 1.10) /
+                2400
+            );
+
+
+        chairRailTotalCost =
+            chairRailSticks *
+            70;
+
+
+        totalPrice +=
+            chairRailTotalCost;
+
+
+        breakdownHtml += `
+
+            <div
+                class="breakdown-row"
+                style="
+                    padding-top:8px;
+                    border-top:1px solid #eee5a5;
+                "
+            >
+
+                <span>
+
+                    Chair Rail
+
+                    <br>
+
+                    <small style="
+                        color:#9ca3af;
+                    ">
+
+                        ${chairRailSticks}
+                        batang × RM70.00
+
+                    </small>
+
+                </span>
+
+
+                <span>
+
+                    RM ${chairRailTotalCost.toFixed(2)}
+
+                </span>
+
+            </div>
+
+        `;
+
+    }
+
+
+    /* =====================================================
+       LABELS
+       ===================================================== */
+
+    let styleLabel =
+        style === 'with_chairrail'
+            ? 'Dengan Chair Rail'
+            : 'Tanpa Chair Rail';
+
+
+    /* =====================================================
+       SAVE RECORD
+       ===================================================== */
+
+    lastCalculatedRecord = {
+
+        id: Date.now(),
+
+        tajuk:
+            "Wainscoting",
+
+        info:
+            `${wMm} × ${hMm}mm | ${styleLabel} | ${pattern}`,
+
+        harga:
+            "RM " +
+            totalPrice.toFixed(2),
+
+        width:
+            wMm,
+
+        height:
+            hMm,
+
+        style:
+            style,
+
+        pattern:
+            pattern,
+
+        frameType:
+            frameType,
+
+        frameColor:
+            frameColor,
+
+        total:
+            totalPrice,
+
+        createdAt:
+            new Date().toISOString()
+
+    };
+
+
+    /* =====================================================
+       SHOW RESULT
+       ===================================================== */
+
+    document.getElementById(
+        'priceBreakdown'
+    ).innerHTML =
+        breakdownHtml;
+
+
+    document.getElementById(
+        'totalPrice'
+    ).innerText =
+        'RM ' +
+        totalPrice.toFixed(2);
+
+
+    document.getElementById(
+        'resultContainer'
+    ).style.display =
+        'block';
+
+
+    document.getElementById(
+        'visualContainer'
+    ).style.display =
+        'block';
+
+
+    /* =====================================================
+       SAVE HISTORY
+       ===================================================== */
+
+    if (saveToHistory) {
+
+        saveCalculationHistory(
+            lastCalculatedRecord
+        );
+
+    }
+
+
+    /* =====================================================
+       VISUAL
+       ===================================================== */
+
+    drawVisual(
         boxWidths,
         targetBoxHeight,
         style,
         frameType,
         frameColor
+    );
+
+
+    /* =====================================================
+       SCROLL
+       ===================================================== */
+
+    setTimeout(
+        () => {
+
+            document
+                .getElementById(
+                    'resultContainer'
+                )
+                .scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'nearest'
+                });
+
+        },
+        100
+    );
+
+}
+
+
+/* =========================================================
+   VISUAL
+   ========================================================= */
+
+function drawVisual(
+    boxWidths,
+    targetBoxHeight,
+    style,
+    frameType,
+    frameColor
+) {
+
+    let previewBox =
+        document.getElementById(
+            'captureArea'
+        );
+
+
+    previewBox.innerHTML =
+        "";
+
+
+    let frameBorder =
+        frameColor === 'gold'
+            ? '#b8860b'
+            : '#111827';
+
+
+    function createBoxElement(
+        bw,
+        bh
     ) {
 
-        let previewBox =
-            document.getElementById('captureArea');
+        let box =
+            document.createElement(
+                'div'
+            );
 
 
-        previewBox.innerHTML = "";
+        box.style.flexGrow =
+            bw;
 
 
-        let frameBorder =
-            frameColor === 'gold'
-                ? '#b8860b'
-                : '#111827';
+        box.style.flexBasis =
+            '0';
 
 
-        function createBoxElement(bw, bh) {
-
-            let box =
-                document.createElement('div');
+        box.style.height =
+            '100%';
 
 
-            box.style.flexGrow = bw;
-
-            box.style.flexBasis = '0';
-
-            box.style.height = '100%';
-
-            box.style.minWidth = '18px';
-
-            box.style.border =
-                `3px solid ${frameBorder}`;
-
-            box.style.background =
-                '#ffffff';
-
-            box.style.borderRadius =
-                '5px';
-
-            box.style.display =
-                'flex';
-
-            box.style.alignItems =
-                'center';
-
-            box.style.justifyContent =
-                'center';
-
-            box.style.position =
-                'relative';
-
-            box.style.padding =
-                '4px';
-
-            box.style.fontSize =
-                '9px';
-
-            box.style.fontWeight =
-                '800';
-
-            box.style.color =
-                '#374151';
-
-            box.style.boxSizing =
-                'border-box';
+        box.style.minWidth =
+            '18px';
 
 
-            let label =
-                document.createElement('span');
+        box.style.border =
+            `3px solid ${frameBorder}`;
 
 
-            label.innerText =
-                `${Math.round(bw)} × ${Math.round(bh)}`;
+        box.style.background =
+            '#ffffff';
 
 
-            box.appendChild(label);
+        box.style.borderRadius =
+            '5px';
 
 
-            if (frameType === 'double') {
-
-                let inner =
-                    document.createElement('div');
+        box.style.display =
+            'flex';
 
 
-                inner.style.position =
-                    'absolute';
-
-                inner.style.inset =
-                    '7px';
-
-                inner.style.border =
-                    `1.5px solid ${frameBorder}`;
-
-                inner.style.borderRadius =
-                    '3px';
-
-                box.appendChild(inner);
-
-            }
+        box.style.alignItems =
+            'center';
 
 
-            return box;
+        box.style.justifyContent =
+            'center';
+
+
+        box.style.position =
+            'relative';
+
+
+        box.style.padding =
+            '4px';
+
+
+        box.style.fontSize =
+            '9px';
+
+
+        box.style.fontWeight =
+            '800';
+
+
+        box.style.color =
+            '#374151';
+
+
+        box.style.boxSizing =
+            'border-box';
+
+
+        let label =
+            document.createElement(
+                'span'
+            );
+
+
+        label.innerText =
+            `${Math.round(bw)} × ${Math.round(bh)}`;
+
+
+        box.appendChild(
+            label
+        );
+
+
+        if (
+            frameType === 'double'
+        ) {
+
+            let inner =
+                document.createElement(
+                    'div'
+                );
+
+
+            inner.style.position =
+                'absolute';
+
+
+            inner.style.inset =
+                '7px';
+
+
+            inner.style.border =
+                `1.5px solid ${frameBorder}`;
+
+
+            inner.style.borderRadius =
+                '3px';
+
+
+            box.appendChild(
+                inner
+            );
 
         }
 
 
-        /* =====================================================
-           WITHOUT CHAIR RAIL
-        ===================================================== */
+        return box;
 
-        if (style === 'without_chairrail') {
-
-            let row =
-                document.createElement('div');
+    }
 
 
-            row.style.width =
-                '100%';
+    /* =====================================================
+       WITHOUT CHAIR RAIL
+       ===================================================== */
 
-            row.style.height =
-                '220px';
+    if (
+        style ===
+        'without_chairrail'
+    ) {
 
-            row.style.display =
-                'flex';
-
-            row.style.alignItems =
-                'center';
-
-            row.style.gap =
-                '10px';
-
-            row.style.padding =
-                '0 10px';
-
-            row.style.boxSizing =
-                'border-box';
+        let row =
+            document.createElement(
+                'div'
+            );
 
 
-            boxWidths.forEach((bw) => {
+        row.style.width =
+            '100%';
+
+
+        row.style.height =
+            '220px';
+
+
+        row.style.display =
+            'flex';
+
+
+        row.style.alignItems =
+            'center';
+
+
+        row.style.gap =
+            '10px';
+
+
+        row.style.padding =
+            '0 10px';
+
+
+        row.style.boxSizing =
+            'border-box';
+
+
+        boxWidths.forEach(
+            (bw) => {
 
                 row.appendChild(
                     createBoxElement(
@@ -1580,44 +1949,55 @@
                     )
                 );
 
-            });
+            }
+        );
 
 
-            previewBox.appendChild(row);
+        previewBox.appendChild(
+            row
+        );
 
-        }
-
-
-        /* =====================================================
-           WITH CHAIR RAIL
-        ===================================================== */
-
-        else {
-
-            let topRow =
-                document.createElement('div');
+    }
 
 
-            topRow.style.width =
-                '100%';
+    /* =====================================================
+       WITH CHAIR RAIL
+       ===================================================== */
 
-            topRow.style.height =
-                '165px';
+    else {
 
-            topRow.style.display =
-                'flex';
-
-            topRow.style.alignItems =
-                'center';
-
-            topRow.style.gap =
-                '10px';
-
-            topRow.style.padding =
-                '0 10px';
+        let topRow =
+            document.createElement(
+                'div'
+            );
 
 
-            boxWidths.forEach((bw) => {
+        topRow.style.width =
+            '100%';
+
+
+        topRow.style.height =
+            '165px';
+
+
+        topRow.style.display =
+            'flex';
+
+
+        topRow.style.alignItems =
+            'center';
+
+
+        topRow.style.gap =
+            '10px';
+
+
+        topRow.style.padding =
+            '0 10px';
+
+
+        boxWidths.forEach(
+            (bw) => {
 
                 topRow.appendChild(
                     createBoxElement(
@@ -1626,81 +2006,106 @@
                     )
                 );
 
-            });
+            }
+        );
 
 
-            previewBox.appendChild(topRow);
+        previewBox.appendChild(
+            topRow
+        );
 
 
-            /* CHAIR RAIL */
+        /* CHAIR RAIL */
 
-            let rail =
-                document.createElement('div');
-
-
-            rail.style.width =
-                '100%';
-
-            rail.style.height =
-                '15px';
-
-            rail.style.margin =
-                '8px 0';
-
-            rail.style.background =
-                '#92400e';
-
-            rail.style.color =
-                'white';
-
-            rail.style.display =
-                'flex';
-
-            rail.style.alignItems =
-                'center';
-
-            rail.style.justifyContent =
-                'center';
-
-            rail.style.fontSize =
-                '8px';
-
-            rail.style.fontWeight =
-                '800';
-
-            rail.innerText =
-                'CHAIR RAIL';
+        let rail =
+            document.createElement(
+                'div'
+            );
 
 
-            previewBox.appendChild(rail);
+        rail.style.width =
+            '100%';
 
 
-            /* BOTTOM */
-
-            let bottomRow =
-                document.createElement('div');
+        rail.style.height =
+            '15px';
 
 
-            bottomRow.style.width =
-                '100%';
-
-            bottomRow.style.height =
-                '80px';
-
-            bottomRow.style.display =
-                'flex';
-
-            bottomRow.style.alignItems =
-                'center';
-
-            bottomRow.style.gap =
-                '10px';
-
-            bottomRow.style.padding =
-                '0 10px';
+        rail.style.margin =
+            '8px 0';
 
 
-            boxWidths.forEach((bw) => {
+        rail.style.background =
+            '#92400e';
+
+
+        rail.style.color =
+            'white';
+
+
+        rail.style.display =
+            'flex';
+
+
+        rail.style.alignItems =
+            'center';
+
+
+        rail.style.justifyContent =
+            'center';
+
+
+        rail.style.fontSize =
+            '8px';
+
+
+        rail.style.fontWeight =
+            '800';
+
+
+        rail.innerText =
+            'CHAIR RAIL';
+
+
+        previewBox.appendChild(
+            rail
+        );
+
+
+        /* BOTTOM */
+
+        let bottomRow =
+            document.createElement(
+                'div'
+            );
+
+
+        bottomRow.style.width =
+            '100%';
+
+
+        bottomRow.style.height =
+            '80px';
+
+
+        bottomRow.style.display =
+            'flex';
+
+
+        bottomRow.style.alignItems =
+            'center';
+
+
+        bottomRow.style.gap =
+            '10px';
+
+
+        bottomRow.style.padding =
+            '0 10px';
+
+
+        boxWidths.forEach(
+            (bw) => {
 
                 bottomRow.appendChild(
                     createBoxElement(
@@ -1709,162 +2114,188 @@
                     )
                 );
 
-            });
+            }
+        );
 
 
-            previewBox.appendChild(
-                bottomRow
-            );
-
-        }
+        previewBox.appendChild(
+            bottomRow
+        );
 
     }
 
-
-    /* =========================================================
-       CART
-    ========================================================= */
-
-    function addWainscotingToCart() {
-
-        if (!lastCalculatedRecord) {
-
-            alert(
-                "Sila buat pengiraan terlebih dahulu."
-            );
-
-            return;
-
-        }
+}
 
 
-        let cartData =
-            JSON.parse(
-                localStorage.getItem('diy_cart')
-            ) || [];
+/* =========================================================
+   CART
+   ========================================================= */
 
+function addWainscotingToCart() {
 
-        cartData.push({
-
-            tajuk:
-                lastCalculatedRecord.tajuk,
-
-            info:
-                lastCalculatedRecord.info,
-
-            harga:
-                lastCalculatedRecord.harga
-
-        });
-
-
-        localStorage.setItem(
-            'diy_cart',
-            JSON.stringify(cartData)
-        );
-
+    if (
+        !lastCalculatedRecord
+    ) {
 
         alert(
-            "Pengiraan berjaya dimasukkan ke dalam Troli."
+            "Sila buat pengiraan terlebih dahulu."
         );
+
+        return;
 
     }
 
 
-    /* =========================================================
-       HISTORY SAVE
-    ========================================================= */
-
-    function saveCalculationHistory(record) {
-
-        let history =
-            JSON.parse(
-                localStorage.getItem(HISTORY_KEY)
-            ) || [];
+    let cartData =
+        JSON.parse(
+            localStorage.getItem(
+                'diy_cart'
+            )
+        ) || [];
 
 
-        history.unshift(record);
+    cartData.push({
+
+        tajuk:
+            lastCalculatedRecord.tajuk,
+
+        info:
+            lastCalculatedRecord.info,
+
+        harga:
+            lastCalculatedRecord.harga
+
+    });
 
 
-        /* Simpan maksimum 50 rekod */
-
-        if (history.length > 50) {
-
-            history =
-                history.slice(0, 50);
-
-        }
+    localStorage.setItem(
+        'diy_cart',
+        JSON.stringify(
+            cartData
+        )
+    );
 
 
-        localStorage.setItem(
-            HISTORY_KEY,
-            JSON.stringify(history)
-        );
+    alert(
+        "Pengiraan berjaya dimasukkan ke dalam Troli."
+    );
+
+}
 
 
-        renderHistory();
+/* =========================================================
+   HISTORY SAVE
+   ========================================================= */
+
+function saveCalculationHistory(
+    record
+) {
+
+    let history =
+        JSON.parse(
+            localStorage.getItem(
+                HISTORY_KEY
+            )
+        ) || [];
+
+
+    history.unshift(
+        record
+    );
+
+
+    if (
+        history.length > 50
+    ) {
+
+        history =
+            history.slice(
+                0,
+                50
+            );
 
     }
 
 
-    /* =========================================================
-       RENDER HISTORY
-    ========================================================= */
-
-    function renderHistory() {
-
-        let history =
-            JSON.parse(
-                localStorage.getItem(HISTORY_KEY)
-            ) || [];
+    localStorage.setItem(
+        HISTORY_KEY,
+        JSON.stringify(
+            history
+        )
+    );
 
 
-        let list =
-            document.getElementById(
-                'historyList'
-            );
+    renderHistory();
+
+}
 
 
-        let count =
-            document.getElementById(
-                'historyCount'
-            );
+/* =========================================================
+   RENDER HISTORY
+   ========================================================= */
+
+function renderHistory() {
+
+    let history =
+        JSON.parse(
+            localStorage.getItem(
+                HISTORY_KEY
+            )
+        ) || [];
 
 
-        count.innerText =
-            `${history.length} Rekod`;
+    let list =
+        document.getElementById(
+            'historyList'
+        );
 
 
-        if (history.length === 0) {
-
-            list.innerHTML = `
-
-                <div class="history-empty">
-
-                    Belum ada sejarah pengiraan.
-
-                    <br>
-
-                    Pengiraan yang dibuat akan
-                    disimpan secara automatik di sini.
-
-                </div>
-
-            `;
-
-            return;
-
-        }
+    let count =
+        document.getElementById(
+            'historyCount'
+        );
 
 
-        list.innerHTML = "";
+    count.innerText =
+        `${history.length} Rekod`;
 
 
-        history.forEach((item, index) => {
+    if (
+        history.length === 0
+    ) {
+
+        list.innerHTML = `
+
+            <div class="history-empty">
+
+                Belum ada sejarah pengiraan.
+
+                <br>
+
+                Pengiraan yang dibuat akan
+                disimpan secara automatik di sini.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    list.innerHTML =
+        "";
+
+
+    history.forEach(
+        (item, index) => {
 
             let date =
                 item.createdAt
-                    ? new Date(item.createdAt)
+                    ? new Date(
+                        item.createdAt
+                    )
                     : new Date();
 
 
@@ -1890,7 +2321,9 @@
 
 
             let div =
-                document.createElement('div');
+                document.createElement(
+                    'div'
+                );
 
 
             div.className =
@@ -1913,6 +2346,7 @@
 
                     </div>
 
+
                     <div class="history-price">
                         ${item.harga}
                     </div>
@@ -1934,6 +2368,7 @@
                         ↻ Guna Semula
                     </button>
 
+
                     <button
                         class="history-btn delete-btn"
                         onclick="deleteHistory(${index})"
@@ -1946,180 +2381,220 @@
             `;
 
 
-            list.appendChild(div);
-
-        });
-
-    }
-
-
-    /* =========================================================
-       REUSE HISTORY
-    ========================================================= */
-
-    function reuseHistory(index) {
-
-        let history =
-            JSON.parse(
-                localStorage.getItem(HISTORY_KEY)
-            ) || [];
-
-
-        let item =
-            history[index];
-
-
-        if (!item) return;
-
-
-        document.getElementById(
-            'wallWidth'
-        ).value = item.width;
-
-
-        document.getElementById(
-            'wallHeight'
-        ).value = item.height;
-
-
-        document.getElementById(
-            'layoutStyle'
-        ).value = item.style;
-
-
-        document.getElementById(
-            'boxPattern'
-        ).value = item.pattern;
-
-
-        document.getElementById(
-            'frameType'
-        ).value = item.frameType;
-
-
-        document.getElementById(
-            'frameColor'
-        ).value = item.frameColor;
-
-
-        calculateWainscoting(false);
-
-
-        window.scrollTo({
-
-            top: 0,
-
-            behavior: 'smooth'
-
-        });
-
-    }
-
-
-    /* =========================================================
-       DELETE SINGLE HISTORY
-    ========================================================= */
-
-    function deleteHistory(index) {
-
-        let history =
-            JSON.parse(
-                localStorage.getItem(HISTORY_KEY)
-            ) || [];
-
-
-        history.splice(index, 1);
-
-
-        localStorage.setItem(
-            HISTORY_KEY,
-            JSON.stringify(history)
-        );
-
-
-        renderHistory();
-
-    }
-
-
-    /* =========================================================
-       CLEAR HISTORY
-    ========================================================= */
-
-    function clearHistory() {
-
-        let history =
-            JSON.parse(
-                localStorage.getItem(HISTORY_KEY)
-            ) || [];
-
-
-        if (history.length === 0) {
-
-            return;
+            list.appendChild(
+                div
+            );
 
         }
+    );
+
+}
 
 
-        let confirmDelete =
-            confirm(
-                "Padam semua sejarah pengiraan Wainscoting?"
-            );
+/* =========================================================
+   REUSE HISTORY
+   ========================================================= */
+
+function reuseHistory(
+    index
+) {
+
+    let history =
+        JSON.parse(
+            localStorage.getItem(
+                HISTORY_KEY
+            )
+        ) || [];
 
 
-        if (!confirmDelete) return;
+    let item =
+        history[index];
 
 
-        localStorage.removeItem(
-            HISTORY_KEY
+    if (!item) return;
+
+
+    document.getElementById(
+        'wallWidth'
+    ).value =
+        item.width;
+
+
+    document.getElementById(
+        'wallHeight'
+    ).value =
+        item.height;
+
+
+    document.getElementById(
+        'layoutStyle'
+    ).value =
+        item.style;
+
+
+    document.getElementById(
+        'boxPattern'
+    ).value =
+        item.pattern;
+
+
+    document.getElementById(
+        'frameType'
+    ).value =
+        item.frameType;
+
+
+    document.getElementById(
+        'frameColor'
+    ).value =
+        item.frameColor;
+
+
+    calculateWainscoting(
+        false
+    );
+
+
+    window.scrollTo({
+
+        top: 0,
+
+        behavior: 'smooth'
+
+    });
+
+}
+
+
+/* =========================================================
+   DELETE HISTORY
+   ========================================================= */
+
+function deleteHistory(
+    index
+) {
+
+    let history =
+        JSON.parse(
+            localStorage.getItem(
+                HISTORY_KEY
+            )
+        ) || [];
+
+
+    history.splice(
+        index,
+        1
+    );
+
+
+    localStorage.setItem(
+        HISTORY_KEY,
+        JSON.stringify(
+            history
+        )
+    );
+
+
+    renderHistory();
+
+}
+
+
+/* =========================================================
+   CLEAR HISTORY
+   ========================================================= */
+
+function clearHistory() {
+
+    let history =
+        JSON.parse(
+            localStorage.getItem(
+                HISTORY_KEY
+            )
+        ) || [];
+
+
+    if (
+        history.length === 0
+    ) {
+
+        return;
+
+    }
+
+
+    let confirmDelete =
+        confirm(
+            "Padam semua sejarah pengiraan Wainscoting?"
         );
 
 
-        renderHistory();
+    if (
+        !confirmDelete
+    ) {
+
+        return;
 
     }
 
 
-    /* =========================================================
-       REFRESH HISTORY
-    ========================================================= */
-
-    function refreshHistory() {
-
-        renderHistory();
-
-    }
+    localStorage.removeItem(
+        HISTORY_KEY
+    );
 
 
-    /* =========================================================
-       SAVE VISUAL
-    ========================================================= */
+    renderHistory();
 
-    function saveVisualToPhone() {
-
-        let area =
-            document.getElementById(
-                'captureArea'
-            );
+}
 
 
-        html2canvas(
-            area,
-            {
-                scale: 2,
-                backgroundColor: '#ffffff'
-            }
-        ).then(canvas => {
+/* =========================================================
+   REFRESH HISTORY
+   ========================================================= */
+
+function refreshHistory() {
+
+    renderHistory();
+
+}
+
+
+/* =========================================================
+   SAVE VISUAL
+   ========================================================= */
+
+function saveVisualToPhone() {
+
+    let area =
+        document.getElementById(
+            'captureArea'
+        );
+
+
+    html2canvas(
+        area,
+        {
+            scale: 2,
+            backgroundColor: '#ffffff'
+        }
+    ).then(
+        canvas => {
 
             let link =
-                document.createElement('a');
+                document.createElement(
+                    'a'
+                );
 
 
             let timestamp =
                 new Date()
                     .toISOString()
                     .slice(0, 19)
-                    .replace(/[:T]/g, '-');
+                    .replace(
+                        /[:T]/g,
+                        '-'
+                    );
 
 
             link.download =
@@ -2134,23 +2609,24 @@
 
             link.click();
 
-        });
-
-    }
-
-
-    /* =========================================================
-       INITIAL LOAD
-    ========================================================= */
-
-    document.addEventListener(
-        'DOMContentLoaded',
-        function() {
-
-            renderHistory();
-
         }
     );
+
+}
+
+
+/* =========================================================
+   INITIAL LOAD
+   ========================================================= */
+
+document.addEventListener(
+    'DOMContentLoaded',
+    function() {
+
+        renderHistory();
+
+    }
+);
 
 </script>
 
