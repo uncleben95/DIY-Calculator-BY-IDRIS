@@ -1,2632 +1,2286 @@
 <!DOCTYPE html>
 <html lang="ms">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Wainscoting Calculator | iPainter DIY</title>
-
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <style>
-        :root {
-            --brand-yellow: #fdee23;
-            --brand-dark: #111111;
-            --bg: #f5f6f8;
-            --card: #ffffff;
-            --border: #e5e7eb;
-            --muted: #6b7280;
-            --success: #166534;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg);
-            color: #111827;
-            margin: 0;
-            padding: 18px 14px 90px;
-        }
-
-        .main-container {
-            width: 100%;
-            max-width: 680px;
-            margin: 0 auto;
-        }
-
-        .main-card {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
-            overflow: hidden;
-        }
-
-        .header {
-            padding: 22px 22px 18px;
-            border-bottom: 1px solid var(--border);
-            background: #fff;
-        }
-
-        .brand-label {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            font-size: 10px;
-            font-weight: 800;
-            letter-spacing: .08em;
-            text-transform: uppercase;
-            color: #52525b;
-            margin-bottom: 8px;
-        }
-
-        .brand-dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: var(--brand-yellow);
-            border: 1px solid #111;
-        }
-
-        .header h1 {
-            margin: 0;
-            font-size: 22px;
-            line-height: 1.2;
-            font-weight: 800;
-            color: #111827;
-        }
-
-        .header p {
-            margin: 7px 0 0;
-            font-size: 12px;
-            line-height: 1.5;
-            color: var(--muted);
-        }
-
-        .content {
-            padding: 20px;
-        }
-
-        .section-title {
-            font-size: 12px;
-            font-weight: 800;
-            color: #111827;
-            text-transform: uppercase;
-            letter-spacing: .05em;
-            margin-bottom: 12px;
-        }
-
-        .form-section {
-            margin-bottom: 22px;
-        }
-
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        .form-group {
-            margin-bottom: 14px;
-        }
-
-        label {
-            display: block;
-            font-size: 12px;
-            font-weight: 700;
-            color: #374151;
-            margin-bottom: 6px;
-        }
-
-        input,
-        select {
-            width: 100%;
-            padding: 12px 13px;
-            border: 1px solid #d1d5db;
-            border-radius: 10px;
-            background: #fff;
-            color: #111827;
-            font-family: inherit;
-            font-size: 13px;
-            outline: none;
-            transition: .2s;
-        }
-
-        input:focus,
-        select:focus {
-            border-color: #b5a800;
-            box-shadow: 0 0 0 3px rgba(253, 238, 35, .22);
-        }
-
-        .helper {
-            font-size: 10px;
-            color: #9ca3af;
-            margin-top: 5px;
-        }
-
-        .calculate-btn {
-            width: 100%;
-            border: 1.5px solid #111;
-            background: var(--brand-yellow);
-            color: #111;
-            padding: 14px 16px;
-            border-radius: 11px;
-            font-size: 14px;
-            font-weight: 800;
-            cursor: pointer;
-            transition: .18s;
-            box-shadow: 0 4px 12px rgba(253, 238, 35, .22);
-        }
-
-        .calculate-btn:hover {
-            filter: brightness(.97);
-        }
-
-        .calculate-btn:active {
-            transform: scale(.985);
-        }
-
-        .result-container {
-            display: none;
-            margin-top: 22px;
-            border: 1px solid #eadf76;
-            background: #fffef2;
-            border-radius: 14px;
-            overflow: hidden;
-        }
-
-        .result-header {
-            padding: 14px 15px;
-            border-bottom: 1px solid #eee5a5;
-            background: #fffdea;
-        }
-
-        .result-header-title {
-            font-size: 13px;
-            font-weight: 800;
-            color: #111827;
-        }
-
-        .result-header-sub {
-            font-size: 10px;
-            color: #78716c;
-            margin-top: 3px;
-        }
-
-        .result-body {
-            padding: 15px;
-        }
-
-        .breakdown {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .breakdown-row {
-            display: flex;
-            justify-content: space-between;
-            gap: 12px;
-            font-size: 11px;
-            color: #4b5563;
-            line-height: 1.5;
-        }
-
-        .breakdown-row span:last-child {
-            white-space: nowrap;
-            font-weight: 700;
-            color: #111827;
-        }
-
-        .total-box {
-            margin-top: 14px;
-            padding-top: 14px;
-            border-top: 1px solid #e7e2bb;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .total-label {
-            font-size: 12px;
-            font-weight: 800;
-            color: #374151;
-        }
-
-        .total-price {
-            font-size: 20px;
-            font-weight: 800;
-            color: #111827;
-            white-space: nowrap;
-        }
-
-        .cart-btn {
-            width: 100%;
-            margin-top: 14px;
-            padding: 13px;
-            border-radius: 10px;
-            border: 1.5px solid #111;
-            background: #111;
-            color: white;
-            font-size: 12px;
-            font-weight: 800;
-            cursor: pointer;
-        }
-
-        .cart-btn:hover {
-            background: #252525;
-        }
-
-        .visual-container {
-            display: none;
-            margin-top: 20px;
-        }
-
-        .visual-top {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .visual-title {
-            font-size: 12px;
-            font-weight: 800;
-            color: #374151;
-        }
-
-        .save-btn {
-            border: 1px solid #d1d5db;
-            background: white;
-            color: #374151;
-            padding: 8px 10px;
-            border-radius: 8px;
-            font-size: 10px;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .save-btn:hover {
-            background: #f9fafb;
-        }
-
-        #captureArea {
-            width: 100%;
-            min-height: 320px;
-            background: white;
-            border: 1px solid #d1d5db;
-            border-radius: 14px;
-            padding: 14px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-        }
-
-        .history-section {
-            margin-top: 24px;
-            border-top: 1px solid var(--border);
-            padding-top: 20px;
-        }
-
-        .history-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .history-heading {
-            font-size: 13px;
-            font-weight: 800;
-            color: #111827;
-        }
-
-        .history-count {
-            font-size: 10px;
-            background: #f3f4f6;
-            color: #6b7280;
-            padding: 4px 8px;
-            border-radius: 20px;
-            font-weight: 700;
-        }
-
-        .history-actions {
-            display: flex;
-            gap: 7px;
-        }
-
-        .history-action {
-            border: 1px solid #d1d5db;
-            background: white;
-            color: #4b5563;
-            padding: 7px 9px;
-            border-radius: 7px;
-            font-size: 9px;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .history-action.danger {
-            color: #b91c1c;
-        }
-
-        .history-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .history-empty {
-            text-align: center;
-            padding: 25px 15px;
-            border: 1px dashed #d1d5db;
-            border-radius: 10px;
-            color: #9ca3af;
-            font-size: 11px;
-            background: #fafafa;
-        }
-
-        .history-item {
-            background: #fff;
-            border: 1px solid #e5e7eb;
-            border-radius: 11px;
-            padding: 12px;
-        }
-
-        .history-item-top {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-        }
-
-        .history-name {
-            font-size: 11px;
-            font-weight: 800;
-            color: #111827;
-        }
-
-        .history-price {
-            font-size: 12px;
-            font-weight: 800;
-            color: #111827;
-            white-space: nowrap;
-        }
-
-        .history-info {
-            font-size: 10px;
-            color: #6b7280;
-            margin-top: 4px;
-            line-height: 1.5;
-        }
-
-        .history-date {
-            font-size: 9px;
-            color: #9ca3af;
-            margin-top: 4px;
-        }
-
-        .history-buttons {
-            display: flex;
-            gap: 7px;
-            margin-top: 9px;
-        }
-
-        .history-btn {
-            flex: 1;
-            padding: 7px;
-            border-radius: 7px;
-            font-size: 9px;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .reuse-btn {
-            background: #f8fafc;
-            color: #374151;
-            border: 1px solid #d1d5db;
-        }
-
-        .delete-btn {
-            background: #fff;
-            color: #b91c1c;
-            border: 1px solid #fecaca;
-        }
-
-        .back-btn {
-            position: fixed;
-            right: 15px;
-            bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 11px 15px;
-            border-radius: 30px;
-            background: var(--brand-yellow);
-            color: #111;
-            text-decoration: none;
-            font-size: 11px;
-            font-weight: 800;
-            border: 1px solid #111;
-            box-shadow: 0 5px 18px rgba(0,0,0,.12);
-            z-index: 100;
-        }
-
-        @media (max-width: 480px) {
-
-            body {
-                padding: 10px 10px 85px;
-            }
-
-            .header {
-                padding: 18px;
-            }
-
-            .content {
-                padding: 16px;
-            }
-
-            .grid-2 {
-                gap: 9px;
-            }
-
-            .header h1 {
-                font-size: 20px;
-            }
-
-            .total-price {
-                font-size: 18px;
-            }
-
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Wainscoting Calculator | iPainter DIY</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --brand-yellow:#fdee23;
+    --brand-dark:#111111;
+    --bg:#f5f6f8;
+    --card:#ffffff;
+    --border:#e5e7eb;
+    --muted:#6b7280;
+}
+
+* {
+    box-sizing:border-box;
+}
+
+body {
+    font-family:'Inter',sans-serif;
+    background:var(--bg);
+    color:#111827;
+    margin:0;
+    padding:18px 14px 90px;
+}
+
+.main-container {
+    width:100%;
+    max-width:680px;
+    margin:0 auto;
+}
+
+.main-card {
+    background:white;
+    border:1px solid var(--border);
+    border-radius:20px;
+    box-shadow:0 8px 30px rgba(15,23,42,.06);
+    overflow:hidden;
+}
+
+.header {
+    padding:22px 22px 18px;
+    border-bottom:1px solid var(--border);
+    background:#fff;
+}
+
+.brand-label {
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:#52525b;
+    margin-bottom:8px;
+}
+
+.brand-dot {
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:var(--brand-yellow);
+    border:1px solid #111;
+}
+
+.header h1 {
+    margin:0;
+    font-size:22px;
+    line-height:1.2;
+    font-weight:800;
+}
+
+.header p {
+    margin:7px 0 0;
+    font-size:12px;
+    line-height:1.5;
+    color:var(--muted);
+}
+
+.content {
+    padding:20px;
+}
+
+.section-title {
+    font-size:12px;
+    font-weight:800;
+    color:#111827;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    margin-bottom:12px;
+}
+
+.form-section {
+    margin-bottom:22px;
+}
+
+.grid-2 {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.form-group {
+    margin-bottom:14px;
+}
+
+label {
+    display:block;
+    font-size:12px;
+    font-weight:700;
+    color:#374151;
+    margin-bottom:6px;
+}
+
+input,
+select {
+    width:100%;
+    padding:12px 13px;
+    border:1px solid #d1d5db;
+    border-radius:10px;
+    background:#fff;
+    color:#111827;
+    font-family:inherit;
+    font-size:13px;
+    outline:none;
+    transition:.2s;
+}
+
+input:focus,
+select:focus {
+    border-color:#b5a800;
+    box-shadow:0 0 0 3px rgba(253,238,35,.22);
+}
+
+.helper {
+    font-size:10px;
+    color:#9ca3af;
+    margin-top:5px;
+}
+
+.calculate-btn {
+    width:100%;
+    border:1.5px solid #111;
+    background:var(--brand-yellow);
+    color:#111;
+    padding:14px 16px;
+    border-radius:11px;
+    font-size:14px;
+    font-weight:800;
+    cursor:pointer;
+    transition:.18s;
+}
+
+.calculate-btn:active {
+    transform:scale(.985);
+}
+
+.result-container {
+    display:none;
+    margin-top:22px;
+    border:1px solid #eadf76;
+    background:#fffef2;
+    border-radius:14px;
+    overflow:hidden;
+}
+
+.result-header {
+    padding:14px 15px;
+    border-bottom:1px solid #eee5a5;
+    background:#fffdea;
+}
+
+.result-header-title {
+    font-size:13px;
+    font-weight:800;
+}
+
+.result-header-sub {
+    font-size:10px;
+    color:#78716c;
+    margin-top:3px;
+}
+
+.result-body {
+    padding:15px;
+}
+
+.breakdown {
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.breakdown-row {
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    font-size:11px;
+    color:#4b5563;
+    line-height:1.5;
+}
+
+.breakdown-row span:last-child {
+    white-space:nowrap;
+    font-weight:700;
+    color:#111827;
+}
+
+.total-box {
+    margin-top:14px;
+    padding-top:14px;
+    border-top:1px solid #e7e2bb;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+}
+
+.total-label {
+    font-size:12px;
+    font-weight:800;
+    color:#374151;
+}
+
+.total-price {
+    font-size:20px;
+    font-weight:800;
+    color:#111827;
+    white-space:nowrap;
+}
+
+.cart-btn {
+    width:100%;
+    margin-top:14px;
+    padding:13px;
+    border-radius:10px;
+    border:1.5px solid #111;
+    background:#111;
+    color:white;
+    font-size:12px;
+    font-weight:800;
+    cursor:pointer;
+}
+
+.visual-container {
+    display:none;
+    margin-top:20px;
+}
+
+.visual-top {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:10px;
+}
+
+.visual-title {
+    font-size:12px;
+    font-weight:800;
+    color:#374151;
+}
+
+.save-btn {
+    border:1px solid #d1d5db;
+    background:white;
+    color:#374151;
+    padding:8px 10px;
+    border-radius:8px;
+    font-size:10px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+#captureArea {
+    width:100%;
+    min-height:320px;
+    background:white;
+    border:1px solid #d1d5db;
+    border-radius:14px;
+    padding:14px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+}
+
+.history-section {
+    margin-top:24px;
+    border-top:1px solid var(--border);
+    padding-top:20px;
+}
+
+.history-header {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:10px;
+}
+
+.history-heading {
+    font-size:13px;
+    font-weight:800;
+}
+
+.history-count {
+    font-size:10px;
+    background:#f3f4f6;
+    color:#6b7280;
+    padding:4px 8px;
+    border-radius:20px;
+    font-weight:700;
+}
+
+.history-actions {
+    display:flex;
+    gap:7px;
+}
+
+.history-action {
+    border:1px solid #d1d5db;
+    background:white;
+    color:#4b5563;
+    padding:7px 9px;
+    border-radius:7px;
+    font-size:9px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.history-action.danger {
+    color:#b91c1c;
+}
+
+.history-list {
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.history-empty {
+    text-align:center;
+    padding:25px 15px;
+    border:1px dashed #d1d5db;
+    border-radius:10px;
+    color:#9ca3af;
+    font-size:11px;
+    background:#fafafa;
+}
+
+.history-item {
+    background:#fff;
+    border:1px solid #e5e7eb;
+    border-radius:11px;
+    padding:12px;
+}
+
+.history-item-top {
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+}
+
+.history-name {
+    font-size:11px;
+    font-weight:800;
+}
+
+.history-price {
+    font-size:12px;
+    font-weight:800;
+    white-space:nowrap;
+}
+
+.history-info {
+    font-size:10px;
+    color:#6b7280;
+    margin-top:4px;
+    line-height:1.5;
+}
+
+.history-date {
+    font-size:9px;
+    color:#9ca3af;
+    margin-top:4px;
+}
+
+.history-buttons {
+    display:flex;
+    gap:7px;
+    margin-top:9px;
+}
+
+.history-btn {
+    flex:1;
+    padding:7px;
+    border-radius:7px;
+    font-size:9px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.reuse-btn {
+    background:#f8fafc;
+    color:#374151;
+    border:1px solid #d1d5db;
+}
+
+.delete-btn {
+    background:#fff;
+    color:#b91c1c;
+    border:1px solid #fecaca;
+}
+
+.back-btn {
+    position:fixed;
+    right:15px;
+    bottom:16px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    padding:11px 15px;
+    border-radius:30px;
+    background:var(--brand-yellow);
+    color:#111;
+    text-decoration:none;
+    font-size:11px;
+    font-weight:800;
+    border:1px solid #111;
+    box-shadow:0 5px 18px rgba(0,0,0,.12);
+    z-index:100;
+}
+
+@media(max-width:480px) {
+    body {
+        padding:10px 10px 85px;
+    }
+
+    .header {
+        padding:18px;
+    }
+
+    .content {
+        padding:16px;
+    }
+
+    .grid-2 {
+        gap:9px;
+    }
+
+    .header h1 {
+        font-size:20px;
+    }
+
+    .total-price {
+        font-size:18px;
+    }
+}
+</style>
 </head>
 
 <body>
 
 <div class="main-container">
 
-    <div class="main-card">
-
-        <div class="header">
-
-            <div class="brand-label">
-                <span class="brand-dot"></span>
-                iPainter DIY • Calculation Portal
-            </div>
-
-            <h1>Wainscoting Calculator</h1>
-
-            <p>
-                Sediakan anggaran material dan kos wainscoting berdasarkan
-                ukuran dinding serta konfigurasi pilihan.
-            </p>
-
-        </div>
-
-
-        <div class="content">
-
-            <div class="form-section">
-
-                <div class="section-title">
-                    Maklumat Projek
-                </div>
-
-
-                <div class="grid-2">
-
-                    <div class="form-group">
-
-                        <label>
-                            Lebar Dinding (mm)
-                        </label>
-
-                        <input
-                            type="number"
-                            id="wallWidth"
-                            value="3000"
-                            min="1"
-                        >
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label>
-                            Tinggi Dinding (mm)
-                        </label>
-
-                        <input
-                            type="number"
-                            id="wallHeight"
-                            value="2900"
-                            min="1"
-                        >
-
-                    </div>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        Konfigurasi Susun Atur
-                    </label>
-
-                    <select id="layoutStyle">
-
-                        <option value="with_chairrail">
-                            Dengan Chair Rail
-                        </option>
-
-                        <option value="without_chairrail">
-                            Tanpa Chair Rail
-                        </option>
-
-                    </select>
-
-                    <div class="helper">
-                        Chair rail digunakan untuk memisahkan bahagian atas dan bawah dinding.
-                    </div>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        Corak Kotak / Nisbah
-                    </label>
-
-                    <select id="boxPattern">
-
-                        <option value="1:1">
-                            1:1 — 2 Bahagian
-                        </option>
-
-                        <option value="1:2:1">
-                            1:2:1 — 3 Kotak
-                        </option>
-
-                        <option value="1:1:2:1:1">
-                            1:1:2:1:1 — 5 Kotak
-                        </option>
-
-                        <option value="2:1:2:1:2" selected>
-                            2:1:2:1:2 — 5 Kotak
-                        </option>
-
-                        <option value="1:2:1:2:1">
-                            1:2:1:2:1 — 5 Kotak
-                        </option>
-
-                        <option value="1">
-                            1 — Single Panel
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-                <div class="grid-2">
-
-                    <div class="form-group">
-
-                        <label>
-                            Jenis Bingkai
-                        </label>
-
-                        <select id="frameType">
-
-                            <option value="single">
-                                Single Frame
-                            </option>
-
-                            <option value="double">
-                                Double Frame
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label>
-                            Finishing Bingkai
-                        </label>
-
-                        <select id="frameColor">
-
-                            <option value="standard">
-                                Hitam Standard
-                            </option>
-
-                            <option value="gold">
-                                Gold Frame (+RM5)
-                            </option>
-
-                        </select>
-
-                    </div>
-
-                </div>
-
-
-                <button
-                    class="calculate-btn"
-                    onclick="calculateWainscoting()"
-                >
-                    Kira Anggaran
-                </button>
-
-            </div>
-
-
-            <div
-                id="resultContainer"
-                class="result-container"
-            >
-
-                <div class="result-header">
-
-                    <div class="result-header-title">
-                        Ringkasan Anggaran
-                    </div>
-
-                    <div class="result-header-sub">
-                        Pecahan material dan anggaran kos projek
-                    </div>
-
-                </div>
-
-
-                <div class="result-body">
-
-                    <div
-                        id="priceBreakdown"
-                        class="breakdown"
-                    ></div>
-
-
-                    <div class="total-box">
-
-                        <div class="total-label">
-                            Jumlah Anggaran
-                        </div>
-
-                        <div
-                            id="totalPrice"
-                            class="total-price"
-                        >
-                            RM 0.00
-                        </div>
-
-                    </div>
-
-
-                    <button
-                        class="cart-btn"
-                        onclick="addWainscotingToCart()"
-                    >
-                        + Masukkan Pengiraan ke Troli
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <div
-                id="visualContainer"
-                class="visual-container"
-            >
-
-                <div class="visual-top">
-
-                    <div class="visual-title">
-                        Visual Susun Atur Dinding
-                    </div>
-
-                    <button
-                        class="save-btn"
-                        onclick="saveVisualToPhone()"
-                    >
-                        ↓ Simpan PNG
-                    </button>
-
-                </div>
-
-
-                <div id="captureArea"></div>
-
-            </div>
-
-
-            <div class="history-section">
-
-                <div class="history-header">
-
-                    <div style="display:flex;align-items:center;gap:8px;">
-
-                        <div class="history-heading">
-                            Sejarah Pengiraan
-                        </div>
-
-                        <span
-                            id="historyCount"
-                            class="history-count"
-                        >
-                            0 Rekod
-                        </span>
-
-                    </div>
-
-
-                    <div class="history-actions">
-
-                        <button
-                            class="history-action"
-                            onclick="refreshHistory()"
-                        >
-                            ↻
-                        </button>
-
-                        <button
-                            class="history-action danger"
-                            onclick="clearHistory()"
-                        >
-                            Padam Semua
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-                <div
-                    id="historyList"
-                    class="history-list"
-                ></div>
-
-            </div>
-
-        </div>
-
+<div class="main-card">
+
+<div class="header">
+    <div class="brand-label">
+        <span class="brand-dot"></span>
+        iPainter DIY • Calculation Portal
     </div>
+
+    <h1>Wainscoting Calculator</h1>
+
+    <p>
+        Sediakan anggaran material dan kos wainscoting berdasarkan
+        ukuran dinding serta konfigurasi pilihan.
+    </p>
+</div>
+
+<div class="content">
+
+<div class="form-section">
+
+<div class="section-title">
+    Maklumat Projek
+</div>
+
+<div class="grid-2">
+
+<div class="form-group">
+<label>Lebar Dinding (mm)</label>
+<input type="number" id="wallWidth" value="3000" min="1">
+</div>
+
+<div class="form-group">
+<label>Tinggi Dinding (mm)</label>
+<input type="number" id="wallHeight" value="2900" min="1">
+</div>
 
 </div>
 
+<div class="form-group">
 
-<a
-    href="../index.html"
-    class="back-btn"
->
-    ← Menu Utama
+<label>Konfigurasi Susun Atur</label>
+
+<select id="layoutStyle">
+
+<option value="with_chairrail">
+Dengan Chair Rail
+</option>
+
+<option value="without_chairrail">
+Tanpa Chair Rail
+</option>
+
+</select>
+
+<div class="helper">
+Chair rail digunakan untuk memisahkan bahagian atas dan bawah dinding.
+</div>
+
+</div>
+
+<div class="form-group">
+
+<label>Corak Kotak / Nisbah</label>
+
+<select id="boxPattern">
+
+<option value="1:1">
+1:1 — 2 Bahagian
+</option>
+
+<option value="1:2:1">
+1:2:1 — 3 Kotak
+</option>
+
+<option value="1:1:2:1:1">
+1:1:2:1:1 — 5 Kotak
+</option>
+
+<option value="2:1:2:1:2" selected>
+2:1:2:1:2 — 5 Kotak
+</option>
+
+<option value="1:2:1:2:1">
+1:2:1:2:1 — 5 Kotak
+</option>
+
+<option value="1">
+1 — Single Panel
+</option>
+
+</select>
+
+</div>
+
+<div class="grid-2">
+
+<div class="form-group">
+
+<label>Jenis Bingkai</label>
+
+<select id="frameType">
+
+<option value="single">
+Single Frame
+</option>
+
+<option value="double">
+Double Frame
+</option>
+
+</select>
+
+</div>
+
+<div class="form-group">
+
+<label>Finishing Bingkai</label>
+
+<select id="frameColor">
+
+<option value="standard">
+Hitam Standard
+</option>
+
+<option value="gold">
+Gold Frame (+RM5)
+</option>
+
+</select>
+
+</div>
+
+</div>
+
+<button
+class="calculate-btn"
+onclick="calculateWainscoting()">
+Kira Anggaran
+</button>
+
+</div>
+
+<div id="resultContainer" class="result-container">
+
+<div class="result-header">
+
+<div class="result-header-title">
+Ringkasan Anggaran
+</div>
+
+<div class="result-header-sub">
+Pecahan material dan anggaran kos projek
+</div>
+
+</div>
+
+<div class="result-body">
+
+<div id="priceBreakdown" class="breakdown"></div>
+
+<div class="total-box">
+
+<div class="total-label">
+Jumlah Anggaran
+</div>
+
+<div id="totalPrice" class="total-price">
+RM 0.00
+</div>
+
+</div>
+
+<button
+class="cart-btn"
+onclick="addWainscotingToCart()">
++ Masukkan Pengiraan ke Troli
+</button>
+
+</div>
+
+</div>
+
+<div id="visualContainer" class="visual-container">
+
+<div class="visual-top">
+
+<div class="visual-title">
+Visual Susun Atur Dinding
+</div>
+
+<button
+class="save-btn"
+onclick="saveVisualToPhone()">
+↓ Simpan PNG
+</button>
+
+</div>
+
+<div id="captureArea"></div>
+
+</div>
+
+<div class="history-section">
+
+<div class="history-header">
+
+<div style="display:flex;align-items:center;gap:8px;">
+
+<div class="history-heading">
+Sejarah Pengiraan
+</div>
+
+<span id="historyCount" class="history-count">
+0 Rekod
+</span>
+
+</div>
+
+<div class="history-actions">
+
+<button
+class="history-action"
+onclick="refreshHistory()">
+↻
+</button>
+
+<button
+class="history-action danger"
+onclick="clearHistory()">
+Padam Semua
+</button>
+
+</div>
+
+</div>
+
+<div id="historyList" class="history-list"></div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<a href="../index.html" class="back-btn">
+← Menu Utama
 </a>
 
 
 <script>
 
 /* =========================================================
-   PRICE DATABASE
-   ========================================================= */
+PRICE DATABASE
+========================================================= */
 
 const singlePrices = {
 
-    "300x300": 30,
-    "300x600": 40,
-    "300x900": 50,
-    "300x1200": 60,
-    "300x1500": 70,
-    "300x1800": 90,
-    "300x2400": 110,
+"300x300":30,
+"300x600":40,
+"300x900":50,
+"300x1200":60,
+"300x1500":70,
+"300x1800":90,
+"300x2400":110,
 
-    "600x600": 50,
-    "600x900": 60,
-    "600x1200": 70,
-    "600x1500": 90,
-    "600x1800": 100,
-    "600x2400": 130,
+"600x600":50,
+"600x900":60,
+"600x1200":70,
+"600x1500":90,
+"600x1800":100,
+"600x2400":130,
 
-    "900x900": 70,
-    "900x1200": 90,
-    "900x1500": 100,
-    "900x1800": 110,
-    "900x2400": 140,
+"900x900":70,
+"900x1200":90,
+"900x1500":100,
+"900x1800":110,
+"900x2400":140,
 
-    "1200x1200": 100,
-    "1200x1500": 110,
-    "1200x1800": 130,
-    "1200x2400": 150,
+"1200x1200":100,
+"1200x1500":110,
+"1200x1800":130,
+"1200x2400":150,
 
-    "1500x1500": 130,
-    "1500x1800": 140,
-    "1500x2400": 160,
+"1500x1500":130,
+"1500x1800":140,
+"1500x2400":160,
 
-    "1800x1800": 150,
-    "1800x2400": 190,
+"1800x1800":150,
+"1800x2400":190,
 
-    "2400x2400": 210
+"2400x2400":210
 };
 
 
 const doublePrices = {
 
-    "300x300": 15,
-    "300x600": 25,
-    "300x900": 35,
-    "300x1200": 45,
-    "300x1500": 55,
-    "300x1800": 65,
-    "300x2400": 75,
+"300x300":15,
+"300x600":25,
+"300x900":35,
+"300x1200":45,
+"300x1500":55,
+"300x1800":65,
+"300x2400":75,
 
-    "600x600": 35,
-    "600x900": 45,
-    "600x1200": 55,
-    "600x1500": 65,
-    "600x1800": 75,
-    "600x2400": 115,
+"600x600":35,
+"600x900":45,
+"600x1200":55,
+"600x1500":65,
+"600x1800":75,
+"600x2400":115,
 
-    "900x900": 55,
-    "900x1200": 65,
-    "900x1500": 75,
-    "900x1800": 85,
-    "900x2400": 120,
+"900x900":55,
+"900x1200":65,
+"900x1500":75,
+"900x1800":85,
+"900x2400":120,
 
-    "1200x1200": 75,
-    "1200x1500": 85,
-    "1200x1800": 115,
-    "1200x2400": 125,
+"1200x1200":75,
+"1200x1500":85,
+"1200x1800":115,
+"1200x2400":125,
 
-    "1500x1500": 115,
-    "1500x1800": 120,
-    "1500x2400": 145,
+"1500x1500":115,
+"1500x1800":120,
+"1500x2400":145,
 
-    "1800x1800": 125,
-    "1800x2400": 155,
+"1800x1800":125,
+"1800x2400":155,
 
-    "2400x2400": 175
+"2400x2400":175
 };
 
 
 const HISTORY_KEY =
-    "diy_wainscoting_history";
+"diy_wainscoting_history";
 
 let lastCalculatedRecord = null;
 
 
 /* =========================================================
-   PRICE FUNCTION
-   ========================================================= */
-
-function getFlexiblePrice(
-    w,
-    h,
-    priceTable,
-    defaultVal
-) {
-
-    let key1 = `${w}x${h}`;
-    let key2 = `${h}x${w}`;
-
-
-    if (priceTable[key1] !== undefined) {
-        return priceTable[key1];
-    }
-
-
-    if (priceTable[key2] !== undefined) {
-        return priceTable[key2];
-    }
-
-
-    return defaultVal;
-
-}
-
-
-/* =========================================================
-   STANDARD SIZES
-   ========================================================= */
+STANDARD SIZE
+========================================================= */
 
 const standardSizes = [
-
-    300,
-    600,
-    900,
-    1200,
-    1500,
-    1800,
-    2400
-
+300,
+600,
+900,
+1200,
+1500,
+1800,
+2400
 ];
 
 
 /* =========================================================
-   GET NEXT STANDARD SIZE
-   ========================================================= */
+GET STANDARD SIZE
+========================================================= */
 
-function getNextStandardSize(value) {
+function getCeilStandardSize(val) {
 
-    for (let size of standardSizes) {
+for (let size of standardSizes) {
 
-        if (value <= size) {
-            return size;
-        }
+if (val <= size) {
+return size;
+}
 
-    }
+}
 
-    return 2400;
-
+return 2400;
 }
 
 
 /* =========================================================
-   ADD SIZE ITEM
-   ========================================================= */
+GET PRICE
+========================================================= */
 
-function addSizeItem(
-    actualW,
-    actualH,
-    type,
-    custom = false
+function getFlexiblePrice(
+w,
+h,
+priceTable,
+defaultVal
 ) {
 
-    let stdW =
-        getNextStandardSize(actualW);
+let key1 = `${w}x${h}`;
+let key2 = `${h}x${w}`;
 
-    let stdH =
-        getNextStandardSize(actualH);
+if (priceTable[key1] !== undefined) {
+return priceTable[key1];
+}
 
+if (priceTable[key2] !== undefined) {
+return priceTable[key2];
+}
 
-    let key =
-        `${stdW}x${stdH}|${type}|${custom}`;
-
-
-    if (!sizeCounts[key]) {
-
-        sizeCounts[key] = {
-
-            count: 0,
-
-            w: actualW,
-
-            h: actualH,
-
-            stdW: stdW,
-
-            stdH: stdH,
-
-            type: type,
-
-            custom: custom
-
-        };
-
-    }
-
-
-    sizeCounts[key].count++;
-
+return defaultVal;
 }
 
 
 /* =========================================================
-   CUSTOM DIMENSION ENGINE
+CREATE MATERIAL PARTS
+=========================================================
 
-   >2400mm:
-   2400mm + baki
+IMPORTANT:
 
-   Contoh:
-   2500x600
+If dimension <= 2400:
+    normal calculation
 
-   = 2400x600 (1 set)
-   + 100x600
-   = 300x600 (1 set)
+If dimension > 2400:
+    split into:
 
-   Remark = Custom Size
-   ========================================================= */
+    2400 + remaining
 
-function addCustomDimension(
-    width,
-    height,
-    type
+Example:
+
+2500 x 600
+
+=> 2400 x 600
+=> 100 x 600
+
+The remaining size uses the nearest
+standard size from the price table.
+
+100 x 600
+=> 300 x 600 price
+
+========================================================= */
+
+function splitCustomDimension(value) {
+
+if (value <= 2400) {
+
+return [{
+    size: value,
+    custom: false
+}];
+
+}
+
+let parts = [];
+
+let full2400 =
+Math.floor(value / 2400);
+
+let remainder =
+value % 2400;
+
+
+/* Full 2400 sections */
+
+for (
+let i = 0;
+i < full2400;
+i++
 ) {
 
-    /*
-       WIDTH > 2400
-    */
+parts.push({
+    size: 2400,
+    custom: true
+});
 
-    if (width > 2400) {
-
-        let fullPieces =
-            Math.floor(width / 2400);
-
-        let remainder =
-            width % 2400;
+}
 
 
-        for (
-            let i = 0;
-            i < fullPieces;
-            i++
-        ) {
+/* Remaining section */
 
-            addSizeItem(
-                2400,
-                height,
-                type,
-                true
-            );
+if (remainder > 0) {
 
-        }
+parts.push({
+    size: remainder,
+    custom: true
+});
 
+}
 
-        if (remainder > 0) {
-
-            addSizeItem(
-                remainder,
-                height,
-                type,
-                true
-            );
-
-        }
-
-        return;
-
-    }
-
-
-    /*
-       HEIGHT > 2400
-    */
-
-    if (height > 2400) {
-
-        let fullPieces =
-            Math.floor(height / 2400);
-
-        let remainder =
-            height % 2400;
-
-
-        for (
-            let i = 0;
-            i < fullPieces;
-            i++
-        ) {
-
-            addSizeItem(
-                width,
-                2400,
-                type,
-                true
-            );
-
-        }
-
-
-        if (remainder > 0) {
-
-            addSizeItem(
-                width,
-                remainder,
-                type,
-                true
-            );
-
-        }
-
-        return;
-
-    }
-
-
-    /*
-       NORMAL
-    */
-
-    addSizeItem(
-        width,
-        height,
-        type,
-        false
-    );
+return parts;
 
 }
 
 
 /* =========================================================
-   CALCULATE
-   ========================================================= */
+ADD MATERIAL TO COUNT
+========================================================= */
+
+function addMaterialPart(
+sizeW,
+sizeH,
+type,
+frameType,
+frameColor,
+sizeCounts
+) {
+
+let actualW =
+Math.round(sizeW);
+
+let actualH =
+Math.round(sizeH);
+
+
+/* Price lookup uses standard size */
+
+let stdW =
+getCeilStandardSize(actualW);
+
+let stdH =
+getCeilStandardSize(actualH);
+
+
+/*
+IMPORTANT:
+
+If remaining is below 300,
+price uses 300.
+
+Example:
+
+100 x 600
+
+=> 300 x 600
+*/
+
+let key =
+`${stdW}x${stdH}`;
+
+
+/* Unique key includes actual size */
+
+let countKey =
+`${type}|${actualW}x${actualH}|${stdW}x${stdH}`;
+
+
+if (!sizeCounts[countKey]) {
+
+sizeCounts[countKey] = {
+
+count:0,
+
+w:actualW,
+
+h:actualH,
+
+stdW:stdW,
+
+stdH:stdH,
+
+type:type,
+
+custom:
+actualW > 2400 ||
+actualH > 2400 ||
+actualW !== stdW ||
+actualH !== stdH
+
+};
+
+}
+
+sizeCounts[countKey].count++;
+
+}
+
+
+/* =========================================================
+CALCULATE
+========================================================= */
 
 function calculateWainscoting(
-    saveToHistory = true
+saveToHistory = true
 ) {
 
-    let wMm =
-        parseFloat(
-            document.getElementById(
-                'wallWidth'
-            ).value
-        ) || 0;
+let wMm =
+parseFloat(
+document.getElementById('wallWidth').value
+) || 0;
 
+let hMm =
+parseFloat(
+document.getElementById('wallHeight').value
+) || 0;
 
-    let hMm =
-        parseFloat(
-            document.getElementById(
-                'wallHeight'
-            ).value
-        ) || 0;
+let style =
+document.getElementById('layoutStyle').value;
 
+let pattern =
+document.getElementById('boxPattern').value;
 
-    let style =
-        document.getElementById(
-            'layoutStyle'
-        ).value;
+let frameType =
+document.getElementById('frameType').value;
 
+let frameColor =
+document.getElementById('frameColor').value;
 
-    let pattern =
-        document.getElementById(
-            'boxPattern'
-        ).value;
 
+if (wMm <= 0 || hMm <= 0) {
 
-    let frameType =
-        document.getElementById(
-            'frameType'
-        ).value;
+alert(
+"Sila masukkan ukuran dinding yang sah."
+);
 
+return;
 
-    let frameColor =
-        document.getElementById(
-            'frameColor'
-        ).value;
+}
 
 
-    if (
-        wMm <= 0 ||
-        hMm <= 0
-    ) {
+/* =====================================================
+BOX HEIGHT
+===================================================== */
 
-        alert(
-            "Sila masukkan ukuran dinding yang sah."
-        );
+let targetBoxHeight =
+style === 'without_chairrail'
+? hMm - 200
+: hMm - 1070;
 
-        return;
 
-    }
+if (targetBoxHeight < 300) {
+targetBoxHeight = 300;
+}
 
 
-    /* =====================================================
-       DETERMINE BOX HEIGHT
-       ===================================================== */
+/* =====================================================
+BOX WIDTHS
+===================================================== */
 
-    let targetBoxHeight =
-        style === 'without_chairrail'
-            ? hMm - 200
-            : hMm - 1070;
+let boxWidths = [];
 
 
-    if (targetBoxHeight < 300) {
+if (pattern === '1:1') {
 
-        targetBoxHeight = 300;
+let uW =
+(wMm - 300) / 2;
 
-    }
+boxWidths = [
+uW,
+uW
+];
 
+}
 
-    /* =====================================================
-       DETERMINE BOX WIDTHS
+else if (pattern === '1:2:1') {
 
-       FORMULA ASAL DIKEKALKAN
-       ===================================================== */
+let uW =
+(wMm - 400) / 4;
 
-    let boxWidths = [];
+boxWidths = [
+uW,
+uW * 2,
+uW
+];
 
+}
 
-    if (pattern === '1:1') {
+else if (pattern === '1:1:2:1:1') {
 
-        let uW =
-            (wMm - 300) / 2;
+let uW =
+(wMm - 600) / 6;
 
+boxWidths = [
+uW,
+uW,
+uW * 2,
+uW,
+uW
+];
 
-        boxWidths = [
-            uW,
-            uW
-        ];
+}
 
-    }
+else if (pattern === '2:1:2:1:2') {
 
+let uW =
+(wMm - 600) / 8;
 
-    else if (pattern === '1:2:1') {
+boxWidths = [
+uW * 2,
+uW,
+uW * 2,
+uW,
+uW * 2
+];
 
-        let uW =
-            (wMm - 400) / 4;
+}
 
+else if (pattern === '1:2:1:2:1') {
 
-        boxWidths = [
-            uW,
-            uW * 2,
-            uW
-        ];
+let uW =
+(wMm - 600) / 7;
 
-    }
+boxWidths = [
+uW,
+uW * 2,
+uW,
+uW * 2,
+uW
+];
 
+}
 
-    else if (
-        pattern === '1:1:2:1:1'
-    ) {
+else {
 
-        let uW =
-            (wMm - 600) / 6;
+let remW =
+wMm - 200;
 
+boxWidths = [
+remW
+];
 
-        boxWidths = [
-            uW,
-            uW,
-            uW * 2,
-            uW,
-            uW
-        ];
+}
 
-    }
 
+/* =====================================================
+PRICE CALCULATION
+===================================================== */
 
-    else if (
-        pattern === '2:1:2:1:2'
-    ) {
+let totalPrice = 0;
 
-        let uW =
-            (wMm - 600) / 8;
+let breakdownHtml = "";
 
+let sizeCounts = {};
 
-        boxWidths = [
-            uW * 2,
-            uW,
-            uW * 2,
-            uW,
-            uW * 2
-        ];
 
-    }
+boxWidths.forEach((bw) => {
 
+let roundedW =
+Math.round(bw);
 
-    else if (
-        pattern === '1:2:1:2:1'
-    ) {
+let labelType =
+style === 'without_chairrail'
+? 'Penuh Menegak'
+: 'Atas';
 
-        let uW =
-            (wMm - 600) / 7;
 
+/*
+WIDTH CUSTOM SPLIT
 
-        boxWidths = [
-            uW,
-            uW * 2,
-            uW,
-            uW * 2,
-            uW
-        ];
+Example:
+2500 x 600
 
-    }
+2400 x 600
+100 x 600
+*/
 
+let widthParts =
+splitCustomDimension(
+roundedW
+);
 
-    else {
 
-        let remW =
-            wMm - 200;
+/*
+HEIGHT CUSTOM SPLIT
 
+This also handles height >2400.
+*/
 
-        boxWidths = [
-            remW
-        ];
+let heightParts =
+splitCustomDimension(
+Math.round(targetBoxHeight)
+);
 
-    }
 
+/*
+Create combinations.
 
-    /* =====================================================
-       PRICE CALCULATION
-       ===================================================== */
+Example:
 
-    let totalPrice = 0;
+2500 x 2500
 
-    let breakdownHtml = "";
+=> 2400x2400
+=> 2400x100
+=> 100x2400
+=> 100x100
 
-    let sizeCounts = {};
+For normal dimensions it remains
+one material set.
+*/
 
+widthParts.forEach(wPart => {
 
-    /* =====================================================
-       TOP BOXES
-       ===================================================== */
+heightParts.forEach(hPart => {
 
-    boxWidths.forEach(
-        (bw) => {
+addMaterialPart(
+wPart.size,
+hPart.size,
+labelType,
+frameType,
+frameColor,
+sizeCounts
+);
 
-            let roundedW =
-                Math.round(bw);
+});
 
+});
 
-            let roundedH =
-                Math.round(
-                    targetBoxHeight
-                );
 
+/* =====================================================
+BOTTOM BOX
+===================================================== */
 
-            let labelType =
-                style === 'without_chairrail'
-                    ? 'Penuh Menegak'
-                    : 'Atas';
+if (style === 'with_chairrail') {
 
+let botBoxH = 600;
 
-            addCustomDimension(
-                roundedW,
-                roundedH,
-                labelType
-            );
+boxWidths.forEach((bw) => {
 
+let roundedW =
+Math.round(bw);
 
-            /* =================================================
-               BOTTOM BOX
-               ================================================= */
+let widthParts =
+splitCustomDimension(
+roundedW
+);
 
-            if (
-                style ===
-                'with_chairrail'
-            ) {
+widthParts.forEach(wPart => {
 
-                let botBoxH = 600;
+addMaterialPart(
+wPart.size,
+botBoxH,
+'Bawah',
+frameType,
+frameColor,
+sizeCounts
+);
 
+});
 
-                addCustomDimension(
-                    roundedW,
-                    botBoxH,
-                    'Bawah'
-                );
+});
 
-            }
+}
 
-        }
-    );
+});
 
 
-    /* =====================================================
-       BREAKDOWN
-       ===================================================== */
+/* =====================================================
+BREAKDOWN
+===================================================== */
 
-    for (
-        let key in sizeCounts
-    ) {
+for (let key in sizeCounts) {
 
-        let item =
-            sizeCounts[key];
+let item =
+sizeCounts[key];
 
 
-        let unitPrice =
-            getFlexiblePrice(
-                item.stdW,
-                item.stdH,
-                singlePrices,
-                60
-            );
+let unitPrice =
+getFlexiblePrice(
+item.stdW,
+item.stdH,
+singlePrices,
+60
+);
 
 
-        /* DOUBLE FRAME */
+if (frameType === 'double') {
 
-        if (
-            frameType === 'double'
-        ) {
+unitPrice +=
+getFlexiblePrice(
+item.stdW,
+item.stdH,
+doublePrices,
+45
+);
 
-            unitPrice +=
-                getFlexiblePrice(
-                    item.stdW,
-                    item.stdH,
-                    doublePrices,
-                    45
-                );
+}
 
-        }
 
+if (frameColor === 'gold') {
 
-        /* GOLD */
+unitPrice += 5;
 
-        if (
-            frameColor === 'gold'
-        ) {
+}
 
-            unitPrice += 5;
 
-        }
+let subTotal =
+unitPrice * item.count;
 
 
-        let subTotal =
-            unitPrice *
-            item.count;
+totalPrice +=
+subTotal;
 
 
-        totalPrice +=
-            subTotal;
+let remarkText =
+item.custom
+? `<span style="color:#dc2626;font-weight:800;">Custom Size</span>`
+: "";
 
 
-        let remarkText =
-            item.custom
+breakdownHtml += `
 
-                ? `
-                    <span style="
-                        color:#dc2626;
-                        font-weight:800;
-                    ">
-                        Custom Size
-                    </span>
-                  `
+<div class="breakdown-row">
 
-                : "";
+<span>
 
+Kotak ${item.type}
+(${item.w} × ${item.h}mm)
+${remarkText}
 
-        let standardInfo =
-            item.custom
+<br>
 
-                ? `
-                    <br>
-                    <small style="
-                        color:#9ca3af;
-                    ">
-                        Dihantar sebagai
-                        ${item.stdW} × ${item.stdH}mm
-                    </small>
-                  `
+<small style="color:#9ca3af;">
 
-                : "";
+${item.count} set
+× RM ${unitPrice.toFixed(2)}
 
+<br>
 
-        breakdownHtml += `
+Harga rujukan:
+${item.stdW} × ${item.stdH}mm
 
-            <div class="breakdown-row">
+</small>
 
-                <span>
+</span>
 
-                    Kotak ${item.type}
+<span>
+RM ${subTotal.toFixed(2)}
+</span>
 
-                    (${item.w} × ${item.h}mm)
+</div>
 
-                    ${remarkText}
+`;
 
-                    <br>
+}
 
-                    <small style="
-                        color:#9ca3af;
-                    ">
 
-                        ${item.count} set ×
-                        RM ${unitPrice.toFixed(2)}
+/* =====================================================
+CHAIR RAIL
+===================================================== */
 
-                    </small>
+let chairRailSticks = 0;
+let chairRailTotalCost = 0;
 
-                    ${standardInfo}
 
-                </span>
+if (style === 'with_chairrail') {
 
+chairRailSticks =
+Math.ceil(
+(wMm * 1.10) / 2400
+);
 
-                <span>
 
-                    RM ${subTotal.toFixed(2)}
+chairRailTotalCost =
+chairRailSticks * 70;
 
-                </span>
 
-            </div>
+totalPrice +=
+chairRailTotalCost;
 
-        `;
 
-    }
+breakdownHtml += `
 
+<div class="breakdown-row"
+style="padding-top:8px;border-top:1px solid #eee5a5;">
 
-    /* =====================================================
-       CHAIR RAIL
+<span>
 
-       FORMULA ASAL KEKAL
-       ===================================================== */
+Chair Rail
 
-    let chairRailSticks = 0;
+<br>
 
-    let chairRailTotalCost = 0;
+<small style="color:#9ca3af;">
 
+${chairRailSticks}
+batang × RM70.00
 
-    if (
-        style === 'with_chairrail'
-    ) {
+</small>
 
-        chairRailSticks =
-            Math.ceil(
-                (wMm * 1.10) /
-                2400
-            );
+</span>
 
+<span>
+RM ${chairRailTotalCost.toFixed(2)}
+</span>
 
-        chairRailTotalCost =
-            chairRailSticks *
-            70;
+</div>
 
+`;
 
-        totalPrice +=
-            chairRailTotalCost;
+}
 
 
-        breakdownHtml += `
+/* =====================================================
+LABELS
+===================================================== */
 
-            <div
-                class="breakdown-row"
-                style="
-                    padding-top:8px;
-                    border-top:1px solid #eee5a5;
-                "
-            >
+let styleLabel =
+style === 'with_chairrail'
+? 'Dengan Chair Rail'
+: 'Tanpa Chair Rail';
 
-                <span>
 
-                    Chair Rail
+/* =====================================================
+SAVE RECORD
+===================================================== */
 
-                    <br>
+lastCalculatedRecord = {
 
-                    <small style="
-                        color:#9ca3af;
-                    ">
+id:Date.now(),
 
-                        ${chairRailSticks}
-                        batang × RM70.00
+tajuk:"Wainscoting",
 
-                    </small>
+info:
+`${wMm} × ${hMm}mm | ${styleLabel} | ${pattern}`,
 
-                </span>
+harga:
+"RM " + totalPrice.toFixed(2),
 
+width:wMm,
 
-                <span>
+height:hMm,
 
-                    RM ${chairRailTotalCost.toFixed(2)}
+style:style,
 
-                </span>
+pattern:pattern,
 
-            </div>
+frameType:frameType,
 
-        `;
+frameColor:frameColor,
 
-    }
+total:totalPrice,
 
+createdAt:
+new Date().toISOString()
 
-    /* =====================================================
-       LABELS
-       ===================================================== */
+};
 
-    let styleLabel =
-        style === 'with_chairrail'
-            ? 'Dengan Chair Rail'
-            : 'Tanpa Chair Rail';
 
+/* =====================================================
+SHOW RESULT
+===================================================== */
 
-    /* =====================================================
-       SAVE RECORD
-       ===================================================== */
+document.getElementById(
+'priceBreakdown'
+).innerHTML =
+breakdownHtml;
 
-    lastCalculatedRecord = {
 
-        id: Date.now(),
+document.getElementById(
+'totalPrice'
+).innerText =
+'RM ' + totalPrice.toFixed(2);
 
-        tajuk:
-            "Wainscoting",
 
-        info:
-            `${wMm} × ${hMm}mm | ${styleLabel} | ${pattern}`,
+document.getElementById(
+'resultContainer'
+).style.display =
+'block';
 
-        harga:
-            "RM " +
-            totalPrice.toFixed(2),
 
-        width:
-            wMm,
+document.getElementById(
+'visualContainer'
+).style.display =
+'block';
 
-        height:
-            hMm,
 
-        style:
-            style,
+/* =====================================================
+HISTORY
+===================================================== */
 
-        pattern:
-            pattern,
+if (saveToHistory) {
 
-        frameType:
-            frameType,
+saveCalculationHistory(
+lastCalculatedRecord
+);
 
-        frameColor:
-            frameColor,
+}
 
-        total:
-            totalPrice,
 
-        createdAt:
-            new Date().toISOString()
+/* =====================================================
+VISUAL
+===================================================== */
 
-    };
+drawVisual(
+boxWidths,
+targetBoxHeight,
+style,
+frameType,
+frameColor
+);
 
 
-    /* =====================================================
-       SHOW RESULT
-       ===================================================== */
+setTimeout(() => {
 
-    document.getElementById(
-        'priceBreakdown'
-    ).innerHTML =
-        breakdownHtml;
+document.getElementById(
+'resultContainer'
+).scrollIntoView({
 
+behavior:'smooth',
+block:'nearest'
 
-    document.getElementById(
-        'totalPrice'
-    ).innerText =
-        'RM ' +
-        totalPrice.toFixed(2);
+});
 
-
-    document.getElementById(
-        'resultContainer'
-    ).style.display =
-        'block';
-
-
-    document.getElementById(
-        'visualContainer'
-    ).style.display =
-        'block';
-
-
-    /* =====================================================
-       SAVE HISTORY
-       ===================================================== */
-
-    if (saveToHistory) {
-
-        saveCalculationHistory(
-            lastCalculatedRecord
-        );
-
-    }
-
-
-    /* =====================================================
-       VISUAL
-       ===================================================== */
-
-    drawVisual(
-        boxWidths,
-        targetBoxHeight,
-        style,
-        frameType,
-        frameColor
-    );
-
-
-    /* =====================================================
-       SCROLL
-       ===================================================== */
-
-    setTimeout(
-        () => {
-
-            document
-                .getElementById(
-                    'resultContainer'
-                )
-                .scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'nearest'
-                });
-
-        },
-        100
-    );
+},100);
 
 }
 
 
 /* =========================================================
-   VISUAL
-   ========================================================= */
+VISUAL
+========================================================= */
 
 function drawVisual(
-    boxWidths,
-    targetBoxHeight,
-    style,
-    frameType,
-    frameColor
+boxWidths,
+targetBoxHeight,
+style,
+frameType,
+frameColor
 ) {
 
-    let previewBox =
-        document.getElementById(
-            'captureArea'
-        );
+let previewBox =
+document.getElementById(
+'captureArea'
+);
 
+previewBox.innerHTML = "";
 
-    previewBox.innerHTML =
-        "";
 
+let frameBorder =
+frameColor === 'gold'
+? '#b8860b'
+: '#111827';
 
-    let frameBorder =
-        frameColor === 'gold'
-            ? '#b8860b'
-            : '#111827';
 
+function createBoxElement(
+bw,
+bh
+) {
 
-    function createBoxElement(
-        bw,
-        bh
-    ) {
+let box =
+document.createElement('div');
 
-        let box =
-            document.createElement(
-                'div'
-            );
 
+box.style.flexGrow =
+bw;
 
-        box.style.flexGrow =
-            bw;
+box.style.flexBasis =
+'0';
 
+box.style.height =
+'100%';
 
-        box.style.flexBasis =
-            '0';
+box.style.minWidth =
+'18px';
 
+box.style.border =
+`3px solid ${frameBorder}`;
 
-        box.style.height =
-            '100%';
+box.style.background =
+'#ffffff';
 
+box.style.borderRadius =
+'5px';
 
-        box.style.minWidth =
-            '18px';
+box.style.display =
+'flex';
 
+box.style.alignItems =
+'center';
 
-        box.style.border =
-            `3px solid ${frameBorder}`;
+box.style.justifyContent =
+'center';
 
+box.style.position =
+'relative';
 
-        box.style.background =
-            '#ffffff';
+box.style.padding =
+'4px';
 
+box.style.fontSize =
+'9px';
 
-        box.style.borderRadius =
-            '5px';
+box.style.fontWeight =
+'800';
 
+box.style.color =
+'#374151';
 
-        box.style.display =
-            'flex';
+box.style.boxSizing =
+'border-box';
 
 
-        box.style.alignItems =
-            'center';
+let label =
+document.createElement('span');
 
+label.innerText =
+`${Math.round(bw)} × ${Math.round(bh)}`;
 
-        box.style.justifyContent =
-            'center';
+box.appendChild(label);
 
 
-        box.style.position =
-            'relative';
+if (frameType === 'double') {
 
+let inner =
+document.createElement('div');
 
-        box.style.padding =
-            '4px';
+inner.style.position =
+'absolute';
 
+inner.style.inset =
+'7px';
 
-        box.style.fontSize =
-            '9px';
+inner.style.border =
+`1.5px solid ${frameBorder}`;
 
+inner.style.borderRadius =
+'3px';
 
-        box.style.fontWeight =
-            '800';
+box.appendChild(inner);
 
+}
 
-        box.style.color =
-            '#374151';
 
+return box;
 
-        box.style.boxSizing =
-            'border-box';
+}
 
 
-        let label =
-            document.createElement(
-                'span'
-            );
+/* WITHOUT CHAIR RAIL */
 
+if (style === 'without_chairrail') {
 
-        label.innerText =
-            `${Math.round(bw)} × ${Math.round(bh)}`;
+let row =
+document.createElement('div');
 
+row.style.width =
+'100%';
 
-        box.appendChild(
-            label
-        );
+row.style.height =
+'220px';
 
+row.style.display =
+'flex';
 
-        if (
-            frameType === 'double'
-        ) {
+row.style.alignItems =
+'center';
 
-            let inner =
-                document.createElement(
-                    'div'
-                );
+row.style.gap =
+'10px';
 
+row.style.padding =
+'0 10px';
 
-            inner.style.position =
-                'absolute';
+boxWidths.forEach((bw) => {
 
+row.appendChild(
+createBoxElement(
+bw,
+targetBoxHeight
+)
+);
 
-            inner.style.inset =
-                '7px';
+});
 
+previewBox.appendChild(row);
 
-            inner.style.border =
-                `1.5px solid ${frameBorder}`;
+}
 
 
-            inner.style.borderRadius =
-                '3px';
+/* WITH CHAIR RAIL */
 
+else {
 
-            box.appendChild(
-                inner
-            );
+let topRow =
+document.createElement('div');
 
-        }
+topRow.style.width =
+'100%';
 
+topRow.style.height =
+'165px';
 
-        return box;
+topRow.style.display =
+'flex';
 
-    }
+topRow.style.alignItems =
+'center';
 
+topRow.style.gap =
+'10px';
 
-    /* =====================================================
-       WITHOUT CHAIR RAIL
-       ===================================================== */
+topRow.style.padding =
+'0 10px';
 
-    if (
-        style ===
-        'without_chairrail'
-    ) {
 
-        let row =
-            document.createElement(
-                'div'
-            );
+boxWidths.forEach((bw) => {
 
+topRow.appendChild(
+createBoxElement(
+bw,
+targetBoxHeight
+)
+);
 
-        row.style.width =
-            '100%';
+});
 
+previewBox.appendChild(topRow);
 
-        row.style.height =
-            '220px';
 
+/* CHAIR RAIL */
 
-        row.style.display =
-            'flex';
+let rail =
+document.createElement('div');
 
+rail.style.width =
+'100%';
 
-        row.style.alignItems =
-            'center';
+rail.style.height =
+'15px';
 
+rail.style.margin =
+'8px 0';
 
-        row.style.gap =
-            '10px';
+rail.style.background =
+'#92400e';
 
+rail.style.color =
+'white';
 
-        row.style.padding =
-            '0 10px';
+rail.style.display =
+'flex';
 
+rail.style.alignItems =
+'center';
 
-        row.style.boxSizing =
-            'border-box';
+rail.style.justifyContent =
+'center';
 
+rail.style.fontSize =
+'8px';
 
-        boxWidths.forEach(
-            (bw) => {
+rail.style.fontWeight =
+'800';
 
-                row.appendChild(
-                    createBoxElement(
-                        bw,
-                        targetBoxHeight
-                    )
-                );
+rail.innerText =
+'CHAIR RAIL';
 
-            }
-        );
+previewBox.appendChild(rail);
 
 
-        previewBox.appendChild(
-            row
-        );
+/* BOTTOM */
 
-    }
+let bottomRow =
+document.createElement('div');
 
+bottomRow.style.width =
+'100%';
 
-    /* =====================================================
-       WITH CHAIR RAIL
-       ===================================================== */
+bottomRow.style.height =
+'80px';
 
-    else {
+bottomRow.style.display =
+'flex';
 
-        let topRow =
-            document.createElement(
-                'div'
-            );
+bottomRow.style.alignItems =
+'center';
 
+bottomRow.style.gap =
+'10px';
 
-        topRow.style.width =
-            '100%';
+bottomRow.style.padding =
+'0 10px';
 
 
-        topRow.style.height =
-            '165px';
+boxWidths.forEach((bw) => {
 
+bottomRow.appendChild(
+createBoxElement(
+bw,
+600
+)
+);
 
-        topRow.style.display =
-            'flex';
+});
 
+previewBox.appendChild(
+bottomRow
+);
 
-        topRow.style.alignItems =
-            'center';
-
-
-        topRow.style.gap =
-            '10px';
-
-
-        topRow.style.padding =
-            '0 10px';
-
-
-        boxWidths.forEach(
-            (bw) => {
-
-                topRow.appendChild(
-                    createBoxElement(
-                        bw,
-                        targetBoxHeight
-                    )
-                );
-
-            }
-        );
-
-
-        previewBox.appendChild(
-            topRow
-        );
-
-
-        /* CHAIR RAIL */
-
-        let rail =
-            document.createElement(
-                'div'
-            );
-
-
-        rail.style.width =
-            '100%';
-
-
-        rail.style.height =
-            '15px';
-
-
-        rail.style.margin =
-            '8px 0';
-
-
-        rail.style.background =
-            '#92400e';
-
-
-        rail.style.color =
-            'white';
-
-
-        rail.style.display =
-            'flex';
-
-
-        rail.style.alignItems =
-            'center';
-
-
-        rail.style.justifyContent =
-            'center';
-
-
-        rail.style.fontSize =
-            '8px';
-
-
-        rail.style.fontWeight =
-            '800';
-
-
-        rail.innerText =
-            'CHAIR RAIL';
-
-
-        previewBox.appendChild(
-            rail
-        );
-
-
-        /* BOTTOM */
-
-        let bottomRow =
-            document.createElement(
-                'div'
-            );
-
-
-        bottomRow.style.width =
-            '100%';
-
-
-        bottomRow.style.height =
-            '80px';
-
-
-        bottomRow.style.display =
-            'flex';
-
-
-        bottomRow.style.alignItems =
-            'center';
-
-
-        bottomRow.style.gap =
-            '10px';
-
-
-        bottomRow.style.padding =
-            '0 10px';
-
-
-        boxWidths.forEach(
-            (bw) => {
-
-                bottomRow.appendChild(
-                    createBoxElement(
-                        bw,
-                        600
-                    )
-                );
-
-            }
-        );
-
-
-        previewBox.appendChild(
-            bottomRow
-        );
-
-    }
+}
 
 }
 
 
 /* =========================================================
-   CART
-   ========================================================= */
+CART
+========================================================= */
 
 function addWainscotingToCart() {
 
-    if (
-        !lastCalculatedRecord
-    ) {
+if (!lastCalculatedRecord) {
 
-        alert(
-            "Sila buat pengiraan terlebih dahulu."
-        );
+alert(
+"Sila buat pengiraan terlebih dahulu."
+);
 
-        return;
+return;
 
-    }
+}
 
 
-    let cartData =
-        JSON.parse(
-            localStorage.getItem(
-                'diy_cart'
-            )
-        ) || [];
+let cartData =
+JSON.parse(
+localStorage.getItem('diy_cart')
+) || [];
 
 
-    cartData.push({
+cartData.push({
 
-        tajuk:
-            lastCalculatedRecord.tajuk,
+tajuk:
+lastCalculatedRecord.tajuk,
 
-        info:
-            lastCalculatedRecord.info,
+info:
+lastCalculatedRecord.info,
 
-        harga:
-            lastCalculatedRecord.harga
+harga:
+lastCalculatedRecord.harga
 
-    });
-
-
-    localStorage.setItem(
-        'diy_cart',
-        JSON.stringify(
-            cartData
-        )
-    );
+});
 
 
-    alert(
-        "Pengiraan berjaya dimasukkan ke dalam Troli."
-    );
+localStorage.setItem(
+'diy_cart',
+JSON.stringify(cartData)
+);
+
+
+alert(
+"Pengiraan berjaya dimasukkan ke dalam Troli."
+);
 
 }
 
 
 /* =========================================================
-   HISTORY SAVE
-   ========================================================= */
+HISTORY SAVE
+========================================================= */
 
 function saveCalculationHistory(
-    record
+record
 ) {
 
-    let history =
-        JSON.parse(
-            localStorage.getItem(
-                HISTORY_KEY
-            )
-        ) || [];
+let history =
+JSON.parse(
+localStorage.getItem(HISTORY_KEY)
+) || [];
 
 
-    history.unshift(
-        record
-    );
+history.unshift(record);
 
 
-    if (
-        history.length > 50
-    ) {
+if (history.length > 50) {
 
-        history =
-            history.slice(
-                0,
-                50
-            );
+history =
+history.slice(0,50);
 
-    }
+}
 
 
-    localStorage.setItem(
-        HISTORY_KEY,
-        JSON.stringify(
-            history
-        )
-    );
+localStorage.setItem(
+HISTORY_KEY,
+JSON.stringify(history)
+);
 
 
-    renderHistory();
+renderHistory();
 
 }
 
 
 /* =========================================================
-   RENDER HISTORY
-   ========================================================= */
+RENDER HISTORY
+========================================================= */
 
 function renderHistory() {
 
-    let history =
-        JSON.parse(
-            localStorage.getItem(
-                HISTORY_KEY
-            )
-        ) || [];
+let history =
+JSON.parse(
+localStorage.getItem(HISTORY_KEY)
+) || [];
 
 
-    let list =
-        document.getElementById(
-            'historyList'
-        );
+let list =
+document.getElementById(
+'historyList'
+);
 
 
-    let count =
-        document.getElementById(
-            'historyCount'
-        );
+let count =
+document.getElementById(
+'historyCount'
+);
 
 
-    count.innerText =
-        `${history.length} Rekod`;
+count.innerText =
+`${history.length} Rekod`;
 
 
-    if (
-        history.length === 0
-    ) {
+if (history.length === 0) {
 
-        list.innerHTML = `
+list.innerHTML = `
 
-            <div class="history-empty">
+<div class="history-empty">
 
-                Belum ada sejarah pengiraan.
+Belum ada sejarah pengiraan.
 
-                <br>
+<br>
 
-                Pengiraan yang dibuat akan
-                disimpan secara automatik di sini.
+Pengiraan yang dibuat akan
+disimpan secara automatik di sini.
 
-            </div>
+</div>
 
-        `;
+`;
 
-        return;
+return;
 
-    }
+}
 
 
-    list.innerHTML =
-        "";
+list.innerHTML = "";
 
 
-    history.forEach(
-        (item, index) => {
+history.forEach(
+(item,index) => {
 
-            let date =
-                item.createdAt
-                    ? new Date(
-                        item.createdAt
-                    )
-                    : new Date();
+let date =
+item.createdAt
+? new Date(item.createdAt)
+: new Date();
 
 
-            let dateText =
-                date.toLocaleDateString(
-                    'ms-MY',
-                    {
-                        day: '2-digit',
-                        month: '2-digit',
-                        year: 'numeric'
-                    }
-                );
+let dateText =
+date.toLocaleDateString(
+'ms-MY',
+{
+day:'2-digit',
+month:'2-digit',
+year:'numeric'
+}
+);
 
 
-            let timeText =
-                date.toLocaleTimeString(
-                    'ms-MY',
-                    {
-                        hour: '2-digit',
-                        minute: '2-digit'
-                    }
-                );
+let timeText =
+date.toLocaleTimeString(
+'ms-MY',
+{
+hour:'2-digit',
+minute:'2-digit'
+}
+);
 
 
-            let div =
-                document.createElement(
-                    'div'
-                );
+let div =
+document.createElement('div');
+
+div.className =
+'history-item';
 
 
-            div.className =
-                'history-item';
+div.innerHTML = `
+
+<div class="history-item-top">
+
+<div>
+
+<div class="history-name">
+${item.tajuk}
+</div>
+
+<div class="history-info">
+${item.info}
+</div>
+
+</div>
+
+<div class="history-price">
+${item.harga}
+</div>
+
+</div>
+
+<div class="history-date">
+${dateText} • ${timeText}
+</div>
+
+<div class="history-buttons">
+
+<button
+class="history-btn reuse-btn"
+onclick="reuseHistory(${index})">
+↻ Guna Semula
+</button>
+
+<button
+class="history-btn delete-btn"
+onclick="deleteHistory(${index})">
+Padam
+</button>
+
+</div>
+
+`;
 
 
-            div.innerHTML = `
+list.appendChild(div);
 
-                <div class="history-item-top">
-
-                    <div>
-
-                        <div class="history-name">
-                            ${item.tajuk}
-                        </div>
-
-                        <div class="history-info">
-                            ${item.info}
-                        </div>
-
-                    </div>
-
-
-                    <div class="history-price">
-                        ${item.harga}
-                    </div>
-
-                </div>
-
-
-                <div class="history-date">
-                    ${dateText} • ${timeText}
-                </div>
-
-
-                <div class="history-buttons">
-
-                    <button
-                        class="history-btn reuse-btn"
-                        onclick="reuseHistory(${index})"
-                    >
-                        ↻ Guna Semula
-                    </button>
-
-
-                    <button
-                        class="history-btn delete-btn"
-                        onclick="deleteHistory(${index})"
-                    >
-                        Padam
-                    </button>
-
-                </div>
-
-            `;
-
-
-            list.appendChild(
-                div
-            );
-
-        }
-    );
+});
 
 }
 
 
 /* =========================================================
-   REUSE HISTORY
-   ========================================================= */
+REUSE
+========================================================= */
 
-function reuseHistory(
-    index
-) {
+function reuseHistory(index) {
 
-    let history =
-        JSON.parse(
-            localStorage.getItem(
-                HISTORY_KEY
-            )
-        ) || [];
+let history =
+JSON.parse(
+localStorage.getItem(HISTORY_KEY)
+) || [];
 
 
-    let item =
-        history[index];
+let item =
+history[index];
 
 
-    if (!item) return;
+if (!item) return;
 
 
-    document.getElementById(
-        'wallWidth'
-    ).value =
-        item.width;
+document.getElementById(
+'wallWidth'
+).value =
+item.width;
 
 
-    document.getElementById(
-        'wallHeight'
-    ).value =
-        item.height;
+document.getElementById(
+'wallHeight'
+).value =
+item.height;
 
 
-    document.getElementById(
-        'layoutStyle'
-    ).value =
-        item.style;
+document.getElementById(
+'layoutStyle'
+).value =
+item.style;
 
 
-    document.getElementById(
-        'boxPattern'
-    ).value =
-        item.pattern;
+document.getElementById(
+'boxPattern'
+).value =
+item.pattern;
 
 
-    document.getElementById(
-        'frameType'
-    ).value =
-        item.frameType;
+document.getElementById(
+'frameType'
+).value =
+item.frameType;
 
 
-    document.getElementById(
-        'frameColor'
-    ).value =
-        item.frameColor;
+document.getElementById(
+'frameColor'
+).value =
+item.frameColor;
 
 
-    calculateWainscoting(
-        false
-    );
+calculateWainscoting(false);
 
 
-    window.scrollTo({
+window.scrollTo({
 
-        top: 0,
+top:0,
 
-        behavior: 'smooth'
+behavior:'smooth'
 
-    });
+});
 
 }
 
 
 /* =========================================================
-   DELETE HISTORY
-   ========================================================= */
+DELETE
+========================================================= */
 
-function deleteHistory(
-    index
-) {
+function deleteHistory(index) {
 
-    let history =
-        JSON.parse(
-            localStorage.getItem(
-                HISTORY_KEY
-            )
-        ) || [];
+let history =
+JSON.parse(
+localStorage.getItem(HISTORY_KEY)
+) || [];
 
 
-    history.splice(
-        index,
-        1
-    );
+history.splice(index,1);
 
 
-    localStorage.setItem(
-        HISTORY_KEY,
-        JSON.stringify(
-            history
-        )
-    );
+localStorage.setItem(
+HISTORY_KEY,
+JSON.stringify(history)
+);
 
 
-    renderHistory();
+renderHistory();
 
 }
 
 
 /* =========================================================
-   CLEAR HISTORY
-   ========================================================= */
+CLEAR
+========================================================= */
 
 function clearHistory() {
 
-    let history =
-        JSON.parse(
-            localStorage.getItem(
-                HISTORY_KEY
-            )
-        ) || [];
+let history =
+JSON.parse(
+localStorage.getItem(HISTORY_KEY)
+) || [];
 
 
-    if (
-        history.length === 0
-    ) {
-
-        return;
-
-    }
+if (history.length === 0) return;
 
 
-    let confirmDelete =
-        confirm(
-            "Padam semua sejarah pengiraan Wainscoting?"
-        );
+let confirmDelete =
+confirm(
+"Padam semua sejarah pengiraan Wainscoting?"
+);
 
 
-    if (
-        !confirmDelete
-    ) {
-
-        return;
-
-    }
+if (!confirmDelete) return;
 
 
-    localStorage.removeItem(
-        HISTORY_KEY
-    );
+localStorage.removeItem(
+HISTORY_KEY
+);
 
 
-    renderHistory();
+renderHistory();
 
 }
 
 
 /* =========================================================
-   REFRESH HISTORY
-   ========================================================= */
+REFRESH
+========================================================= */
 
 function refreshHistory() {
 
-    renderHistory();
+renderHistory();
 
 }
 
 
 /* =========================================================
-   SAVE VISUAL
-   ========================================================= */
+SAVE VISUAL
+========================================================= */
 
 function saveVisualToPhone() {
 
-    let area =
-        document.getElementById(
-            'captureArea'
-        );
+let area =
+document.getElementById(
+'captureArea'
+);
 
 
-    html2canvas(
-        area,
-        {
-            scale: 2,
-            backgroundColor: '#ffffff'
-        }
-    ).then(
-        canvas => {
+html2canvas(
+area,
+{
+scale:2,
+backgroundColor:'#ffffff'
+}
+).then(canvas => {
 
-            let link =
-                document.createElement(
-                    'a'
-                );
+let link =
+document.createElement('a');
 
 
-            let timestamp =
-                new Date()
-                    .toISOString()
-                    .slice(0, 19)
-                    .replace(
-                        /[:T]/g,
-                        '-'
-                    );
+let timestamp =
+new Date()
+.toISOString()
+.slice(0,19)
+.replace(/[:T]/g,'-');
 
 
-            link.download =
-                `wainscoting-${timestamp}.png`;
+link.download =
+`wainscoting-${timestamp}.png`;
 
 
-            link.href =
-                canvas.toDataURL(
-                    'image/png'
-                );
+link.href =
+canvas.toDataURL(
+'image/png'
+);
 
 
-            link.click();
+link.click();
 
-        }
-    );
+});
 
 }
 
 
 /* =========================================================
-   INITIAL LOAD
-   ========================================================= */
+INITIAL LOAD
+========================================================= */
 
 document.addEventListener(
-    'DOMContentLoaded',
-    function() {
+'DOMContentLoaded',
+function() {
 
-        renderHistory();
+renderHistory();
 
-    }
-);
+});
 
 </script>
 
