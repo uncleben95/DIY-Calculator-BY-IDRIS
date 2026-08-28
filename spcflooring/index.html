@@ -42,10 +42,6 @@ body{
     padding:0 14px 100px;
 }
 
-/* =========================
-   TOP BAR
-========================= */
-
 .topbar{
     width:100%;
     max-width:680px;
@@ -69,7 +65,6 @@ body{
     color:var(--primary);
     font-size:20px;
     font-weight:700;
-    box-shadow:0 3px 12px rgba(0,0,0,.04);
 }
 
 .top-title{
@@ -120,10 +115,6 @@ body{
     font-size:9px;
     font-weight:800;
 }
-
-/* =========================
-   MAIN
-========================= */
 
 .container{
     width:100%;
@@ -189,10 +180,6 @@ body{
     z-index:1;
 }
 
-/* =========================
-   SECTION CARD
-========================= */
-
 .section-card{
     background:var(--card);
     border:1px solid var(--border);
@@ -233,10 +220,6 @@ body{
     font-size:10px;
     color:var(--muted);
 }
-
-/* =========================
-   FORM
-========================= */
 
 .dimension-grid{
     display:grid;
@@ -304,10 +287,6 @@ select{
     appearance:auto;
 }
 
-/* =========================
-   MATERIAL OPTIONS
-========================= */
-
 .material-options{
     display:grid;
     gap:9px;
@@ -358,10 +337,6 @@ select{
     color:var(--muted);
 }
 
-/* =========================
-   ACCESSORY OPTIONS
-========================= */
-
 .accessory-options{
     display:grid;
     gap:9px;
@@ -408,10 +383,6 @@ select{
     color:var(--muted);
 }
 
-/* =========================
-   BUTTON
-========================= */
-
 .calculate-btn{
     width:100%;
     height:50px;
@@ -430,10 +401,6 @@ select{
 .calculate-btn:active{
     transform:scale(.98);
 }
-
-/* =========================
-   RESULT
-========================= */
 
 .result-section{
     display:none;
@@ -522,10 +489,6 @@ select{
     font-weight:800;
 }
 
-/* =========================
-   CART BUTTON
-========================= */
-
 .add-cart-btn{
     width:100%;
     margin-top:14px;
@@ -543,10 +506,6 @@ select{
 .add-cart-btn:active{
     background:#f8f8f8;
 }
-
-/* =========================
-   VISUAL
-========================= */
 
 .visual-box{
     display:none;
@@ -581,10 +540,6 @@ canvas{
     border-radius:11px;
     background:#fafafa;
 }
-
-/* =========================
-   HISTORY
-========================= */
 
 .history-section{
     display:none;
@@ -672,10 +627,6 @@ canvas{
     border:1px solid #fecaca;
 }
 
-/* =========================
-   EMPTY HISTORY
-========================= */
-
 .empty-history{
     text-align:center;
     padding:20px;
@@ -684,10 +635,6 @@ canvas{
     color:var(--muted);
     font-size:10px;
 }
-
-/* =========================
-   CART MODAL
-========================= */
 
 .cart-modal{
     position:fixed;
@@ -848,10 +795,6 @@ canvas{
     cursor:pointer;
 }
 
-/* =========================
-   FOOTER
-========================= */
-
 .footer{
     width:100%;
     max-width:680px;
@@ -860,10 +803,6 @@ canvas{
     color:var(--muted);
     font-size:9px;
 }
-
-/* =========================
-   RESPONSIVE
-========================= */
 
 @media(max-width:430px){
 
@@ -893,7 +832,6 @@ canvas{
 
 <body>
 
-<!-- TOP BAR -->
 <div class="topbar">
 
     <a href="../index.html" class="back-btn" aria-label="Kembali">
@@ -912,10 +850,8 @@ canvas{
 
 </div>
 
-
 <div class="container">
 
-    <!-- HERO -->
     <div class="hero">
 
         <span class="hero-label">
@@ -931,8 +867,6 @@ canvas{
 
     </div>
 
-
-    <!-- PROJECT DIMENSIONS -->
     <div class="section-card">
 
         <div class="section-heading">
@@ -945,7 +879,6 @@ canvas{
             </div>
 
         </div>
-
 
         <div class="dimension-grid">
 
@@ -968,7 +901,6 @@ canvas{
                 </div>
 
             </div>
-
 
             <div class="form-group">
 
@@ -994,8 +926,6 @@ canvas{
 
     </div>
 
-
-    <!-- MATERIAL -->
     <div class="section-card">
 
         <div class="section-heading">
@@ -1008,7 +938,6 @@ canvas{
             </div>
 
         </div>
-
 
         <div class="material-options">
 
@@ -1037,7 +966,6 @@ canvas{
 
             </div>
 
-
             <div class="material-option">
 
                 <input
@@ -1061,7 +989,6 @@ canvas{
                 </label>
 
             </div>
-
 
             <div class="material-option">
 
@@ -1091,8 +1018,6 @@ canvas{
 
     </div>
 
-
-    <!-- ACCESSORIES -->
     <div class="section-card">
 
         <div class="section-heading">
@@ -1105,7 +1030,6 @@ canvas{
             </div>
 
         </div>
-
 
         <div class="form-group">
 
@@ -1128,7 +1052,6 @@ canvas{
 
                 </label>
 
-
                 <label class="accessory-check">
 
                     <input
@@ -1143,7 +1066,6 @@ canvas{
                     </span>
 
                 </label>
-
 
                 <label class="accessory-check">
 
@@ -1163,7 +1085,6 @@ canvas{
             </div>
 
         </div>
-
 
         <div class="form-group">
 
@@ -1189,18 +1110,12 @@ canvas{
 
     </div>
 
-
-    <!-- CALCULATE -->
-
     <button
         class="calculate-btn"
         onclick="calculateSPC()"
     >
         Calculate Project Estimate
     </button>
-
-
-    <!-- RESULT -->
 
     <div
         class="result-section"
@@ -1219,7 +1134,6 @@ canvas{
                 </div>
 
             </div>
-
 
             <div class="summary-highlight">
 
@@ -1243,13 +1157,11 @@ canvas{
 
             </div>
 
-
             <table class="result-table">
 
                 <tbody id="resultContent"></tbody>
 
             </table>
-
 
             <div class="total-row">
 
@@ -1263,7 +1175,6 @@ canvas{
 
             </div>
 
-
             <button
                 class="add-cart-btn"
                 onclick="addSPCToCart()"
@@ -1272,9 +1183,6 @@ canvas{
             </button>
 
         </div>
-
-
-        <!-- VISUAL -->
 
         <div
             class="visual-box"
@@ -1298,9 +1206,6 @@ canvas{
         </div>
 
     </div>
-
-
-    <!-- HISTORY -->
 
     <div
         class="history-section section-card"
@@ -1326,13 +1231,9 @@ canvas{
 
 </div>
 
-
 <div class="footer">
     Idris Portal • SPC Flooring Calculator • Internal Use
 </div>
-
-
-<!-- CART MODAL -->
 
 <div
     class="cart-modal"
@@ -1358,9 +1259,7 @@ canvas{
 
         </div>
 
-
         <div id="cartItems"></div>
-
 
         <div class="delivery-box">
 
@@ -1385,7 +1284,6 @@ canvas{
 
         </div>
 
-
         <div class="cart-total">
 
             <div class="cart-row">
@@ -1398,7 +1296,6 @@ canvas{
 
             </div>
 
-
             <div class="cart-row">
 
                 <span>Delivery / Lalamove</span>
@@ -1408,7 +1305,6 @@ canvas{
                 </span>
 
             </div>
-
 
             <div class="cart-grand">
 
@@ -1422,7 +1318,6 @@ canvas{
 
         </div>
 
-
         <button
             class="whatsapp-btn"
             onclick="proceedCheckout()"
@@ -1434,12 +1329,7 @@ canvas{
 
 </div>
 
-
 <script>
-
-/* ==========================================
-   DATA
-========================================== */
 
 const materials = {
 
@@ -1463,7 +1353,6 @@ const materials = {
 
 };
 
-
 const accessories = {
 
     skirting:{
@@ -1483,13 +1372,7 @@ const accessories = {
 
 };
 
-
 let lastCalculatedRecord = null;
-
-
-/* ==========================================
-   INITIAL LOAD
-========================================== */
 
 document.addEventListener("DOMContentLoaded",function(){
 
@@ -1498,41 +1381,24 @@ document.addEventListener("DOMContentLoaded",function(){
 
 });
 
-
-/* ==========================================
-   GET SELECTED ACCESSORIES
-========================================== */
-
 function getSelectedAccessories(){
 
     const selected = [];
 
-    if(
-        document.getElementById("accSkirting").checked
-    ){
+    if(document.getElementById("accSkirting").checked){
         selected.push("skirting");
     }
 
-    if(
-        document.getElementById("accEndcap").checked
-    ){
+    if(document.getElementById("accEndcap").checked){
         selected.push("endcap");
     }
 
-    if(
-        document.getElementById("accTmolding").checked
-    ){
+    if(document.getElementById("accTmolding").checked){
         selected.push("tmolding");
     }
 
     return selected;
-
 }
-
-
-/* ==========================================
-   CALCULATE SPC
-========================================== */
 
 function calculateSPC(){
 
@@ -1541,28 +1407,23 @@ function calculateSPC(){
             'input[name="spcType"]:checked'
         ).value;
 
-
     const selectedAccessories =
         getSelectedAccessories();
-
 
     const wastage =
         parseFloat(
             document.getElementById("wastagePerc").value
         ) || 10;
 
-
     const width =
         parseFloat(
             document.getElementById("roomWidth").value
         ) || 0;
 
-
     const length =
         parseFloat(
             document.getElementById("roomLength").value
         ) || 0;
-
 
     if(width <= 0 || length <= 0){
 
@@ -1574,24 +1435,15 @@ function calculateSPC(){
 
     }
 
-
-    const material =
-        materials[type];
-
-
-    /* AREA */
+    const material = materials[type];
 
     const sqft =
         (width / 304.8) *
         (length / 304.8);
 
-
     const adjustedSqft =
         sqft *
         (1 + wastage / 100);
-
-
-    /* BOX */
 
     const boxCount =
         Math.ceil(
@@ -1599,21 +1451,15 @@ function calculateSPC(){
             material.coverage
         );
 
-
     const materialCost =
         boxCount *
         material.price;
-
-
-    /* ACCESSORIES */
 
     const perimeter =
         (2 * (width + length)) /
         1000;
 
-
     const accessoryLength = 2.4;
-
 
     const accessoryQty =
         Math.ceil(
@@ -1621,9 +1467,7 @@ function calculateSPC(){
             accessoryLength
         );
 
-
     let accessoryCost = 0;
-
 
     selectedAccessories.forEach(
         type => {
@@ -1635,23 +1479,17 @@ function calculateSPC(){
         }
     );
 
-
     const grandTotal =
         materialCost +
         accessoryCost;
-
-
-    /* DISPLAY */
 
     document.getElementById(
         "resultSection"
     ).style.display = "block";
 
-
     document.getElementById(
         "visualBox"
     ).style.display = "block";
-
 
     document.getElementById(
         "jumlahHarga"
@@ -1659,24 +1497,18 @@ function calculateSPC(){
         "RM " +
         grandTotal.toFixed(2);
 
-
     document.getElementById(
         "totalBottom"
     ).innerText =
         "RM " +
         grandTotal.toFixed(2);
 
-
     document.getElementById(
         "summarySub"
     ).innerText =
         `${material.name} • ${boxCount} box • ${sqft.toFixed(1)} sqft`;
 
-
     let resultHTML = "";
-
-
-    /* FLOOR AREA */
 
     resultHTML += `
 
@@ -1701,9 +1533,6 @@ function calculateSPC(){
         </tr>
 
     `;
-
-
-    /* MATERIAL */
 
     resultHTML += `
 
@@ -1730,9 +1559,6 @@ function calculateSPC(){
 
     `;
 
-
-    /* WASTAGE */
-
     resultHTML += `
 
         <tr>
@@ -1758,20 +1584,15 @@ function calculateSPC(){
 
     `;
 
-
-    /* ACCESSORIES */
-
     selectedAccessories.forEach(
         type => {
 
             const acc =
                 accessories[type];
 
-
             const cost =
                 accessoryQty *
                 acc.price;
-
 
             resultHTML += `
 
@@ -1801,18 +1622,12 @@ function calculateSPC(){
         }
     );
 
-
     document.getElementById(
         "resultContent"
     ).innerHTML =
         resultHTML;
 
-
-    /* RECORD */
-
-    const now =
-        new Date();
-
+    const now = new Date();
 
     const date =
         now.toLocaleDateString(
@@ -1824,7 +1639,6 @@ function calculateSPC(){
             }
         );
 
-
     const time =
         now.toLocaleTimeString(
             "ms-MY",
@@ -1834,11 +1648,9 @@ function calculateSPC(){
             }
         );
 
-
     const reference =
         "SPC-" +
         Date.now().toString().slice(-6);
-
 
     const accessoryNames =
         selectedAccessories.length === 0
@@ -1849,7 +1661,6 @@ function calculateSPC(){
                         accessories[type].name
                 )
                 .join(", ");
-
 
     lastCalculatedRecord = {
 
@@ -1894,25 +1705,15 @@ function calculateSPC(){
 
     };
 
-
-    /* AUTO SAVE HISTORY */
-
-    saveHistory(
-        lastCalculatedRecord
-    );
-
+    saveHistory(lastCalculatedRecord);
 
     renderHistory();
-
-
-    /* DRAW VISUAL */
 
     drawFloorLayout(
         width,
         length,
         type
     );
-
 
     document.getElementById(
         "resultSection"
@@ -1923,11 +1724,6 @@ function calculateSPC(){
 
 }
 
-
-/* ==========================================
-   SAVE HISTORY
-========================================== */
-
 function saveHistory(record){
 
     let history =
@@ -1937,17 +1733,11 @@ function saveHistory(record){
             )
         ) || [];
 
-
     history.unshift(record);
 
-
     if(history.length > 50){
-
-        history =
-            history.slice(0,50);
-
+        history = history.slice(0,50);
     }
-
 
     localStorage.setItem(
         "diy_calc_history",
@@ -1956,11 +1746,6 @@ function saveHistory(record){
 
 }
 
-
-/* ==========================================
-   RENDER HISTORY
-========================================== */
-
 function renderHistory(){
 
     const section =
@@ -1968,12 +1753,10 @@ function renderHistory(){
             "historySection"
         );
 
-
     const list =
         document.getElementById(
             "historyList"
         );
-
 
     let history =
         JSON.parse(
@@ -1982,12 +1765,10 @@ function renderHistory(){
             )
         ) || [];
 
-
     if(history.length === 0){
 
         section.style.display =
             "block";
-
 
         list.innerHTML = `
 
@@ -2008,13 +1789,10 @@ function renderHistory(){
 
     }
 
-
     section.style.display =
         "block";
 
-
     let html = "";
-
 
     history.forEach(
         (item,index)=>{
@@ -2062,15 +1840,11 @@ function renderHistory(){
 
                         </div>
 
-
                         <div class="history-price">
-
                             ${escapeHTML(item.harga)}
-
                         </div>
 
                     </div>
-
 
                     <div class="history-actions">
 
@@ -2097,16 +1871,10 @@ function renderHistory(){
         }
     );
 
-
     list.innerHTML =
         html;
 
 }
-
-
-/* ==========================================
-   USE HISTORY
-========================================== */
 
 function useHistory(index){
 
@@ -2117,19 +1885,15 @@ function useHistory(index){
             )
         ) || [];
 
-
     const item =
         history[index];
 
-
     if(!item) return;
-
 
     const dimensions =
         item.info
             .replace(/mm/g,"")
             .split("×");
-
 
     if(dimensions.length >= 2){
 
@@ -2138,7 +1902,6 @@ function useHistory(index){
         ).value =
             parseFloat(dimensions[0]);
 
-
         document.getElementById(
             "roomLength"
         ).value =
@@ -2146,30 +1909,19 @@ function useHistory(index){
 
     }
 
-
-    /* MATERIAL */
-
     const radio =
         document.querySelector(
             `input[name="spcType"][value="${getMaterialValue(item.material)}"]`
         );
 
-
     if(radio){
-
-        radio.checked =
-            true;
-
+        radio.checked = true;
     }
-
-
-    /* WASTAGE */
 
     const wastage =
         document.getElementById(
             "wastagePerc"
         );
-
 
     const availableWastage =
         Array.from(
@@ -2179,37 +1931,26 @@ function useHistory(index){
                 parseInt(option.value)
         );
 
-
     if(
         availableWastage.includes(
             parseInt(item.wastage)
         )
     ){
-
         wastage.value =
             item.wastage;
-
     }
-
-
-    /* RESET ACCESSORIES */
 
     document.getElementById(
         "accSkirting"
     ).checked = false;
 
-
     document.getElementById(
         "accEndcap"
     ).checked = false;
 
-
     document.getElementById(
         "accTmolding"
     ).checked = false;
-
-
-    /* RESTORE ACCESSORIES */
 
     if(
         Array.isArray(item.accessories)
@@ -2223,12 +1964,8 @@ function useHistory(index){
                         `.accessory-check input[value="${type}"]`
                     );
 
-
                 if(checkbox){
-
-                    checkbox.checked =
-                        true;
-
+                    checkbox.checked = true;
                 }
 
             }
@@ -2239,8 +1976,6 @@ function useHistory(index){
         item.accessory &&
         item.accessory !== "Tiada"
     ){
-
-        /* Compatibility with old history */
 
         Object.keys(
             accessories
@@ -2258,12 +1993,8 @@ function useHistory(index){
                             `.accessory-check input[value="${type}"]`
                         );
 
-
                     if(checkbox){
-
-                        checkbox.checked =
-                            true;
-
+                        checkbox.checked = true;
                     }
 
                 }
@@ -2273,12 +2004,10 @@ function useHistory(index){
 
     }
 
-
     window.scrollTo({
         top:0,
         behavior:"smooth"
     });
-
 
     setTimeout(
         calculateSPC,
@@ -2286,11 +2015,6 @@ function useHistory(index){
     );
 
 }
-
-
-/* ==========================================
-   MATERIAL VALUE
-========================================== */
 
 function getMaterialValue(name){
 
@@ -2307,11 +2031,6 @@ function getMaterialValue(name){
 
 }
 
-
-/* ==========================================
-   DELETE HISTORY
-========================================== */
-
 function deleteHistory(index){
 
     if(
@@ -2319,11 +2038,8 @@ function deleteHistory(index){
             "Padam rekod pengiraan ini?"
         )
     ){
-
         return;
-
     }
-
 
     let history =
         JSON.parse(
@@ -2332,27 +2048,19 @@ function deleteHistory(index){
             )
         ) || [];
 
-
     history.splice(
         index,
         1
     );
-
 
     localStorage.setItem(
         "diy_calc_history",
         JSON.stringify(history)
     );
 
-
     renderHistory();
 
 }
-
-
-/* ==========================================
-   CLEAR HISTORY
-========================================== */
 
 function clearHistory(){
 
@@ -2361,25 +2069,16 @@ function clearHistory(){
             "Adakah anda pasti mahu memadam semua rekod pengiraan?"
         )
     ){
-
         return;
-
     }
-
 
     localStorage.removeItem(
         "diy_calc_history"
     );
 
-
     renderHistory();
 
 }
-
-
-/* ==========================================
-   ADD TO CART
-========================================== */
 
 function addSPCToCart(){
 
@@ -2393,7 +2092,6 @@ function addSPCToCart(){
 
     }
 
-
     let cart =
         JSON.parse(
             localStorage.getItem(
@@ -2401,31 +2099,22 @@ function addSPCToCart(){
             )
         ) || [];
 
-
     cart.push(
         lastCalculatedRecord
     );
-
 
     localStorage.setItem(
         "diy_cart",
         JSON.stringify(cart)
     );
 
-
     updateCartCount();
-
 
     alert(
         "Pengiraan berjaya ditambahkan ke Shopping Cart."
     );
 
 }
-
-
-/* ==========================================
-   CART COUNT
-========================================== */
 
 function updateCartCount(){
 
@@ -2436,18 +2125,12 @@ function updateCartCount(){
             )
         ) || [];
 
-
     document.getElementById(
         "cartCount"
     ).innerText =
         cart.length;
 
 }
-
-
-/* ==========================================
-   CART
-========================================== */
 
 function toggleCart(){
 
@@ -2456,24 +2139,19 @@ function toggleCart(){
             "cartModal"
         );
 
-
     modal.classList.toggle(
         "active"
     );
-
 
     if(
         modal.classList.contains(
             "active"
         )
     ){
-
         renderCart();
-
     }
 
 }
-
 
 function closeCartOutside(event){
 
@@ -2481,17 +2159,10 @@ function closeCartOutside(event){
         event.target.id ===
         "cartModal"
     ){
-
         toggleCart();
-
     }
 
 }
-
-
-/* ==========================================
-   RENDER CART
-========================================== */
 
 function renderCart(){
 
@@ -2502,12 +2173,10 @@ function renderCart(){
             )
         ) || [];
 
-
     const container =
         document.getElementById(
             "cartItems"
         );
-
 
     if(cart.length === 0){
 
@@ -2522,32 +2191,26 @@ function renderCart(){
 
         `;
 
-
         document.getElementById(
             "cartSubtotal"
         ).innerText =
             "RM 0.00";
-
 
         document.getElementById(
             "cartDelivery"
         ).innerText =
             "RM 0.00";
 
-
         document.getElementById(
             "cartGrand"
         ).innerText =
             "RM 0.00";
 
-
         return;
 
     }
 
-
     let html = "";
-
 
     cart.forEach(
         (item,index)=>{
@@ -2561,7 +2224,6 @@ function renderCart(){
                         ""
                     )
                 ) || 0;
-
 
             html += `
 
@@ -2599,7 +2261,6 @@ function renderCart(){
 
                         </small>
 
-
                         <button
                             class="remove-cart"
                             onclick="removeCart(${index})"
@@ -2608,7 +2269,6 @@ function renderCart(){
                         </button>
 
                     </div>
-
 
                     <div class="cart-item-price">
 
@@ -2623,19 +2283,12 @@ function renderCart(){
         }
     );
 
-
     container.innerHTML =
         html;
-
 
     calculateCartTotal();
 
 }
-
-
-/* ==========================================
-   REMOVE CART
-========================================== */
 
 function removeCart(index){
 
@@ -2646,29 +2299,21 @@ function removeCart(index){
             )
         ) || [];
 
-
     cart.splice(
         index,
         1
     );
-
 
     localStorage.setItem(
         "diy_cart",
         JSON.stringify(cart)
     );
 
-
     updateCartCount();
 
     renderCart();
 
 }
-
-
-/* ==========================================
-   CART TOTAL
-========================================== */
 
 function calculateCartTotal(){
 
@@ -2679,9 +2324,7 @@ function calculateCartTotal(){
             )
         ) || [];
 
-
     let subtotal = 0;
-
 
     cart.forEach(
         item=>{
@@ -2699,7 +2342,6 @@ function calculateCartTotal(){
         }
     );
 
-
     const delivery =
         parseFloat(
             document.getElementById(
@@ -2707,11 +2349,9 @@ function calculateCartTotal(){
             ).value
         ) || 0;
 
-
     const total =
         subtotal +
         delivery;
-
 
     document.getElementById(
         "cartSubtotal"
@@ -2719,13 +2359,11 @@ function calculateCartTotal(){
         "RM " +
         subtotal.toFixed(2);
 
-
     document.getElementById(
         "cartDelivery"
     ).innerText =
         "RM " +
         delivery.toFixed(2);
-
 
     document.getElementById(
         "cartGrand"
@@ -2735,11 +2373,6 @@ function calculateCartTotal(){
 
 }
 
-
-/* ==========================================
-   WHATSAPP CHECKOUT
-========================================== */
-
 function proceedCheckout(){
 
     let cart =
@@ -2748,7 +2381,6 @@ function proceedCheckout(){
                 "diy_cart"
             )
         ) || [];
-
 
     if(cart.length === 0){
 
@@ -2760,7 +2392,6 @@ function proceedCheckout(){
 
     }
 
-
     const delivery =
         parseFloat(
             document.getElementById(
@@ -2768,14 +2399,11 @@ function proceedCheckout(){
             ).value
         ) || 0;
 
-
     let subtotal = 0;
-
 
     let message =
         "HAI IDRIS DIY,\n\n" +
         "SAYA INGIN MEMBUAT SEMAKAN PESANAN BERDASARKAN PENGIRAAN BERIKUT:\n\n";
-
 
     cart.forEach(
         (item,index)=>{
@@ -2790,9 +2418,7 @@ function proceedCheckout(){
                     )
                 ) || 0;
 
-
             subtotal += price;
-
 
             message +=
                 `${index + 1}. ${item.tajuk}\n`;
@@ -2818,11 +2444,9 @@ function proceedCheckout(){
         }
     );
 
-
     const total =
         subtotal +
         delivery;
-
 
     message +=
         `Material Total: RM ${subtotal.toFixed(2)}\n`;
@@ -2836,13 +2460,11 @@ function proceedCheckout(){
     message +=
         "Mohon semak dan sahkan pesanan saya.";
 
-
     const url =
         "https://wa.me/?text=" +
         encodeURIComponent(
             message
         );
-
 
     window.open(
         url,
@@ -2850,11 +2472,6 @@ function proceedCheckout(){
     );
 
 }
-
-
-/* ==========================================
-   FLOOR VISUAL
-========================================== */
 
 function drawFloorLayout(
     width,
@@ -2867,10 +2484,8 @@ function drawFloorLayout(
             "canvasVisual"
         );
 
-
     const parent =
         canvas.parentElement;
-
 
     canvas.width =
         Math.max(
@@ -2878,16 +2493,13 @@ function drawFloorLayout(
             parent.clientWidth - 2
         );
 
-
     canvas.height =
         240;
-
 
     const ctx =
         canvas.getContext(
             "2d"
         );
-
 
     ctx.clearRect(
         0,
@@ -2896,10 +2508,8 @@ function drawFloorLayout(
         canvas.height
     );
 
-
     const padding =
         35;
-
 
     const scale =
         Math.min(
@@ -2910,28 +2520,20 @@ function drawFloorLayout(
                 length
         );
 
-
     const drawW =
         width * scale;
-
 
     const drawH =
         length * scale;
 
-
     const startX =
         (canvas.width - drawW) / 2;
-
 
     const startY =
         (canvas.height - drawH) / 2;
 
-
-    /* FLOOR */
-
     ctx.fillStyle =
         "#fffdf0";
-
 
     ctx.fillRect(
         startX,
@@ -2940,16 +2542,11 @@ function drawFloorLayout(
         drawH
     );
 
-
-    /* FLOOR BORDER */
-
     ctx.strokeStyle =
         "#111";
 
-
     ctx.lineWidth =
         2;
-
 
     ctx.strokeRect(
         startX,
@@ -2957,9 +2554,6 @@ function drawFloorLayout(
         drawW,
         drawH
     );
-
-
-    /* PATTERN */
 
     if(type === "herringbone"){
 
@@ -2969,7 +2563,6 @@ function drawFloorLayout(
         ctx.lineWidth =
             1;
 
-
         const step =
             Math.max(
                 12,
@@ -2978,7 +2571,6 @@ function drawFloorLayout(
                     drawW / 12
                 )
             );
-
 
         for(
             let x =
@@ -3020,7 +2612,6 @@ function drawFloorLayout(
         ctx.lineWidth =
             .7;
 
-
         const rows =
             Math.max(
                 5,
@@ -3032,10 +2623,8 @@ function drawFloorLayout(
                 )
             );
 
-
         const rowHeight =
             drawH / rows;
-
 
         for(
             let y =
@@ -3063,7 +2652,6 @@ function drawFloorLayout(
 
         }
 
-
         const cols =
             Math.max(
                 4,
@@ -3075,13 +2663,10 @@ function drawFloorLayout(
                 )
             );
 
-
         const colWidth =
             drawW / cols;
 
-
         let row = 0;
-
 
         for(
             let y =
@@ -3097,7 +2682,6 @@ function drawFloorLayout(
                 row % 2 === 0
                     ? 0
                     : colWidth / 2;
-
 
             for(
                 let x =
@@ -3128,27 +2712,20 @@ function drawFloorLayout(
 
             }
 
-
             row++;
 
         }
 
     }
 
-
-    /* DIMENSIONS */
-
     ctx.fillStyle =
         "#111";
-
 
     ctx.font =
         "10px Inter";
 
-
     ctx.textAlign =
         "center";
-
 
     ctx.fillText(
         `Width: ${width} mm`,
@@ -3159,9 +2736,7 @@ function drawFloorLayout(
         )
     );
 
-
     ctx.save();
-
 
     ctx.translate(
         Math.max(
@@ -3171,11 +2746,9 @@ function drawFloorLayout(
         canvas.height / 2
     );
 
-
     ctx.rotate(
         -Math.PI / 2
     );
-
 
     ctx.fillText(
         `Length: ${length} mm`,
@@ -3183,39 +2756,18 @@ function drawFloorLayout(
         0
     );
 
-
     ctx.restore();
 
 }
 
-
-/* ==========================================
-   ESCAPE HTML
-========================================== */
-
 function escapeHTML(value){
 
     return String(value ?? "")
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
-        );
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
 
 }
 
