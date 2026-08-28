@@ -43,10 +43,6 @@
             margin: 0 auto;
         }
 
-        /* =========================
-           MAIN CARD
-        ========================= */
-
         .container {
             background: var(--white);
             border: 1px solid var(--border);
@@ -54,10 +50,6 @@
             box-shadow: var(--shadow);
             overflow: hidden;
         }
-
-        /* =========================
-           HEADER
-        ========================= */
 
         .header {
             padding: 24px 22px 20px;
@@ -104,10 +96,6 @@
             line-height: 1.5;
             color: var(--muted);
         }
-
-        /* =========================
-           CONTENT
-        ========================= */
 
         .content {
             padding: 22px;
@@ -182,10 +170,6 @@
             gap: 12px;
         }
 
-        /* =========================
-           INFO BOX
-        ========================= */
-
         .info-box {
             display: flex;
             gap: 10px;
@@ -221,10 +205,6 @@
             color: #111;
         }
 
-        /* =========================
-           CALCULATE BUTTON
-        ========================= */
-
         .calc-btn {
             width: 100%;
             min-height: 50px;
@@ -249,10 +229,6 @@
             transform: scale(.985);
             box-shadow: none;
         }
-
-        /* =========================
-           RESULT
-        ========================= */
 
         .result-box {
             display: none;
@@ -284,10 +260,6 @@
             padding: 15px;
         }
 
-        /* =========================
-           POSTAGE SUMMARY
-        ========================= */
-
         .summary-card {
             padding: 13px;
             background: white;
@@ -309,10 +281,6 @@
             font-size: 13px;
             font-weight: 800;
         }
-
-        /* =========================
-           PRICE TABLE
-        ========================= */
 
         .price-table-wrapper {
             width: 100%;
@@ -360,10 +328,6 @@
             font-size: 15px !important;
         }
 
-        /* =========================
-           CART BUTTON
-        ========================= */
-
         .add-cart-main-btn {
             width: 100%;
             min-height: 48px;
@@ -384,17 +348,9 @@
             transform: scale(.985);
         }
 
-        /* =========================
-           HIDDEN FIELD
-        ========================= */
-
         #postcodeGroup {
             display: none;
         }
-
-        /* =========================
-           MENU BUTTON
-        ========================= */
 
         .home-btn {
             position: fixed;
@@ -426,10 +382,6 @@
             font-size: 16px;
             line-height: 1;
         }
-
-        /* =========================
-           RESPONSIVE
-        ========================= */
 
         @media (max-width: 480px) {
 
@@ -484,7 +436,6 @@
 
     <div class="container">
 
-        <!-- HEADER -->
         <div class="header">
 
             <div class="header-top">
@@ -502,15 +453,12 @@
 
         </div>
 
-
         <div class="content">
 
-            <!-- SECTION 1 -->
             <div class="section-title">
                 <div class="section-number">1</div>
                 Maklumat Penghantaran
             </div>
-
 
             <div class="form-group">
 
@@ -532,7 +480,6 @@
 
             </div>
 
-
             <div class="form-group" id="postcodeGroup">
 
                 <label for="postcodeVal">
@@ -548,7 +495,6 @@
                 >
 
             </div>
-
 
             <div class="form-group">
 
@@ -567,8 +513,6 @@
 
             </div>
 
-
-            <!-- INFO -->
             <div class="info-box">
 
                 <div class="info-icon">
@@ -584,14 +528,10 @@
 
             </div>
 
-
-            <!-- BUTTON -->
             <button class="calc-btn" onclick="calculatePostage()">
                 Kira Kos Postage
             </button>
 
-
-            <!-- RESULT -->
             <div class="result-box" id="resultBox">
 
                 <div class="result-header">
@@ -605,7 +545,6 @@
                     </div>
 
                 </div>
-
 
                 <div class="result-body">
 
@@ -623,7 +562,6 @@
                         </div>
 
                     </div>
-
 
                     <div class="price-table-wrapper">
 
@@ -646,7 +584,6 @@
 
                     </div>
 
-
                     <button
                         class="add-cart-main-btn"
                         id="addCartBtn"
@@ -665,8 +602,6 @@
 
 </div>
 
-
-<!-- MENU UTAMA -->
 <a
     href="../index.html"
     class="home-btn"
@@ -763,7 +698,10 @@
 
     /* =====================================================
        SARAWAK POSTCODE
-    ===================================================== */
+       
+       IMPORTANT:
+       Specific towns MUST appear before generic Sarawak.
+       ===================================================== */
 
     const sarawakPostcodes = [
 
@@ -771,6 +709,29 @@
             name: "Kuching",
             ranges: [
                 [93700, 93916]
+            ]
+        },
+
+        {
+            name: "Sibu",
+            ranges: [
+                [96000, 96399],
+                [96400, 96799],
+                [96800, 96999]
+            ]
+        },
+
+        {
+            name: "Bintulu",
+            ranges: [
+                [97000, 97399]
+            ]
+        },
+
+        {
+            name: "Miri",
+            ranges: [
+                [98000, 98199]
             ]
         },
 
@@ -806,7 +767,7 @@
 
     function checkPostcodeArea(pc, list) {
 
-        const code = parseInt(pc);
+        const code = parseInt(pc, 10);
 
         if (isNaN(code)) {
             return "Others";
@@ -855,7 +816,9 @@
                 .trim();
 
 
-        /* VALIDATE WEIGHT */
+        /* =================================================
+           VALIDATE WEIGHT
+           ================================================= */
 
         if (weight <= 0) {
 
@@ -874,22 +837,28 @@
 
         /* =================================================
            SEMENANJUNG
-        ================================================= */
+           ================================================= */
 
         if (region === 'semenanjung') {
 
             /*
                 1kg pertama = RM8
                 Setiap kg seterusnya = RM2.50
+
+                Berat dibundarkan ke atas kepada kg penuh
+                selepas 1kg pertama.
             */
 
+            const chargeableWeight =
+                Math.ceil(weight);
+
             const baseTotal =
-                weight <= 1
+                chargeableWeight <= 1
                     ? 8.00
                     : (
                         8.00 +
                         (
-                            (Math.ceil(weight) - 1)
+                            (chargeableWeight - 1)
                             * 2.50
                         )
                     );
@@ -922,12 +891,13 @@
             );
 
             return;
+
         }
 
 
         /* =================================================
            SABAH / SARAWAK
-        ================================================= */
+           ================================================= */
 
         if (!postcode) {
 
@@ -940,13 +910,28 @@
         }
 
 
-        const pcNum = parseInt(postcode);
+        const cleanPostcode =
+            postcode.replace(/\D/g, '');
 
 
         if (
-            isNaN(pcNum) ||
-            postcode.length < 5
+            cleanPostcode.length !== 5
         ) {
+
+            alert(
+                'Sila masukkan poskod 5 digit yang sah.'
+            );
+
+            return;
+
+        }
+
+
+        const pcNum =
+            parseInt(cleanPostcode, 10);
+
+
+        if (isNaN(pcNum)) {
 
             alert(
                 'Sila masukkan poskod 5 digit yang sah.'
@@ -963,7 +948,7 @@
 
         /* =================================================
            SABAH
-        ================================================= */
+           ================================================= */
 
         if (
             pcNum >= 87000 &&
@@ -972,7 +957,7 @@
 
             const matchedArea =
                 checkPostcodeArea(
-                    postcode,
+                    cleanPostcode,
                     sabahPostcodes
                 );
 
@@ -1011,7 +996,7 @@
 
         /* =================================================
            SARAWAK
-        ================================================= */
+           ================================================= */
 
         else if (
             pcNum >= 92000 &&
@@ -1020,10 +1005,14 @@
 
             const matchedArea =
                 checkPostcodeArea(
-                    postcode,
+                    cleanPostcode,
                     sarawakPostcodes
                 );
 
+
+            /*
+                Rate bandar khusus
+            */
 
             if (matchedArea === "Kuching") {
 
@@ -1064,7 +1053,7 @@
 
         /* =================================================
            OTHERS
-        ================================================= */
+           ================================================= */
 
         else {
 
@@ -1078,7 +1067,7 @@
 
         /* =================================================
            FINAL CALCULATION
-        ================================================= */
+           ================================================= */
 
         const rawCost =
             weight * ratePerKg;
@@ -1095,7 +1084,7 @@
 
 
         descInfo =
-            `${locationName} • ${weight}kg • RM${ratePerKg}/kg`;
+            `${locationName} • ${weight}kg • RM${ratePerKg.toFixed(2)}/kg`;
 
 
         renderResult(
@@ -1125,12 +1114,14 @@
 
                 <td>
                     ${infoText}<br>
+
                     <span style="
                         color:#64748b;
                         font-size:10px;
                     ">
                         SST 10% + RM10 termasuk
                     </span>
+
                 </td>
 
                 <td>
@@ -1197,7 +1188,7 @@
 
     /* =====================================================
        ADD TO CART
-    ===================================================== */
+       ===================================================== */
 
     function addPostageToCart() {
 
@@ -1261,7 +1252,7 @@
 
     /* =====================================================
        PREVENT NON-NUMERIC POSTCODE
-    ===================================================== */
+       ===================================================== */
 
     document
         .getElementById('postcodeVal')
@@ -1279,8 +1270,15 @@
 
 
     /* =====================================================
+       INITIAL UI STATE
+       ===================================================== */
+
+    togglePostcodeField();
+
+
+    /* =====================================================
        BACK BUTTON
-    ===================================================== */
+       ===================================================== */
 
     history.pushState(
         null,
