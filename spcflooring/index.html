@@ -14,17 +14,14 @@
     --primary:#111111;
     --accent:#fdee23;
     --accent-dark:#d4b900;
-
     --bg:#f5f6f8;
     --card:#ffffff;
     --soft:#f8f9fb;
     --border:#e5e7eb;
-
     --text:#111827;
     --muted:#6b7280;
     --success:#16803c;
     --danger:#dc2626;
-
     --shadow:0 8px 28px rgba(15,23,42,.07);
 }
 
@@ -46,7 +43,7 @@ body{
 }
 
 /* =========================
-TOP BAR
+   TOP BAR
 ========================= */
 
 .topbar{
@@ -54,7 +51,6 @@ TOP BAR
     max-width:680px;
     margin:0 auto;
     padding:18px 2px 16px;
-
     display:flex;
     align-items:center;
     justify-content:space-between;
@@ -64,20 +60,15 @@ TOP BAR
     width:42px;
     height:42px;
     border-radius:12px;
-
     background:#fff;
     border:1px solid var(--border);
-
     display:flex;
     align-items:center;
     justify-content:center;
-
     text-decoration:none;
     color:var(--primary);
-
     font-size:20px;
     font-weight:700;
-
     box-shadow:0 3px 12px rgba(0,0,0,.04);
 }
 
@@ -105,14 +96,11 @@ TOP BAR
     position:relative;
     width:42px;
     height:42px;
-
     border-radius:12px;
     border:1px solid var(--border);
     background:#fff;
-
     font-size:18px;
     cursor:pointer;
-
     box-shadow:0 3px 12px rgba(0,0,0,.04);
 }
 
@@ -120,26 +108,21 @@ TOP BAR
     position:absolute;
     top:-5px;
     right:-5px;
-
     min-width:18px;
     height:18px;
     padding:0 5px;
-
     display:flex;
     align-items:center;
     justify-content:center;
-
     border-radius:20px;
-
     background:var(--primary);
     color:var(--accent);
-
     font-size:9px;
     font-weight:800;
 }
 
 /* =========================
-MAIN
+   MAIN
 ========================= */
 
 .container{
@@ -151,12 +134,9 @@ MAIN
 .hero{
     background:var(--primary);
     color:#fff;
-
     border-radius:20px;
     padding:22px;
-
     margin-bottom:16px;
-
     box-shadow:var(--shadow);
     position:relative;
     overflow:hidden;
@@ -167,10 +147,8 @@ MAIN
     position:absolute;
     width:150px;
     height:150px;
-
     right:-60px;
     top:-60px;
-
     background:var(--accent);
     border-radius:50%;
     opacity:.9;
@@ -180,58 +158,47 @@ MAIN
     display:inline-flex;
     align-items:center;
     gap:6px;
-
     background:rgba(255,255,255,.1);
     border:1px solid rgba(255,255,255,.12);
-
     padding:6px 9px;
     border-radius:8px;
-
     font-size:10px;
     font-weight:700;
     text-transform:uppercase;
     letter-spacing:.06em;
-
     position:relative;
     z-index:1;
 }
 
 .hero h1{
     margin:13px 0 7px;
-
     font-size:23px;
     line-height:1.15;
     font-weight:800;
-
     position:relative;
     z-index:1;
 }
 
 .hero p{
     margin:0;
-
     color:#cbd5e1;
     font-size:12px;
     line-height:1.5;
-
     max-width:500px;
-
     position:relative;
     z-index:1;
 }
 
 /* =========================
-SECTION CARD
+   SECTION CARD
 ========================= */
 
 .section-card{
     background:var(--card);
     border:1px solid var(--border);
     border-radius:18px;
-
     padding:18px;
     margin-bottom:16px;
-
     box-shadow:var(--shadow);
 }
 
@@ -239,25 +206,19 @@ SECTION CARD
     display:flex;
     align-items:flex-start;
     gap:11px;
-
     margin-bottom:17px;
 }
 
 .section-number{
     width:30px;
     height:30px;
-
     border-radius:9px;
-
     background:var(--accent);
-
     display:flex;
     align-items:center;
     justify-content:center;
-
     font-size:12px;
     font-weight:800;
-
     flex-shrink:0;
 }
 
@@ -269,21 +230,13 @@ SECTION CARD
 
 .section-heading p{
     margin:3px 0 0;
-
     font-size:10px;
     color:var(--muted);
 }
 
 /* =========================
-FORM
+   FORM
 ========================= */
-
-.dimension-unit{
-    display:grid;
-    grid-template-columns:1fr 120px;
-    gap:12px;
-    margin-bottom:12px;
-}
 
 .dimension-grid{
     display:grid;
@@ -301,12 +254,9 @@ FORM
 
 label{
     display:block;
-
     margin-bottom:6px;
-
     font-size:11px;
     font-weight:700;
-
     color:#374151;
 }
 
@@ -317,45 +267,32 @@ label{
 input,
 select{
     width:100%;
-
     height:46px;
-
     border:1px solid var(--border);
     border-radius:11px;
-
     background:#fff;
-
     padding:0 12px;
-
     font-family:inherit;
     font-size:13px;
     color:var(--text);
-
     outline:none;
-
     transition:.2s;
 }
 
 input:focus,
 select:focus{
     border-color:#c5ad00;
-
     box-shadow:0 0 0 3px rgba(253,238,35,.25);
 }
 
 .unit{
     position:absolute;
-
     right:12px;
     top:50%;
-
     transform:translateY(-50%);
-
     color:var(--muted);
-
     font-size:10px;
     font-weight:700;
-
     pointer-events:none;
 }
 
@@ -368,7 +305,7 @@ select{
 }
 
 /* =========================
-MATERIAL OPTIONS
+   MATERIAL OPTIONS
 ========================= */
 
 .material-options{
@@ -388,22 +325,17 @@ MATERIAL OPTIONS
 
 .material-option label{
     display:block;
-
     margin:0;
     padding:13px;
-
     border:1px solid var(--border);
     border-radius:12px;
-
     cursor:pointer;
-
     transition:.2s;
 }
 
 .material-option input:checked + label{
     border-color:#c4ad00;
     background:#fffef0;
-
     box-shadow:0 0 0 2px rgba(253,238,35,.25);
 }
 
@@ -411,7 +343,6 @@ MATERIAL OPTIONS
     display:flex;
     justify-content:space-between;
     align-items:center;
-
     font-size:12px;
     font-weight:800;
 }
@@ -423,61 +354,76 @@ MATERIAL OPTIONS
 
 .material-info{
     margin-top:5px;
-
     font-size:10px;
     color:var(--muted);
 }
 
 /* =========================
-WASTAGE INFO
+   ACCESSORY OPTIONS
 ========================= */
 
-.wastage-info{
+.accessory-options{
+    display:grid;
+    gap:9px;
+}
+
+.accessory-check{
     display:flex;
     align-items:center;
-    justify-content:space-between;
-
-    background:var(--soft);
-    border:1px solid var(--border);
-
-    border-radius:11px;
-
+    gap:10px;
     padding:12px;
+    border:1px solid var(--border);
+    border-radius:12px;
+    background:#fff;
+    cursor:pointer;
+    transition:.2s;
 }
 
-.wastage-info span:first-child{
+.accessory-check:has(input:checked){
+    border-color:#c4ad00;
+    background:#fffef0;
+    box-shadow:0 0 0 2px rgba(253,238,35,.25);
+}
+
+.accessory-check input{
+    width:18px;
+    height:18px;
+    margin:0;
+    accent-color:#111;
+    flex-shrink:0;
+}
+
+.accessory-check span{
+    display:flex;
+    flex-direction:column;
+    gap:3px;
+}
+
+.accessory-check strong{
     font-size:11px;
-    font-weight:700;
 }
 
-.wastage-value{
-    font-size:13px;
-    font-weight:800;
+.accessory-check small{
+    font-size:9px;
+    color:var(--muted);
 }
 
 /* =========================
-BUTTON
+   BUTTON
 ========================= */
 
 .calculate-btn{
     width:100%;
-
     height:50px;
-
     border:1.5px solid var(--primary);
     border-radius:12px;
-
     background:var(--accent);
     color:var(--primary);
-
     font-family:inherit;
     font-size:14px;
     font-weight:800;
-
     cursor:pointer;
-
     box-shadow:0 5px 15px rgba(253,238,35,.28);
-
     transition:.2s;
 }
 
@@ -486,7 +432,7 @@ BUTTON
 }
 
 /* =========================
-RESULT
+   RESULT
 ========================= */
 
 .result-section{
@@ -496,18 +442,14 @@ RESULT
 .summary-highlight{
     background:var(--primary);
     color:#fff;
-
     border-radius:16px;
-
     padding:18px;
-
     margin-bottom:12px;
 }
 
 .summary-label{
     font-size:10px;
     color:#9ca3af;
-
     text-transform:uppercase;
     letter-spacing:.06em;
     font-weight:700;
@@ -515,16 +457,13 @@ RESULT
 
 .summary-total{
     margin-top:5px;
-
     font-size:27px;
     font-weight:800;
-
     color:var(--accent);
 }
 
 .summary-sub{
     margin-top:5px;
-
     font-size:10px;
     color:#cbd5e1;
 }
@@ -532,7 +471,6 @@ RESULT
 .result-table{
     width:100%;
     border-collapse:collapse;
-
     font-size:11px;
 }
 
@@ -568,9 +506,7 @@ RESULT
 .total-row{
     margin-top:12px;
     padding-top:13px;
-
     border-top:2px solid var(--primary);
-
     display:flex;
     justify-content:space-between;
     align-items:center;
@@ -587,27 +523,20 @@ RESULT
 }
 
 /* =========================
-CART BUTTON
+   CART BUTTON
 ========================= */
 
 .add-cart-btn{
     width:100%;
-
     margin-top:14px;
-
     height:46px;
-
     border:1px solid var(--primary);
     border-radius:11px;
-
     background:#fff;
-
     color:var(--primary);
-
     font-family:inherit;
     font-size:12px;
     font-weight:800;
-
     cursor:pointer;
 }
 
@@ -616,19 +545,15 @@ CART BUTTON
 }
 
 /* =========================
-VISUAL
+   VISUAL
 ========================= */
 
 .visual-box{
     display:none;
-
     background:#fff;
     border:1px solid var(--border);
-
     border-radius:16px;
-
     padding:15px;
-
     margin-bottom:16px;
 }
 
@@ -636,7 +561,6 @@ VISUAL
     display:flex;
     justify-content:space-between;
     align-items:center;
-
     margin-bottom:8px;
 }
 
@@ -652,17 +576,14 @@ VISUAL
 canvas{
     width:100%;
     height:240px;
-
     display:block;
-
     border:1px solid var(--border);
     border-radius:11px;
-
     background:#fafafa;
 }
 
 /* =========================
-HISTORY
+   HISTORY
 ========================= */
 
 .history-section{
@@ -673,7 +594,6 @@ HISTORY
     display:flex;
     justify-content:space-between;
     align-items:center;
-
     margin-bottom:12px;
 }
 
@@ -686,24 +606,18 @@ HISTORY
 .clear-history{
     border:0;
     background:none;
-
     color:var(--danger);
-
     font-family:inherit;
     font-size:10px;
     font-weight:700;
-
     cursor:pointer;
 }
 
 .history-item{
     border:1px solid var(--border);
     border-radius:12px;
-
     padding:13px;
-
     margin-bottom:9px;
-
     background:#fff;
 }
 
@@ -725,7 +639,6 @@ HISTORY
 
 .history-meta{
     margin-top:5px;
-
     font-size:9px;
     color:var(--muted);
     line-height:1.5;
@@ -734,76 +647,57 @@ HISTORY
 .history-actions{
     display:flex;
     gap:7px;
-
     margin-top:10px;
 }
 
 .history-actions button{
     flex:1;
-
     height:32px;
-
     border-radius:8px;
-
     font-family:inherit;
     font-size:9px;
     font-weight:700;
-
     cursor:pointer;
 }
 
 .use-history{
     background:var(--accent);
     color:var(--primary);
-
     border:1px solid var(--primary);
 }
 
 .delete-history{
     background:#fff;
     color:var(--danger);
-
     border:1px solid #fecaca;
 }
 
 /* =========================
-EMPTY HISTORY
+   EMPTY HISTORY
 ========================= */
 
 .empty-history{
     text-align:center;
-
     padding:20px;
-
     background:var(--soft);
-
     border-radius:12px;
-
     color:var(--muted);
-
     font-size:10px;
 }
 
 /* =========================
-CART MODAL
+   CART MODAL
 ========================= */
 
 .cart-modal{
     position:fixed;
-
     inset:0;
-
     background:rgba(0,0,0,.55);
-
     backdrop-filter:blur(5px);
-
     z-index:5000;
-
     opacity:0;
     pointer-events:none;
-
     transition:.25s;
-
     display:flex;
     align-items:flex-end;
 }
@@ -816,18 +710,12 @@ CART MODAL
 .cart-panel{
     width:100%;
     max-width:680px;
-
     margin:auto;
-
     background:#fff;
-
     border-radius:22px 22px 0 0;
-
     padding:20px;
-
     max-height:88vh;
     overflow-y:auto;
-
     transform:translateY(100%);
     transition:.3s;
 }
@@ -840,7 +728,6 @@ CART MODAL
     display:flex;
     justify-content:space-between;
     align-items:center;
-
     padding-bottom:13px;
     border-bottom:1px solid var(--border);
 }
@@ -853,22 +740,16 @@ CART MODAL
 .close-cart{
     width:34px;
     height:34px;
-
     border:0;
     border-radius:9px;
-
     background:#f3f4f6;
-
     cursor:pointer;
-
     font-weight:700;
 }
 
 .cart-item{
     padding:12px 0;
-
     border-bottom:1px dashed var(--border);
-
     display:flex;
     justify-content:space-between;
     gap:10px;
@@ -880,11 +761,10 @@ CART MODAL
 
 .cart-item small{
     display:block;
-
     margin-top:4px;
-
     font-size:9px;
     color:var(--muted);
+    line-height:1.5;
 }
 
 .cart-item-price{
@@ -895,28 +775,20 @@ CART MODAL
 
 .remove-cart{
     margin-top:5px;
-
     border:0;
     background:none;
-
     color:var(--danger);
-
     font-family:inherit;
     font-size:9px;
     font-weight:700;
-
     cursor:pointer;
 }
 
 .delivery-box{
     background:var(--soft);
-
     border:1px solid var(--border);
-
     border-radius:12px;
-
     padding:13px;
-
     margin-top:14px;
 }
 
@@ -930,12 +802,9 @@ CART MODAL
 
 .delivery-input span{
     position:absolute;
-
     left:12px;
     top:50%;
-
     transform:translateY(-50%);
-
     font-size:12px;
     font-weight:700;
 }
@@ -946,70 +815,54 @@ CART MODAL
 
 .cart-total{
     margin-top:15px;
-
     padding-top:14px;
-
     border-top:2px solid var(--primary);
 }
 
 .cart-row{
     display:flex;
     justify-content:space-between;
-
     font-size:11px;
-
     margin-bottom:8px;
 }
 
 .cart-grand{
     display:flex;
     justify-content:space-between;
-
     font-size:17px;
     font-weight:800;
-
     margin-top:10px;
 }
 
 .whatsapp-btn{
     width:100%;
     height:48px;
-
     margin-top:15px;
-
     border:1px solid var(--primary);
     border-radius:12px;
-
     background:var(--accent);
-
     color:var(--primary);
-
     font-family:inherit;
     font-size:13px;
     font-weight:800;
-
     cursor:pointer;
 }
 
 /* =========================
-FOOTER
+   FOOTER
 ========================= */
 
 .footer{
     width:100%;
     max-width:680px;
-
     margin:15px auto 0;
-
     text-align:center;
-
     color:var(--muted);
-
     font-size:9px;
 }
 
 /* =========================
-RESPONSIVE
+   RESPONSIVE
 ========================= */
 
 @media(max-width:430px){
@@ -1029,10 +882,6 @@ RESPONSIVE
 
     .section-card{
         padding:15px;
-    }
-
-    .dimension-unit{
-        grid-template-columns:1fr 105px;
     }
 
     canvas{
@@ -1098,55 +947,6 @@ RESPONSIVE
         </div>
 
 
-        <!-- UNIT -->
-        <div class="dimension-unit">
-
-            <div class="form-group">
-
-                <label>Unit Ukuran</label>
-
-                <select id="measurementUnit" onchange="changeUnit()">
-
-                    <option value="mm" selected>
-                        Millimetre (mm)
-                    </option>
-
-                    <option value="ft">
-                        Feet (ft)
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label>Unit</label>
-
-                <div
-                    class="wastage-info"
-                    style="height:46px;"
-                >
-
-                    <span>
-                        Input
-                    </span>
-
-                    <span
-                        class="wastage-value"
-                        id="unitDisplay"
-                    >
-                        mm
-                    </span>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
         <div class="dimension-grid">
 
             <div class="form-group">
@@ -1160,16 +960,10 @@ RESPONSIVE
                         id="roomWidth"
                         class="has-unit"
                         value="3000"
-                        min="0.01"
-                        step="0.01"
+                        min="1"
                     >
 
-                    <span
-                        class="unit"
-                        id="widthUnit"
-                    >
-                        mm
-                    </span>
+                    <span class="unit">mm</span>
 
                 </div>
 
@@ -1187,16 +981,10 @@ RESPONSIVE
                         id="roomLength"
                         class="has-unit"
                         value="5000"
-                        min="0.01"
-                        step="0.01"
+                        min="1"
                     >
 
-                    <span
-                        class="unit"
-                        id="lengthUnit"
-                    >
-                        mm
-                    </span>
+                    <span class="unit">mm</span>
 
                 </div>
 
@@ -1232,16 +1020,13 @@ RESPONSIVE
                     id="ecoflex"
                     value="ecoflex"
                     checked
-                    onchange="updateWastageDisplay()"
                 >
 
                 <label for="ecoflex">
 
                     <div class="material-name">
                         <span>Ecoflex</span>
-                        <span class="material-price">
-                            RM98 / box
-                        </span>
+                        <span class="material-price">RM98 / box</span>
                     </div>
 
                     <div class="material-info">
@@ -1260,16 +1045,13 @@ RESPONSIVE
                     name="spcType"
                     id="microcement"
                     value="microcement"
-                    onchange="updateWastageDisplay()"
                 >
 
                 <label for="microcement">
 
                     <div class="material-name">
                         <span>Microcement</span>
-                        <span class="material-price">
-                            RM138 / box
-                        </span>
+                        <span class="material-price">RM138 / box</span>
                     </div>
 
                     <div class="material-info">
@@ -1288,16 +1070,13 @@ RESPONSIVE
                     name="spcType"
                     id="herringbone"
                     value="herringbone"
-                    onchange="updateWastageDisplay()"
                 >
 
                 <label for="herringbone">
 
                     <div class="material-name">
                         <span>Herringbone</span>
-                        <span class="material-price">
-                            RM128 / box
-                        </span>
+                        <span class="material-price">RM128 / box</span>
                     </div>
 
                     <div class="material-info">
@@ -1322,7 +1101,7 @@ RESPONSIVE
 
             <div>
                 <h2>Accessories & Wastage</h2>
-                <p>Pilih aksesori jika diperlukan.</p>
+                <p>Pilih satu atau lebih aksesori yang diperlukan.</p>
             </div>
 
         </div>
@@ -1332,47 +1111,79 @@ RESPONSIVE
 
             <label>Accessory Selection</label>
 
-            <select id="accessoryType">
+            <div class="accessory-options">
 
-                <option value="skirting">
-                    Skirting PVC — RM23 / btg
-                </option>
+                <label class="accessory-check">
 
-                <option value="endcap">
-                    End Cap / Edge Profile — RM25 / btg
-                </option>
+                    <input
+                        type="checkbox"
+                        id="accSkirting"
+                        value="skirting"
+                    >
 
-                <option value="tmolding">
-                    T-Molding / Transition — RM30 / btg
-                </option>
+                    <span>
+                        <strong>Skirting PVC</strong>
+                        <small>RM23 / btg</small>
+                    </span>
 
-                <option value="none">
-                    Tiada Aksesori
-                </option>
+                </label>
 
-            </select>
+
+                <label class="accessory-check">
+
+                    <input
+                        type="checkbox"
+                        id="accEndcap"
+                        value="endcap"
+                    >
+
+                    <span>
+                        <strong>End Cap / Edge Profile</strong>
+                        <small>RM25 / btg</small>
+                    </span>
+
+                </label>
+
+
+                <label class="accessory-check">
+
+                    <input
+                        type="checkbox"
+                        id="accTmolding"
+                        value="tmolding"
+                    >
+
+                    <span>
+                        <strong>T-Molding / Transition</strong>
+                        <small>RM30 / btg</small>
+                    </span>
+
+                </label>
+
+            </div>
 
         </div>
 
 
         <div class="form-group">
 
-            <label>Wastage Material</label>
+            <label>Wastage Allowance</label>
 
-            <div class="wastage-info">
+            <select id="wastagePerc">
 
-                <span>
-                    Auto Allowance
-                </span>
+                <option value="5">
+                    5% — Standard
+                </option>
 
-                <span
-                    class="wastage-value"
-                    id="wastageDisplay"
-                >
-                    10%
-                </span>
+                <option value="10" selected>
+                    10% — Recommended
+                </option>
 
-            </div>
+                <option value="15">
+                    15% — Extensive Cutting
+                </option>
+
+            </select>
 
         </div>
 
@@ -1380,6 +1191,7 @@ RESPONSIVE
 
 
     <!-- CALCULATE -->
+
     <button
         class="calculate-btn"
         onclick="calculateSPC()"
@@ -1389,15 +1201,13 @@ RESPONSIVE
 
 
     <!-- RESULT -->
+
     <div
         class="result-section"
         id="resultSection"
     >
 
-        <div
-            class="section-card"
-            style="margin-top:16px;"
-        >
+        <div class="section-card" style="margin-top:16px;">
 
             <div class="section-heading">
 
@@ -1465,6 +1275,7 @@ RESPONSIVE
 
 
         <!-- VISUAL -->
+
         <div
             class="visual-box"
             id="visualBox"
@@ -1490,6 +1301,7 @@ RESPONSIVE
 
 
     <!-- HISTORY -->
+
     <div
         class="history-section section-card"
         id="historySection"
@@ -1626,7 +1438,7 @@ RESPONSIVE
 <script>
 
 /* ==========================================
-DATA
+   DATA
 ========================================== */
 
 const materials = {
@@ -1634,22 +1446,19 @@ const materials = {
     ecoflex:{
         name:"Ecoflex",
         price:98,
-        coverage:21.6,
-        wastage:10
+        coverage:21.6
     },
 
     microcement:{
         name:"Microcement",
         price:138,
-        coverage:24,
-        wastage:10
+        coverage:24
     },
 
     herringbone:{
         name:"Herringbone",
         price:128,
-        coverage:20.25,
-        wastage:15
+        coverage:20.25
     }
 
 };
@@ -1679,138 +1488,50 @@ let lastCalculatedRecord = null;
 
 
 /* ==========================================
-INITIAL LOAD
+   INITIAL LOAD
 ========================================== */
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function(){
+document.addEventListener("DOMContentLoaded",function(){
 
-        updateCartCount();
+    updateCartCount();
+    renderHistory();
 
-        renderHistory();
-
-        updateWastageDisplay();
-
-    }
-);
+});
 
 
 /* ==========================================
-UNIT CONVERSION
+   GET SELECTED ACCESSORIES
 ========================================== */
 
-function changeUnit(){
+function getSelectedAccessories(){
 
-    const unit =
-        document.getElementById(
-            "measurementUnit"
-        ).value;
+    const selected = [];
 
-    const widthInput =
-        document.getElementById(
-            "roomWidth"
-        );
-
-    const lengthInput =
-        document.getElementById(
-            "roomLength"
-        );
-
-    let width =
-        parseFloat(
-            widthInput.value
-        ) || 0;
-
-    let length =
-        parseFloat(
-            lengthInput.value
-        ) || 0;
-
-
-    /*
-       Convert existing values
-       so changing unit doesn't
-       change the actual room size.
-    */
-
-    if(unit === "ft"){
-
-        width =
-            width /
-            304.8;
-
-        length =
-            length /
-            304.8;
-
-    }
-    else{
-
-        width =
-            width *
-            304.8;
-
-        length =
-            length *
-            304.8;
-
+    if(
+        document.getElementById("accSkirting").checked
+    ){
+        selected.push("skirting");
     }
 
+    if(
+        document.getElementById("accEndcap").checked
+    ){
+        selected.push("endcap");
+    }
 
-    widthInput.value =
-        Number(width.toFixed(3));
+    if(
+        document.getElementById("accTmolding").checked
+    ){
+        selected.push("tmolding");
+    }
 
-    lengthInput.value =
-        Number(length.toFixed(3));
-
-
-    document.getElementById(
-        "widthUnit"
-    ).innerText = unit;
-
-    document.getElementById(
-        "lengthUnit"
-    ).innerText = unit;
-
-    document.getElementById(
-        "unitDisplay"
-    ).innerText = unit;
+    return selected;
 
 }
 
 
 /* ==========================================
-WASTAGE DISPLAY
-========================================== */
-
-function getSelectedMaterial(){
-
-    const type =
-        document.querySelector(
-            'input[name="spcType"]:checked'
-        ).value;
-
-    return materials[type];
-
-}
-
-
-function updateWastageDisplay(){
-
-    const material =
-        getSelectedMaterial();
-
-    document.getElementById(
-        "wastageDisplay"
-    ).innerText =
-        material.wastage + "%";
-
-}
-
-
-/* ==========================================
-CALCULATE SPC
+   CALCULATE SPC
 ========================================== */
 
 function calculateSPC(){
@@ -1820,35 +1541,30 @@ function calculateSPC(){
             'input[name="spcType"]:checked'
         ).value;
 
-    const accType =
-        document.getElementById(
-            "accessoryType"
-        ).value;
 
-    const unit =
-        document.getElementById(
-            "measurementUnit"
-        ).value;
+    const selectedAccessories =
+        getSelectedAccessories();
 
-    const inputWidth =
+
+    const wastage =
         parseFloat(
-            document.getElementById(
-                "roomWidth"
-            ).value
-        ) || 0;
+            document.getElementById("wastagePerc").value
+        ) || 10;
 
-    const inputLength =
+
+    const width =
         parseFloat(
-            document.getElementById(
-                "roomLength"
-            ).value
+            document.getElementById("roomWidth").value
         ) || 0;
 
 
-    if(
-        inputWidth <= 0 ||
-        inputLength <= 0
-    ){
+    const length =
+        parseFloat(
+            document.getElementById("roomLength").value
+        ) || 0;
+
+
+    if(width <= 0 || length <= 0){
 
         alert(
             "Sila masukkan ukuran ruang yang sah."
@@ -1863,48 +1579,11 @@ function calculateSPC(){
         materials[type];
 
 
-    /*
-       INTERNAL DIMENSIONS
-       Always convert to mm.
-    */
-
-    let widthMM;
-    let lengthMM;
-
-
-    if(unit === "ft"){
-
-        widthMM =
-            inputWidth *
-            304.8;
-
-        lengthMM =
-            inputLength *
-            304.8;
-
-    }
-    else{
-
-        widthMM =
-            inputWidth;
-
-        lengthMM =
-            inputLength;
-
-    }
-
-
-    /* ======================================
-       AREA
-    ====================================== */
+    /* AREA */
 
     const sqft =
-        (widthMM / 304.8) *
-        (lengthMM / 304.8);
-
-
-    const wastage =
-        material.wastage;
+        (width / 304.8) *
+        (length / 304.8);
 
 
     const adjustedSqft =
@@ -1912,22 +1591,12 @@ function calculateSPC(){
         (1 + wastage / 100);
 
 
-    /* ======================================
-       BOX
-    ====================================== */
-
-    const rawBoxes =
-        adjustedSqft /
-        material.coverage;
-
-
-    /*
-       Always round UP to next complete box.
-    */
+    /* BOX */
 
     const boxCount =
         Math.ceil(
-            rawBoxes
+            adjustedSqft /
+            material.coverage
         );
 
 
@@ -1936,19 +1605,14 @@ function calculateSPC(){
         material.price;
 
 
-    /* ======================================
-       ACCESSORY
-    ====================================== */
+    /* ACCESSORIES */
 
     const perimeter =
-        (2 * (
-            widthMM +
-            lengthMM
-        )) / 1000;
+        (2 * (width + length)) /
+        1000;
 
 
-    const accessoryLength =
-        2.4;
+    const accessoryLength = 2.4;
 
 
     const accessoryQty =
@@ -1960,48 +1624,33 @@ function calculateSPC(){
 
     let accessoryCost = 0;
 
-    let accessoryName = "";
 
+    selectedAccessories.forEach(
+        type => {
 
-    if(accType !== "none"){
+            accessoryCost +=
+                accessoryQty *
+                accessories[type].price;
 
-        accessoryName =
-            accessories[
-                accType
-            ].name;
+        }
+    );
 
-        accessoryCost =
-            accessoryQty *
-            accessories[
-                accType
-            ].price;
-
-    }
-
-
-    /* ======================================
-       TOTAL
-    ====================================== */
 
     const grandTotal =
         materialCost +
         accessoryCost;
 
 
-    /* ======================================
-       DISPLAY
-    ====================================== */
+    /* DISPLAY */
 
     document.getElementById(
         "resultSection"
-    ).style.display =
-        "block";
+    ).style.display = "block";
 
 
     document.getElementById(
         "visualBox"
-    ).style.display =
-        "block";
+    ).style.display = "block";
 
 
     document.getElementById(
@@ -2040,7 +1689,7 @@ function calculateSPC(){
                 </div>
 
                 <div class="result-desc">
-                    ${inputWidth} × ${inputLength} ${unit}
+                    ${width} × ${length} mm
                 </div>
 
             </td>
@@ -2067,14 +1716,8 @@ function calculateSPC(){
                 </div>
 
                 <div class="result-desc">
-
-                    ${boxCount} box ×
-                    RM${material.price.toFixed(2)}
-
-                    • Coverage
-                    ${material.coverage}
-                    sqft/box
-
+                    ${boxCount} box × RM${material.price.toFixed(2)}
+                    • Coverage ${material.coverage} sqft/box
                 </div>
 
             </td>
@@ -2101,13 +1744,8 @@ function calculateSPC(){
                 </div>
 
                 <div class="result-desc">
-
-                    ${wastage}%
-
-                    • Adjusted area
-                    ${adjustedSqft.toFixed(1)}
-                    sqft
-
+                    ${wastage}% • Adjusted area
+                    ${adjustedSqft.toFixed(1)} sqft
                 </div>
 
             </td>
@@ -2121,41 +1759,47 @@ function calculateSPC(){
     `;
 
 
-    /* ACCESSORY */
+    /* ACCESSORIES */
 
-    if(accType !== "none"){
+    selectedAccessories.forEach(
+        type => {
 
-        resultHTML += `
+            const acc =
+                accessories[type];
 
-            <tr>
 
-                <td>
+            const cost =
+                accessoryQty *
+                acc.price;
 
-                    <div class="result-name">
-                        ${accessoryName}
-                    </div>
 
-                    <div class="result-desc">
+            resultHTML += `
 
-                        ${accessoryQty}
-                        btg ×
-                        RM${accessories[
-                            accType
-                        ].price.toFixed(2)}
+                <tr>
 
-                    </div>
+                    <td>
 
-                </td>
+                        <div class="result-name">
+                            ${acc.name}
+                        </div>
 
-                <td>
-                    RM ${accessoryCost.toFixed(2)}
-                </td>
+                        <div class="result-desc">
+                            ${accessoryQty} btg ×
+                            RM${acc.price.toFixed(2)}
+                        </div>
 
-            </tr>
+                    </td>
 
-        `;
+                    <td>
+                        RM ${cost.toFixed(2)}
+                    </td>
 
-    }
+                </tr>
+
+            `;
+
+        }
+    );
 
 
     document.getElementById(
@@ -2164,9 +1808,7 @@ function calculateSPC(){
         resultHTML;
 
 
-    /* ======================================
-       RECORD
-    ====================================== */
+    /* RECORD */
 
     const now =
         new Date();
@@ -2195,31 +1837,37 @@ function calculateSPC(){
 
     const reference =
         "SPC-" +
-        Date.now()
-            .toString()
-            .slice(-6);
+        Date.now().toString().slice(-6);
+
+
+    const accessoryNames =
+        selectedAccessories.length === 0
+            ? "Tiada"
+            : selectedAccessories
+                .map(
+                    type =>
+                        accessories[type].name
+                )
+                .join(", ");
 
 
     lastCalculatedRecord = {
 
-        id:
-            reference,
+        id:reference,
 
         tajuk:
             `SPC Flooring — ${material.name}`,
 
         info:
-            `${inputWidth} × ${inputLength} ${unit}`,
+            `${width} × ${length} mm`,
 
         harga:
             "RM " +
             grandTotal.toFixed(2),
 
-        date:
-            date,
+        date:date,
 
-        time:
-            time,
+        time:time,
 
         material:
             material.name,
@@ -2234,20 +1882,20 @@ function calculateSPC(){
             boxCount,
 
         accessory:
-            accType === "none"
-                ? "Tiada"
-                : accessoryName,
+            accessoryNames,
 
         accessoryQty:
-            accType === "none"
+            selectedAccessories.length === 0
                 ? 0
                 : accessoryQty,
 
-        unit:
-            unit
+        accessories:
+            selectedAccessories
 
     };
 
+
+    /* AUTO SAVE HISTORY */
 
     saveHistory(
         lastCalculatedRecord
@@ -2257,11 +1905,12 @@ function calculateSPC(){
     renderHistory();
 
 
+    /* DRAW VISUAL */
+
     drawFloorLayout(
-        widthMM,
-        lengthMM,
-        type,
-        unit
+        width,
+        length,
+        type
     );
 
 
@@ -2276,7 +1925,7 @@ function calculateSPC(){
 
 
 /* ==========================================
-SAVE HISTORY
+   SAVE HISTORY
 ========================================== */
 
 function saveHistory(record){
@@ -2289,18 +1938,13 @@ function saveHistory(record){
         ) || [];
 
 
-    history.unshift(
-        record
-    );
+    history.unshift(record);
 
 
     if(history.length > 50){
 
         history =
-            history.slice(
-                0,
-                50
-            );
+            history.slice(0,50);
 
     }
 
@@ -2314,7 +1958,7 @@ function saveHistory(record){
 
 
 /* ==========================================
-RENDER HISTORY
+   RENDER HISTORY
 ========================================== */
 
 function renderHistory(){
@@ -2323,6 +1967,7 @@ function renderHistory(){
         document.getElementById(
             "historySection"
         );
+
 
     const list =
         document.getElementById(
@@ -2388,8 +2033,7 @@ function renderHistory(){
 
                             <div class="history-meta">
 
-                                Ref:
-                                ${escapeHTML(item.id)}
+                                Ref: ${escapeHTML(item.id)}
 
                                 <br>
 
@@ -2403,19 +2047,14 @@ function renderHistory(){
                                 ${escapeHTML(item.info)}
 
                                 •
-                                ${escapeHTML(item.sqft)}
-                                sqft
+                                ${escapeHTML(item.sqft)} sqft
 
                                 <br>
 
                                 ${escapeHTML(item.boxes)}
                                 box
+
                                 •
-                                Wastage:
-                                ${escapeHTML(item.wastage)}%
-
-                                <br>
-
                                 Aksesori:
                                 ${escapeHTML(item.accessory)}
 
@@ -2466,7 +2105,7 @@ function renderHistory(){
 
 
 /* ==========================================
-USE HISTORY
+   USE HISTORY
 ========================================== */
 
 function useHistory(index){
@@ -2486,58 +2125,24 @@ function useHistory(index){
     if(!item) return;
 
 
-    const info =
-        String(
-            item.info
-        );
+    const dimensions =
+        item.info
+            .replace(/mm/g,"")
+            .split("×");
 
 
-    const match =
-        info.match(
-            /^([\d.]+)\s*×\s*([\d.]+)\s*(mm|ft)$/i
-        );
-
-
-    if(match){
-
-        const unit =
-            match[3].toLowerCase();
-
-
-        document.getElementById(
-            "measurementUnit"
-        ).value =
-            unit;
-
+    if(dimensions.length >= 2){
 
         document.getElementById(
             "roomWidth"
         ).value =
-            match[1];
+            parseFloat(dimensions[0]);
 
 
         document.getElementById(
             "roomLength"
         ).value =
-            match[2];
-
-
-        document.getElementById(
-            "widthUnit"
-        ).innerText =
-            unit;
-
-
-        document.getElementById(
-            "lengthUnit"
-        ).innerText =
-            unit;
-
-
-        document.getElementById(
-            "unitDisplay"
-        ).innerText =
-            unit;
+            parseFloat(dimensions[1]);
 
     }
 
@@ -2558,44 +2163,113 @@ function useHistory(index){
     }
 
 
-    updateWastageDisplay();
+    /* WASTAGE */
 
-
-    /* ACCESSORY */
-
-    const accessorySelect =
+    const wastage =
         document.getElementById(
-            "accessoryType"
+            "wastagePerc"
+        );
+
+
+    const availableWastage =
+        Array.from(
+            wastage.options
+        ).map(
+            option =>
+                parseInt(option.value)
         );
 
 
     if(
-        item.accessory ===
-        "Tiada"
+        availableWastage.includes(
+            parseInt(item.wastage)
+        )
     ){
 
-        accessorySelect.value =
-            "none";
+        wastage.value =
+            item.wastage;
 
     }
-    else{
-
-        const accValue =
-            Object.keys(
-                accessories
-            ).find(
-                key =>
-                    accessories[key].name ===
-                    item.accessory
-            );
 
 
-        if(accValue){
+    /* RESET ACCESSORIES */
 
-            accessorySelect.value =
-                accValue;
+    document.getElementById(
+        "accSkirting"
+    ).checked = false;
 
-        }
+
+    document.getElementById(
+        "accEndcap"
+    ).checked = false;
+
+
+    document.getElementById(
+        "accTmolding"
+    ).checked = false;
+
+
+    /* RESTORE ACCESSORIES */
+
+    if(
+        Array.isArray(item.accessories)
+    ){
+
+        item.accessories.forEach(
+            type => {
+
+                const checkbox =
+                    document.querySelector(
+                        `.accessory-check input[value="${type}"]`
+                    );
+
+
+                if(checkbox){
+
+                    checkbox.checked =
+                        true;
+
+                }
+
+            }
+        );
+
+    }
+    else if(
+        item.accessory &&
+        item.accessory !== "Tiada"
+    ){
+
+        /* Compatibility with old history */
+
+        Object.keys(
+            accessories
+        ).forEach(
+            type => {
+
+                if(
+                    item.accessory.includes(
+                        accessories[type].name
+                    )
+                ){
+
+                    const checkbox =
+                        document.querySelector(
+                            `.accessory-check input[value="${type}"]`
+                        );
+
+
+                    if(checkbox){
+
+                        checkbox.checked =
+                            true;
+
+                    }
+
+                }
+
+            }
+        );
 
     }
 
@@ -2615,7 +2289,7 @@ function useHistory(index){
 
 
 /* ==========================================
-MATERIAL VALUE
+   MATERIAL VALUE
 ========================================== */
 
 function getMaterialValue(name){
@@ -2635,7 +2309,7 @@ function getMaterialValue(name){
 
 
 /* ==========================================
-DELETE HISTORY
+   DELETE HISTORY
 ========================================== */
 
 function deleteHistory(index){
@@ -2677,7 +2351,7 @@ function deleteHistory(index){
 
 
 /* ==========================================
-CLEAR HISTORY
+   CLEAR HISTORY
 ========================================== */
 
 function clearHistory(){
@@ -2704,7 +2378,7 @@ function clearHistory(){
 
 
 /* ==========================================
-ADD TO CART
+   ADD TO CART
 ========================================== */
 
 function addSPCToCart(){
@@ -2750,7 +2424,7 @@ function addSPCToCart(){
 
 
 /* ==========================================
-CART COUNT
+   CART COUNT
 ========================================== */
 
 function updateCartCount(){
@@ -2772,7 +2446,7 @@ function updateCartCount(){
 
 
 /* ==========================================
-CART
+   CART
 ========================================== */
 
 function toggleCart(){
@@ -2816,7 +2490,7 @@ function closeCartOutside(event){
 
 
 /* ==========================================
-RENDER CART
+   RENDER CART
 ========================================== */
 
 function renderCart(){
@@ -2839,10 +2513,8 @@ function renderCart(){
 
         container.innerHTML = `
 
-            <div
-                class="empty-history"
-                style="margin-top:15px;"
-            >
+            <div class="empty-history"
+                 style="margin-top:15px;">
 
                 Shopping Cart anda kosong.
 
@@ -2907,31 +2579,23 @@ function renderCart(){
 
                             •
 
-                            ${escapeHTML(
-                                item.sqft || "-"
-                            )}
+                            ${escapeHTML(item.sqft || "-")}
                             sqft
 
                             <br>
 
-                            ${escapeHTML(
-                                item.boxes || "-"
-                            )}
-                            box
+                            Box:
+                            ${escapeHTML(item.boxes || "-")}
 
-                            •
+                            <br>
 
-                            Wastage:
-                            ${escapeHTML(
-                                item.wastage || "-"
-                            )}%
+                            Aksesori:
+                            ${escapeHTML(item.accessory || "Tiada")}
 
                             <br>
 
                             Ref:
-                            ${escapeHTML(
-                                item.id || "-"
-                            )}
+                            ${escapeHTML(item.id || "-")}
 
                         </small>
 
@@ -2970,7 +2634,7 @@ function renderCart(){
 
 
 /* ==========================================
-REMOVE CART
+   REMOVE CART
 ========================================== */
 
 function removeCart(index){
@@ -3003,7 +2667,7 @@ function removeCart(index){
 
 
 /* ==========================================
-CART TOTAL
+   CART TOTAL
 ========================================== */
 
 function calculateCartTotal(){
@@ -3073,7 +2737,7 @@ function calculateCartTotal(){
 
 
 /* ==========================================
-WHATSAPP CHECKOUT
+   WHATSAPP CHECKOUT
 ========================================== */
 
 function proceedCheckout(){
@@ -3127,8 +2791,7 @@ function proceedCheckout(){
                 ) || 0;
 
 
-            subtotal +=
-                price;
+            subtotal += price;
 
 
             message +=
@@ -3141,16 +2804,10 @@ function proceedCheckout(){
                 `   Area: ${item.sqft || "-"} sqft\n`;
 
             message +=
-                `   Material: ${item.material || "-"}\n`;
-
-            message +=
                 `   Box: ${item.boxes || "-"}\n`;
 
             message +=
-                `   Wastage: ${item.wastage || "-"}%\n`;
-
-            message +=
-                `   Aksesori: ${item.accessory || "-"}\n`;
+                `   Aksesori: ${item.accessory || "Tiada"}\n`;
 
             message +=
                 `   Ref: ${item.id || "-"}\n`;
@@ -3196,14 +2853,13 @@ function proceedCheckout(){
 
 
 /* ==========================================
-FLOOR VISUAL
+   FLOOR VISUAL
 ========================================== */
 
 function drawFloorLayout(
     width,
     length,
-    type,
-    displayUnit
+    type
 ){
 
     const canvas =
@@ -3247,13 +2903,11 @@ function drawFloorLayout(
 
     const scale =
         Math.min(
-
             (canvas.width - padding * 2) /
                 width,
 
             (canvas.height - padding * 2) /
                 length
-
         );
 
 
@@ -3287,7 +2941,7 @@ function drawFloorLayout(
     );
 
 
-    /* BORDER */
+    /* FLOOR BORDER */
 
     ctx.strokeStyle =
         "#111";
@@ -3307,10 +2961,7 @@ function drawFloorLayout(
 
     /* PATTERN */
 
-    if(
-        type ===
-        "herringbone"
-    ){
+    if(type === "herringbone"){
 
         ctx.strokeStyle =
             "#c7ad00";
@@ -3334,9 +2985,7 @@ function drawFloorLayout(
                 startX - drawH;
 
             x <
-                startX +
-                drawW +
-                drawH;
+                startX + drawW + drawH;
 
             x += step
         ){
@@ -3385,8 +3034,7 @@ function drawFloorLayout(
 
 
         const rowHeight =
-            drawH /
-            rows;
+            drawH / rows;
 
 
         for(
@@ -3394,8 +3042,7 @@ function drawFloorLayout(
                 startY;
 
             y <=
-                startY +
-                drawH;
+                startY + drawH;
 
             y += rowHeight
         ){
@@ -3408,8 +3055,7 @@ function drawFloorLayout(
             );
 
             ctx.lineTo(
-                startX +
-                drawW,
+                startX + drawW,
                 y
             );
 
@@ -3431,8 +3077,7 @@ function drawFloorLayout(
 
 
         const colWidth =
-            drawW /
-            cols;
+            drawW / cols;
 
 
         let row = 0;
@@ -3443,8 +3088,7 @@ function drawFloorLayout(
                 startY;
 
             y <
-                startY +
-                drawH;
+                startY + drawH;
 
             y += rowHeight
         ){
@@ -3460,8 +3104,7 @@ function drawFloorLayout(
                     startX + offset;
 
                 x <
-                    startX +
-                    drawW;
+                    startX + drawW;
 
                 x += colWidth
             ){
@@ -3477,8 +3120,7 @@ function drawFloorLayout(
                     x,
                     Math.min(
                         y + rowHeight,
-                        startY +
-                        drawH
+                        startY + drawH
                     )
                 );
 
@@ -3496,18 +3138,6 @@ function drawFloorLayout(
 
     /* DIMENSIONS */
 
-    const displayWidth =
-        displayUnit === "ft"
-            ? (width / 304.8).toFixed(2)
-            : width.toFixed(0);
-
-
-    const displayLength =
-        displayUnit === "ft"
-            ? (length / 304.8).toFixed(2)
-            : length.toFixed(0);
-
-
     ctx.fillStyle =
         "#111";
 
@@ -3521,7 +3151,7 @@ function drawFloorLayout(
 
 
     ctx.fillText(
-        `Width: ${displayWidth} ${displayUnit}`,
+        `Width: ${width} mm`,
         canvas.width / 2,
         Math.max(
             13,
@@ -3548,7 +3178,7 @@ function drawFloorLayout(
 
 
     ctx.fillText(
-        `Length: ${displayLength} ${displayUnit}`,
+        `Length: ${length} mm`,
         0,
         0
     );
@@ -3560,34 +3190,32 @@ function drawFloorLayout(
 
 
 /* ==========================================
-ESCAPE HTML
+   ESCAPE HTML
 ========================================== */
 
 function escapeHTML(value){
 
-    return String(
-        value ?? ""
-    )
-    .replace(
-        /&/g,
-        "&amp;"
-    )
-    .replace(
-        /</g,
-        "&lt;"
-    )
-    .replace(
-        />/g,
-        "&gt;"
-    )
-    .replace(
-        /"/g,
-        "&quot;"
-    )
-    .replace(
-        /'/g,
-        "&#039;"
-    );
+    return String(value ?? "")
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 
 }
 
