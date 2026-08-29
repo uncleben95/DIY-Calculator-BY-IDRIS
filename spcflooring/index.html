@@ -280,11 +280,16 @@ select:focus{
 }
 
 input.has-unit{
-    padding-right:55px;
+    padding-right:45px;
 }
 
-select{
-    appearance:auto;
+.unit-select{
+    width:82px;
+    flex-shrink:0;
+    font-size:11px;
+    font-weight:800;
+    padding:0 8px;
+    background:#f8f9fb;
 }
 
 .material-options{
@@ -826,6 +831,14 @@ canvas{
     canvas{
         height:220px;
     }
+
+    .dimension-grid{
+        grid-template-columns:1fr;
+    }
+
+    .unit-select{
+        width:78px;
+    }
 }
 </style>
 </head>
@@ -875,7 +888,7 @@ canvas{
 
             <div>
                 <h2>Project Dimensions</h2>
-                <p>Masukkan ukuran ruang yang akan dipasang.</p>
+                <p>Masukkan ukuran ruang. Pilih MM atau FT.</p>
             </div>
 
         </div>
@@ -886,17 +899,33 @@ canvas{
 
                 <label>Lebar Ruang</label>
 
-                <div class="input-wrap">
+                <div style="display:flex;gap:7px;">
 
-                    <input
-                        type="number"
-                        id="roomWidth"
-                        class="has-unit"
-                        value="3000"
-                        min="1"
+                    <div class="input-wrap" style="flex:1;">
+
+                        <input
+                            type="number"
+                            id="roomWidth"
+                            class="has-unit"
+                            value="3000"
+                            min="0"
+                            step="0.01"
+                        >
+
+                        <span class="unit" id="widthUnitLabel">
+                            mm
+                        </span>
+
+                    </div>
+
+                    <select
+                        id="widthUnit"
+                        class="unit-select"
+                        onchange="updateUnitLabel('width')"
                     >
-
-                    <span class="unit">mm</span>
+                        <option value="mm" selected>MM</option>
+                        <option value="ft">FT</option>
+                    </select>
 
                 </div>
 
@@ -906,17 +935,33 @@ canvas{
 
                 <label>Panjang Ruang</label>
 
-                <div class="input-wrap">
+                <div style="display:flex;gap:7px;">
 
-                    <input
-                        type="number"
-                        id="roomLength"
-                        class="has-unit"
-                        value="5000"
-                        min="1"
+                    <div class="input-wrap" style="flex:1;">
+
+                        <input
+                            type="number"
+                            id="roomLength"
+                            class="has-unit"
+                            value="5000"
+                            min="0"
+                            step="0.01"
+                        >
+
+                        <span class="unit" id="lengthUnitLabel">
+                            mm
+                        </span>
+
+                    </div>
+
+                    <select
+                        id="lengthUnit"
+                        class="unit-select"
+                        onchange="updateUnitLabel('length')"
                     >
-
-                    <span class="unit">mm</span>
+                        <option value="mm" selected>MM</option>
+                        <option value="ft">FT</option>
+                    </select>
 
                 </div>
 
@@ -1374,31 +1419,119 @@ const accessories = {
 
 let lastCalculatedRecord = null;
 
-document.addEventListener("DOMContentLoaded",function(){
 
-    updateCartCount();
-    renderHistory();
+/* =========================================
+   UNIT SYSTEM
+========================================= */
 
-});
+function updateUnitLabel(type){
+
+    const select =
+        document.getElementById(
+            type === "width"
+                ? "widthUnit"
+                : "lengthUnit"
+        );
+
+    const label =
+        document.getElementById(
+            type === "width"
+                ? "widthUnitLabel"
+                : "lengthUnitLabel"
+        );
+
+    label.innerText =
+        select.value === "ft"
+            ? "ft"
+            : "mm";
+
+}
+
+
+function convertToMM(value,unit){
+
+    const number =
+        parseFloat(value) || 0;
+
+    if(unit === "ft"){
+
+        return number * 304.8;
+
+    }
+
+    return number;
+
+}
+
+
+function formatNumber(value){
+
+    return Number(value).toLocaleString(
+        "en-US",
+        {
+            maximumFractionDigits:2
+        }
+    );
+
+}
+
+
+/* =========================================
+   INITIAL LOAD
+========================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+        updateCartCount();
+
+        renderHistory();
+
+    }
+);
+
+
+/* =========================================
+   ACCESSORIES
+========================================= */
 
 function getSelectedAccessories(){
 
     const selected = [];
 
-    if(document.getElementById("accSkirting").checked){
+    if(
+        document.getElementById(
+            "accSkirting"
+        ).checked
+    ){
         selected.push("skirting");
     }
 
-    if(document.getElementById("accEndcap").checked){
+    if(
+        document.getElementById(
+            "accEndcap"
+        ).checked
+    ){
         selected.push("endcap");
     }
 
-    if(document.getElementById("accTmolding").checked){
+    if(
+        document.getElementById(
+            "accTmolding"
+        ).checked
+    ){
         selected.push("tmolding");
     }
 
     return selected;
+
 }
+
+
+/* =========================================
+   MAIN CALCULATION
+========================================= */
 
 function calculateSPC(){
 
@@ -1407,25 +1540,70 @@ function calculateSPC(){
             'input[name="spcType"]:checked'
         ).value;
 
+
     const selectedAccessories =
         getSelectedAccessories();
 
+
     const wastage =
         parseFloat(
-            document.getElementById("wastagePerc").value
+            document.getElementById(
+                "wastagePerc"
+            ).value
         ) || 10;
 
-    const width =
+
+    const widthInput =
         parseFloat(
-            document.getElementById("roomWidth").value
+            document.getElementById(
+                "roomWidth"
+            ).value
         ) || 0;
+
+
+    const lengthInput =
+        parseFloat(
+            document.getElementById(
+                "roomLength"
+            ).value
+        ) || 0;
+
+
+    const widthUnit =
+        document.getElementById(
+            "widthUnit"
+        ).value;
+
+
+    const lengthUnit =
+        document.getElementById(
+            "lengthUnit"
+        ).value;
+
+
+    /*
+        Semua kiraan dalaman
+        akan menggunakan MM.
+    */
+
+    const width =
+        convertToMM(
+            widthInput,
+            widthUnit
+        );
+
 
     const length =
-        parseFloat(
-            document.getElementById("roomLength").value
-        ) || 0;
+        convertToMM(
+            lengthInput,
+            lengthUnit
+        );
 
-    if(width <= 0 || length <= 0){
+
+    if(
+        width <= 0 ||
+        length <= 0
+    ){
 
         alert(
             "Sila masukkan ukuran ruang yang sah."
@@ -1435,15 +1613,25 @@ function calculateSPC(){
 
     }
 
-    const material = materials[type];
+
+    const material =
+        materials[type];
+
+
+    /*
+        Convert MM kepada feet
+        untuk kiraan sqft.
+    */
 
     const sqft =
         (width / 304.8) *
         (length / 304.8);
 
+
     const adjustedSqft =
         sqft *
         (1 + wastage / 100);
+
 
     const boxCount =
         Math.ceil(
@@ -1451,15 +1639,24 @@ function calculateSPC(){
             material.coverage
         );
 
+
     const materialCost =
         boxCount *
         material.price;
+
+
+    /*
+        Perimeter dalam meter.
+    */
 
     const perimeter =
         (2 * (width + length)) /
         1000;
 
-    const accessoryLength = 2.4;
+
+    const accessoryLength =
+        2.4;
+
 
     const accessoryQty =
         Math.ceil(
@@ -1467,7 +1664,9 @@ function calculateSPC(){
             accessoryLength
         );
 
+
     let accessoryCost = 0;
+
 
     selectedAccessories.forEach(
         type => {
@@ -1479,17 +1678,23 @@ function calculateSPC(){
         }
     );
 
+
     const grandTotal =
         materialCost +
         accessoryCost;
 
+
     document.getElementById(
         "resultSection"
-    ).style.display = "block";
+    ).style.display =
+        "block";
+
 
     document.getElementById(
         "visualBox"
-    ).style.display = "block";
+    ).style.display =
+        "block";
+
 
     document.getElementById(
         "jumlahHarga"
@@ -1497,18 +1702,22 @@ function calculateSPC(){
         "RM " +
         grandTotal.toFixed(2);
 
+
     document.getElementById(
         "totalBottom"
     ).innerText =
         "RM " +
         grandTotal.toFixed(2);
 
+
     document.getElementById(
         "summarySub"
     ).innerText =
         `${material.name} • ${boxCount} box • ${sqft.toFixed(1)} sqft`;
 
+
     let resultHTML = "";
+
 
     resultHTML += `
 
@@ -1521,7 +1730,8 @@ function calculateSPC(){
                 </div>
 
                 <div class="result-desc">
-                    ${width} × ${length} mm
+                    ${formatNumber(width)} ×
+                    ${formatNumber(length)} mm
                 </div>
 
             </td>
@@ -1533,6 +1743,7 @@ function calculateSPC(){
         </tr>
 
     `;
+
 
     resultHTML += `
 
@@ -1559,6 +1770,7 @@ function calculateSPC(){
 
     `;
 
+
     resultHTML += `
 
         <tr>
@@ -1584,15 +1796,18 @@ function calculateSPC(){
 
     `;
 
+
     selectedAccessories.forEach(
         type => {
 
             const acc =
                 accessories[type];
 
+
             const cost =
                 accessoryQty *
                 acc.price;
+
 
             resultHTML += `
 
@@ -1622,12 +1837,16 @@ function calculateSPC(){
         }
     );
 
+
     document.getElementById(
         "resultContent"
     ).innerHTML =
         resultHTML;
 
-    const now = new Date();
+
+    const now =
+        new Date();
+
 
     const date =
         now.toLocaleDateString(
@@ -1639,6 +1858,7 @@ function calculateSPC(){
             }
         );
 
+
     const time =
         now.toLocaleTimeString(
             "ms-MY",
@@ -1648,9 +1868,13 @@ function calculateSPC(){
             }
         );
 
+
     const reference =
         "SPC-" +
-        Date.now().toString().slice(-6);
+        Date.now()
+            .toString()
+            .slice(-6);
+
 
     const accessoryNames =
         selectedAccessories.length === 0
@@ -1662,9 +1886,16 @@ function calculateSPC(){
                 )
                 .join(", ");
 
+
+    /*
+        Simpan ukuran dalam MM supaya
+        history sentiasa konsisten.
+    */
+
     lastCalculatedRecord = {
 
-        id:reference,
+        id:
+            reference,
 
         tajuk:
             `SPC Flooring — ${material.name}`,
@@ -1672,13 +1903,18 @@ function calculateSPC(){
         info:
             `${width} × ${length} mm`,
 
+        inputInfo:
+            `${widthInput} ${widthUnit.toUpperCase()} × ${lengthInput} ${lengthUnit.toUpperCase()}`,
+
         harga:
             "RM " +
             grandTotal.toFixed(2),
 
-        date:date,
+        date:
+            date,
 
-        time:time,
+        time:
+            time,
 
         material:
             material.name,
@@ -1705,15 +1941,21 @@ function calculateSPC(){
 
     };
 
-    saveHistory(lastCalculatedRecord);
+
+    saveHistory(
+        lastCalculatedRecord
+    );
+
 
     renderHistory();
+
 
     drawFloorLayout(
         width,
         length,
         type
     );
+
 
     document.getElementById(
         "resultSection"
@@ -1724,6 +1966,11 @@ function calculateSPC(){
 
 }
 
+
+/* =========================================
+   HISTORY
+========================================= */
+
 function saveHistory(record){
 
     let history =
@@ -1733,11 +1980,17 @@ function saveHistory(record){
             )
         ) || [];
 
+
     history.unshift(record);
 
-    if(history.length > 50){
-        history = history.slice(0,50);
+
+    if(
+        history.length > 50
+    ){
+        history =
+            history.slice(0,50);
     }
+
 
     localStorage.setItem(
         "diy_calc_history",
@@ -1746,6 +1999,7 @@ function saveHistory(record){
 
 }
 
+
 function renderHistory(){
 
     const section =
@@ -1753,10 +2007,12 @@ function renderHistory(){
             "historySection"
         );
 
+
     const list =
         document.getElementById(
             "historyList"
         );
+
 
     let history =
         JSON.parse(
@@ -1765,10 +2021,14 @@ function renderHistory(){
             )
         ) || [];
 
-    if(history.length === 0){
+
+    if(
+        history.length === 0
+    ){
 
         section.style.display =
             "block";
+
 
         list.innerHTML = `
 
@@ -1789,10 +2049,13 @@ function renderHistory(){
 
     }
 
+
     section.style.display =
         "block";
 
+
     let html = "";
+
 
     history.forEach(
         (item,index)=>{
@@ -1871,10 +2134,16 @@ function renderHistory(){
         }
     );
 
+
     list.innerHTML =
         html;
 
 }
+
+
+/* =========================================
+   USE HISTORY
+========================================= */
 
 function useHistory(index){
 
@@ -1885,75 +2154,127 @@ function useHistory(index){
             )
         ) || [];
 
+
     const item =
         history[index];
 
-    if(!item) return;
+
+    if(!item)
+        return;
+
 
     const dimensions =
         item.info
             .replace(/mm/g,"")
             .split("×");
 
-    if(dimensions.length >= 2){
+
+    if(
+        dimensions.length >= 2
+    ){
 
         document.getElementById(
             "roomWidth"
         ).value =
-            parseFloat(dimensions[0]);
+            parseFloat(
+                dimensions[0]
+            );
+
 
         document.getElementById(
             "roomLength"
         ).value =
-            parseFloat(dimensions[1]);
+            parseFloat(
+                dimensions[1]
+            );
+
+
+        document.getElementById(
+            "widthUnit"
+        ).value =
+            "mm";
+
+
+        document.getElementById(
+            "lengthUnit"
+        ).value =
+            "mm";
+
+
+        updateUnitLabel(
+            "width"
+        );
+
+
+        updateUnitLabel(
+            "length"
+        );
 
     }
+
 
     const radio =
         document.querySelector(
             `input[name="spcType"][value="${getMaterialValue(item.material)}"]`
         );
 
+
     if(radio){
         radio.checked = true;
     }
+
 
     const wastage =
         document.getElementById(
             "wastagePerc"
         );
 
+
     const availableWastage =
         Array.from(
             wastage.options
         ).map(
             option =>
-                parseInt(option.value)
+                parseInt(
+                    option.value
+                )
         );
+
 
     if(
         availableWastage.includes(
             parseInt(item.wastage)
         )
     ){
+
         wastage.value =
             item.wastage;
+
     }
+
 
     document.getElementById(
         "accSkirting"
-    ).checked = false;
+    ).checked =
+        false;
+
 
     document.getElementById(
         "accEndcap"
-    ).checked = false;
+    ).checked =
+        false;
+
 
     document.getElementById(
         "accTmolding"
-    ).checked = false;
+    ).checked =
+        false;
+
 
     if(
-        Array.isArray(item.accessories)
+        Array.isArray(
+            item.accessories
+        )
     ){
 
         item.accessories.forEach(
@@ -1963,6 +2284,7 @@ function useHistory(index){
                     document.querySelector(
                         `.accessory-check input[value="${type}"]`
                     );
+
 
                 if(checkbox){
                     checkbox.checked = true;
@@ -1993,6 +2315,7 @@ function useHistory(index){
                             `.accessory-check input[value="${type}"]`
                         );
 
+
                     if(checkbox){
                         checkbox.checked = true;
                     }
@@ -2004,10 +2327,12 @@ function useHistory(index){
 
     }
 
+
     window.scrollTo({
         top:0,
         behavior:"smooth"
     });
+
 
     setTimeout(
         calculateSPC,
@@ -2016,20 +2341,35 @@ function useHistory(index){
 
 }
 
+
 function getMaterialValue(name){
 
-    if(name === "Ecoflex")
+    if(
+        name === "Ecoflex"
+    )
         return "ecoflex";
 
-    if(name === "Microcement")
+
+    if(
+        name === "Microcement"
+    )
         return "microcement";
 
-    if(name === "Herringbone")
+
+    if(
+        name === "Herringbone"
+    )
         return "herringbone";
+
 
     return "ecoflex";
 
 }
+
+
+/* =========================================
+   DELETE HISTORY
+========================================= */
 
 function deleteHistory(index){
 
@@ -2041,6 +2381,7 @@ function deleteHistory(index){
         return;
     }
 
+
     let history =
         JSON.parse(
             localStorage.getItem(
@@ -2048,19 +2389,23 @@ function deleteHistory(index){
             )
         ) || [];
 
+
     history.splice(
         index,
         1
     );
+
 
     localStorage.setItem(
         "diy_calc_history",
         JSON.stringify(history)
     );
 
+
     renderHistory();
 
 }
+
 
 function clearHistory(){
 
@@ -2072,17 +2417,26 @@ function clearHistory(){
         return;
     }
 
+
     localStorage.removeItem(
         "diy_calc_history"
     );
+
 
     renderHistory();
 
 }
 
+
+/* =========================================
+   CART
+========================================= */
+
 function addSPCToCart(){
 
-    if(!lastCalculatedRecord){
+    if(
+        !lastCalculatedRecord
+    ){
 
         alert(
             "Sila buat pengiraan terlebih dahulu."
@@ -2092,6 +2446,7 @@ function addSPCToCart(){
 
     }
 
+
     let cart =
         JSON.parse(
             localStorage.getItem(
@@ -2099,22 +2454,27 @@ function addSPCToCart(){
             )
         ) || [];
 
+
     cart.push(
         lastCalculatedRecord
     );
+
 
     localStorage.setItem(
         "diy_cart",
         JSON.stringify(cart)
     );
 
+
     updateCartCount();
+
 
     alert(
         "Pengiraan berjaya ditambahkan ke Shopping Cart."
     );
 
 }
+
 
 function updateCartCount(){
 
@@ -2125,12 +2485,14 @@ function updateCartCount(){
             )
         ) || [];
 
+
     document.getElementById(
         "cartCount"
     ).innerText =
         cart.length;
 
 }
+
 
 function toggleCart(){
 
@@ -2139,19 +2501,24 @@ function toggleCart(){
             "cartModal"
         );
 
+
     modal.classList.toggle(
         "active"
     );
+
 
     if(
         modal.classList.contains(
             "active"
         )
     ){
+
         renderCart();
+
     }
 
 }
+
 
 function closeCartOutside(event){
 
@@ -2159,10 +2526,13 @@ function closeCartOutside(event){
         event.target.id ===
         "cartModal"
     ){
+
         toggleCart();
+
     }
 
 }
+
 
 function renderCart(){
 
@@ -2173,12 +2543,16 @@ function renderCart(){
             )
         ) || [];
 
+
     const container =
         document.getElementById(
             "cartItems"
         );
 
-    if(cart.length === 0){
+
+    if(
+        cart.length === 0
+    ){
 
         container.innerHTML = `
 
@@ -2191,26 +2565,32 @@ function renderCart(){
 
         `;
 
+
         document.getElementById(
             "cartSubtotal"
         ).innerText =
             "RM 0.00";
+
 
         document.getElementById(
             "cartDelivery"
         ).innerText =
             "RM 0.00";
 
+
         document.getElementById(
             "cartGrand"
         ).innerText =
             "RM 0.00";
 
+
         return;
 
     }
 
+
     let html = "";
+
 
     cart.forEach(
         (item,index)=>{
@@ -2224,6 +2604,7 @@ function renderCart(){
                         ""
                     )
                 ) || 0;
+
 
             html += `
 
@@ -2283,12 +2664,15 @@ function renderCart(){
         }
     );
 
+
     container.innerHTML =
         html;
+
 
     calculateCartTotal();
 
 }
+
 
 function removeCart(index){
 
@@ -2299,21 +2683,26 @@ function removeCart(index){
             )
         ) || [];
 
+
     cart.splice(
         index,
         1
     );
+
 
     localStorage.setItem(
         "diy_cart",
         JSON.stringify(cart)
     );
 
+
     updateCartCount();
+
 
     renderCart();
 
 }
+
 
 function calculateCartTotal(){
 
@@ -2324,7 +2713,9 @@ function calculateCartTotal(){
             )
         ) || [];
 
+
     let subtotal = 0;
+
 
     cart.forEach(
         item=>{
@@ -2342,6 +2733,7 @@ function calculateCartTotal(){
         }
     );
 
+
     const delivery =
         parseFloat(
             document.getElementById(
@@ -2349,9 +2741,11 @@ function calculateCartTotal(){
             ).value
         ) || 0;
 
+
     const total =
         subtotal +
         delivery;
+
 
     document.getElementById(
         "cartSubtotal"
@@ -2359,11 +2753,13 @@ function calculateCartTotal(){
         "RM " +
         subtotal.toFixed(2);
 
+
     document.getElementById(
         "cartDelivery"
     ).innerText =
         "RM " +
         delivery.toFixed(2);
+
 
     document.getElementById(
         "cartGrand"
@@ -2372,6 +2768,11 @@ function calculateCartTotal(){
         total.toFixed(2);
 
 }
+
+
+/* =========================================
+   WHATSAPP
+========================================= */
 
 function proceedCheckout(){
 
@@ -2382,7 +2783,10 @@ function proceedCheckout(){
             )
         ) || [];
 
-    if(cart.length === 0){
+
+    if(
+        cart.length === 0
+    ){
 
         alert(
             "Shopping Cart anda kosong."
@@ -2392,6 +2796,7 @@ function proceedCheckout(){
 
     }
 
+
     const delivery =
         parseFloat(
             document.getElementById(
@@ -2399,11 +2804,14 @@ function proceedCheckout(){
             ).value
         ) || 0;
 
+
     let subtotal = 0;
+
 
     let message =
         "HAI IDRIS DIY,\n\n" +
         "SAYA INGIN MEMBUAT SEMAKAN PESANAN BERDASARKAN PENGIRAAN BERIKUT:\n\n";
+
 
     cart.forEach(
         (item,index)=>{
@@ -2418,25 +2826,34 @@ function proceedCheckout(){
                     )
                 ) || 0;
 
-            subtotal += price;
+
+            subtotal +=
+                price;
+
 
             message +=
                 `${index + 1}. ${item.tajuk}\n`;
 
+
             message +=
                 `   Ukuran: ${item.info}\n`;
+
 
             message +=
                 `   Area: ${item.sqft || "-"} sqft\n`;
 
+
             message +=
                 `   Box: ${item.boxes || "-"}\n`;
+
 
             message +=
                 `   Aksesori: ${item.accessory || "Tiada"}\n`;
 
+
             message +=
                 `   Ref: ${item.id || "-"}\n`;
+
 
             message +=
                 `   Jumlah: RM ${price.toFixed(2)}\n\n`;
@@ -2444,21 +2861,27 @@ function proceedCheckout(){
         }
     );
 
+
     const total =
         subtotal +
         delivery;
 
+
     message +=
         `Material Total: RM ${subtotal.toFixed(2)}\n`;
+
 
     message +=
         `Delivery / Lalamove: RM ${delivery.toFixed(2)}\n`;
 
+
     message +=
         `TOTAL: RM ${total.toFixed(2)}\n\n`;
 
+
     message +=
         "Mohon semak dan sahkan pesanan saya.";
+
 
     const url =
         "https://wa.me/?text=" +
@@ -2466,12 +2889,18 @@ function proceedCheckout(){
             message
         );
 
+
     window.open(
         url,
         "_blank"
     );
 
 }
+
+
+/* =========================================
+   FLOOR VISUAL
+========================================= */
 
 function drawFloorLayout(
     width,
@@ -2484,8 +2913,10 @@ function drawFloorLayout(
             "canvasVisual"
         );
 
+
     const parent =
         canvas.parentElement;
+
 
     canvas.width =
         Math.max(
@@ -2493,13 +2924,16 @@ function drawFloorLayout(
             parent.clientWidth - 2
         );
 
+
     canvas.height =
         240;
+
 
     const ctx =
         canvas.getContext(
             "2d"
         );
+
 
     ctx.clearRect(
         0,
@@ -2508,8 +2942,10 @@ function drawFloorLayout(
         canvas.height
     );
 
+
     const padding =
         35;
+
 
     const scale =
         Math.min(
@@ -2520,20 +2956,30 @@ function drawFloorLayout(
                 length
         );
 
+
     const drawW =
-        width * scale;
+        width *
+        scale;
+
 
     const drawH =
-        length * scale;
+        length *
+        scale;
+
 
     const startX =
-        (canvas.width - drawW) / 2;
+        (canvas.width - drawW) /
+        2;
+
 
     const startY =
-        (canvas.height - drawH) / 2;
+        (canvas.height - drawH) /
+        2;
+
 
     ctx.fillStyle =
         "#fffdf0";
+
 
     ctx.fillRect(
         startX,
@@ -2542,11 +2988,14 @@ function drawFloorLayout(
         drawH
     );
 
+
     ctx.strokeStyle =
         "#111";
 
+
     ctx.lineWidth =
         2;
+
 
     ctx.strokeRect(
         startX,
@@ -2555,13 +3004,18 @@ function drawFloorLayout(
         drawH
     );
 
-    if(type === "herringbone"){
+
+    if(
+        type === "herringbone"
+    ){
 
         ctx.strokeStyle =
             "#c7ad00";
 
+
         ctx.lineWidth =
             1;
+
 
         const step =
             Math.max(
@@ -2571,6 +3025,7 @@ function drawFloorLayout(
                     drawW / 12
                 )
             );
+
 
         for(
             let x =
@@ -2584,20 +3039,24 @@ function drawFloorLayout(
 
             ctx.beginPath();
 
+
             ctx.moveTo(
                 x,
                 startY
             );
+
 
             ctx.lineTo(
                 x + drawH / 2,
                 startY + drawH / 2
             );
 
+
             ctx.lineTo(
                 x,
                 startY + drawH
             );
+
 
             ctx.stroke();
 
@@ -2609,8 +3068,10 @@ function drawFloorLayout(
         ctx.strokeStyle =
             "#d4bd00";
 
+
         ctx.lineWidth =
             .7;
+
 
         const rows =
             Math.max(
@@ -2623,8 +3084,11 @@ function drawFloorLayout(
                 )
             );
 
+
         const rowHeight =
-            drawH / rows;
+            drawH /
+            rows;
+
 
         for(
             let y =
@@ -2638,19 +3102,23 @@ function drawFloorLayout(
 
             ctx.beginPath();
 
+
             ctx.moveTo(
                 startX,
                 y
             );
+
 
             ctx.lineTo(
                 startX + drawW,
                 y
             );
 
+
             ctx.stroke();
 
         }
+
 
         const cols =
             Math.max(
@@ -2663,10 +3131,14 @@ function drawFloorLayout(
                 )
             );
 
+
         const colWidth =
-            drawW / cols;
+            drawW /
+            cols;
+
 
         let row = 0;
+
 
         for(
             let y =
@@ -2683,6 +3155,7 @@ function drawFloorLayout(
                     ? 0
                     : colWidth / 2;
 
+
             for(
                 let x =
                     startX + offset;
@@ -2695,10 +3168,12 @@ function drawFloorLayout(
 
                 ctx.beginPath();
 
+
                 ctx.moveTo(
                     x,
                     y
                 );
+
 
                 ctx.lineTo(
                     x,
@@ -2708,9 +3183,11 @@ function drawFloorLayout(
                     )
                 );
 
+
                 ctx.stroke();
 
             }
+
 
             row++;
 
@@ -2718,17 +3195,21 @@ function drawFloorLayout(
 
     }
 
+
     ctx.fillStyle =
         "#111";
+
 
     ctx.font =
         "10px Inter";
 
+
     ctx.textAlign =
         "center";
 
+
     ctx.fillText(
-        `Width: ${width} mm`,
+        `Width: ${formatNumber(width)} mm`,
         canvas.width / 2,
         Math.max(
             13,
@@ -2736,7 +3217,9 @@ function drawFloorLayout(
         )
     );
 
+
     ctx.save();
+
 
     ctx.translate(
         Math.max(
@@ -2746,28 +3229,53 @@ function drawFloorLayout(
         canvas.height / 2
     );
 
+
     ctx.rotate(
         -Math.PI / 2
     );
 
+
     ctx.fillText(
-        `Length: ${length} mm`,
+        `Length: ${formatNumber(length)} mm`,
         0,
         0
     );
+
 
     ctx.restore();
 
 }
 
+
+/* =========================================
+   SECURITY
+========================================= */
+
 function escapeHTML(value){
 
-    return String(value ?? "")
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
+    return String(
+        value ?? ""
+    )
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 
 }
 
