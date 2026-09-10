@@ -1,2024 +1,2722 @@
 <!DOCTYPE html>
-<html lang="ms">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Wainscoting Calculator | iPainter DIY</title>
-
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <style>
-        :root {
-            --brand-yellow: #fdee23;
-            --brand-dark: #111111;
-            --bg: #f5f6f8;
-            --card: #ffffff;
-            --border: #e5e7eb;
-            --muted: #6b7280;
-            --success: #166534;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg);
-            color: #111827;
-            margin: 0;
-            padding: 18px 14px 90px;
-        }
-
-        .main-container {
-            width: 100%;
-            max-width: 680px;
-            margin: 0 auto;
-        }
-
-        .main-card {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
-            overflow: hidden;
-        }
-
-        .header {
-            padding: 22px 22px 18px;
-            border-bottom: 1px solid var(--border);
-            background: #fff;
-        }
-
-        .brand-label {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            font-size: 10px;
-            font-weight: 800;
-            letter-spacing: .08em;
-            text-transform: uppercase;
-            color: #52525b;
-            margin-bottom: 8px;
-        }
-
-        .brand-dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: var(--brand-yellow);
-            border: 1px solid #111;
-        }
-
-        .header h1 {
-            margin: 0;
-            font-size: 22px;
-            line-height: 1.2;
-            font-weight: 800;
-            color: #111827;
-        }
-
-        .header p {
-            margin: 7px 0 0;
-            font-size: 12px;
-            line-height: 1.5;
-            color: var(--muted);
-        }
-
-        .content {
-            padding: 20px;
-        }
-
-        .section-title {
-            font-size: 12px;
-            font-weight: 800;
-            color: #111827;
-            text-transform: uppercase;
-            letter-spacing: .05em;
-            margin-bottom: 12px;
-        }
-
-        .form-section {
-            margin-bottom: 22px;
-        }
-
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        .form-group {
-            margin-bottom: 14px;
-        }
-
-        label {
-            display: block;
-            font-size: 12px;
-            font-weight: 700;
-            color: #374151;
-            margin-bottom: 6px;
-        }
-
-        input,
-        select {
-            width: 100%;
-            padding: 12px 13px;
-            border: 1px solid #d1d5db;
-            border-radius: 10px;
-            background: #fff;
-            color: #111827;
-            font-family: inherit;
-            font-size: 13px;
-            outline: none;
-            transition: .2s;
-        }
-
-        input:focus,
-        select:focus {
-            border-color: #b5a800;
-            box-shadow: 0 0 0 3px rgba(253, 238, 35, .22);
-        }
-
-        .helper {
-            font-size: 10px;
-            color: #9ca3af;
-            margin-top: 5px;
-        }
-
-        .calculate-btn {
-            width: 100%;
-            border: 1.5px solid #111;
-            background: var(--brand-yellow);
-            color: #111;
-            padding: 14px 16px;
-            border-radius: 11px;
-            font-size: 14px;
-            font-weight: 800;
-            cursor: pointer;
-            transition: .18s;
-            box-shadow: 0 4px 12px rgba(253, 238, 35, .22);
-        }
-
-        .calculate-btn:hover {
-            filter: brightness(.97);
-        }
-
-        .calculate-btn:active {
-            transform: scale(.985);
-        }
-
-        /* RESULT */
-
-        .result-container {
-            display: none;
-            margin-top: 22px;
-            border: 1px solid #eadf76;
-            background: #fffef2;
-            border-radius: 14px;
-            overflow: hidden;
-        }
-
-        .result-header {
-            padding: 14px 15px;
-            border-bottom: 1px solid #eee5a5;
-            background: #fffdea;
-        }
-
-        .result-header-title {
-            font-size: 13px;
-            font-weight: 800;
-            color: #111827;
-        }
-
-        .result-header-sub {
-            font-size: 10px;
-            color: #78716c;
-            margin-top: 3px;
-        }
-
-        .result-body {
-            padding: 15px;
-        }
-
-        .breakdown {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .breakdown-row {
-            display: flex;
-            justify-content: space-between;
-            gap: 12px;
-            font-size: 11px;
-            color: #4b5563;
-            line-height: 1.5;
-        }
-
-        .breakdown-row span:last-child {
-            white-space: nowrap;
-            font-weight: 700;
-            color: #111827;
-        }
-
-        .total-box {
-            margin-top: 14px;
-            padding-top: 14px;
-            border-top: 1px solid #e7e2bb;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .total-label {
-            font-size: 12px;
-            font-weight: 800;
-            color: #374151;
-        }
-
-        .total-price {
-            font-size: 20px;
-            font-weight: 800;
-            color: #111827;
-            white-space: nowrap;
-        }
-
-        .cart-btn {
-            width: 100%;
-            margin-top: 14px;
-            padding: 13px;
-            border-radius: 10px;
-            border: 1.5px solid #111;
-            background: #111;
-            color: white;
-            font-size: 12px;
-            font-weight: 800;
-            cursor: pointer;
-        }
-
-        .cart-btn:hover {
-            background: #252525;
-        }
-
-        /* VISUAL */
-
-        .visual-container {
-            display: none;
-            margin-top: 20px;
-        }
-
-        .visual-top {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .visual-title {
-            font-size: 12px;
-            font-weight: 800;
-            color: #374151;
-        }
-
-        .save-btn {
-            border: 1px solid #d1d5db;
-            background: white;
-            color: #374151;
-            padding: 8px 10px;
-            border-radius: 8px;
-            font-size: 10px;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .save-btn:hover {
-            background: #f9fafb;
-        }
-
-        #captureArea {
-            width: 100%;
-            min-height: 320px;
-            background: white;
-            border: 1px solid #d1d5db;
-            border-radius: 14px;
-            padding: 14px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-        }
-
-        /* HISTORY */
-
-        .history-section {
-            margin-top: 24px;
-            border-top: 1px solid var(--border);
-            padding-top: 20px;
-        }
-
-        .history-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .history-heading {
-            font-size: 13px;
-            font-weight: 800;
-            color: #111827;
-        }
-
-        .history-count {
-            font-size: 10px;
-            background: #f3f4f6;
-            color: #6b7280;
-            padding: 4px 8px;
-            border-radius: 20px;
-            font-weight: 700;
-        }
-
-        .history-actions {
-            display: flex;
-            gap: 7px;
-        }
-
-        .history-action {
-            border: 1px solid #d1d5db;
-            background: white;
-            color: #4b5563;
-            padding: 7px 9px;
-            border-radius: 7px;
-            font-size: 9px;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .history-action.danger {
-            color: #b91c1c;
-        }
-
-        .history-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .history-empty {
-            text-align: center;
-            padding: 25px 15px;
-            border: 1px dashed #d1d5db;
-            border-radius: 10px;
-            color: #9ca3af;
-            font-size: 11px;
-            background: #fafafa;
-        }
-
-        .history-item {
-            background: #fff;
-            border: 1px solid #e5e7eb;
-            border-radius: 11px;
-            padding: 12px;
-        }
-
-        .history-item-top {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-        }
-
-        .history-name {
-            font-size: 11px;
-            font-weight: 800;
-            color: #111827;
-        }
-
-        .history-price {
-            font-size: 12px;
-            font-weight: 800;
-            color: #111827;
-            white-space: nowrap;
-        }
-
-        .history-info {
-            font-size: 10px;
-            color: #6b7280;
-            margin-top: 4px;
-            line-height: 1.5;
-        }
-
-        .history-date {
-            font-size: 9px;
-            color: #9ca3af;
-            margin-top: 4px;
-        }
-
-        .history-buttons {
-            display: flex;
-            gap: 7px;
-            margin-top: 9px;
-        }
-
-        .history-btn {
-            flex: 1;
-            padding: 7px;
-            border-radius: 7px;
-            font-size: 9px;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .reuse-btn {
-            background: #f8fafc;
-            color: #374151;
-            border: 1px solid #d1d5db;
-        }
-
-        .delete-btn {
-            background: #fff;
-            color: #b91c1c;
-            border: 1px solid #fecaca;
-        }
-
-        /* BACK */
-
-        .back-btn {
-            position: fixed;
-            right: 15px;
-            bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 11px 15px;
-            border-radius: 30px;
-            background: var(--brand-yellow);
-            color: #111;
-            text-decoration: none;
-            font-size: 11px;
-            font-weight: 800;
-            border: 1px solid #111;
-            box-shadow: 0 5px 18px rgba(0,0,0,.12);
-            z-index: 100;
-        }
-
-        @media (max-width: 480px) {
-            body {
-                padding: 10px 10px 85px;
-            }
-
-            .header {
-                padding: 18px;
-            }
-
-            .content {
-                padding: 16px;
-            }
-
-            .grid-2 {
-                gap: 9px;
-            }
-
-            .header h1 {
-                font-size: 20px;
-            }
-
-            .total-price {
-                font-size: 18px;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wainscoting Calculator | iPainter DIY</title>
+
+<style>
+:root{
+  --primary:#111827;
+  --secondary:#f4c400;
+  --bg:#f5f6f8;
+  --card:#ffffff;
+  --text:#111827;
+  --muted:#6b7280;
+  --border:#e5e7eb;
+  --green:#16a34a;
+  --red:#dc2626;
+  --blue:#2563eb;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+.container{
+  max-width:1100px;
+  margin:auto;
+  padding:20px;
+}
+
+.header{
+  background:var(--primary);
+  color:#fff;
+  border-radius:18px;
+  padding:24px;
+  margin-bottom:18px;
+}
+
+.header h1{
+  margin:0 0 6px;
+  font-size:28px;
+}
+
+.header p{
+  margin:0;
+  color:#d1d5db;
+  font-size:14px;
+}
+
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:20px;
+  margin-bottom:18px;
+  box-shadow:0 3px 12px rgba(0,0,0,.04);
+}
+
+.card h2{
+  margin:0 0 16px;
+  font-size:19px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+}
+
+.field{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+
+.field label{
+  font-size:13px;
+  font-weight:700;
+}
+
+.field input,
+.field select{
+  width:100%;
+  height:46px;
+  border:1px solid #d1d5db;
+  border-radius:10px;
+  padding:0 13px;
+  font-size:15px;
+  background:#fff;
+  outline:none;
+}
+
+.field input:focus,
+.field select:focus{
+  border-color:var(--secondary);
+  box-shadow:0 0 0 3px rgba(244,196,0,.15);
+}
+
+.full{
+  grid-column:1/-1;
+}
+
+.btn{
+  border:0;
+  border-radius:10px;
+  min-height:46px;
+  padding:0 18px;
+  font-size:14px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.btn-primary{
+  background:var(--secondary);
+  color:#111;
+}
+
+.btn-dark{
+  background:var(--primary);
+  color:#fff;
+}
+
+.btn-green{
+  background:var(--green);
+  color:#fff;
+}
+
+.btn-blue{
+  background:var(--blue);
+  color:#fff;
+}
+
+.actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:16px;
+}
+
+.result-total{
+  background:var(--primary);
+  color:#fff;
+  border-radius:14px;
+  padding:18px;
+  text-align:center;
+  margin-bottom:16px;
+}
+
+.result-total small{
+  display:block;
+  color:#d1d5db;
+  margin-bottom:5px;
+}
+
+.result-total strong{
+  display:block;
+  font-size:34px;
+  color:#facc15;
+}
+
+.breakdown{
+  width:100%;
+  border-collapse:collapse;
+  font-size:14px;
+}
+
+.breakdown th,
+.breakdown td{
+  padding:11px 8px;
+  border-bottom:1px solid var(--border);
+  text-align:left;
+  vertical-align:top;
+}
+
+.breakdown th{
+  font-size:12px;
+  color:var(--muted);
+  text-transform:uppercase;
+}
+
+.price{
+  font-weight:700;
+  white-space:nowrap;
+}
+
+.standard{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:3px;
+}
+
+.custom-combo{
+  display:inline-block;
+  margin-top:4px;
+  padding:4px 7px;
+  border-radius:6px;
+  background:#eef2ff;
+  color:#3730a3;
+  font-size:11px;
+  font-weight:700;
+}
+
+.info{
+  background:#fffbeb;
+  border:1px solid #fde68a;
+  border-radius:10px;
+  padding:12px;
+  font-size:13px;
+  line-height:1.5;
+  margin-bottom:15px;
+}
+
+.formula-box{
+  background:#f9fafb;
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:12px;
+  margin-bottom:15px;
+  font-size:13px;
+  line-height:1.6;
+}
+
+.formula-box b{
+  color:#111827;
+}
+
+.visual-wrap{
+  overflow-x:auto;
+  padding:15px 0;
+}
+
+.wall{
+  min-width:650px;
+  width:100%;
+  max-width:900px;
+  margin:auto;
+  background:#f3f4f6;
+  border:2px solid #9ca3af;
+  position:relative;
+  padding:35px 25px 0;
+}
+
+.top-boxes{
+  display:flex;
+  align-items:stretch;
+  width:100%;
+  height:260px;
+  gap:10px;
+}
+
+.box{
+  border:4px solid #374151;
+  background:#fff;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-width:20px;
+}
+
+.box span{
+  font-size:12px;
+  font-weight:700;
+  color:#374151;
+  transform:rotate(-90deg);
+  white-space:nowrap;
+}
+
+.chairrail{
+  height:18px;
+  background:#9ca3af;
+  margin:12px 0;
+  border-radius:3px;
+}
+
+.bottom-boxes{
+  display:flex;
+  gap:10px;
+  height:75px;
+  padding-bottom:20px;
+}
+
+.history-item{
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:12px;
+  margin-bottom:8px;
+  background:#fafafa;
+}
+
+.history-item strong{
+  display:block;
+  margin-bottom:4px;
+}
+
+.empty{
+  color:var(--muted);
+  font-size:14px;
+  text-align:center;
+  padding:20px;
+}
+
+.badge{
+  display:inline-block;
+  padding:4px 8px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:700;
+  margin-bottom:8px;
+}
+
+.badge-green{
+  background:#dcfce7;
+  color:#166534;
+}
+
+.badge-yellow{
+  background:#fef3c7;
+  color:#92400e;
+}
+
+.badge-blue{
+  background:#dbeafe;
+  color:#1e40af;
+}
+
+.badge-purple{
+  background:#ede9fe;
+  color:#6d28d9;
+}
+
+@media(max-width:700px){
+
+  .container{
+    padding:12px;
+  }
+
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  .full{
+    grid-column:auto;
+  }
+
+  .header h1{
+    font-size:23px;
+  }
+
+  .card{
+    padding:15px;
+  }
+
+  .breakdown{
+    font-size:12px;
+  }
+
+  .breakdown th,
+  .breakdown td{
+    padding:9px 5px;
+  }
+}
+</style>
 </head>
 
 <body>
 
-<div class="main-container">
-
-    <div class="main-card">
-
-        <!-- HEADER -->
-        <div class="header">
-            <div class="brand-label">
-                <span class="brand-dot"></span>
-                iPainter DIY • Calculation Portal
-            </div>
-
-            <h1>Wainscoting Calculator</h1>
-
-            <p>
-                Sediakan anggaran material dan kos wainscoting berdasarkan
-                ukuran dinding serta konfigurasi pilihan.
-            </p>
-        </div>
-
-        <div class="content">
-
-            <!-- INPUT -->
-            <div class="form-section">
-
-                <div class="section-title">
-                    Maklumat Projek
-                </div>
-
-                <div class="grid-2">
-
-                    <div class="form-group">
-                        <label>Lebar Dinding (mm)</label>
-                        <input
-                            type="number"
-                            id="wallWidth"
-                            value="3000"
-                            min="1"
-                        >
-                    </div>
-
-                    <div class="form-group">
-                        <label>Tinggi Dinding (mm)</label>
-                        <input
-                            type="number"
-                            id="wallHeight"
-                            value="2900"
-                            min="1"
-                        >
-                    </div>
-
-                </div>
-
-                <div class="form-group">
-
-                    <label>Konfigurasi Susun Atur</label>
-
-                    <select id="layoutStyle">
-
-                        <option value="with_chairrail">
-                            Dengan Chair Rail
-                        </option>
-
-                        <option value="without_chairrail">
-                            Tanpa Chair Rail
-                        </option>
-
-                    </select>
-
-                    <div class="helper">
-                        Chair rail digunakan untuk memisahkan bahagian atas dan bawah dinding.
-                    </div>
-
-                </div>
-
-                <div class="form-group">
-
-                    <label>Corak Kotak / Nisbah</label>
-
-                    <select id="boxPattern">
-
-                        <option value="1:1">
-                            1:1 — 2 Bahagian
-                        </option>
-
-                        <option value="1:2:1">
-                            1:2:1 — 3 Kotak
-                        </option>
-
-                        <option value="1:1:2:1:1">
-                            1:1:2:1:1 — 5 Kotak
-                        </option>
-
-                        <option value="2:1:2:1:2" selected>
-                            2:1:2:1:2 — 5 Kotak
-                        </option>
-
-                        <option value="1:2:1:2:1">
-                            1:2:1:2:1 — 5 Kotak
-                        </option>
-
-                        <option value="1">
-                            1 — Single Panel
-                        </option>
-
-                    </select>
-
-                </div>
-
-                <div class="grid-2">
-
-                    <div class="form-group">
-
-                        <label>Jenis Bingkai</label>
-
-                        <select id="frameType">
-
-                            <option value="single">
-                                Single Frame
-                            </option>
-
-                            <option value="double">
-                                Double Frame
-                            </option>
-
-                        </select>
-
-                    </div>
-
-                    <div class="form-group">
-
-                        <label>Finishing Bingkai</label>
-
-                        <select id="frameColor">
-
-                            <option value="standard">
-                                Hitam Standard
-                            </option>
-
-                            <option value="gold">
-                                Gold Frame (+RM5)
-                            </option>
-
-                        </select>
-
-                    </div>
-
-                </div>
-
-                <button
-                    class="calculate-btn"
-                    onclick="calculateWainscoting()"
-                >
-                    Kira Anggaran
-                </button>
-
-            </div>
-
-            <!-- RESULT -->
-            <div
-                id="resultContainer"
-                class="result-container"
-            >
-
-                <div class="result-header">
-
-                    <div class="result-header-title">
-                        Ringkasan Anggaran
-                    </div>
-
-                    <div class="result-header-sub">
-                        Pecahan material dan anggaran kos projek
-                    </div>
-
-                </div>
-
-                <div class="result-body">
-
-                    <div
-                        id="priceBreakdown"
-                        class="breakdown"
-                    ></div>
-
-                    <div class="total-box">
-
-                        <div class="total-label">
-                            Jumlah Anggaran
-                        </div>
-
-                        <div
-                            id="totalPrice"
-                            class="total-price"
-                        >
-                            RM 0.00
-                        </div>
-
-                    </div>
-
-                    <button
-                        class="cart-btn"
-                        onclick="addWainscotingToCart()"
-                    >
-                        + Masukkan Pengiraan ke Troli
-                    </button>
-
-                </div>
-
-            </div>
-
-            <!-- VISUAL -->
-            <div
-                id="visualContainer"
-                class="visual-container"
-            >
-
-                <div class="visual-top">
-
-                    <div class="visual-title">
-                        Visual Susun Atur Dinding
-                    </div>
-
-                    <button
-                        class="save-btn"
-                        onclick="saveVisualToPhone()"
-                    >
-                        ↓ Simpan PNG
-                    </button>
-
-                </div>
-
-                <div id="captureArea"></div>
-
-            </div>
-
-            <!-- HISTORY -->
-            <div class="history-section">
-
-                <div class="history-header">
-
-                    <div style="display:flex;align-items:center;gap:8px;">
-
-                        <div class="history-heading">
-                            Sejarah Pengiraan
-                        </div>
-
-                        <span
-                            id="historyCount"
-                            class="history-count"
-                        >
-                            0 Rekod
-                        </span>
-
-                    </div>
-
-                    <div class="history-actions">
-
-                        <button
-                            class="history-action"
-                            onclick="refreshHistory()"
-                        >
-                            ↻
-                        </button>
-
-                        <button
-                            class="history-action danger"
-                            onclick="clearHistory()"
-                        >
-                            Padam Semua
-                        </button>
-
-                    </div>
-
-                </div>
-
-                <div
-                    id="historyList"
-                    class="history-list"
-                ></div>
-
-            </div>
-
-        </div>
+<div class="container">
+
+  <div class="header">
+    <h1>Wainscoting Calculator</h1>
+    <p>iPainter DIY — Wall measurement, box layout & pricing calculator</p>
+  </div>
+
+  <div class="card">
+
+    <h2>Wall & Layout</h2>
+
+    <div class="grid">
+
+      <div class="field">
+        <label for="wallWidth">Wall Width (mm)</label>
+        <input id="wallWidth" type="number" min="1" value="3000">
+      </div>
+
+      <div class="field">
+        <label for="wallHeight">Wall Height (mm)</label>
+        <input id="wallHeight" type="number" min="1" value="2900">
+      </div>
+
+      <div class="field">
+        <label for="layoutStyle">Layout Style</label>
+        <select id="layoutStyle">
+          <option value="with_chairrail">With Chair Rail</option>
+          <option value="without_chairrail">Without Chair Rail</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="boxPattern">Box Pattern</label>
+        <select id="boxPattern">
+          <option value="1:1">1 : 1</option>
+          <option value="1:2:1">1 : 2 : 1</option>
+          <option value="1:1:2:1:1">1 : 1 : 2 : 1 : 1</option>
+          <option value="2:1:2:1:2">2 : 1 : 2 : 1 : 2</option>
+          <option value="1:2:1:2:1">1 : 2 : 1 : 2 : 1</option>
+          <option value="single">1 Single</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="frameType">Frame Type</label>
+        <select id="frameType">
+          <option value="single">Single Frame</option>
+          <option value="double">Double Frame</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="frameColor">Frame Colour</label>
+        <select id="frameColor">
+          <option value="standard">Standard</option>
+          <option value="gold">Gold (+RM5 / box)</option>
+        </select>
+      </div>
 
     </div>
 
+    <div class="actions">
+      <button class="btn btn-primary" onclick="calculate()">
+        Calculate
+      </button>
+
+      <button class="btn btn-dark" onclick="resetCalculator()">
+        Reset
+      </button>
+    </div>
+
+  </div>
+
+
+  <div class="card" id="resultCard">
+
+    <h2>Calculation Result</h2>
+
+    <div id="resultContent">
+
+      <div class="empty">
+        Enter wall dimensions and click Calculate.
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="card">
+
+    <h2>Visual Layout</h2>
+
+    <div class="visual-wrap">
+
+      <div class="wall" id="visualWall">
+
+        <div class="top-boxes" id="topBoxes"></div>
+
+        <div class="chairrail" id="chairRailVisual"></div>
+
+        <div class="bottom-boxes" id="bottomBoxes"></div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="card">
+
+    <h2>Calculation History</h2>
+
+    <div class="actions">
+
+      <button
+        class="btn btn-blue"
+        onclick="saveHistory()">
+        Save Current Calculation
+      </button>
+
+      <button
+        class="btn btn-dark"
+        onclick="clearHistory()">
+        Clear History
+      </button>
+
+    </div>
+
+    <div
+      id="historyList"
+      style="margin-top:15px;">
+    </div>
+
+  </div>
+
 </div>
 
-<a
-    href="../index.html"
-    class="back-btn"
->
-    ← Menu Utama
-</a>
 
 <script>
 
-    /* =========================================================
-       PRICE DATABASE
-    ========================================================= */
+/* =========================================================
+   WAINSCOTING PRICE DATABASE
+   ========================================================= */
 
-    const singlePrices = {
+const singlePrices = {
 
-        "300x300": 30,
-        "300x600": 40,
-        "300x900": 50,
-        "300x1200": 60,
-        "300x1500": 70,
-        "300x1800": 90,
-        "300x2400": 110,
+  "300x300":30,
+  "300x600":40,
+  "300x900":50,
+  "300x1200":60,
+  "300x1500":70,
+  "300x1800":90,
+  "300x2400":110,
 
-        "600x600": 50,
-        "600x900": 60,
-        "600x1200": 70,
-        "600x1500": 90,
-        "600x1800": 100,
-        "600x2400": 130,
+  "600x600":50,
+  "600x900":60,
+  "600x1200":70,
+  "600x1500":90,
+  "600x1800":100,
+  "600x2400":130,
 
-        "900x900": 70,
-        "900x1200": 90,
-        "900x1500": 100,
-        "900x1800": 110,
-        "900x2400": 140,
+  "900x900":70,
+  "900x1200":90,
+  "900x1500":100,
+  "900x1800":110,
+  "900x2400":140,
 
-        "1200x1200": 100,
-        "1200x1500": 110,
-        "1200x1800": 130,
-        "1200x2400": 150,
+  "1200x1200":100,
+  "1200x1500":110,
+  "1200x1800":130,
+  "1200x2400":150,
 
-        "1500x1500": 130,
-        "1500x1800": 140,
-        "1500x2400": 160,
+  "1500x1500":130,
+  "1500x1800":140,
+  "1500x2400":160,
 
-        "1800x1800": 150,
-        "1800x2400": 190,
+  "1800x1800":150,
+  "1800x2400":190,
 
-        "2400x2400": 210
-    };
+  "2400x2400":210
 
-    const doublePrices = {
+};
 
-        "300x300": 15,
-        "300x600": 25,
-        "300x900": 35,
-        "300x1200": 45,
-        "300x1500": 55,
-        "300x1800": 65,
-        "300x2400": 75,
 
-        "600x600": 35,
-        "600x900": 45,
-        "600x1200": 55,
-        "600x1500": 65,
-        "600x1800": 75,
-        "600x2400": 115,
+const doublePrices = {
 
-        "900x900": 55,
-        "900x1200": 65,
-        "900x1500": 75,
-        "900x1800": 85,
-        "900x2400": 120,
+  "300x300":15,
+  "300x600":25,
+  "300x900":35,
+  "300x1200":45,
+  "300x1500":55,
+  "300x1800":65,
+  "300x2400":75,
 
-        "1200x1200": 75,
-        "1200x1500": 85,
-        "1200x1800": 115,
-        "1200x2400": 125,
+  "600x600":35,
+  "600x900":45,
+  "600x1200":55,
+  "600x1500":65,
+  "600x1800":75,
+  "600x2400":115,
 
-        "1500x1500": 115,
-        "1500x1800": 120,
-        "1500x2400": 145,
+  "900x900":55,
+  "900x1200":65,
+  "900x1500":75,
+  "900x1800":85,
+  "900x2400":120,
 
-        "1800x1800": 125,
-        "1800x2400": 155,
+  "1200x1200":75,
+  "1200x1500":85,
+  "1200x1800":115,
+  "1200x2400":125,
 
-        "2400x2400": 175
-    };
+  "1500x1500":115,
+  "1500x1800":120,
+  "1500x2400":145,
 
-    const HISTORY_KEY = "diy_wainscoting_history";
+  "1800x1800":125,
+  "1800x2400":155,
 
-    let lastCalculatedRecord = null;
+  "2400x2400":175
 
-    /* =========================================================
-       PRICE FUNCTION
-    ========================================================= */
+};
 
-    function getFlexiblePrice(w, h, priceTable, defaultVal) {
 
-        let key1 = `${w}x${h}`;
-        let key2 = `${h}x${w}`;
+/* =========================================================
+   STANDARD SIZES
+   ========================================================= */
 
-        if (priceTable[key1] !== undefined) {
-            return priceTable[key1];
-        }
+const standardSizes = [
+  300,
+  600,
+  900,
+  1200,
+  1500,
+  1800,
+  2400
+];
 
-        if (priceTable[key2] !== undefined) {
-            return priceTable[key2];
-        }
 
-        return defaultVal;
+/* =========================================================
+   GET PRICE
+   ========================================================= */
+
+function getPrice(w,h,table){
+
+  let key = `${w}x${h}`;
+
+  if(table[key] !== undefined){
+    return table[key];
+  }
+
+  key = `${h}x${w}`;
+
+  if(table[key] !== undefined){
+    return table[key];
+  }
+
+  return null;
+}
+
+
+/* =========================================================
+   FIND NEXT STANDARD SIZE
+   ========================================================= */
+
+function ceilStandardSize(value){
+
+  for(const size of standardSizes){
+
+    if(value <= size){
+      return size;
     }
 
-    function getCeilStandardSize(val) {
+  }
 
-        let standards = [
-            300,
-            600,
-            900,
-            1200,
-            1500,
-            1800,
-            2400
-        ];
+  return null;
+}
 
-        for (let i = 0; i < standards.length; i++) {
 
-            if (val <= standards[i]) {
-                return standards[i];
-            }
+/* =========================================================
+   PRICE ONE PIECE
+   ========================================================= */
 
-        }
+function priceOnePiece(width,height,table){
 
-        return 2400;
+  const stdW = ceilStandardSize(width);
+  const stdH = ceilStandardSize(height);
+
+  if(!stdW || !stdH){
+
+    return {
+      price:null,
+      standardWidth:null,
+      standardHeight:null,
+      custom:true
+    };
+
+  }
+
+  const price = getPrice(
+    stdW,
+    stdH,
+    table
+  );
+
+  return {
+
+    price:price,
+
+    standardWidth:stdW,
+
+    standardHeight:stdH,
+
+    custom:false
+
+  };
+
+}
+
+
+/* =========================================================
+   FORMULA A — STANDARD MATERIAL PRICING
+   =========================================================
+
+   IMPORTANT:
+
+   Actual dimension <= 2400mm
+   -> charge nearest standard size.
+
+   Example:
+
+   600 × 2020
+   -> charge 600 × 2400
+
+   Actual dimension > 2400mm
+   -> split standard material.
+
+   Example:
+
+   600 × 2600
+   -> 600 × 2400
+   -> + 600 × 600
+
+   Example:
+
+   600 × 3000
+   -> 600 × 2400
+   -> + 600 × 600
+
+   Example:
+
+   600 × 3500
+   -> 600 × 2400
+   -> + 600 × 600
+   -> + 600 × 600
+   ========================================================= */
+
+function calculatePieceCombination(width,height,table){
+
+  const pieces = [];
+
+  /*
+    ========================================================
+    HEIGHT <= 2400
+    ========================================================
+  */
+
+  if(height <= 2400){
+
+    const result =
+      priceOnePiece(
+        width,
+        height,
+        table
+      );
+
+    if(result.price === null){
+
+      return {
+
+        total:null,
+
+        pieces:[],
+
+        error:
+          `No price found for ${width}×${height}mm`
+
+      };
+
     }
 
-    /* =========================================================
-       CALCULATE
-    ========================================================= */
+    pieces.push({
 
-    function calculateWainscoting(saveToHistory = true) {
+      actualWidth:width,
 
-        let wMm =
-            parseFloat(document.getElementById('wallWidth').value) || 0;
+      actualHeight:height,
 
-        let hMm =
-            parseFloat(document.getElementById('wallHeight').value) || 0;
+      standardWidth:result.standardWidth,
 
-        let style =
-            document.getElementById('layoutStyle').value;
+      standardHeight:result.standardHeight,
 
-        let pattern =
-            document.getElementById('boxPattern').value;
+      price:result.price
 
-        let frameType =
-            document.getElementById('frameType').value;
+    });
 
-        let frameColor =
-            document.getElementById('frameColor').value;
+  }
 
-        if (wMm <= 0 || hMm <= 0) {
+  /*
+    ========================================================
+    HEIGHT > 2400
+    ========================================================
+  */
 
-            alert("Sila masukkan ukuran dinding yang sah.");
+  else{
 
-            return;
+    let remainingHeight = height;
 
-        }
+    /*
+      First standard piece = 2400mm
+    */
 
-        /* =====================================================
-           DETERMINE BOX HEIGHT
-        ===================================================== */
+    const main =
+      priceOnePiece(
+        width,
+        2400,
+        table
+      );
 
-        let targetBoxHeight =
-            style === 'without_chairrail'
-                ? hMm - 200
-                : hMm - 1070;
+    if(main.price === null){
 
-        if (targetBoxHeight < 300) {
-            targetBoxHeight = 300;
-        }
+      return {
 
-        /* =====================================================
-           DETERMINE BOX WIDTHS
-        ===================================================== */
+        total:null,
 
-        let boxWidths = [];
+        pieces:[],
 
-        if (pattern === '1:1') {
+        error:
+          `No price found for ${width}×2400mm`
 
-            let uW = (wMm - 300) / 2;
+      };
 
-            boxWidths = [
-                uW,
-                uW
-            ];
+    }
 
-        }
+    pieces.push({
 
-        else if (pattern === '1:2:1') {
+      actualWidth:width,
 
-            let uW = (wMm - 400) / 4;
+      actualHeight:2400,
 
-            boxWidths = [
-                uW,
-                uW * 2,
-                uW
-            ];
+      standardWidth:main.standardWidth,
 
-        }
+      standardHeight:main.standardHeight,
 
-        else if (pattern === '1:1:2:1:1') {
+      price:main.price
 
-            let uW = (wMm - 600) / 6;
+    });
 
-            boxWidths = [
-                uW,
-                uW,
-                uW * 2,
-                uW,
-                uW
-            ];
+    remainingHeight -= 2400;
 
-        }
 
-        else if (pattern === '2:1:2:1:2') {
+    /*
+      Remaining material is charged
+      using 600mm standard pieces.
 
-            let uW = (wMm - 600) / 8;
+      2600:
+      2400 + 600
 
-            boxWidths = [
-                uW * 2,
-                uW,
-                uW * 2,
-                uW,
-                uW * 2
-            ];
+      2800:
+      2400 + 600
 
-        }
+      3000:
+      2400 + 600
 
-        else if (pattern === '1:2:1:2:1') {
+      3500:
+      2400 + 600 + 600
+    */
 
-            let uW = (wMm - 600) / 7;
+    while(remainingHeight > 0){
 
-            boxWidths = [
-                uW,
-                uW * 2,
-                uW,
-                uW * 2,
-                uW
-            ];
+      const result =
+        priceOnePiece(
+          width,
+          600,
+          table
+        );
 
-        }
+      if(result.price === null){
 
-        else {
+        return {
 
-            let remW = wMm - 200;
+          total:null,
 
-            boxWidths = [
-                remW
-            ];
+          pieces:[],
 
-        }
-
-        /* =====================================================
-           PRICE CALCULATION
-        ===================================================== */
-
-        let totalPrice = 0;
-
-        let breakdownHtml = "";
-
-        let sizeCounts = {};
-
-        boxWidths.forEach((bw) => {
-
-            let roundedW = Math.round(bw);
-
-            let stdW =
-                getCeilStandardSize(roundedW);
-
-            let stdH =
-                getCeilStandardSize(targetBoxHeight);
-
-            let key =
-                `${stdW}x${stdH}`;
-
-            let labelType =
-                style === 'without_chairrail'
-                    ? 'Penuh Menegak'
-                    : 'Atas';
-
-            let isCustom =
-                roundedW > 2400 ||
-                targetBoxHeight > 2400;
-
-            if (!sizeCounts[key]) {
-
-                sizeCounts[key] = {
-
-                    count: 0,
-
-                    w: roundedW,
-
-                    h: Math.round(targetBoxHeight),
-
-                    stdW: stdW,
-
-                    stdH: stdH,
-
-                    type: labelType,
-
-                    custom: isCustom
-
-                };
-
-            }
-
-            sizeCounts[key].count++;
-
-            /* BOTTOM BOX */
-
-            if (style === 'with_chairrail') {
-
-                let botBoxH = 600;
-
-                let stdH_Bot =
-                    getCeilStandardSize(botBoxH);
-
-                let keyBot =
-                    `${stdW}x${stdH_Bot}`;
-
-                if (!sizeCounts[keyBot]) {
-
-                    sizeCounts[keyBot] = {
-
-                        count: 0,
-
-                        w: roundedW,
-
-                        h: botBoxH,
-
-                        stdW: stdW,
-
-                        stdH: stdH_Bot,
-
-                        type: 'Bawah',
-
-                        custom: false
-
-                    };
-
-                }
-
-                sizeCounts[keyBot].count++;
-
-            }
-
-        });
-
-        /* =====================================================
-           BREAKDOWN
-        ===================================================== */
-
-        for (let key in sizeCounts) {
-
-            let item =
-                sizeCounts[key];
-
-            let unitPrice =
-                getFlexiblePrice(
-                    item.stdW,
-                    item.stdH,
-                    singlePrices,
-                    60
-                );
-
-            if (frameType === 'double') {
-
-                unitPrice +=
-                    getFlexiblePrice(
-                        item.stdW,
-                        item.stdH,
-                        doublePrices,
-                        45
-                    );
-
-            }
-
-            if (frameColor === 'gold') {
-
-                unitPrice += 5;
-
-            }
-
-            let subTotal =
-                unitPrice * item.count;
-
-            totalPrice += subTotal;
-
-            let remarkText =
-                item.custom
-                    ? `<span style="color:#dc2626;font-weight:800;">Custom Size</span>`
-                    : "";
-
-            breakdownHtml += `
-
-                <div class="breakdown-row">
-
-                    <span>
-                        Kotak ${item.type}
-                        (${item.w} × ${item.h}mm)
-                        ${remarkText}
-                        <br>
-                        <small style="color:#9ca3af;">
-                            ${item.count} unit × RM ${unitPrice.toFixed(2)}
-                        </small>
-                    </span>
-
-                    <span>
-                        RM ${subTotal.toFixed(2)}
-                    </span>
-
-                </div>
-
-            `;
-
-        }
-
-        /* =====================================================
-           CHAIR RAIL
-        ===================================================== */
-
-        let chairRailSticks = 0;
-
-        let chairRailTotalCost = 0;
-
-        if (style === 'with_chairrail') {
-
-            chairRailSticks =
-                Math.ceil((wMm * 1.10) / 2400);
-
-            chairRailTotalCost =
-                chairRailSticks * 70;
-
-            totalPrice +=
-                chairRailTotalCost;
-
-            breakdownHtml += `
-
-                <div class="breakdown-row"
-                     style="padding-top:8px;border-top:1px solid #eee5a5;">
-
-                    <span>
-                        Chair Rail
-                        <br>
-                        <small style="color:#9ca3af;">
-                            ${chairRailSticks} batang × RM70.00
-                        </small>
-                    </span>
-
-                    <span>
-                        RM ${chairRailTotalCost.toFixed(2)}
-                    </span>
-
-                </div>
-
-            `;
-
-        }
-
-        /* =====================================================
-           LABELS
-        ===================================================== */
-
-        let styleLabel =
-            style === 'with_chairrail'
-                ? 'Dengan Chair Rail'
-                : 'Tanpa Chair Rail';
-
-        let frameLabel =
-            frameType === 'single'
-                ? 'Single Frame'
-                : 'Double Frame';
-
-        let colorLabel =
-            frameColor === 'gold'
-                ? 'Gold'
-                : 'Hitam Standard';
-
-        /* =====================================================
-           SAVE RECORD
-        ===================================================== */
-
-        lastCalculatedRecord = {
-
-            id: Date.now(),
-
-            tajuk: "Wainscoting",
-
-            info:
-                `${wMm} × ${hMm}mm | ${styleLabel} | ${pattern}`,
-
-            harga:
-                "RM " + totalPrice.toFixed(2),
-
-            width: wMm,
-
-            height: hMm,
-
-            style: style,
-
-            pattern: pattern,
-
-            frameType: frameType,
-
-            frameColor: frameColor,
-
-            total: totalPrice,
-
-            createdAt:
-                new Date().toISOString()
+          error:
+            `No price found for ${width}×600mm`
 
         };
 
-        /* =====================================================
-           SHOW RESULT
-        ===================================================== */
+      }
 
-        document
-            .getElementById('priceBreakdown')
-            .innerHTML = breakdownHtml;
+      pieces.push({
 
-        document
-            .getElementById('totalPrice')
-            .innerText =
-                'RM ' + totalPrice.toFixed(2);
+        actualWidth:width,
 
-        document
-            .getElementById('resultContainer')
-            .style.display = 'block';
+        /*
+          Actual remaining dimension.
+          Price is still based on 600mm
+          standard material.
+        */
 
-        document
-            .getElementById('visualContainer')
-            .style.display = 'block';
+        actualHeight:
+          Math.min(
+            remainingHeight,
+            600
+          ),
 
-        /* =====================================================
-           SAVE HISTORY
-        ===================================================== */
+        standardWidth:
+          result.standardWidth,
 
-        if (saveToHistory) {
+        standardHeight:
+          result.standardHeight,
 
-            saveCalculationHistory(
-                lastCalculatedRecord
-            );
+        price:
+          result.price
 
-        }
+      });
 
-        /* =====================================================
-           VISUAL
-        ===================================================== */
-
-        drawVisual(
-            boxWidths,
-            targetBoxHeight,
-            style,
-            frameType,
-            frameColor
-        );
-
-        /* =====================================================
-           SCROLL RESULT
-        ===================================================== */
-
-        setTimeout(() => {
-
-            document
-                .getElementById('resultContainer')
-                .scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'nearest'
-                });
-
-        }, 100);
+      remainingHeight -= 600;
 
     }
 
-    /* =========================================================
-       VISUAL
-    ========================================================= */
+  }
 
-    function drawVisual(
-        boxWidths,
-        targetBoxHeight,
-        style,
-        frameType,
-        frameColor
-    ) {
 
-        let previewBox =
-            document.getElementById('captureArea');
-
-        previewBox.innerHTML = "";
-
-        let frameBorder =
-            frameColor === 'gold'
-                ? '#b8860b'
-                : '#111827';
-
-        function createBoxElement(bw, bh) {
-
-            let box =
-                document.createElement('div');
-
-            box.style.flexGrow = bw;
-
-            box.style.flexBasis = '0';
-
-            box.style.height = '100%';
-
-            box.style.minWidth = '18px';
-
-            box.style.border =
-                `3px solid ${frameBorder}`;
-
-            box.style.background =
-                '#ffffff';
-
-            box.style.borderRadius =
-                '5px';
-
-            box.style.display =
-                'flex';
-
-            box.style.alignItems =
-                'center';
-
-            box.style.justifyContent =
-                'center';
-
-            box.style.position =
-                'relative';
-
-            box.style.padding =
-                '4px';
-
-            box.style.fontSize =
-                '9px';
-
-            box.style.fontWeight =
-                '800';
-
-            box.style.color =
-                '#374151';
-
-            box.style.boxSizing =
-                'border-box';
-
-            let label =
-                document.createElement('span');
-
-            label.innerText =
-                `${Math.round(bw)} × ${Math.round(bh)}`;
-
-            box.appendChild(label);
-
-            if (frameType === 'double') {
-
-                let inner =
-                    document.createElement('div');
-
-                inner.style.position =
-                    'absolute';
-
-                inner.style.inset =
-                    '7px';
-
-                inner.style.border =
-                    `1.5px solid ${frameBorder}`;
-
-                inner.style.borderRadius =
-                    '3px';
-
-                box.appendChild(inner);
-
-            }
-
-            return box;
-
-        }
-
-        /* =====================================================
-           WITHOUT CHAIR RAIL
-        ===================================================== */
-
-        if (style === 'without_chairrail') {
-
-            let row =
-                document.createElement('div');
-
-            row.style.width =
-                '100%';
-
-            row.style.height =
-                '220px';
-
-            row.style.display =
-                'flex';
-
-            row.style.alignItems =
-                'center';
-
-            row.style.gap =
-                '10px';
-
-            row.style.padding =
-                '0 10px';
-
-            row.style.boxSizing =
-                'border-box';
-
-            boxWidths.forEach((bw) => {
-
-                row.appendChild(
-                    createBoxElement(
-                        bw,
-                        targetBoxHeight
-                    )
-                );
-
-            });
-
-            previewBox.appendChild(row);
-
-        }
-
-        /* =====================================================
-           WITH CHAIR RAIL
-        ===================================================== */
-
-        else {
-
-            let topRow =
-                document.createElement('div');
-
-            topRow.style.width =
-                '100%';
-
-            topRow.style.height =
-                '165px';
-
-            topRow.style.display =
-                'flex';
-
-            topRow.style.alignItems =
-                'center';
-
-            topRow.style.gap =
-                '10px';
-
-            topRow.style.padding =
-                '0 10px';
-
-            boxWidths.forEach((bw) => {
-
-                topRow.appendChild(
-                    createBoxElement(
-                        bw,
-                        targetBoxHeight
-                    )
-                );
-
-            });
-
-            previewBox.appendChild(topRow);
-
-            /* CHAIR RAIL */
-
-            let rail =
-                document.createElement('div');
-
-            rail.style.width =
-                '100%';
-
-            rail.style.height =
-                '15px';
-
-            rail.style.margin =
-                '8px 0';
-
-            rail.style.background =
-                '#92400e';
-
-            rail.style.color =
-                'white';
-
-            rail.style.display =
-                'flex';
-
-            rail.style.alignItems =
-                'center';
-
-            rail.style.justifyContent =
-                'center';
-
-            rail.style.fontSize =
-                '8px';
-
-            rail.style.fontWeight =
-                '800';
-
-            rail.innerText =
-                'CHAIR RAIL';
-
-            previewBox.appendChild(rail);
-
-            /* BOTTOM */
-
-            let bottomRow =
-                document.createElement('div');
-
-            bottomRow.style.width =
-                '100%';
-
-            bottomRow.style.height =
-                '80px';
-
-            bottomRow.style.display =
-                'flex';
-
-            bottomRow.style.alignItems =
-                'center';
-
-            bottomRow.style.gap =
-                '10px';
-
-            bottomRow.style.padding =
-                '0 10px';
-
-            boxWidths.forEach((bw) => {
-
-                bottomRow.appendChild(
-                    createBoxElement(
-                        bw,
-                        600
-                    )
-                );
-
-            });
-
-            previewBox.appendChild(
-                bottomRow
-            );
-
-        }
-
-    }
-
-    /* =========================================================
-       CART
-    ========================================================= */
-
-    function addWainscotingToCart() {
-
-        if (!lastCalculatedRecord) {
-
-            alert(
-                "Sila buat pengiraan terlebih dahulu."
-            );
-
-            return;
-
-        }
-
-        let cartData =
-            JSON.parse(
-                localStorage.getItem('diy_cart')
-            ) || [];
-
-        cartData.push({
-
-            tajuk:
-                lastCalculatedRecord.tajuk,
-
-            info:
-                lastCalculatedRecord.info,
-
-            harga:
-                lastCalculatedRecord.harga
-
-        });
-
-        localStorage.setItem(
-            'diy_cart',
-            JSON.stringify(cartData)
-        );
-
-        alert(
-            "Pengiraan berjaya dimasukkan ke dalam Troli."
-        );
-
-    }
-
-    /* =========================================================
-       HISTORY SAVE
-    ========================================================= */
-
-    function saveCalculationHistory(record) {
-
-        let history =
-            JSON.parse(
-                localStorage.getItem(HISTORY_KEY)
-            ) || [];
-
-        history.unshift(record);
-
-        /* Simpan maksimum 50 rekod */
-
-        if (history.length > 50) {
-
-            history =
-                history.slice(0, 50);
-
-        }
-
-        localStorage.setItem(
-            HISTORY_KEY,
-            JSON.stringify(history)
-        );
-
-        renderHistory();
-
-    }
-
-    /* =========================================================
-       RENDER HISTORY
-    ========================================================= */
-
-    function renderHistory() {
-
-        let history =
-            JSON.parse(
-                localStorage.getItem(HISTORY_KEY)
-            ) || [];
-
-        let list =
-            document.getElementById(
-                'historyList'
-            );
-
-        let count =
-            document.getElementById(
-                'historyCount'
-            );
-
-        count.innerText =
-            `${history.length} Rekod`;
-
-        if (history.length === 0) {
-
-            list.innerHTML = `
-
-                <div class="history-empty">
-
-                    Belum ada sejarah pengiraan.
-
-                    <br>
-
-                    Pengiraan yang dibuat akan
-                    disimpan secara automatik di sini.
-
-                </div>
-
-            `;
-
-            return;
-
-        }
-
-        list.innerHTML = "";
-
-        history.forEach((item, index) => {
-
-            let date =
-                item.createdAt
-                    ? new Date(item.createdAt)
-                    : new Date();
-
-            let dateText =
-                date.toLocaleDateString(
-                    'ms-MY',
-                    {
-                        day: '2-digit',
-                        month: '2-digit',
-                        year: 'numeric'
-                    }
-                );
-
-            let timeText =
-                date.toLocaleTimeString(
-                    'ms-MY',
-                    {
-                        hour: '2-digit',
-                        minute: '2-digit'
-                    }
-                );
-
-            let div =
-                document.createElement('div');
-
-            div.className =
-                'history-item';
-
-            div.innerHTML = `
-
-                <div class="history-item-top">
-
-                    <div>
-
-                        <div class="history-name">
-                            ${item.tajuk}
-                        </div>
-
-                        <div class="history-info">
-                            ${item.info}
-                        </div>
-
-                    </div>
-
-                    <div class="history-price">
-                        ${item.harga}
-                    </div>
-
-                </div>
-
-                <div class="history-date">
-                    ${dateText} • ${timeText}
-                </div>
-
-                <div class="history-buttons">
-
-                    <button
-                        class="history-btn reuse-btn"
-                        onclick="reuseHistory(${index})"
-                    >
-                        ↻ Guna Semula
-                    </button>
-
-                    <button
-                        class="history-btn delete-btn"
-                        onclick="deleteHistory(${index})"
-                    >
-                        Padam
-                    </button>
-
-                </div>
-
-            `;
-
-            list.appendChild(div);
-
-        });
-
-    }
-
-    /* =========================================================
-       REUSE HISTORY
-    ========================================================= */
-
-    function reuseHistory(index) {
-
-        let history =
-            JSON.parse(
-                localStorage.getItem(HISTORY_KEY)
-            ) || [];
-
-        let item =
-            history[index];
-
-        if (!item) return;
-
-        document.getElementById(
-            'wallWidth'
-        ).value = item.width;
-
-        document.getElementById(
-            'wallHeight'
-        ).value = item.height;
-
-        document.getElementById(
-            'layoutStyle'
-        ).value = item.style;
-
-        document.getElementById(
-            'boxPattern'
-        ).value = item.pattern;
-
-        document.getElementById(
-            'frameType'
-        ).value = item.frameType;
-
-        document.getElementById(
-            'frameColor'
-        ).value = item.frameColor;
-
-        calculateWainscoting(false);
-
-        window.scrollTo({
-
-            top: 0,
-
-            behavior: 'smooth'
-
-        });
-
-    }
-
-    /* =========================================================
-       DELETE SINGLE HISTORY
-    ========================================================= */
-
-    function deleteHistory(index) {
-
-        let history =
-            JSON.parse(
-                localStorage.getItem(HISTORY_KEY)
-            ) || [];
-
-        history.splice(index, 1);
-
-        localStorage.setItem(
-            HISTORY_KEY,
-            JSON.stringify(history)
-        );
-
-        renderHistory();
-
-    }
-
-    /* =========================================================
-       CLEAR HISTORY
-    ========================================================= */
-
-    function clearHistory() {
-
-        let history =
-            JSON.parse(
-                localStorage.getItem(HISTORY_KEY)
-            ) || [];
-
-        if (history.length === 0) {
-
-            return;
-
-        }
-
-        let confirmDelete =
-            confirm(
-                "Padam semua sejarah pengiraan Wainscoting?"
-            );
-
-        if (!confirmDelete) return;
-
-        localStorage.removeItem(
-            HISTORY_KEY
-        );
-
-        renderHistory();
-
-    }
-
-    /* =========================================================
-       REFRESH HISTORY
-    ========================================================= */
-
-    function refreshHistory() {
-
-        renderHistory();
-
-    }
-
-    /* =========================================================
-       SAVE VISUAL
-    ========================================================= */
-
-    function saveVisualToPhone() {
-
-        let area =
-            document.getElementById(
-                'captureArea'
-            );
-
-        html2canvas(
-            area,
-            {
-                scale: 2,
-                backgroundColor: '#ffffff'
-            }
-        ).then(canvas => {
-
-            let link =
-                document.createElement('a');
-
-            let timestamp =
-                new Date()
-                    .toISOString()
-                    .slice(0, 19)
-                    .replace(/[:T]/g, '-');
-
-            link.download =
-                `wainscoting-${timestamp}.png`;
-
-            link.href =
-                canvas.toDataURL(
-                    'image/png'
-                );
-
-            link.click();
-
-        });
-
-    }
-
-    /* =========================================================
-       INITIAL LOAD
-    ========================================================= */
-
-    document.addEventListener(
-        'DOMContentLoaded',
-        function() {
-
-            renderHistory();
-
-        }
+  const total =
+    pieces.reduce(
+      (sum,piece)=>
+        sum + piece.price,
+      0
     );
+
+
+  return {
+
+    total:total,
+
+    pieces:pieces
+
+  };
+
+}
+
+
+/* =========================================================
+   PATTERN DEFINITIONS
+   =========================================================
+
+   RULE:
+
+   Every gap = 100mm.
+
+   Pattern 1:1
+   2 boxes
+   3 gaps
+   = 300mm
+
+   Pattern 1:2:1
+   3 boxes
+   4 gaps
+   = 400mm
+
+   Pattern 1:1:2:1:1
+   5 boxes
+   6 gaps
+   = 600mm
+
+   Pattern 2:1:2:1:2
+   5 boxes
+   6 gaps
+   = 600mm
+
+   Pattern 1:2:1:2:1
+   5 boxes
+   6 gaps
+   = 600mm
+
+   IMPORTANT:
+
+   Ratio "2" means DOUBLE the size
+   of ratio "1".
+
+   Example:
+
+   Unit = 400
+
+   1:2:1
+   = 400 | 800 | 400
+   ========================================================= */
+
+const patternDefinitions = {
+
+  "1:1":{
+    ratios:[1,1],
+    gaps:3
+  },
+
+  "1:2:1":{
+    ratios:[1,2,1],
+    gaps:4
+  },
+
+  "1:1:2:1:1":{
+    ratios:[1,1,2,1,1],
+    gaps:6
+  },
+
+  "2:1:2:1:2":{
+    ratios:[2,1,2,1,2],
+    gaps:6
+  },
+
+  "1:2:1:2:1":{
+    ratios:[1,2,1,2,1],
+    gaps:6
+
+  },
+
+  "single":{
+    ratios:[1],
+    gaps:2
+  }
+
+};
+
+
+/* =========================================================
+   GET PATTERN WIDTHS
+   ========================================================= */
+
+function getPatternWidths(width,pattern){
+
+  const definition =
+    patternDefinitions[pattern];
+
+  if(!definition){
+    return [];
+  }
+
+
+  const ratios =
+    definition.ratios;
+
+  const gapCount =
+    definition.gaps;
+
+
+  /*
+    Total gap width
+    */
+
+  const totalGap =
+    gapCount * 100;
+
+
+  /*
+    Width remaining for boxes
+    */
+
+  const available =
+    width - totalGap;
+
+
+  if(available <= 0){
+    return [];
+  }
+
+
+  /*
+    Sum ratio
+
+    1:2:1 = 4
+    1:1:2:1:1 = 6
+    2:1:2:1:2 = 8
+    */
+
+  const ratioTotal =
+    ratios.reduce(
+      (sum,ratio)=>
+        sum + ratio,
+      0
+    );
+
+
+  /*
+    One unit of ratio 1
+    */
+
+  const unit =
+    available / ratioTotal;
+
+
+  /*
+    Calculate every box
+    */
+
+  return ratios.map(
+    ratio =>
+      unit * ratio
+  );
+
+}
+
+
+/* =========================================================
+   ROUND BOX WIDTH
+   ========================================================= */
+
+function normalizeWidth(width){
+
+  return Math.round(width);
+
+}
+
+
+/* =========================================================
+   FORMAT MONEY
+   ========================================================= */
+
+function money(value){
+
+  return "RM" +
+    Number(value || 0).toLocaleString(
+      "en-MY",
+      {
+        minimumFractionDigits:2,
+        maximumFractionDigits:2
+      }
+    );
+
+}
+
+
+/* =========================================================
+   FORMAT MM
+   ========================================================= */
+
+function formatMm(value){
+
+  if(Number.isInteger(value)){
+    return value.toString();
+  }
+
+  return Number(value)
+    .toFixed(1)
+    .replace(/\.0$/,"");
+
+}
+
+
+/* =========================================================
+   CURRENT CALCULATION
+   ========================================================= */
+
+let currentCalculation = null;
+
+
+/* =========================================================
+   CALCULATE
+   ========================================================= */
+
+function calculate(){
+
+  const wallWidth =
+    Number(
+      document.getElementById(
+        "wallWidth"
+      ).value
+    );
+
+
+  const wallHeight =
+    Number(
+      document.getElementById(
+        "wallHeight"
+      ).value
+    );
+
+
+  const layoutStyle =
+    document.getElementById(
+      "layoutStyle"
+    ).value;
+
+
+  const pattern =
+    document.getElementById(
+      "boxPattern"
+    ).value;
+
+
+  const frameType =
+    document.getElementById(
+      "frameType"
+    ).value;
+
+
+  const frameColor =
+    document.getElementById(
+      "frameColor"
+    ).value;
+
+
+  if(
+    !wallWidth ||
+    !wallHeight ||
+    wallWidth <= 0 ||
+    wallHeight <= 0
+  ){
+
+    alert(
+      "Please enter valid wall dimensions."
+    );
+
+    return;
+
+  }
+
+
+  /* ======================================================
+     TOP HEIGHT
+     ====================================================== */
+
+  let topHeight;
+
+
+  if(
+    layoutStyle ===
+    "with_chairrail"
+  ){
+
+    topHeight =
+      wallHeight - 1070;
+
+  }else{
+
+    topHeight =
+      wallHeight - 200;
+
+  }
+
+
+  if(topHeight <= 0){
+
+    alert(
+      "Wall height is too low for this layout."
+    );
+
+    return;
+
+  }
+
+
+  /*
+    Do NOT artificially change the actual
+    measurement to 300mm.
+  */
+
+  topHeight =
+    Math.round(topHeight);
+
+
+  /* ======================================================
+     BOX WIDTHS
+     ====================================================== */
+
+  const rawWidths =
+    getPatternWidths(
+      wallWidth,
+      pattern
+    );
+
+
+  if(!rawWidths.length){
+
+    alert(
+      "Unable to calculate box pattern."
+    );
+
+    return;
+
+  }
+
+
+  const boxWidths =
+    rawWidths.map(
+      normalizeWidth
+    );
+
+
+  /* ======================================================
+     PRICE TABLE
+     ====================================================== */
+
+  const priceTable =
+    frameType === "double"
+      ? doublePrices
+      : singlePrices;
+
+
+  /* ======================================================
+     TOP BOXES
+     ====================================================== */
+
+  const boxes = [];
+
+  let topTotal = 0;
+
+
+  boxWidths.forEach(
+    (width,index)=>{
+
+      const combo =
+        calculatePieceCombination(
+          width,
+          topHeight,
+          priceTable
+        );
+
+
+      if(combo.total === null){
+
+        boxes.push({
+
+          section:"Top",
+
+          index:index + 1,
+
+          width:width,
+
+          height:topHeight,
+
+          total:null,
+
+          pieces:[],
+
+          error:combo.error
+
+        });
+
+        return;
+
+      }
+
+
+      /*
+        Gold surcharge:
+
+        +RM5 PER ACTUAL BOX
+
+        NOT per split piece.
+
+        Example:
+
+        600 × 2600
+
+        2400 + 600
+
+        Gold = +RM5 only.
+      */
+
+      const colorExtra =
+        frameColor === "gold"
+          ? 5
+          : 0;
+
+
+      const finalPrice =
+        combo.total +
+        colorExtra;
+
+
+      topTotal +=
+        finalPrice;
+
+
+      boxes.push({
+
+        section:"Top",
+
+        index:index + 1,
+
+        width:width,
+
+        height:topHeight,
+
+        total:finalPrice,
+
+        basePrice:combo.total,
+
+        colorExtra:colorExtra,
+
+        pieces:combo.pieces
+
+      });
+
+    }
+  );
+
+
+  /* ======================================================
+     BOTTOM BOXES
+     ====================================================== */
+
+  const bottomBoxes = [];
+
+  let bottomTotal = 0;
+
+
+  if(
+    layoutStyle ===
+    "with_chairrail"
+  ){
+
+    boxWidths.forEach(
+      (width,index)=>{
+
+        const combo =
+          calculatePieceCombination(
+            width,
+            600,
+            priceTable
+          );
+
+
+        if(combo.total === null){
+
+          bottomBoxes.push({
+
+            section:"Bottom",
+
+            index:index + 1,
+
+            width:width,
+
+            height:600,
+
+            total:null,
+
+            pieces:[],
+
+            error:combo.error
+
+          });
+
+          return;
+
+        }
+
+
+        const colorExtra =
+          frameColor === "gold"
+            ? 5
+            : 0;
+
+
+        const finalPrice =
+          combo.total +
+          colorExtra;
+
+
+        bottomTotal +=
+          finalPrice;
+
+
+        bottomBoxes.push({
+
+          section:"Bottom",
+
+          index:index + 1,
+
+          width:width,
+
+          height:600,
+
+          total:finalPrice,
+
+          basePrice:combo.total,
+
+          colorExtra:colorExtra,
+
+          pieces:combo.pieces
+
+        });
+
+      }
+    );
+
+  }
+
+
+  /* ======================================================
+     CHAIR RAIL
+     ====================================================== */
+
+  let chairRailQty = 0;
+
+  let chairRailTotal = 0;
+
+
+  if(
+    layoutStyle ===
+    "with_chairrail"
+  ){
+
+    chairRailQty =
+      Math.ceil(
+        (wallWidth * 1.10) /
+        2400
+      );
+
+
+    chairRailTotal =
+      chairRailQty * 70;
+
+  }
+
+
+  /* ======================================================
+     GRAND TOTAL
+     ====================================================== */
+
+  const grandTotal =
+    topTotal +
+    bottomTotal +
+    chairRailTotal;
+
+
+  /* ======================================================
+     CURRENT CALCULATION OBJECT
+     ====================================================== */
+
+  currentCalculation = {
+
+    wallWidth:wallWidth,
+
+    wallHeight:wallHeight,
+
+    layoutStyle:layoutStyle,
+
+    pattern:pattern,
+
+    frameType:frameType,
+
+    frameColor:frameColor,
+
+    topHeight:topHeight,
+
+    boxWidths:boxWidths,
+
+    boxes:boxes,
+
+    bottomBoxes:bottomBoxes,
+
+    chairRailQty:chairRailQty,
+
+    chairRailTotal:chairRailTotal,
+
+    topTotal:topTotal,
+
+    bottomTotal:bottomTotal,
+
+    grandTotal:grandTotal,
+
+    createdAt:
+      new Date().toISOString()
+
+  };
+
+
+  renderResult(
+    currentCalculation
+  );
+
+
+  renderVisual(
+    currentCalculation
+  );
+
+}
+
+
+/* =========================================================
+   PATTERN DESCRIPTION
+   ========================================================= */
+
+function getPatternDescription(pattern){
+
+  const descriptions = {
+
+    "1:1":
+      "3 × 100mm gap | Ratio 1:1",
+
+    "1:2:1":
+      "4 × 100mm gap | Ratio 1:2:1",
+
+    "1:1:2:1:1":
+      "6 × 100mm gap | Ratio 1:1:2:1:1",
+
+    "2:1:2:1:2":
+      "6 × 100mm gap | Ratio 2:1:2:1:2",
+
+    "1:2:1:2:1":
+      "6 × 100mm gap | Ratio 1:2:1:2:1",
+
+    "single":
+      "2 × 100mm side allowance | Single box"
+
+  };
+
+
+  return descriptions[pattern] || "";
+
+}
+
+
+/* =========================================================
+   COMBINATION TEXT
+   ========================================================= */
+
+function combinationText(pieces){
+
+  if(
+    !pieces ||
+    !pieces.length
+  ){
+
+    return "-";
+
+  }
+
+
+  return pieces
+    .map(
+      piece =>
+        `${piece.standardWidth}×${piece.standardHeight}`
+    )
+    .join(" + ");
+
+}
+
+
+/* =========================================================
+   RENDER RESULT
+   ========================================================= */
+
+function renderResult(data){
+
+  let html = "";
+
+
+  /* ======================================================
+     TOTAL
+     ====================================================== */
+
+  html += `
+
+    <div class="result-total">
+
+      <small>
+        Estimated Total
+      </small>
+
+      <strong>
+        ${money(data.grandTotal)}
+      </strong>
+
+    </div>
+
+  `;
+
+
+  /* ======================================================
+     FORMULA INFO
+     ====================================================== */
+
+  html += `
+
+    <div class="info">
+
+      <b>Layout Formula:</b>
+
+      Every gap is calculated as
+      <b>100mm</b>.
+
+      Ratio <b>2</b> means the box is
+      <b>2× the size</b> of ratio 1.
+
+      <br><br>
+
+      <b>
+        ${getPatternDescription(data.pattern)}
+      </b>
+
+    </div>
+
+  `;
+
+
+  /* ======================================================
+     FORMULA EXAMPLE
+     ====================================================== */
+
+  html += `
+
+    <div class="formula-box">
+
+      <b>Wall:</b>
+      ${formatMm(data.wallWidth)} ×
+      ${formatMm(data.wallHeight)}mm
+
+      <br>
+
+      <b>Pattern:</b>
+      ${data.pattern}
+
+      <br>
+
+      <b>Top Box Height:</b>
+      ${formatMm(data.topHeight)}mm
+
+      <br>
+
+      <b>Box Widths:</b>
+      ${data.boxWidths
+        .map(w => formatMm(w))
+        .join(" | ")}
+      mm
+
+    </div>
+
+  `;
+
+
+  /* ======================================================
+     BREAKDOWN TABLE
+     ====================================================== */
+
+  html += `
+
+    <table class="breakdown">
+
+      <thead>
+
+        <tr>
+
+          <th>Section</th>
+
+          <th>Actual Size</th>
+
+          <th>Standard Material</th>
+
+          <th>Price</th>
+
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+  `;
+
+
+  /* ======================================================
+     TOP BOXES
+     ====================================================== */
+
+  data.boxes.forEach(
+    box=>{
+
+      if(box.total === null){
+
+        html += `
+
+          <tr>
+
+            <td>
+              Top Box ${box.index}
+            </td>
+
+            <td>
+              ${formatMm(box.width)}
+              ×
+              ${formatMm(box.height)}mm
+            </td>
+
+            <td>
+
+              <span class="badge badge-yellow">
+                PRICE NOT FOUND
+              </span>
+
+              <div class="standard">
+                ${box.error || ""}
+              </div>
+
+            </td>
+
+            <td class="price">
+              -
+            </td>
+
+          </tr>
+
+        `;
+
+        return;
+
+      }
+
+
+      const isSplit =
+        box.pieces &&
+        box.pieces.length > 1;
+
+
+      html += `
+
+        <tr>
+
+          <td>
+
+            <b>
+              Top Box ${box.index}
+            </b>
+
+          </td>
+
+          <td>
+
+            ${formatMm(box.width)}
+            ×
+            ${formatMm(box.height)}mm
+
+          </td>
+
+          <td>
+
+            <span class="badge badge-green">
+              STANDARD
+            </span>
+
+            <div class="standard">
+
+              ${combinationText(
+                box.pieces
+              )}
+
+            </div>
+
+            ${
+              isSplit
+              ? `
+                <span class="custom-combo">
+                  SPLIT STANDARD SIZE
+                </span>
+              `
+              : ""
+            }
+
+          </td>
+
+          <td class="price">
+
+            ${money(box.total)}
+
+          </td>
+
+        </tr>
+
+      `;
+
+    }
+  );
+
+
+  /* ======================================================
+     BOTTOM BOXES
+     ====================================================== */
+
+  data.bottomBoxes.forEach(
+    box=>{
+
+      if(box.total === null){
+
+        html += `
+
+          <tr>
+
+            <td>
+              Bottom Box ${box.index}
+            </td>
+
+            <td>
+              ${formatMm(box.width)}
+              × 600mm
+            </td>
+
+            <td>
+              ${box.error || ""}
+            </td>
+
+            <td class="price">
+              -
+            </td>
+
+          </tr>
+
+        `;
+
+        return;
+
+      }
+
+
+      html += `
+
+        <tr>
+
+          <td>
+
+            <b>
+              Bottom Box ${box.index}
+            </b>
+
+          </td>
+
+          <td>
+
+            ${formatMm(box.width)}
+            × 600mm
+
+          </td>
+
+          <td>
+
+            <span class="badge badge-green">
+              STANDARD
+            </span>
+
+            <div class="standard">
+
+              ${combinationText(
+                box.pieces
+              )}
+
+            </div>
+
+          </td>
+
+          <td class="price">
+
+            ${money(box.total)}
+
+          </td>
+
+        </tr>
+
+      `;
+
+    }
+  );
+
+
+  /* ======================================================
+     CHAIR RAIL
+     ====================================================== */
+
+  if(
+    data.layoutStyle ===
+    "with_chairrail"
+  ){
+
+    html += `
+
+      <tr>
+
+        <td>
+          <b>Chair Rail</b>
+        </td>
+
+        <td>
+          ${data.wallWidth}mm wall
+        </td>
+
+        <td>
+          ${data.chairRailQty} × 2400mm
+        </td>
+
+        <td class="price">
+          ${money(data.chairRailTotal)}
+        </td>
+
+      </tr>
+
+    `;
+
+  }
+
+
+  /* ======================================================
+     SUBTOTALS
+     ====================================================== */
+
+  html += `
+
+      <tr>
+
+        <td colspan="3">
+          <b>Top Boxes</b>
+        </td>
+
+        <td class="price">
+          ${money(data.topTotal)}
+        </td>
+
+      </tr>
+
+      ${
+        data.layoutStyle ===
+        "with_chairrail"
+
+        ? `
+
+          <tr>
+
+            <td colspan="3">
+              <b>Bottom Boxes</b>
+            </td>
+
+            <td class="price">
+              ${money(data.bottomTotal)}
+            </td>
+
+          </tr>
+
+        `
+
+        : ""
+      }
+
+      ${
+        data.layoutStyle ===
+        "with_chairrail"
+
+        ? `
+
+          <tr>
+
+            <td colspan="3">
+              <b>Chair Rail</b>
+            </td>
+
+            <td class="price">
+              ${money(data.chairRailTotal)}
+            </td>
+
+          </tr>
+
+        `
+
+        : ""
+      }
+
+      <tr>
+
+        <td colspan="3">
+          <b>GRAND TOTAL</b>
+        </td>
+
+        <td class="price">
+
+          <b>
+            ${money(data.grandTotal)}
+          </b>
+
+        </td>
+
+      </tr>
+
+      </tbody>
+
+    </table>
+
+  `;
+
+
+  /* ======================================================
+     ACTIONS
+     ====================================================== */
+
+  html += `
+
+    <div class="actions">
+
+      <button
+        class="btn btn-green"
+        onclick="saveHistory()">
+
+        Save Calculation
+
+      </button>
+
+
+      <button
+        class="btn btn-blue"
+        onclick="downloadResult()">
+
+        Save PNG
+
+      </button>
+
+
+      <button
+        class="btn btn-dark"
+        onclick="addToCart()">
+
+        Add to Cart
+
+      </button>
+
+    </div>
+
+  `;
+
+
+  document.getElementById(
+    "resultContent"
+  ).innerHTML = html;
+
+}
+
+
+/* =========================================================
+   VISUAL
+   ========================================================= */
+
+function renderVisual(data){
+
+  const top =
+    document.getElementById(
+      "topBoxes"
+    );
+
+
+  const bottom =
+    document.getElementById(
+      "bottomBoxes"
+    );
+
+
+  const rail =
+    document.getElementById(
+      "chairRailVisual"
+    );
+
+
+  top.innerHTML = "";
+
+  bottom.innerHTML = "";
+
+
+  const totalWidth =
+    data.boxWidths.reduce(
+      (sum,w)=>
+        sum + w,
+      0
+    );
+
+
+  /* ======================================================
+     TOP
+     ====================================================== */
+
+  data.boxWidths.forEach(
+    (width,index)=>{
+
+      const box =
+        document.createElement(
+          "div"
+        );
+
+
+      box.className =
+        "box";
+
+
+      box.style.flex =
+        `${width / totalWidth} 1 0`;
+
+
+      box.innerHTML = `
+
+        <span>
+
+          ${formatMm(width)}
+          ×
+          ${formatMm(data.topHeight)}mm
+
+        </span>
+
+      `;
+
+
+      top.appendChild(box);
+
+    }
+  );
+
+
+  /* ======================================================
+     CHAIR RAIL
+     ====================================================== */
+
+  if(
+    data.layoutStyle ===
+    "with_chairrail"
+  ){
+
+    rail.style.display =
+      "block";
+
+  }else{
+
+    rail.style.display =
+      "none";
+
+  }
+
+
+  /* ======================================================
+     BOTTOM
+     ====================================================== */
+
+  if(
+    data.layoutStyle ===
+    "with_chairrail"
+  ){
+
+    data.boxWidths.forEach(
+      width=>{
+
+        const box =
+          document.createElement(
+            "div"
+          );
+
+
+        box.className =
+          "box";
+
+
+        box.style.flex =
+          `${width / totalWidth} 1 0`;
+
+
+        box.innerHTML = `
+
+          <span>
+
+            ${formatMm(width)}
+            × 600mm
+
+          </span>
+
+        `;
+
+
+        bottom.appendChild(
+          box
+        );
+
+      }
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   HISTORY
+   ========================================================= */
+
+function saveHistory(){
+
+  if(!currentCalculation){
+
+    alert(
+      "Please calculate first."
+    );
+
+    return;
+
+  }
+
+
+  let history =
+    JSON.parse(
+      localStorage.getItem(
+        "ipainter_wainscoting_history"
+      ) || "[]"
+    );
+
+
+  history.unshift(
+    currentCalculation
+  );
+
+
+  history =
+    history.slice(
+      0,
+      20
+    );
+
+
+  localStorage.setItem(
+    "ipainter_wainscoting_history",
+    JSON.stringify(history)
+  );
+
+
+  renderHistory();
+
+
+  alert(
+    "Calculation saved."
+  );
+
+}
+
+
+/* =========================================================
+   RENDER HISTORY
+   ========================================================= */
+
+function renderHistory(){
+
+  const list =
+    document.getElementById(
+      "historyList"
+    );
+
+
+  let history =
+    JSON.parse(
+      localStorage.getItem(
+        "ipainter_wainscoting_history"
+      ) || "[]"
+    );
+
+
+  if(!history.length){
+
+    list.innerHTML = `
+
+      <div class="empty">
+        No saved calculations.
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  list.innerHTML = "";
+
+
+  history.forEach(
+    (item,index)=>{
+
+      const date =
+        new Date(
+          item.createdAt
+        );
+
+
+      const div =
+        document.createElement(
+          "div"
+        );
+
+
+      div.className =
+        "history-item";
+
+
+      div.innerHTML = `
+
+        <strong>
+
+          ${item.wallWidth}
+          ×
+          ${item.wallHeight}mm
+
+        </strong>
+
+
+        <div>
+
+          Pattern:
+          ${item.pattern}
+
+          |
+
+          ${
+            item.frameType ===
+            "double"
+            ? "Double"
+            : "Single"
+          }
+
+          |
+
+          ${item.frameColor}
+
+        </div>
+
+
+        <div>
+
+          Total:
+          <b>
+            ${money(item.grandTotal)}
+          </b>
+
+        </div>
+
+
+        <div
+          style="
+            color:#6b7280;
+            font-size:11px;
+            margin-top:5px;
+          "
+        >
+
+          ${date.toLocaleString(
+            "en-MY"
+          )}
+
+        </div>
+
+
+        <div class="actions">
+
+          <button
+            class="btn btn-dark"
+            style="min-height:38px"
+            onclick="loadHistory(${index})">
+
+            Load
+
+          </button>
+
+        </div>
+
+      `;
+
+
+      list.appendChild(
+        div
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   LOAD HISTORY
+   ========================================================= */
+
+function loadHistory(index){
+
+  let history =
+    JSON.parse(
+      localStorage.getItem(
+        "ipainter_wainscoting_history"
+      ) || "[]"
+    );
+
+
+  const item =
+    history[index];
+
+
+  if(!item){
+    return;
+  }
+
+
+  document.getElementById(
+    "wallWidth"
+  ).value =
+    item.wallWidth;
+
+
+  document.getElementById(
+    "wallHeight"
+  ).value =
+    item.wallHeight;
+
+
+  document.getElementById(
+    "layoutStyle"
+  ).value =
+    item.layoutStyle;
+
+
+  document.getElementById(
+    "boxPattern"
+  ).value =
+    item.pattern;
+
+
+  document.getElementById(
+    "frameType"
+  ).value =
+    item.frameType;
+
+
+  document.getElementById(
+    "frameColor"
+  ).value =
+    item.frameColor;
+
+
+  calculate();
+
+}
+
+
+/* =========================================================
+   CLEAR HISTORY
+   ========================================================= */
+
+function clearHistory(){
+
+  if(
+    !confirm(
+      "Clear all saved calculations?"
+    )
+  ){
+
+    return;
+
+  }
+
+
+  localStorage.removeItem(
+    "ipainter_wainscoting_history"
+  );
+
+
+  renderHistory();
+
+}
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+function resetCalculator(){
+
+  document.getElementById(
+    "wallWidth"
+  ).value =
+    3000;
+
+
+  document.getElementById(
+    "wallHeight"
+  ).value =
+    2900;
+
+
+  document.getElementById(
+    "layoutStyle"
+  ).value =
+    "with_chairrail";
+
+
+  document.getElementById(
+    "boxPattern"
+  ).value =
+    "2:1:2:1:2";
+
+
+  document.getElementById(
+    "frameType"
+  ).value =
+    "single";
+
+
+  document.getElementById(
+    "frameColor"
+  ).value =
+    "standard";
+
+
+  currentCalculation =
+    null;
+
+
+  document.getElementById(
+    "resultContent"
+  ).innerHTML = `
+
+    <div class="empty">
+      Enter wall dimensions and click Calculate.
+    </div>
+
+  `;
+
+
+  document.getElementById(
+    "topBoxes"
+  ).innerHTML = "";
+
+
+  document.getElementById(
+    "bottomBoxes"
+  ).innerHTML = "";
+
+
+  document.getElementById(
+    "chairRailVisual"
+  ).style.display =
+    "block";
+
+}
+
+
+/* =========================================================
+   ADD TO CART
+   ========================================================= */
+
+function addToCart(){
+
+  if(!currentCalculation){
+
+    alert(
+      "Please calculate first."
+    );
+
+    return;
+
+  }
+
+
+  let cart =
+    JSON.parse(
+      localStorage.getItem(
+        "ipainter_wainscoting_cart"
+      ) || "[]"
+    );
+
+
+  cart.push({
+
+    type:"Wainscoting",
+
+    width:
+      currentCalculation.wallWidth,
+
+    height:
+      currentCalculation.wallHeight,
+
+    pattern:
+      currentCalculation.pattern,
+
+    frameType:
+      currentCalculation.frameType,
+
+    frameColor:
+      currentCalculation.frameColor,
+
+    total:
+      currentCalculation.grandTotal,
+
+    createdAt:
+      new Date().toISOString()
+
+  });
+
+
+  localStorage.setItem(
+    "ipainter_wainscoting_cart",
+    JSON.stringify(cart)
+  );
+
+
+  alert(
+    "Wainscoting calculation added to cart."
+  );
+
+}
+
+
+/* =========================================================
+   SAVE PNG
+   ========================================================= */
+
+function downloadResult(){
+
+  if(!currentCalculation){
+
+    alert(
+      "Please calculate first."
+    );
+
+    return;
+
+  }
+
+
+  window.print();
+
+}
+
+
+/* =========================================================
+   INITIAL LOAD
+   ========================================================= */
+
+renderHistory();
 
 </script>
 
