@@ -2,412 +2,441 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>iPainter DIY Wainscoting Calculator</title>
 
 <style>
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
   margin:0;
-  font-family:Arial,Helvetica,sans-serif;
-  background:#f4f5f7;
-  color:#222;
+  font-family:Inter,Arial,sans-serif;
+  background:#f5f7fa;
+  color:#18212f
 }
 
 .container{
-  max-width:1200px;
+  max-width:1100px;
   margin:auto;
-  padding:20px;
+  padding:24px
 }
 
 .card{
   background:#fff;
-  border-radius:16px;
-  padding:22px;
-  margin-bottom:20px;
-  box-shadow:0 8px 25px rgba(0,0,0,.07);
+  border:1px solid #e3e7ed;
+  border-radius:18px;
+  padding:20px;
+  margin-bottom:18px;
+  box-shadow:0 8px 24px rgba(20,30,50,.06)
 }
 
 h1{
   margin:0 0 6px;
-  font-size:28px;
+  font-size:28px
 }
 
-h2{
-  margin-top:0;
-}
-
-.subtitle{
-  color:#777;
-  margin-bottom:20px;
+.sub{
+  color:#697586;
+  margin-bottom:20px
 }
 
 .grid{
   display:grid;
   grid-template-columns:repeat(2,1fr);
-  gap:15px;
+  gap:14px
 }
 
-.field{
-  display:flex;
-  flex-direction:column;
-  gap:7px;
-}
-
-.field label{
+label{
   font-size:13px;
   font-weight:700;
-  color:#555;
+  color:#465466;
+  display:block;
+  margin-bottom:6px
 }
 
-.field input,
-.field select{
+input,select{
   width:100%;
-  padding:12px 13px;
-  border:1px solid #ddd;
+  padding:12px;
+  border:1px solid #d5dbe3;
   border-radius:10px;
-  font-size:15px;
   background:#fff;
-}
-
-.field input:focus,
-.field select:focus{
-  outline:none;
-  border-color:#111;
+  font-size:15px
 }
 
 button{
   border:0;
   border-radius:10px;
-  padding:13px 18px;
-  font-size:15px;
+  padding:11px 15px;
   font-weight:700;
   cursor:pointer;
+  background:#1f2937;
+  color:#fff
 }
 
-.btn-primary{
-  background:#111;
-  color:#fff;
+button.secondary{
+  background:#eef2f6;
+  color:#243042
 }
 
-.btn-secondary{
-  background:#eee;
-  color:#222;
-}
-
-.button-row{
+.actions{
   display:flex;
   gap:10px;
   flex-wrap:wrap;
-  margin-top:20px;
+  margin-top:16px
 }
 
-/* =========================
-   RESULT
-========================= */
-
-.total-box{
-  background:#111;
-  color:#fff;
-  border-radius:14px;
-  padding:20px;
-  margin-top:20px;
+.result{
+  display:none
 }
 
-.total-label{
-  font-size:13px;
-  opacity:.7;
-}
-
-.total-value{
-  font-size:34px;
+.price{
+  font-size:32px;
   font-weight:800;
-  margin-top:4px;
+  margin:5px 0 14px
 }
 
-.breakdown{
-  margin-top:18px;
+.muted{
+  color:#6b7280;
+  font-size:13px
 }
 
-.breakdown-row{
-  display:flex;
-  justify-content:space-between;
-  gap:15px;
-  padding:10px 0;
-  border-bottom:1px solid #eee;
-}
+/* =========================================================
+   VISUAL — FIT INSIDE BROWSER, NO SCROLL
+========================================================= */
 
-.breakdown-row:last-child{
-  border-bottom:0;
-}
-
-.breakdown-name{
-  color:#555;
-}
-
-.breakdown-price{
-  font-weight:700;
-  text-align:right;
-}
-
-.subtotal{
-  font-size:18px;
-  font-weight:800;
-  margin-top:12px;
-  padding-top:12px;
-  border-top:2px solid #222;
-}
-
-.section-title{
-  font-size:16px;
-  font-weight:800;
-  margin:20px 0 10px;
-}
-
-.info{
-  background:#f7f7f7;
-  border-radius:10px;
-  padding:12px 14px;
-  font-size:13px;
-  color:#666;
-  line-height:1.5;
-}
-
-.price-table{
+.visual-wrap{
   width:100%;
-  border-collapse:collapse;
-  margin-top:10px;
-}
-
-.price-table th,
-.price-table td{
-  padding:10px 8px;
-  border-bottom:1px solid #eee;
-  text-align:left;
-  font-size:13px;
-}
-
-.price-table th:last-child,
-.price-table td:last-child{
-  text-align:right;
-}
-
-/* =========================
-   VISUAL ELEVATION
-========================= */
-
-.visual-card{
   overflow:hidden;
+  margin-top:18px
 }
 
-.visual-header{
+.wall-stage{
+  width:100%;
+  max-width:980px;
+  margin:0 auto;
   display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  flex-wrap:wrap;
+  justify-content:center
 }
 
-.visual-wrapper{
-  margin-top:25px;
-  padding:45px 35px 45px;
-  background:#f3f0eb;
-  border-radius:14px;
-  overflow:auto;
-}
+/*
+  IMPORTANT:
+  The wall uses a real Width : Height aspect ratio.
+  JavaScript calculates the exact ratio and sets height.
+  max-height prevents the visual from becoming too tall.
+*/
 
 .wall{
   position:relative;
   width:100%;
-  min-width:600px;
-  background:#faf9f6;
-  border:2px solid #d5d0c8;
-  overflow:visible;
+  aspect-ratio:3000 / 2900;
+  max-height:600px;
+  background:#eee9df;
+  border:5px solid #ffffff;
+  box-shadow:
+    inset 0 0 0 1px #d6d0c6,
+    0 4px 16px rgba(0,0,0,.08);
+  border-radius:6px;
+  overflow:hidden
 }
 
-/* dimension labels */
+/* =========================================================
+   WALL DIMENSIONS
+========================================================= */
 
-.dimension-width{
+.wall::before{
+  content:attr(data-width) " mm";
   position:absolute;
+  top:-1px;
   left:50%;
-  top:-34px;
-  transform:translateX(-50%);
-  font-size:12px;
+  transform:translate(-50%,-100%);
+  font-size:11px;
   font-weight:700;
-  color:#555;
+  color:#697586;
   white-space:nowrap;
+  pointer-events:none
 }
 
-.dimension-height{
+.wall::after{
+  content:attr(data-height) " mm";
   position:absolute;
-  right:-62px;
+  right:-7px;
   top:50%;
-  transform:translateY(-50%) rotate(90deg);
-  font-size:12px;
+  transform:translate(100%,-50%) rotate(90deg);
+  transform-origin:center;
+  font-size:11px;
   font-weight:700;
-  color:#555;
+  color:#697586;
   white-space:nowrap;
+  pointer-events:none
 }
 
-/* rows */
+/* =========================================================
+   VISUAL ROWS
+========================================================= */
 
-.visual-row{
+.top-row,
+.bottom-row,
+.full-row{
   position:absolute;
-  left:0;
-  width:100%;
+  display:block;
 }
+
+/*
+  Rows are NOT flex.
+  Every panel is positioned using the actual calculated
+  millimetre dimensions.
+*/
+
+.top-row{
+  top:0;
+}
+
+.bottom-row{
+  top:0;
+}
+
+.full-row{
+  top:0;
+}
+
+/* =========================================================
+   PANELS
+========================================================= */
 
 .panel{
   position:absolute;
-  border:6px solid #555;
+  min-width:0;
+  min-height:0;
+
   background:rgba(255,255,255,.12);
+
+  /*
+    Thick outer frame
+  */
+  border:5px solid #d8d0c3;
+
   display:flex;
   align-items:center;
   justify-content:center;
-  text-align:center;
-}
 
-.panel.single{
-  border-width:6px;
+  overflow:hidden;
 }
 
 .panel.double{
-  border-width:6px;
+  border:5px solid #d8d0c3
 }
+
+/*
+  Thin inner frame
+*/
 
 .panel.double::after{
   content:"";
   position:absolute;
-  inset:14px;
-  border:2px solid #777;
-  pointer-events:none;
+  left:12px;
+  right:12px;
+  top:12px;
+  bottom:12px;
+
+  border:2px solid #bcb3a5;
+
+  pointer-events:none
 }
 
-.panel.gold{
-  border-color:#c8a44d;
-}
-
-.panel.gold.double::after{
-  border-color:#c8a44d;
-}
-
-.panel-label{
-  font-size:11px;
-  font-weight:800;
-  color:#444;
-  background:rgba(255,255,255,.82);
-  padding:4px 6px;
-  border-radius:5px;
+.panel span{
+  font-size:clamp(8px,1.15vw,13px);
+  font-weight:700;
+  color:#5a5147;
+  text-align:center;
+  line-height:1.25;
+  z-index:2;
   white-space:nowrap;
+
+  background:rgba(255,255,255,.72);
+  padding:3px 5px;
+  border-radius:4px
 }
 
-.panel.gold .panel-label{
-  color:#8d7023;
-}
+/* =========================================================
+   CHAIR RAIL — EXACTLY 3 HORIZONTAL LINES
+========================================================= */
 
-/* chair rail */
-
-.chair-rail{
+.rail{
   position:absolute;
   left:0;
-  width:100%;
+  right:0;
+
   height:70px;
+
+  pointer-events:none
 }
 
-.chair-rail::before,
-.chair-rail::after,
-.chair-rail-line{
-  content:"";
+.rail-line{
   position:absolute;
   left:0;
-  width:100%;
-  height:4px;
-  background:#555;
+  right:0;
+
+  height:3px;
+
+  background:#d8d0c3
 }
 
-.chair-rail::before{
-  top:8px;
+.rail-line.line-1{
+  top:8px
 }
 
-.chair-rail-line{
-  top:33px;
+.rail-line.line-2{
+  top:50%;
+  transform:translateY(-50%)
 }
 
-.chair-rail::after{
-  bottom:8px;
-}
-
-.chair-rail.gold::before,
-.chair-rail.gold::after,
-.chair-rail.gold .chair-rail-line{
-  background:#c8a44d;
+.rail-line.line-3{
+  bottom:8px
 }
 
 .rail-label{
   position:absolute;
-  right:10px;
-  top:23px;
-  font-size:10px;
+  right:8px;
+  top:50%;
+  transform:translateY(-50%);
+
+  font-size:9px;
   font-weight:700;
-  background:#fff;
+  color:#5a5147;
+
+  background:rgba(255,255,255,.8);
   padding:3px 5px;
-  border-radius:4px;
+  border-radius:4px
 }
 
-/* =========================
-   HISTORY
-========================= */
+/* =========================================================
+   SPECS / PRICE
+========================================================= */
+
+.specgrid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-top:15px
+}
+
+.spec{
+  background:#f7f8fa;
+  border-radius:12px;
+  padding:12px
+}
+
+.spec b{
+  display:block;
+  font-size:12px;
+  color:#6b7280
+}
+
+.spec strong{
+  font-size:17px
+}
+
+.boxlist{
+  margin-top:14px
+}
+
+.boxitem{
+  padding:12px;
+  border:1px solid #e6e9ee;
+  border-radius:12px;
+  margin:8px 0;
+  background:#fafbfc;
+  line-height:1.55
+}
+
+.tag{
+  display:inline-block;
+  padding:4px 8px;
+  border-radius:999px;
+  background:#edf2f7;
+  font-size:11px;
+  font-weight:800;
+  margin-bottom:6px
+}
 
 .history-item{
-  padding:14px 0;
-  border-bottom:1px solid #eee;
+  border-top:1px solid #eee;
+  padding:10px 0
 }
 
-.history-item:last-child{
-  border-bottom:0;
+.empty{
+  color:#8a94a3
 }
 
-.history-date{
-  font-size:12px;
-  color:#888;
+.notice{
+  background:#f0f7ff;
+  border:1px solid #d7eaff;
+  padding:12px;
+  border-radius:12px;
+  font-size:13px;
+  color:#40556d
 }
 
-.history-main{
-  display:flex;
-  justify-content:space-between;
-  gap:15px;
-  margin-top:4px;
-}
-
-.history-total{
-  font-weight:800;
-}
-
-/* responsive */
+/* =========================================================
+   MOBILE
+========================================================= */
 
 @media(max-width:700px){
-  .grid{
-    grid-template-columns:1fr;
-  }
 
   .container{
-    padding:12px;
+    padding:14px
   }
 
-  .card{
-    padding:16px;
+  .grid,
+  .specgrid{
+    grid-template-columns:1fr
   }
 
-  .visual-wrapper{
-    padding-left:25px;
-    padding-right:70px;
+  h1{
+    font-size:23px
   }
 
-  .total-value{
-    font-size:29px;
+  .wall{
+    /*
+      Still uses real aspect ratio.
+      No horizontal scrolling.
+    */
+    width:100%;
+    max-height:none;
+    border-width:3px
+  }
+
+  .panel{
+    border-width:3px
+  }
+
+  .panel.double{
+    border-width:3px
+  }
+
+  .panel.double::after{
+    left:7px;
+    right:7px;
+    top:7px;
+    bottom:7px;
+    border-width:1.5px
+  }
+
+  .panel span{
+    font-size:7px;
+    padding:2px 3px
+  }
+
+  .rail{
+    height:70px
+  }
+
+  .rail-line{
+    height:2px
+  }
+
+  .rail-label{
+    display:none
   }
 }
 </style>
@@ -417,1544 +446,2290 @@ button{
 
 <div class="container">
 
-  <div class="card">
-    <h1>iPainter DIY Wainscoting Calculator</h1>
-    <div class="subtitle">
-      Calculate your wainscoting layout, material cost and visualize the elevation.
-    </div>
+<!-- =======================================================
+     CALCULATOR
+======================================================= -->
 
-    <div class="grid">
+<div class="card">
 
-      <div class="field">
-        <label>Wall Width (mm)</label>
-        <input id="wallWidth" type="number" value="3000">
-      </div>
+<h1>iPainter DIY Wainscoting Calculator</h1>
 
-      <div class="field">
-        <label>Wall Height (mm)</label>
-        <input id="wallHeight" type="number" value="2900">
-      </div>
+<div class="sub">
+Custom sizing, material pricing and downloadable visual design.
+</div>
 
-      <div class="field">
-        <label>Layout</label>
-        <select id="layout">
-          <option value="with_chairrail">Single Frame + Chair Rail</option>
-          <option value="without_chairrail">Single Frame</option>
-          <option value="full_height">Full Height</option>
-        </select>
-      </div>
+<div class="grid">
 
-      <div class="field">
-        <label>Frame Type</label>
-        <select id="frameType">
-          <option value="single">Single Frame</option>
-          <option value="double">Double Frame</option>
-        </select>
-      </div>
+<div>
+<label>Wall Width (mm)</label>
+<input id="wallWidth" type="number" value="3000" min="300">
+</div>
 
-      <div class="field">
-        <label>Width Pattern</label>
-        <select id="pattern">
-          <option value="1:1">1 : 1</option>
-          <option value="1:2:1">1 : 2 : 1</option>
-          <option value="1:1:2:1:1">1 : 1 : 2 : 1 : 1</option>
-          <option value="2:1:2:1:2">2 : 1 : 2 : 1 : 2</option>
-          <option value="1:2:1:2:1">1 : 2 : 1 : 2 : 1</option>
-          <option value="single">Single</option>
-        </select>
-      </div>
+<div>
+<label>Wall Height (mm)</label>
+<input id="wallHeight" type="number" value="2900" min="300">
+</div>
 
-      <div class="field">
-        <label>Frame Finish</label>
-        <select id="finish">
-          <option value="standard">Standard</option>
-          <option value="gold">Gold / Premium</option>
-        </select>
-      </div>
+<div>
+<label>Layout Style</label>
 
-    </div>
+<select id="layoutStyle">
 
-    <div class="button-row">
-      <button class="btn-primary" onclick="calculate()">Calculate</button>
-      <button class="btn-secondary" onclick="resetCalculator()">Reset</button>
-    </div>
-  </div>
+<option value="with_chairrail">
+With Chair Rail
+</option>
+
+<option value="without_chairrail">
+Without Chair Rail
+</option>
+
+<option value="full_height">
+Full Height
+</option>
+
+</select>
+</div>
+
+<div>
+<label>Box Pattern</label>
+
+<select id="pattern">
+
+<option value="1:1">
+1:1
+</option>
+
+<option value="1:2:1">
+1:2:1
+</option>
+
+<option value="1:1:2:1:1">
+1:1:2:1:1
+</option>
+
+<option value="2:1:2:1:2">
+2:1:2:1:2
+</option>
+
+<option value="1:2:1:2:1">
+1:2:1:2:1
+</option>
+
+<option value="single">
+Single
+</option>
+
+</select>
+</div>
+
+<div>
+<label>Frame Type</label>
+
+<select id="frameType">
+
+<option value="single">
+Single Frame
+</option>
+
+<option value="double">
+Double Frame
+</option>
+
+</select>
+</div>
+
+<div>
+<label>Frame Colour</label>
+
+<select id="frameColour">
+
+<option value="standard">
+Standard
+</option>
+
+<option value="gold">
+Gold (+RM5 / logical box)
+</option>
+
+</select>
+</div>
+
+</div>
+
+<div class="actions">
+
+<button onclick="calculate()">
+Calculate
+</button>
+
+<button class="secondary" onclick="resetForm()">
+Reset
+</button>
+
+</div>
+
+</div>
 
 
-  <!-- VISUAL -->
-  <div class="card visual-card">
+<!-- =======================================================
+     RESULT
+======================================================= -->
 
-    <div class="visual-header">
-      <div>
-        <h2 style="margin-bottom:4px;">Visual Elevation</h2>
-        <div style="font-size:13px;color:#777;">
-          Proportion follows your actual wall dimensions.
-        </div>
-      </div>
+<div class="card result" id="result">
 
-      <button class="btn-secondary" onclick="downloadVisualDesign()">
-        Download PNG
-      </button>
-    </div>
+<h2 id="resultTitle">
+Design Result
+</h2>
 
-    <div class="visual-wrapper">
-      <div id="wallVisual" class="wall">
-        <div class="dimension-width" id="visualWidthLabel">3000 mm</div>
-        <div class="dimension-height" id="visualHeightLabel">2900 mm</div>
-      </div>
-    </div>
+<div class="price" id="totalPrice">
+RM0
+</div>
 
-  </div>
+<div id="summary" class="muted"></div>
 
 
-  <!-- RESULT -->
-  <div class="card">
+<!-- VISUAL -->
 
-    <h2>Price Breakdown</h2>
+<div class="visual-wrap">
 
-    <div id="result">
-      <div class="info">
-        Enter your wall dimensions and click <b>Calculate</b>.
-      </div>
-    </div>
+<div class="wall-stage">
 
-  </div>
+<div id="wallVisual" class="wall"></div>
+
+</div>
+
+</div>
 
 
-  <!-- HISTORY -->
-  <div class="card">
+<div id="specs" class="specgrid"></div>
 
-    <h2>Calculation History</h2>
+<div id="boxDetails" class="boxlist"></div>
 
-    <div id="history">
-      <div class="info">No calculation history yet.</div>
-    </div>
 
-  </div>
+<div class="actions">
+
+<button onclick="downloadVisualDesign()">
+Download Visual Design PNG
+</button>
+
+<button class="secondary" onclick="addToCart()">
+Add to Cart
+</button>
+
+<button class="secondary" onclick="saveHistory()">
+Save History
+</button>
+
+</div>
+
+</div>
+
+
+<!-- =======================================================
+     HISTORY
+======================================================= -->
+
+<div class="card">
+
+<h2>
+History
+</h2>
+
+<div id="history">
+
+<div class="empty">
+No saved calculation.
+</div>
+
+</div>
+
+<div class="actions">
+
+<button class="secondary" onclick="clearHistory()">
+Clear History
+</button>
+
+</div>
+
+</div>
 
 </div>
 
 
 <script>
 
-/* ============================================================
+/* =========================================================
    PRICE TABLES
-============================================================ */
+========================================================= */
 
 const singlePrices={
-  "300x300":30,
-  "300x600":40,
-  "300x900":50,
-  "300x1200":60,
-  "300x1500":70,
-  "300x1800":90,
-  "300x2400":110,
 
-  "600x600":50,
-  "600x900":60,
-  "600x1200":70,
-  "600x1500":90,
-  "600x1800":100,
-  "600x2400":130,
+"300x300":30,
+"300x600":40,
+"300x900":50,
+"300x1200":60,
+"300x1500":70,
+"300x1800":90,
+"300x2400":110,
 
-  "900x900":70,
-  "900x1200":90,
-  "900x1500":100,
-  "900x1800":110,
-  "900x2400":140,
+"600x600":50,
+"600x900":60,
+"600x1200":70,
+"600x1500":90,
+"600x1800":100,
+"600x2400":130,
 
-  "1200x1200":100,
-  "1200x1500":110,
-  "1200x1800":130,
-  "1200x2400":150,
+"900x900":70,
+"900x1200":90,
+"900x1500":100,
+"900x1800":110,
+"900x2400":140,
 
-  "1500x1500":130,
-  "1500x1800":140,
-  "1500x2400":160,
+"1200x1200":100,
+"1200x1500":110,
+"1200x1800":130,
+"1200x2400":150,
 
-  "1800x1800":150,
-  "1800x2400":190,
+"1500x1500":130,
+"1500x1800":140,
+"1500x2400":160,
 
-  "2400x2400":210
+"1800x1800":150,
+"1800x2400":190,
+
+"2400x2400":210
+
 };
 
 
 const doublePrices={
-  "300x300":15,
-  "300x600":25,
-  "300x900":35,
-  "300x1200":45,
-  "300x1500":55,
-  "300x1800":65,
-  "300x2400":75,
 
-  "600x600":35,
-  "600x900":45,
-  "600x1200":55,
-  "600x1500":65,
-  "600x1800":75,
-  "600x2400":115,
+"300x300":15,
+"300x600":25,
+"300x900":35,
+"300x1200":45,
+"300x1500":55,
+"300x1800":65,
+"300x2400":75,
 
-  "900x900":55,
-  "900x1200":65,
-  "900x1500":75,
-  "900x1800":85,
-  "900x2400":120,
+"600x600":35,
+"600x900":45,
+"600x1200":55,
+"600x1500":65,
+"600x1800":75,
+"600x2400":115,
 
-  "1200x1200":75,
-  "1200x1500":85,
-  "1200x1800":115,
-  "1200x2400":125,
+"900x900":55,
+"900x1200":65,
+"900x1500":75,
+"900x1800":85,
+"900x2400":120,
 
-  "1500x1500":115,
-  "1500x1800":120,
-  "1500x2400":145,
+"1200x1200":75,
+"1200x1500":85,
+"1200x1800":115,
+"1200x2400":125,
 
-  "1800x1800":125,
-  "1800x2400":155,
+"1500x1500":115,
+"1500x1800":120,
+"1500x2400":145,
 
-  "2400x2400":175
+"1800x1800":125,
+"1800x2400":155,
+
+"2400x2400":175
+
 };
 
 
 const innerFramePrices={
-  "300x300":15,
-  "300x600":25,
-  "300x900":35,
-  "300x1200":45,
-  "300x1800":65,
-  "300x2400":75,
 
-  "600x600":35,
-  "600x900":45,
-  "600x1200":55,
-  "600x1800":75,
-  "600x2400":115,
+"300x300":15,
+"300x600":25,
+"300x900":35,
+"300x1200":45,
+"300x1800":65,
+"300x2400":75,
 
-  "900x900":55,
-  "900x1200":65,
-  "900x1500":75,
-  "900x1800":85,
-  "900x2400":120,
+"600x600":35,
+"600x900":45,
+"600x1200":55,
+"600x1800":75,
+"600x2400":115,
 
-  "1200x1200":75,
-  "1200x1500":85,
-  "1200x1800":15,
-  "1200x2400":125,
+"900x900":55,
+"900x1200":65,
+"900x1500":75,
+"900x1800":85,
+"900x2400":120,
 
-  "1500x1500":115,
-  "1500x1800":120,
-  "1500x2400":145,
+"1200x1200":75,
+"1200x1500":85,
+"1200x1800":15,
+"1200x2400":125,
 
-  "1800x1800":125,
-  "1800x2400":155,
+"1500x1500":115,
+"1500x1800":120,
+"1500x2400":145,
 
-  "2400x2400":175
+"1800x1800":125,
+"1800x2400":155,
+
+"2400x2400":175
+
 };
 
 
 const standardSizes=[
-  300,
-  600,
-  900,
-  1200,
-  1500,
-  1800,
-  2400
+300,
+600,
+900,
+1200,
+1500,
+1800,
+2400
 ];
 
 
-/* ============================================================
-   PATTERNS
-============================================================ */
-
 const patternDefinitions={
-  "1:1":{
-    ratios:[1,1],
-    gaps:3
-  },
 
-  "1:2:1":{
-    ratios:[1,2,1],
-    gaps:4
-  },
+"1:1":{
+ratios:[1,1],
+gaps:3
+},
 
-  "1:1:2:1:1":{
-    ratios:[1,1,2,1,1],
-    gaps:6
-  },
+"1:2:1":{
+ratios:[1,2,1],
+gaps:4
+},
 
-  "2:1:2:1:2":{
-    ratios:[2,1,2,1,2],
-    gaps:6
-  },
+"1:1:2:1:1":{
+ratios:[1,1,2,1,1],
+gaps:6
+},
 
-  "1:2:1:2:1":{
-    ratios:[1,2,1,2,1],
-    gaps:6
-  },
+"2:1:2:1:2":{
+ratios:[2,1,2,1,2],
+gaps:6
+},
 
-  "single":{
-    ratios:[1],
-    gaps:2
-  }
+"1:2:1:2:1":{
+ratios:[1,2,1,2,1],
+gaps:6
+},
+
+"single":{
+ratios:[1],
+gaps:2
+}
+
 };
 
 
-/* ============================================================
-   HELPERS
-============================================================ */
+let lastCalculation=null;
 
-function money(value){
-  return "RM " + Number(value || 0).toFixed(2);
+
+/* =========================================================
+   PRICE HELPERS
+========================================================= */
+
+function ceilStandardSize(v){
+
+return standardSizes.find(
+s=>s>=v
+)||null
+
 }
 
-
-function roundUpStandard(value){
-
-  for(const size of standardSizes){
-    if(value<=size){
-      return [size];
-    }
-  }
-
-  const pieces=[];
-
-  while(value>2400){
-    pieces.push(2400);
-    value-=2400;
-  }
-
-  if(value>0){
-    let closest=standardSizes.find(s=>s>=value);
-
-    if(!closest){
-      closest=2400;
-    }
-
-    pieces.push(closest);
-  }
-
-  return pieces;
-}
-
-
-function priceLookup(w,h,table){
-
-  const a=Math.round(w);
-  const b=Math.round(h);
-
-  const key1=`${a}x${b}`;
-  const key2=`${b}x${a}`;
-
-  if(table[key1]!==undefined){
-    return {
-      price:table[key1],
-      key:key1
-    };
-  }
-
-  if(table[key2]!==undefined){
-    return {
-      price:table[key2],
-      key:key2
-    };
-  }
-
-  return null;
-}
-
-
-/* ============================================================
-   CUSTOM SIZE PRICE
-============================================================ */
 
 function getPrice(w,h,table){
 
-  /*
-    If either dimension exceeds 2400mm,
-    split the dimension into purchasable standard pieces.
+const a=
+table[
+Math.round(w)+"x"+Math.round(h)
+];
 
-    Example:
-    2800 x 600
-    = 2400 x 600 + 600 x 600
-  */
+const b=
+table[
+Math.round(h)+"x"+Math.round(w)
+];
 
-  if(w<=2400 && h<=2400){
+return a!=null
+?a
+:b!=null
+?b
+:null
 
-    const direct=priceLookup(
-      Math.ceil(w/300)*300,
-      Math.ceil(h/300)*300,
-      table
-    );
-
-    if(direct){
-      return {
-        total:direct.price,
-        pieces:[
-          {
-            w:Math.ceil(w/300)*300,
-            h:Math.ceil(h/300)*300,
-            price:direct.price
-          }
-        ]
-      };
-    }
-
-    const wp=roundUpStandard(w);
-    const hp=roundUpStandard(h);
-
-    let total=0;
-    const pieces=[];
-
-    for(const pw of wp){
-      for(const ph of hp){
-
-        const lookup=priceLookup(pw,ph,table);
-
-        if(!lookup){
-          throw new Error(
-            `No price for ${pw}x${ph}`
-          );
-        }
-
-        total+=lookup.price;
-
-        pieces.push({
-          w:pw,
-          h:ph,
-          price:lookup.price
-        });
-      }
-    }
-
-    return {
-      total,
-      pieces
-    };
-  }
-
-
-  const widthPieces=roundUpStandard(w);
-  const heightPieces=roundUpStandard(h);
-
-  let total=0;
-  const pieces=[];
-
-  for(const pw of widthPieces){
-
-    for(const ph of heightPieces){
-
-      const lookup=priceLookup(
-        pw,
-        ph,
-        table
-      );
-
-      if(!lookup){
-        throw new Error(
-          `No price for ${pw}x${ph}`
-        );
-      }
-
-      total+=lookup.price;
-
-      pieces.push({
-        w:pw,
-        h:ph,
-        price:lookup.price
-      });
-    }
-  }
-
-  return {
-    total,
-    pieces
-  };
 }
 
 
-/* ============================================================
-   LAYOUT CALCULATION
-============================================================ */
+function splitDimension(value){
 
-function calculateBoxes(
-  wallWidth,
-  wallHeight,
-  layout,
-  pattern
+let rem=
+Math.round(value);
+
+let out=[];
+
+while(rem>2400){
+
+out.push({
+actual:2400,
+standard:2400
+});
+
+rem-=2400
+
+}
+
+if(rem>0){
+
+const s=
+ceilStandardSize(rem);
+
+if(!s)return null;
+
+out.push({
+actual:rem,
+standard:s
+});
+
+}
+
+return out
+
+}
+
+
+function calculateMaterialCombination(
+width,
+height,
+table
 ){
 
-  const definition=patternDefinitions[pattern];
+const wp=
+splitDimension(width);
 
-  if(!definition){
-    throw new Error("Invalid pattern.");
-  }
+const hp=
+splitDimension(height);
 
-  const ratios=definition.ratios;
+if(!wp||!hp)return null;
 
-  let boxHeight;
+let total=0;
 
-  if(layout==="with_chairrail"){
+let pieces=[];
 
-    /*
-      H - 600 bottom
-        - 4 x 100 gaps
-        - 70 rail
-    */
+for(const w of wp){
 
-    boxHeight=wallHeight-1070;
+for(const h of hp){
 
-  }else if(layout==="without_chairrail"){
+const price=
+getPrice(
+w.standard,
+h.standard,
+table
+);
 
-    /*
-      H - 600 bottom
-        - 4 x 100 gaps
-    */
+if(price==null)return null;
 
-    boxHeight=wallHeight-1000;
+total+=price;
 
-  }else{
+pieces.push({
 
-    /*
-      Full height:
-      H - 200
-    */
+actualWidth:w.actual,
 
-    boxHeight=wallHeight-200;
-  }
+actualHeight:h.actual,
 
-  if(boxHeight<=0){
-    throw new Error(
-      "Wall height is too small for this layout."
-    );
-  }
+priceWidth:w.standard,
 
+priceHeight:h.standard,
 
-  const availableWidth=
-    wallWidth-(definition.gaps*100);
+price
 
-  if(availableWidth<=0){
-    throw new Error(
-      "Wall width is too small for this pattern."
-    );
-  }
+});
 
-  const ratioSum=
-    ratios.reduce(
-      (sum,value)=>sum+value,
-      0
-    );
+}
 
-  const unit=
-    availableWidth/ratioSum;
+}
 
-  const widths=
-    ratios.map(
-      ratio=>unit*ratio
-    );
+return {
+total,
+pieces
+}
 
-
-  return {
-    widths,
-    boxHeight,
-    ratios,
-    gaps:definition.gaps
-  };
 }
 
 
-/* ============================================================
-   VISUAL RENDER
-============================================================ */
+/* =========================================================
+   DOUBLE FRAME PRICING
+========================================================= */
 
-function renderVisual(data){
+function calculateDoubleBoxPricing(w,h){
 
-  const wall=
-    document.getElementById("wallVisual");
+const outer=
+calculateMaterialCombination(
+w,
+h,
+doublePrices
+);
 
-  wall.innerHTML=`
-    <div class="dimension-width" id="visualWidthLabel">
-      ${data.wallWidth} mm
-    </div>
+if(!outer)return null;
 
-    <div class="dimension-height" id="visualHeightLabel">
-      ${data.wallHeight} mm
-    </div>
-  `;
+let innerTotal=0;
 
+let innerPieces=[];
 
-  /*
-    Keep visual ratio based on actual wall dimension.
-  */
+for(const p of outer.pieces){
 
-  const maxVisualWidth=1050;
-  const scale=
-    maxVisualWidth/data.wallWidth;
+const iw=
+Math.max(
+300,
+p.actualWidth-180
+);
 
-  const wallWidthPx=
-    maxVisualWidth;
+const ih=
+Math.max(
+300,
+p.actualHeight-180
+);
 
-  const wallHeightPx=
-    data.wallHeight*scale;
+const inner=
+calculateMaterialCombination(
+iw,
+ih,
+innerFramePrices
+);
 
+if(!inner)return null;
 
-  wall.style.width=
-    wallWidthPx+"px";
+innerTotal+=inner.total;
 
-  wall.style.height=
-    wallHeightPx+"px";
+innerPieces.push({
 
+outerPiece:p,
 
-  const gapPx=
-    100*scale;
+innerWidth:iw,
 
-  const topGapPx=
-    100*scale;
+innerHeight:ih,
 
-  const bottomGapPx=
-    100*scale;
+pieces:inner.pieces
 
+});
 
-  /*
-    FULL HEIGHT
-  */
+}
 
-  if(data.layout==="full_height"){
+return {
 
-    const boxHeightPx=
-      data.boxHeight*scale;
+outer,
 
-    const row=
-      document.createElement("div");
+inner:{
+total:innerTotal,
+pieces:innerPieces
+},
 
-    row.className="visual-row";
+total:
+outer.total+
+innerTotal
 
-    row.style.top=
-      topGapPx+"px";
+}
 
-    row.style.height=
-      boxHeightPx+"px";
-
-
-    createPanelsExact(
-      row,
-      data.boxes.widths,
-      data.wallWidth,
-      scale,
-      data.finish,
-      data.frameType
-    );
-
-    wall.appendChild(row);
-
-    return;
-  }
-
-
-  /*
-    TOP ROW
-  */
-
-  const topRow=
-    document.createElement("div");
-
-  topRow.className="visual-row";
-
-  topRow.style.top=
-    topGapPx+"px";
-
-  topRow.style.height=
-    data.boxHeight*scale+"px";
-
-
-  createPanelsExact(
-    topRow,
-    data.boxes.widths,
-    data.wallWidth,
-    scale,
-    data.finish,
-    data.frameType
-  );
-
-  wall.appendChild(topRow);
-
-
-  /*
-    CHAIR RAIL
-  */
-
-  if(data.layout==="with_chairrail"){
-
-    const rail=
-      document.createElement("div");
-
-    rail.className=
-      "chair-rail "+
-      (data.finish==="gold" ? "gold":"");
-
-    rail.style.top=
-      (
-        100+
-        data.boxHeight+
-        100
-      )*scale+"px";
-
-    rail.innerHTML=`
-      <div class="chair-rail-line"></div>
-      <div class="rail-label">70 mm</div>
-    `;
-
-    wall.appendChild(rail);
-  }
-
-
-  /*
-    BOTTOM ROW
-  */
-
-  const bottomRow=
-    document.createElement("div");
-
-  bottomRow.className="visual-row";
-
-  let bottomTop;
-
-  if(data.layout==="with_chairrail"){
-
-    bottomTop=
-      100+
-      data.boxHeight+
-      100+
-      70+
-      100;
-
-  }else{
-
-    bottomTop=
-      100+
-      data.boxHeight+
-      200;
-  }
-
-
-  bottomRow.style.top=
-    bottomTop*scale+"px";
-
-  bottomRow.style.height=
-    600*scale+"px";
-
-
-  createPanelsExact(
-    bottomRow,
-    data.boxes.widths,
-    data.wallWidth,
-    scale,
-    data.finish,
-    data.frameType
-  );
-
-  wall.appendChild(bottomRow);
 }
 
 
-/* ============================================================
-   EXACT PANEL POSITIONING
-============================================================ */
+/* =========================================================
+   BUILD BOXES
+========================================================= */
 
-function createPanelsExact(
-  row,
-  widths,
-  wallWidth,
-  scale,
-  finish,
-  frameType
+function buildBoxes(width,height){
+
+const layout=
+document.getElementById(
+"layoutStyle"
+).value;
+
+const pat=
+patternDefinitions[
+document.getElementById(
+"pattern"
+).value
+];
+
+const full=
+layout==="full_height";
+
+
+if(full){
+
+return {
+
+topHeight:
+height-200,
+
+bottomHeight:0,
+
+topWidths:
+getWidths(width,pat),
+
+bottomWidths:[],
+
+rail:0
+
+}
+
+}
+
+
+const topHeight=
+layout==="with_chairrail"
+?height-1070
+:height-1000;
+
+
+return {
+
+topHeight,
+
+bottomHeight:600,
+
+topWidths:
+getWidths(width,pat),
+
+bottomWidths:
+getWidths(width,pat),
+
+rail:
+layout==="with_chairrail"
+?70
+:0
+
+}
+
+}
+
+
+function getWidths(width,pat){
+
+const available=
+width-
+pat.gaps*100;
+
+const sum=
+pat.ratios.reduce(
+(a,b)=>a+b,
+0
+);
+
+const unit=
+available/sum;
+
+return pat.ratios.map(
+r=>unit*r
+)
+
+}
+
+
+/* =========================================================
+   PRICE BOX
+========================================================= */
+
+function priceBox(
+w,
+h,
+type,
+colour
 ){
 
-  const gap=100;
+const base=
+type==="double"
+?
+calculateDoubleBoxPricing(w,h)
+:
+calculateMaterialCombination(
+w,
+h,
+singlePrices
+);
 
-  let x=gap;
+if(!base)return null;
 
-  widths.forEach((width,index)=>{
+return {
 
-    const panel=
-      document.createElement("div");
+base,
 
-    panel.className=
-      "panel "+
-      (frameType==="double" ? "double":"single")+
-      (finish==="gold" ? " gold":"");
+extra:
+colour==="gold"
+?5
+:0,
 
+total:
+base.total+
+(
+colour==="gold"
+?5
+:0
+)
 
-    panel.style.left=
-      x*scale+"px";
+}
 
-    panel.style.width=
-      width*scale+"px";
-
-    panel.style.height=
-      "100%";
-
-
-    panel.innerHTML=`
-      <div class="panel-label">
-        ${Math.round(width)} ×
-        ${Math.round(row.offsetHeight/scale)}
-      </div>
-    `;
-
-    row.appendChild(panel);
-
-    x+=width+gap;
-  });
 }
 
 
-/* ============================================================
-   PRICE CALCULATION
-============================================================ */
+/* =========================================================
+   CALCULATE
+========================================================= */
 
 function calculate(){
 
-  try{
+try{
 
-    const wallWidth=
-      Number(document.getElementById("wallWidth").value);
+const W=
++document.getElementById(
+"wallWidth"
+).value;
 
-    const wallHeight=
-      Number(document.getElementById("wallHeight").value);
+const H=
++document.getElementById(
+"wallHeight"
+).value;
 
-    const layout=
-      document.getElementById("layout").value;
+const layout=
+document.getElementById(
+"layoutStyle"
+).value;
 
-    const frameType=
-      document.getElementById("frameType").value;
+const type=
+document.getElementById(
+"frameType"
+).value;
 
-    const pattern=
-      document.getElementById("pattern").value;
+const colour=
+document.getElementById(
+"frameColour"
+).value;
 
-    const finish=
-      document.getElementById("finish").value;
 
+if(
+W<300||
+H<300
+){
 
-    if(
-      !wallWidth ||
-      !wallHeight ||
-      wallWidth<=0 ||
-      wallHeight<=0
-    ){
+alert(
+"Minimum wall dimension is 300mm."
+);
 
-      throw new Error(
-        "Please enter valid wall dimensions."
-      );
-    }
+return
 
-
-    const boxes=
-      calculateBoxes(
-        wallWidth,
-        wallHeight,
-        layout,
-        pattern
-      );
-
-
-    const data={
-      wallWidth,
-      wallHeight,
-      layout,
-      frameType,
-      pattern,
-      finish,
-      boxes
-    };
-
-
-    /*
-      VISUAL
-    */
-
-    renderVisual(data);
-
-
-    /*
-      PRICE
-    */
-
-    const table=
-      frameType==="double"
-        ? doublePrices
-        : singlePrices;
-
-    const breakdown=[];
-
-    let frameTotal=0;
-    let innerTotal=0;
-    let goldTotal=0;
-
-
-    /*
-      TOP BOXES
-    */
-
-    if(layout!=="full_height"){
-
-      boxes.widths.forEach(
-        (width,index)=>{
-
-          const price=
-            getPrice(
-              width,
-              boxes.boxHeight,
-              table
-            );
-
-          frameTotal+=price.total;
-
-          breakdown.push({
-            section:"Top",
-            index:index+1,
-            width,
-            height:boxes.boxHeight,
-            price:price.total,
-            pieces:price.pieces
-          });
-
-
-          /*
-            DOUBLE FRAME INNER
-          */
-
-          if(frameType==="double"){
-
-            const innerWidth=
-              width-180;
-
-            const innerHeight=
-              boxes.boxHeight-180;
-
-            if(
-              innerWidth>0 &&
-              innerHeight>0
-            ){
-
-              const innerPrice=
-                getPrice(
-                  innerWidth,
-                  innerHeight,
-                  innerFramePrices
-                );
-
-              innerTotal+=
-                innerPrice.total;
-            }
-          }
-
-
-          /*
-            GOLD
-          */
-
-          if(finish==="gold"){
-            goldTotal+=5;
-          }
-
-        }
-      );
-
-
-      /*
-        BOTTOM BOXES
-      */
-
-      boxes.widths.forEach(
-        (width,index)=>{
-
-          const price=
-            getPrice(
-              width,
-              600,
-              table
-            );
-
-          frameTotal+=price.total;
-
-          breakdown.push({
-            section:"Bottom",
-            index:index+1,
-            width,
-            height:600,
-            price:price.total,
-            pieces:price.pieces
-          });
-
-
-          if(frameType==="double"){
-
-            const innerWidth=
-              width-180;
-
-            const innerHeight=
-              600-180;
-
-            if(
-              innerWidth>0 &&
-              innerHeight>0
-            ){
-
-              const innerPrice=
-                getPrice(
-                  innerWidth,
-                  innerHeight,
-                  innerFramePrices
-                );
-
-              innerTotal+=
-                innerPrice.total;
-            }
-          }
-
-
-          if(finish==="gold"){
-            goldTotal+=5;
-          }
-
-        }
-      );
-
-    }else{
-
-      /*
-        FULL HEIGHT
-      */
-
-      boxes.widths.forEach(
-        (width,index)=>{
-
-          const price=
-            getPrice(
-              width,
-              boxes.boxHeight,
-              table
-            );
-
-          frameTotal+=price.total;
-
-          breakdown.push({
-            section:"Full Height",
-            index:index+1,
-            width,
-            height:boxes.boxHeight,
-            price:price.total,
-            pieces:price.pieces
-          });
-
-
-          if(frameType==="double"){
-
-            const innerWidth=
-              width-180;
-
-            const innerHeight=
-              boxes.boxHeight-180;
-
-            if(
-              innerWidth>0 &&
-              innerHeight>0
-            ){
-
-              const innerPrice=
-                getPrice(
-                  innerWidth,
-                  innerHeight,
-                  innerFramePrices
-                );
-
-              innerTotal+=
-                innerPrice.total;
-            }
-          }
-
-
-          if(finish==="gold"){
-            goldTotal+=5;
-          }
-
-        }
-      );
-    }
-
-
-    /*
-      CHAIR RAIL
-    */
-
-    let chairRailQty=0;
-    let chairRailTotal=0;
-
-    if(layout==="with_chairrail"){
-
-      chairRailQty=
-        Math.ceil(
-          (wallWidth*1.10)/2400
-        );
-
-      chairRailTotal=
-        chairRailQty*70;
-    }
-
-
-    const grandTotal=
-      frameTotal+
-      innerTotal+
-      goldTotal+
-      chairRailTotal;
-
-
-    renderResult({
-      wallWidth,
-      wallHeight,
-      layout,
-      frameType,
-      pattern,
-      finish,
-      boxes,
-      breakdown,
-      frameTotal,
-      innerTotal,
-      goldTotal,
-      chairRailQty,
-      chairRailTotal,
-      grandTotal
-    });
-
-
-    saveHistory({
-      wallWidth,
-      wallHeight,
-      layout,
-      frameType,
-      pattern,
-      finish,
-      grandTotal
-    });
-
-  }catch(error){
-
-    document.getElementById("result").innerHTML=`
-      <div class="info" style="color:#b00020;">
-        <b>Error:</b> ${error.message}
-      </div>
-    `;
-  }
 }
 
 
-/* ============================================================
-   RESULT RENDER
-============================================================ */
-
-function renderResult(data){
-
-  let html="";
+const b=
+buildBoxes(W,H);
 
 
-  html+=`
-    <div class="info">
-      <b>Wall:</b>
-      ${data.wallWidth} × ${data.wallHeight} mm
-      <br>
+if(b.topHeight<=0){
 
-      <b>Pattern:</b>
-      ${data.pattern}
-      <br>
+alert(
+"Wall height is too small for this layout."
+);
 
-      <b>Frame:</b>
-      ${data.frameType==="double"
-        ? "Double Frame"
-        : "Single Frame"}
-      <br>
+return
 
-      <b>Finish:</b>
-      ${data.finish==="gold"
-        ? "Gold / Premium"
-        : "Standard"}
-    </div>
-  `;
-
-
-  html+=`
-    <div class="section-title">
-      Frame Breakdown
-    </div>
-  `;
-
-
-  html+=`
-    <table class="price-table">
-      <thead>
-        <tr>
-          <th>Box</th>
-          <th>Actual Size</th>
-          <th>Purchase Pieces</th>
-          <th>Price</th>
-        </tr>
-      </thead>
-      <tbody>
-  `;
-
-
-  data.breakdown.forEach(item=>{
-
-    const pieces=
-      item.pieces
-        .map(
-          p=>`${p.w}×${p.h}`
-        )
-        .join(" + ");
-
-
-    html+=`
-      <tr>
-        <td>
-          ${item.section} ${item.index}
-        </td>
-
-        <td>
-          ${Math.round(item.width)}
-          ×
-          ${Math.round(item.height)} mm
-        </td>
-
-        <td>
-          ${pieces}
-        </td>
-
-        <td>
-          ${money(item.price)}
-        </td>
-      </tr>
-    `;
-  });
-
-
-  html+=`
-      </tbody>
-    </table>
-  `;
-
-
-  html+=`
-    <div class="breakdown">
-
-      <div class="breakdown-row">
-        <div class="breakdown-name">
-          Frame Material
-        </div>
-        <div class="breakdown-price">
-          ${money(data.frameTotal)}
-        </div>
-      </div>
-  `;
-
-
-  if(data.frameType==="double"){
-
-    html+=`
-      <div class="breakdown-row">
-        <div class="breakdown-name">
-          Inner Frame
-        </div>
-
-        <div class="breakdown-price">
-          ${money(data.innerTotal)}
-        </div>
-      </div>
-    `;
-  }
-
-
-  if(data.finish==="gold"){
-
-    html+=`
-      <div class="breakdown-row">
-        <div class="breakdown-name">
-          Gold / Premium
-          (${data.breakdown.length} boxes × RM5)
-        </div>
-
-        <div class="breakdown-price">
-          ${money(data.goldTotal)}
-        </div>
-      </div>
-    `;
-  }
-
-
-  if(data.chairRailQty>0){
-
-    html+=`
-      <div class="breakdown-row">
-        <div class="breakdown-name">
-          Chair Rail
-          (${data.chairRailQty} × RM70)
-        </div>
-
-        <div class="breakdown-price">
-          ${money(data.chairRailTotal)}
-        </div>
-      </div>
-    `;
-  }
-
-
-  html+=`
-      <div class="breakdown-row subtotal">
-        <div>
-          Grand Total
-        </div>
-
-        <div>
-          ${money(data.grandTotal)}
-        </div>
-      </div>
-
-    </div>
-  `;
-
-
-  document.getElementById("result").innerHTML=html;
 }
 
 
-/* ============================================================
+const boxes=[];
+
+let total=0;
+
+
+/* TOP */
+
+b.topWidths.forEach(
+(w,i)=>{
+
+const p=
+priceBox(
+w,
+b.topHeight,
+type,
+colour
+);
+
+if(!p)throwPrice();
+
+boxes.push({
+
+row:"Top",
+
+index:i+1,
+
+w,
+
+h:b.topHeight,
+
+p
+
+});
+
+total+=p.total
+
+}
+);
+
+
+/* BOTTOM */
+
+b.bottomWidths.forEach(
+(w,i)=>{
+
+const p=
+priceBox(
+w,
+b.bottomHeight,
+type,
+colour
+);
+
+if(!p)throwPrice();
+
+boxes.push({
+
+row:"Bottom",
+
+index:i+1,
+
+w,
+
+h:b.bottomHeight,
+
+p
+
+});
+
+total+=p.total
+
+}
+);
+
+
+/* CHAIR RAIL */
+
+let railQty=0;
+
+let railTotal=0;
+
+if(layout==="with_chairrail"){
+
+railQty=
+Math.ceil(
+(W*1.10)/2400
+);
+
+railTotal=
+railQty*70;
+
+total+=railTotal
+
+}
+
+
+lastCalculation={
+
+W,
+
+H,
+
+layout,
+
+type,
+
+colour,
+
+boxes,
+
+railQty,
+
+railTotal,
+
+total,
+
+b
+
+};
+
+
+renderResult();
+
+}
+
+
+/* =========================================================
+   PRICE ERROR
+========================================================= */
+
+function throwPrice(){
+
+throw new Error(
+"One or more calculated frame sizes are not available in the pricing database."
+);
+
+}
+
+
+/* =========================================================
+   RESULT
+========================================================= */
+
+function renderResult(){
+
+const c=
+lastCalculation;
+
+const layoutName=
+c.layout==="full_height"
+?
+"Full Height"
+:
+c.layout==="with_chairrail"
+?
+"With Chair Rail"
+:
+"Without Chair Rail";
+
+
+document.getElementById(
+"result"
+).style.display="block";
+
+
+document.getElementById(
+"resultTitle"
+).textContent=
+(
+c.type==="double"
+?
+"Double Frame"
+:
+"Single Frame"
+)
++
+" • "
++
+layoutName;
+
+
+document.getElementById(
+"totalPrice"
+).textContent=
+"RM"+
+c.total.toLocaleString(
+"en-MY",
+{
+minimumFractionDigits:2
+}
+);
+
+
+document.getElementById(
+"summary"
+).textContent=
+`Wall ${c.W} × ${c.H} mm • ${
+c.colour==="gold"
+?"Gold"
+:"Standard"
+} • Pattern ${
+document.getElementById("pattern").value
+}`;
+
+
+/* SPECS */
+
+document.getElementById(
+"specs"
+).innerHTML=`
+
+<div class="spec">
+
+<b>
+${
+c.layout==="full_height"
+?
+"Total Box Height"
+:
+"Top Box Height"
+}
+</b>
+
+<strong>
+${Math.round(c.b.topHeight)}mm
+</strong>
+
+</div>
+
+
+<div class="spec">
+
+<b>
+${
+c.layout==="full_height"
+?
+"Bottom Gap"
+:
+"Bottom Box Height"
+}
+</b>
+
+<strong>
+${
+c.layout==="full_height"
+?
+"100mm"
+:
+c.b.bottomHeight+"mm"
+}
+</strong>
+
+</div>
+
+
+<div class="spec">
+
+<b>
+Chair Rail
+</b>
+
+<strong>
+${
+c.layout==="with_chairrail"
+?
+c.b.rail+"mm"
+:
+"N/A"
+}
+</strong>
+
+</div>
+
+`;
+
+
+/* VISUAL */
+
+renderVisual();
+
+
+/* PRICE BREAKDOWN */
+
+document.getElementById(
+"boxDetails"
+).innerHTML=
+
+c.boxes
+.map(
+x=>boxHtml(x)
+)
+.join("")
+
++
+
+(
+c.railQty
+?
+
+`
+
+<div class="boxitem">
+
+<span class="tag">
+CHAIR RAIL
+</span>
+
+<br>
+
+<b>Quantity:</b>
+${c.railQty} × 2400mm pieces
+
+<br>
+
+<b>Price:</b>
+RM${c.railTotal.toFixed(2)}
+
+</div>
+
+`
+
+:
+""
+
+);
+
+}
+
+
+/* =========================================================
+   BOX PRICE DETAIL
+========================================================= */
+
+function boxHtml(x){
+
+const b=
+x.p.base;
+
+
+if(
+x.p &&
+lastCalculation.type==="double"
+){
+
+const outer=
+b.outer.pieces
+.map(
+p=>
+`${p.priceWidth}×${p.priceHeight}`
+)
+.join(" + ");
+
+
+const inn=
+b.inner.pieces
+.map(
+g=>
+g.pieces
+.map(
+p=>
+`${p.priceWidth}×${p.priceHeight}`
+)
+.join(" + ")
+)
+.join(" | ");
+
+
+return `
+
+<div class="boxitem">
+
+<span class="tag">
+${x.row} BOX ${x.index}
+</span>
+
+<br>
+
+<b>Actual:</b>
+${Math.round(x.w)}×${Math.round(x.h)}mm
+
+<br>
+
+<b>Outer:</b>
+${outer}
+•
+RM${b.outer.total}
+
+<br>
+
+<b>Inner:</b>
+${inn}
+•
+RM${b.inner.total}
+
+<br>
+
+<b>
+${lastCalculation.colour==="gold"
+?"Gold / Premium (+RM5)"
+:"Frame Total"}
+:
+</b>
+
+RM${x.p.total.toFixed(2)}
+
+</div>
+
+`;
+
+}
+
+
+const pieces=
+b.pieces
+.map(
+p=>
+`${p.priceWidth}×${p.priceHeight}`
+)
+.join(" + ");
+
+
+return `
+
+<div class="boxitem">
+
+<span class="tag">
+${x.row} BOX ${x.index}
+</span>
+
+<br>
+
+<b>Actual:</b>
+${Math.round(x.w)}×${Math.round(x.h)}mm
+
+<br>
+
+<b>Material:</b>
+${pieces}
+•
+RM${b.total}
+
+${
+lastCalculation.colour==="gold"
+?
+`
+<br>
+<b>Gold / Premium:</b>
+RM5.00
+`
+:
+""
+}
+
+<br>
+
+<b>Total:</b>
+RM${x.p.total.toFixed(2)}
+
+</div>
+
+`;
+
+}
+
+
+/* =========================================================
+   VISUAL ENGINE
+========================================================= */
+
+function renderVisual(){
+
+const c=
+lastCalculation;
+
+const v=
+document.getElementById(
+"wallVisual"
+);
+
+
+/*
+  Set wall ratio based on REAL dimensions.
+*/
+
+v.style.aspectRatio=
+`${c.W} / ${c.H}`;
+
+v.dataset.width=
+c.W;
+
+v.dataset.height=
+c.H;
+
+v.className=
+"wall";
+
+
+/*
+  Clear previous drawing.
+*/
+
+v.innerHTML="";
+
+
+/*
+  Wall coordinate system.
+  We use percentages calculated from actual mm.
+*/
+
+const wallW=c.W;
+const wallH=c.H;
+
+
+/* ---------------------------------------------------------
+   Convert mm → percentage
+--------------------------------------------------------- */
+
+function X(mm){
+return (
+mm/wallW
+)*100
+}
+
+function Y(mm){
+return (
+mm/wallH
+)*100
+}
+
+
+/* ---------------------------------------------------------
+   Create exact row
+--------------------------------------------------------- */
+
+function createRow(
+className,
+boxes,
+topMM,
+heightMM
+){
+
+const row=
+document.createElement("div");
+
+row.className=
+className;
+
+row.style.left="0%";
+row.style.top=Y(topMM)+"%";
+row.style.width="100%";
+row.style.height=Y(heightMM)+"%";
+
+v.appendChild(row);
+
+
+/*
+  Every box is absolutely positioned.
+
+  Pattern:
+  100mm left gap
+  box
+  100mm gap
+  box
+  ...
+  100mm right gap
+*/
+
+let xMM=100;
+
+
+boxes.forEach(
+(box,index)=>{
+
+const p=
+document.createElement("div");
+
+p.className=
+"panel"+
+(
+c.type==="double"
+?
+" double"
+:
+""
+);
+
+
+/*
+  Exact calculated position.
+*/
+
+p.style.left=
+X(xMM)+"%";
+
+p.style.width=
+X(box.w)+"%";
+
+p.style.top="0%";
+
+p.style.height="100%";
+
+
+p.innerHTML=
+`
+<span>
+${Math.round(box.w)}
+×
+${Math.round(box.h)}
+mm
+</span>
+`;
+
+
+row.appendChild(p);
+
+
+/*
+  Move to next box:
+  current width + exact 100mm gap.
+*/
+
+xMM+=
+box.w+
+100;
+
+}
+
+);
+
+}
+
+
+/* =========================================================
+   FULL HEIGHT
+========================================================= */
+
+if(c.layout==="full_height"){
+
+createRow(
+
+"full-row",
+
+c.boxes,
+
+100,
+
+c.b.topHeight
+
+);
+
+return;
+
+}
+
+
+/* =========================================================
+   NORMAL TOP BOXES
+========================================================= */
+
+createRow(
+
+"top-row",
+
+c.boxes.filter(
+x=>x.row==="Top"
+),
+
+100,
+
+c.b.topHeight
+
+);
+
+
+/* =========================================================
+   CHAIR RAIL
+========================================================= */
+
+if(c.layout==="with_chairrail"){
+
+const rail=
+document.createElement("div");
+
+rail.className="rail";
+
+
+const railTop=
+100+
+c.b.topHeight+
+100;
+
+
+rail.style.top=
+Y(railTop)+"%";
+
+rail.style.height=
+Y(70)+"%";
+
+
+rail.innerHTML=`
+
+<div class="rail-line line-1"></div>
+
+<div class="rail-line line-2"></div>
+
+<div class="rail-line line-3"></div>
+
+<div class="rail-label">
+70 mm
+</div>
+
+`;
+
+
+v.appendChild(rail);
+
+}
+
+
+/* =========================================================
+   BOTTOM BOXES
+========================================================= */
+
+let bottomTop;
+
+
+/*
+  With chair rail:
+
+  100 top gap
+  top box
+  100 gap
+  70 rail
+  100 gap
+  bottom box
+  100 bottom gap
+*/
+
+if(c.layout==="with_chairrail"){
+
+bottomTop=
+100+
+c.b.topHeight+
+100+
+70+
+100;
+
+}
+
+/*
+  Without chair rail:
+
+  100 top gap
+  top box
+  200 middle separation
+  bottom box
+  100 bottom gap
+*/
+
+else{
+
+bottomTop=
+100+
+c.b.topHeight+
+200;
+
+}
+
+
+createRow(
+
+"bottom-row",
+
+c.boxes.filter(
+x=>x.row==="Bottom"
+),
+
+bottomTop,
+
+600
+
+);
+
+}
+
+
+/* =========================================================
+   DOWNLOAD VISUAL DESIGN
+========================================================= */
+
+function downloadVisualDesign(){
+
+if(!lastCalculation){
+
+alert(
+"Please calculate first."
+);
+
+return
+
+}
+
+
+const c=
+lastCalculation;
+
+
+const canvas=
+document.createElement(
+"canvas"
+);
+
+const ctx=
+canvas.getContext("2d");
+
+
+/*
+  Fixed export canvas.
+  This is only for the downloaded image.
+*/
+
+const S=1800;
+
+canvas.width=S;
+
+canvas.height=
+c.layout==="full_height"
+?
+1200
+:
+1100;
+
+
+ctx.fillStyle=
+"#f5f7fa";
+
+ctx.fillRect(
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+
+/* TITLE */
+
+ctx.fillStyle=
+"#18212f";
+
+ctx.font=
+"bold 38px Arial";
+
+ctx.fillText(
+"Wainscoting Visual Design",
+60,
+60
+);
+
+
+ctx.font=
+"20px Arial";
+
+ctx.fillStyle=
+"#667085";
+
+ctx.fillText(
+
+`${c.W} × ${c.H} mm • ${
+c.type==="double"
+?
+"Double Frame"
+:
+"Single Frame"
+} • ${
+c.layout==="full_height"
+?
+"Full Height"
+:
+c.layout==="with_chairrail"
+?
+"With Chair Rail"
+:
+"Without Chair Rail"
+}`,
+
+60,
+95
+
+);
+
+
+/*
+  Drawing wall.
+*/
+
+const wallX=80;
+
+const wallY=140;
+
+const wallW=1640;
+
+const wallH=
+c.layout==="full_height"
+?
+980
+:
+880;
+
+
+/*
+  Actual ratio fit.
+*/
+
+const ratio=
+c.W/c.H;
+
+let drawW=wallW;
+
+let drawH=
+drawW/ratio;
+
+
+if(drawH>wallH){
+
+drawH=wallH;
+
+drawW=
+drawH*ratio;
+
+}
+
+
+const dx=
+wallX+
+(wallW-drawW)/2;
+
+const dy=
+wallY+
+(wallH-drawH)/2;
+
+
+/* WALL */
+
+ctx.fillStyle=
+"#eee9df";
+
+ctx.fillRect(
+dx,
+dy,
+drawW,
+drawH
+);
+
+ctx.strokeStyle=
+"#d6d0c6";
+
+ctx.lineWidth=2;
+
+ctx.strokeRect(
+dx,
+dy,
+drawW,
+drawH
+);
+
+
+/* MM → PX */
+
+const pxPerMM=
+drawW/c.W;
+
+
+function pxX(mm){
+return dx+
+mm*pxPerMM
+}
+
+
+function pxY(mm){
+return dy+
+mm*pxPerMM
+}
+
+
+/* DRAW PANEL */
+
+function drawPanel(
+box,
+topMM
+){
+
+const x=
+pxX(100);
+
+let currentX=
+x;
+
+
+/*
+  Need actual sequence position.
+*/
+
+return currentX;
+
+}
+
+
+/*
+  Draw rows exactly.
+*/
+
+function drawBoxes(
+arr,
+topMM,
+heightMM
+){
+
+let currentXMM=100;
+
+arr.forEach(
+box=>{
+
+const x=
+pxX(currentXMM);
+
+const y=
+pxY(topMM);
+
+const w=
+box.w*pxPerMM;
+
+const h=
+heightMM*pxPerMM;
+
+
+/* fill */
+
+ctx.fillStyle=
+"#eee9df";
+
+ctx.fillRect(
+x,
+y,
+w,
+h
+);
+
+
+/* outer frame */
+
+ctx.strokeStyle=
+"#d8d0c3";
+
+ctx.lineWidth=
+Math.max(
+4,
+6*pxPerMM
+);
+
+ctx.strokeRect(
+x,
+y,
+w,
+h
+);
+
+
+/* inner frame */
+
+if(c.type==="double"){
+
+ctx.strokeStyle=
+"#bcb3a5";
+
+ctx.lineWidth=2;
+
+ctx.strokeRect(
+x+12,
+y+12,
+w-24,
+h-24
+);
+
+}
+
+
+/* label */
+
+ctx.fillStyle=
+"#5a5147";
+
+ctx.font=
+"bold 17px Arial";
+
+ctx.textAlign=
+"center";
+
+ctx.textBaseline=
+"middle";
+
+ctx.fillText(
+
+`${Math.round(box.w)} × ${Math.round(box.h)} mm`,
+
+x+w/2,
+y+h/2
+
+);
+
+
+currentXMM+=
+box.w+
+100;
+
+}
+
+);
+
+
+/*
+  reset text alignment
+*/
+
+ctx.textAlign=
+"left";
+
+ctx.textBaseline=
+"alphabetic";
+
+}
+
+
+/* FULL HEIGHT */
+
+if(c.layout==="full_height"){
+
+drawBoxes(
+c.boxes,
+100,
+c.b.topHeight
+);
+
+}
+
+
+/* NORMAL */
+
+else{
+
+drawBoxes(
+
+c.boxes.filter(
+x=>x.row==="Top"
+),
+
+100,
+
+c.b.topHeight
+
+);
+
+
+/*
+  Chair rail.
+*/
+
+if(c.layout==="with_chairrail"){
+
+const railTop=
+100+
+c.b.topHeight+
+100;
+
+const ry=
+pxY(railTop);
+
+const railHeight=
+70*pxPerMM;
+
+
+/*
+  3 lines
+*/
+
+ctx.strokeStyle=
+"#d8d0c3";
+
+ctx.lineWidth=
+4;
+
+[8,35,62].forEach(
+offset=>{
+
+ctx.beginPath();
+
+ctx.moveTo(
+dx,
+ry+
+offset*pxPerMM
+);
+
+ctx.lineTo(
+dx+drawW,
+ry+
+offset*pxPerMM
+);
+
+ctx.stroke();
+
+}
+);
+
+}
+
+
+/*
+  Bottom.
+*/
+
+const bottomTop=
+c.layout==="with_chairrail"
+
+?
+
+100+
+c.b.topHeight+
+100+
+70+
+100
+
+:
+
+100+
+c.b.topHeight+
+200;
+
+
+drawBoxes(
+
+c.boxes.filter(
+x=>x.row==="Bottom"
+),
+
+bottomTop,
+
+600
+
+);
+
+}
+
+
+/* FOOTER */
+
+ctx.fillStyle=
+"#667085";
+
+ctx.font=
+"16px Arial";
+
+ctx.fillText(
+"Visual reference • Actual dimensions shown inside each box.",
+60,
+canvas.height-35
+);
+
+
+canvas.toBlob(
+blob=>{
+
+const a=
+document.createElement("a");
+
+a.href=
+URL.createObjectURL(blob);
+
+a.download=
+`wainscoting-${c.W}x${c.H}-${c.type}.png`;
+
+a.click();
+
+setTimeout(
+()=>URL.revokeObjectURL(a.href),
+1000
+);
+
+},
+"image/png"
+);
+
+}
+
+
+/* =========================================================
+   CART
+========================================================= */
+
+function addToCart(){
+
+if(!lastCalculation)
+return;
+
+alert(
+"Design added to cart."
+);
+
+}
+
+
+/* =========================================================
    HISTORY
-============================================================ */
+========================================================= */
 
-function saveHistory(data){
+function saveHistory(){
 
-  let history=
-    JSON.parse(
-      localStorage.getItem(
-        "ipainter_wainscoting_history"
-      ) || "[]"
-    );
+if(!lastCalculation)
+return;
 
 
-  history.unshift({
-    ...data,
-    date:new Date().toLocaleString()
-  });
+let h=[];
+
+try{
+
+h=
+JSON.parse(
+localStorage.getItem(
+"ipainter_wains_history"
+)||"[]"
+);
+
+}
+catch(e){}
 
 
-  history=
-    history.slice(0,10);
+h.unshift({
+
+time:
+new Date().toLocaleString(
+"en-MY"
+),
+
+...lastCalculation
+
+});
 
 
-  localStorage.setItem(
-    "ipainter_wainscoting_history",
-    JSON.stringify(history)
-  );
+h=
+h.slice(0,20);
 
 
-  renderHistory();
+localStorage.setItem(
+"ipainter_wains_history",
+JSON.stringify(h)
+);
+
+
+renderHistory();
+
 }
 
 
 function renderHistory(){
 
-  const container=
-    document.getElementById("history");
+let h=[];
 
+try{
 
-  const history=
-    JSON.parse(
-      localStorage.getItem(
-        "ipainter_wainscoting_history"
-      ) || "[]"
-    );
-
-
-  if(!history.length){
-
-    container.innerHTML=
-      `<div class="info">
-        No calculation history yet.
-      </div>`;
-
-    return;
-  }
-
-
-  container.innerHTML=
-    history.map(item=>`
-
-      <div class="history-item">
-
-        <div class="history-date">
-          ${item.date}
-        </div>
-
-        <div class="history-main">
-
-          <div>
-            ${item.wallWidth} ×
-            ${item.wallHeight} mm
-            <br>
-
-            <small>
-              ${item.pattern}
-              ·
-              ${item.frameType==="double"
-                ? "Double"
-                : "Single"}
-              ·
-              ${item.finish}
-            </small>
-          </div>
-
-          <div class="history-total">
-            ${money(item.grandTotal)}
-          </div>
-
-        </div>
-
-      </div>
-
-    `).join("");
-}
-
-
-/* ============================================================
-   RESET
-============================================================ */
-
-function resetCalculator(){
-
-  document.getElementById("wallWidth").value=3000;
-  document.getElementById("wallHeight").value=2900;
-
-  document.getElementById("layout").value=
-    "with_chairrail";
-
-  document.getElementById("frameType").value=
-    "single";
-
-  document.getElementById("pattern").value=
-    "1:1";
-
-  document.getElementById("finish").value=
-    "standard";
-
-
-  document.getElementById("result").innerHTML=`
-    <div class="info">
-      Enter your wall dimensions and click
-      <b>Calculate</b>.
-    </div>
-  `;
-
-
-  calculate();
-}
-
-
-/* ============================================================
-   DOWNLOAD VISUAL PNG
-============================================================ */
-
-function downloadVisualDesign(){
-
-  const wall=
-    document.getElementById("wallVisual");
-
-  if(!wall){
-    return;
-  }
-
-
-  /*
-    Use SVG to create a clean elevation image.
-  */
-
-  const width=
-    wall.offsetWidth || 1050;
-
-  const height=
-    wall.offsetHeight || 800;
-
-
-  const svg=
-    `
-    <svg xmlns="http://www.w3.org/2000/svg"
-         width="${width}"
-         height="${height}">
-
-      <rect
-        width="100%"
-        height="100%"
-        fill="#faf9f6"/>
-
-      <rect
-        x="1"
-        y="1"
-        width="${width-2}"
-        height="${height-2}"
-        fill="none"
-        stroke="#d5d0c8"
-        stroke-width="2"/>
-
-      <text
-        x="${width/2}"
-        y="20"
-        text-anchor="middle"
-        font-family="Arial"
-        font-size="12"
-        font-weight="700"
-        fill="#555">
-        Wainscoting Elevation
-      </text>
-
-    </svg>
-    `;
-
-
-  const blob=
-    new Blob(
-      [svg],
-      {type:"image/svg+xml"}
-    );
-
-
-  const url=
-    URL.createObjectURL(blob);
-
-
-  const link=
-    document.createElement("a");
-
-  link.href=url;
-
-  link.download=
-    "ipainter-wainscoting-elevation.svg";
-
-  link.click();
-
-  URL.revokeObjectURL(url);
-}
-
-
-/* ============================================================
-   INIT
-============================================================ */
-
-document.addEventListener(
-  "DOMContentLoaded",
-  ()=>{
-    renderHistory();
-    calculate();
-  }
+h=
+JSON.parse(
+localStorage.getItem(
+"ipainter_wains_history"
+)||"[]"
 );
+
+}
+catch(e){}
+
+
+document.getElementById(
+"history"
+).innerHTML=
+
+h.length
+
+?
+
+h.map(
+x=>
+`
+
+<div class="history-item">
+
+<b>
+${x.W}×${x.H}mm
+</b>
+
+•
+
+${x.type}
+
+•
+
+${x.layout}
+
+<br>
+
+RM${x.total.toFixed(2)}
+
+<span class="muted">
+•
+${x.time}
+</span>
+
+</div>
+
+`
+).join("")
+
+:
+
+`
+<div class="empty">
+No saved calculation.
+</div>
+`;
+
+}
+
+
+/* =========================================================
+   CLEAR HISTORY
+========================================================= */
+
+function clearHistory(){
+
+localStorage.removeItem(
+"ipainter_wains_history"
+);
+
+renderHistory();
+
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+function resetForm(){
+
+document.getElementById(
+"wallWidth"
+).value=3000;
+
+document.getElementById(
+"wallHeight"
+).value=2900;
+
+document.getElementById(
+"layoutStyle"
+).value=
+"with_chairrail";
+
+document.getElementById(
+"pattern"
+).value=
+"2:1:2:1:2";
+
+document.getElementById(
+"frameType"
+).value=
+"single";
+
+document.getElementById(
+"frameColour"
+).value=
+"standard";
+
+document.getElementById(
+"result"
+).style.display=
+"none";
+
+lastCalculation=null;
+
+}
+
+
+/* =========================================================
+   INIT
+========================================================= */
+
+renderHistory();
 
 </script>
 
